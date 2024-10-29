@@ -1,0 +1,59 @@
+@extends('Layouts.Main')
+
+@section('title', 'Perguruan Tinggi')
+
+@section('content')
+    <section class="datatables">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-2">
+                        <h5 class="mb-0">Perguruan Tinggi</h5>
+                    </div>
+
+                    <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
+                        <table id="dom_jq_event" class="table-striped table-bordered display text-nowrap table border"
+                            style="width: 100%">
+                            <a href="{{ route('perguruan-tinggi.create') }}" class="btn btn-primary btn-sm">
+                                Tambah Perguruan Tinggi
+                            </a>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Perguruan Tinggi</th>
+                                    <th>Akronim PT</th>
+                                    <th>Alamat Email</th>
+                                    <th>No Telepon</th>
+                                    <th>Kota PT</th>
+                                    <th>Status PT</th>
+                                    <th>Nama Badan Penyelenggara</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($perguruanTinggis as $perguruanTinggi)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $perguruanTinggi->pt_nama }}</td>
+                                        <td>{{ $perguruanTinggi->organisasi_nama_singkat }}</td>
+                                        <td>{{ $perguruanTinggi->organisasi_email }}</td>
+                                        <td>{{ $perguruanTinggi->organisasi_telp }}</td>
+                                        <td>{{ $perguruanTinggi->organisasi_kota }}</td>
+                                        <td>{{ $perguruanTinggi->organisasi_status }}</td>
+                                        <td>{{ $perguruanTinggi->parent->organisasi_nama }}</td>
+                                        <td>
+                                            <a href="{{ route('perguruan-tinggi.show', $perguruanTinggi->id) }}"
+                                                class="btn btn-sm btn-primary me-2">
+                                                <i class="ti ti-info-circle"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+@endsection
