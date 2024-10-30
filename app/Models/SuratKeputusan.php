@@ -15,4 +15,34 @@ class SuratKeputusan extends Model
     protected $guarded = [
         'id',
     ];
+
+    public function jenisSuratKeputusan()
+    {
+        return $this->belongsTo(JenisSuratKeputusan::class, 'id_jenis_surat_keputusan', 'id');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organisasi::class, 'id_organization', 'id');
+    }
+
+    public function prodi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'id_prodi', 'id');
+    }
+
+    public function lembaga()
+    {
+        return $this->belongsTo(LembagaAkreditasi::class, 'lembaga_akreditasi_id', 'id');
+    }
+
+    public function peringkat()
+    {
+        return $this->belongsTo(PeringkatAkreditasi::class, 'peringkat_akreditasi_id', 'id');
+    }
+
+    public function programStudi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'id_prodi', 'id');
+    }
 }

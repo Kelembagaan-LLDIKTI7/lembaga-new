@@ -13,6 +13,12 @@ class SkKumham extends Model
     use HasFactory, Notifiable, HasUuids, HasRoles;
 
     protected $guarded = [
-        'id',
+        'id'
     ];
+
+
+    public function akta()
+    {
+        return $this->belongsTo(Akta::class, 'id_akta', 'id');
+    }
 }

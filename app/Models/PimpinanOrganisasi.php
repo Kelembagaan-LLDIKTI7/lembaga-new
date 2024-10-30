@@ -8,17 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class JenisSuratKeputusan extends Model
+class PimpinanOrganisasi extends Model
 {
     use HasFactory, Notifiable, HasUuids, HasRoles;
 
     protected $guarded = [
         'id',
     ];
-    
 
-    public function suratKeputusan()
+    public function jabatan()
     {
-        return $this->hasMany(SuratKeputusan::class, 'id_jenis_surat_keputusan', 'id');
+        return $this->belongsTo(Jabatan::class, 'id_jabatan', 'id');
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organisasi::class, 'id_organization', 'id');
     }
 }

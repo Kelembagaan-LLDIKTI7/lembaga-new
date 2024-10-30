@@ -8,6 +8,7 @@ use App\Http\Controllers\Master\OrganisasiTypeController;
 use App\Http\Controllers\Master\PeringkatAkademiController;
 use App\Http\Controllers\Organisasi\BadanPenyelenggaraController;
 use App\Http\Controllers\Organisasi\PerguruanTinggiController;
+use App\Http\Controllers\Organisasi\ProgramStudiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -49,5 +50,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [BadanPenyelenggaraController::class, 'create'])->name('create');
         Route::post('/', [BadanPenyelenggaraController::class, 'store'])->name('store');
         Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('program-studi')->name('program-studi.')->group(function () {
+        Route::get('/', [ProgramStudiController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [ProgramStudiController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [ProgramStudiController::class, 'edit'])->name('edit');
+        Route::post('/', [ProgramStudiController::class, 'store'])->name('store');
+        Route::put('/{id}', [ProgramStudiController::class, 'update'])->name('update');
+        Route::get('/{id}', [ProgramStudiController::class, 'show'])->name('show');
     });
 });

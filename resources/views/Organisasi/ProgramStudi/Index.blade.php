@@ -84,8 +84,7 @@
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_berubah_id">Tipe Perubahan</label>
-                                        <select class="form-control select-search" name="perubahan" id="changeType"
-                                            required>
+                                        <select class="form-control select-search" name="perubahan" id="changeType" required>
                                             <option value="Aktif">Pendirian</option>
                                             <option value="penyatuan">Penyatuan</option>
                                             <option value="penggabungan">Penggabungan</option>
@@ -131,43 +130,37 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Data Surat Keputusan</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label for="sk_nomor" class="required-label">Nomor Surat Keputusan</label>
-                                        <input type="text" name="sk_nomor" class="form-control" required>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="sk_tanggal" class="required-label">Tanggal SK</label>
-                                        <input type="date" name="sk_tanggal" class="form-control" required>
-                                    </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="sk_nomor" class="required-label">Nomor Surat Keputusan</label>
+                                    <input type="text" name="sk_nomor" class="form-control" required>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label for="id_jenis_surat_keputusan">Jenis Surat Keputusan</label>
-                                        <select name="id_jenis_surat_keputusan" class="form-control select-search">
-                                            <option value="">-- Pilih Perguruan Tinggi --</option>
-                                            @foreach ($jenis as $jenis)
-                                                <option value="{{ $jenis->id }}">
-                                                    {{ $jenis->jsk_nama }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                <div class="form-group mb-3">
+                                    <label for="sk_tanggal" class="required-label">Tanggal SK</label>
+                                    <input type="date" name="sk_tanggal" class="form-control" required>
+                                </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="sk_dokumen" class="required-label">Dokumen SK</label>
-                                        <input type="file" name="sk_dokumen" class="form-control" required
-                                            accept=".pdf,.doc,.docx">
-                                        <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('perguruan-tinggi.index') }}" type="submit"
-                                        class="btn btn-primary">Keluar</a>
+                                <div class="form-group mb-3">
+                                    <label for="id_jenis_surat_keputusan">Jenis Surat Keputusan</label>
+                                    <select name="id_jenis_surat_keputusan" class="form-control select-search">
+                                        <option value="">-- Pilih Perguruan Tinggi --</option>
+                                        @foreach ($jenis as $jenis)
+                                            <option value="{{ $jenis->id }}">
+                                                {{ $jenis->jsk_nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="sk_dokumen" class="required-label">Dokumen SK</label>
+                                    <input type="file" name="sk_dokumen" class="form-control" required
+                                        accept=".pdf,.doc,.docx">
+                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
                                 </div>
                             </div>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <a href="{{route('perguruan-tinggi.index')}}" type="submit" class="btn btn-primary">Keluar</a>
                         </div>
                     </div>
                 </form>
@@ -177,46 +170,5 @@
 @endsection
 
 @section('js')
-    <script>
-        $(document).ready(function() {
-            $('#changeType').change(function() {
-                var selected = $(this).val();
-                if (selected === 'penyatuan' || selected === 'penggabungan') {
-                    $('#perguruan-tinggi-select').removeClass('hidden');
-                    if (selected === 'penggabungan') {
-                        $('#additional-perguruan-tinggi').removeClass('hidden');
-                    } else {
-                        $('#additional-perguruan-tinggi').addClass('hidden');
-                    }
-                } else {
-                    $('#perguruan-tinggi-select').addClass('hidden');
-                    $('#additional-perguruan-tinggi').addClass('hidden');
-                }
-            });
-
-            $('#addPerguruanTinggi').click(function() {
-                var html = `<div class="form-group mb-3">
-                                <label for="perguruan_tinggi">Perguruan Tinggi Tambahan</label>
-                                <select name="perguruan_tinggi_tambahan[]" class="form-control select-search">
-                                    <option value="">-- Pilih Perguruan Tinggi --</option>
-                                    @foreach ($perguruanTinggis as $perguruanTinggi)
-                                        <option value="{{ $perguruanTinggi->id }}">{{ $perguruanTinggi->organisasi_nama }}</option>
-                                    @endforeach
-                                </select>
-                            </div>`;
-                $('#dynamic-perguruan-tinggi').append(html);
-                $('.select-search').select2();
-            });
-        });
-
-        function previewLogo(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('logo-preview');
-                output.src = reader.result;
-                output.style.display = 'block';
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-    </script>
+    
 @endsection

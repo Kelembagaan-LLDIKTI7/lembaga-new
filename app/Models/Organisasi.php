@@ -35,4 +35,9 @@ class Organisasi extends Model
     {
         return $this->hasMany(Organisasi ::class, 'organisasi_berubah_id', 'id');
     }
+    
+    public function prodis()
+    {
+        return $this->hasMany(ProgramStudi ::class, 'id_organization', 'id');
+    }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class Akta extends Model
+class Akreditasi extends Model
 {
     use HasFactory, Notifiable, HasUuids, HasRoles;
 
@@ -16,9 +16,14 @@ class Akta extends Model
         'id',
     ];
 
-    public function skKumham()
+    public function getIncrementing()
     {
-        return $this->hasOne(SkKumham::class, 'id_akta', 'id');
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
     }
 
     public function organization()
@@ -34,5 +39,15 @@ class Akta extends Model
     public function prodi()
     {
         return $this->belongsTo(ProgramStudi::class, 'id_prodi', 'id');
+    }
+
+    public function peringkat_akreditasi()
+    {
+        return $this->belongsTo(PeringkatAkreditasi::class, 'id_peringkat_akreditasi', 'id');
+    }
+
+    public function lembaga_akreditasi()
+    {
+        return $this->belongsTo(LembagaAkreditasi::class, 'id_lembaga_akreditasi', 'id');
     }
 }
