@@ -39,7 +39,7 @@
                             <div class="card-body">
                                 <a href="{{ route('dashboard.index') }}"
                                     class="text-nowrap logo-img d-block w-100 mb-5 text-center">
-                                    <img src="{{ asset('assets/images/lldikti.png') }}" alt="LLDIKTI Logo"
+                                    <img src="{{ asset('assets/images/logo_lldikti.png') }}" alt="LLDIKTI Logo"
                                         style="height: 55px;">
                                 </a>
 
@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-    
+
     <script src="../../dist/libs/jquery/dist/jquery.min.js"></script>
     <script src="../../dist/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="../../dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
