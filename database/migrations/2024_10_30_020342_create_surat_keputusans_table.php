@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('surat_keputusans', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('sk_nomor', 105);
+            $table->string('sk_nomor');
             $table->date('sk_tanggal');
             $table->date('sk_berakhir')->nullable();
             $table->string('sk_dokumen', 100);

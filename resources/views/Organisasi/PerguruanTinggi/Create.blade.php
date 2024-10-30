@@ -16,7 +16,6 @@
                         <div class="card-body">
                             <h5 class="card-title">Tambah Perguruan Tinggi</h5>
 
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -41,7 +40,13 @@
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_kota" class="required-label">Kota</label>
-                                        <input type="text" name="organisasi_kota" class="form-control" required>
+                                        <select name="organisasi_kota" class="form-control select-search" required>
+                                            <option value="">-- Pilih Kota --</option>
+                                            @foreach ($kotas as $kota)
+                                                <option value="{{ $kota->nama }}">
+                                                    {{ $kota->nama }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -111,15 +116,50 @@
                                     </div>
 
                                     <div id="additional-perguruan-tinggi" class="hidden">
-                                        <button type="button" id="addPerguruanTinggi" class="btn btn-secondary">Tambah
-                                            Perguruan Tinggi</button>
+                                        <button type="button" id="addPerguruanTinggi" class="btn btn-secondary">
+                                            Tambah Perguruan Tinggi
+                                        </button>
                                     </div>
 
                                     <div id="dynamic-perguruan-tinggi"></div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
 
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Data Surat Keputusan</h5>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label for="sk_nomor" class="required-label">Nomor Surat Keputusan</label>
+                                    <input type="text" name="sk_nomor" class="form-control" required>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="sk_tanggal" class="required-label">Tanggal SK</label>
+                                    <input type="date" name="sk_tanggal" class="form-control" required>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="id_jenis_surat_keputusan">Jenis Surat Keputusan</label>
+                                    <select name="id_jenis_surat_keputusan" class="form-control select-search">
+                                        <option value="">-- Pilih Perguruan Tinggi --</option>
+                                        @foreach ($jenis as $jenis)
+                                            <option value="{{ $jenis->id }}">
+                                                {{ $jenis->jsk_nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="sk_dokumen" class="required-label">Dokumen SK</label>
+                                    <input type="file" name="sk_dokumen" class="form-control" required
+                                        accept=".pdf,.doc,.docx">
+                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </div>
                 </form>
