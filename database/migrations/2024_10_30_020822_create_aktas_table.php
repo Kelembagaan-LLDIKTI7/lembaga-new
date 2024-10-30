@@ -13,17 +13,20 @@ return new class extends Migration
     {
         Schema::create('aktas', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('akta_nomor');
+            $table->string('akta_nomor', 45);
             $table->date('akta_tanggal');
-            $table->string('akta_nama_notaris')->nullable();
-            $table->string('akta_kota_notaris')->nullable();
+            $table->string('akta_nama_notaris', 150);
+            $table->string('akta_kota_notaris', 150);
             $table->enum('akta_status', ['Aktif', 'Tidak Aktif']);
             $table->enum('akta_jenis', ['Pendirian', 'Perubahan']);
-            $table->string('akta_dokumen')->nullable();
-            $table->char('id_organisasi')->nullable();
+            $table->string('akta_dokumen', 100)->nullable();
+            $table->uuid('id_organization');
             $table->uuid('id_user');
-            $table->char('akta_referensi')->nullable();
+            $table->uuid('akta_referensi')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_organization')->references('id')->on('organisasis');
+            $table->foreign('id_user')->references('id')->on('users');
         });
     }
 
