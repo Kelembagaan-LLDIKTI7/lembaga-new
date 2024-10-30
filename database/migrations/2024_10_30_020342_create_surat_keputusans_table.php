@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_jenis_surat_keputusan')->references('id')->on('jenis_surat_keputusans');
-            $table->foreign('id_organization')->references('id')->on('organizations');
+            $table->foreign('id_organization')->references('id')->on('organisasis');
         });
     }
 
