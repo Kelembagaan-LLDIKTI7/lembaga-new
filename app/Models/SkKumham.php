@@ -13,15 +13,9 @@ class SkKumham extends Model
     use HasFactory, Notifiable, HasUuids, HasRoles;
 
     protected $guarded = [
-        'id',
-        'kumham_nomor',
-        'kumham_perihal',
-        'kumham_tanggal',
-        'kumham_dokumen',
-        'id_akta',
-        'created_at',
-        'updated_at',
+        'id'
     ];
+
 
     public function akta()
     {

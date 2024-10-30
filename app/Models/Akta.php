@@ -14,19 +14,6 @@ class Akta extends Model
 
     protected $guarded = [
         'id',
-        'akta_nomor',
-        'akta_tanggal',
-        'akta_nama_notaris',
-        'akta_kota_notaris',
-        'akta_status',
-        'akta_jenis',
-        'akta_dokumen',
-        'akta_referensi',
-        'id_organization',
-        'id_user',
-        'id_prodi',
-        'created_at',
-        'updated_at',
     ];
 
     public function skKumham()

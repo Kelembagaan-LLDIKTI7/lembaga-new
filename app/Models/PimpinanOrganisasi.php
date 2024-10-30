@@ -14,14 +14,6 @@ class PimpinanOrganisasi extends Model
 
     protected $guarded = [
         'id',
-        'pimpinan_nama',
-        'pimpinan_email',
-        'pimpinan_tanggal',
-        'pimpinan_sk',
-        'pimpinan_sk_dokumen',
-        'pimpinan_status',
-        'id_jabatan',
-        'id_organization',
     ];
 
     public function jabatan()

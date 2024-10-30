@@ -40,4 +40,9 @@ class SuratKeputusan extends Model
     {
         return $this->belongsTo(PeringkatAkreditasi::class, 'peringkat_akreditasi_id', 'id');
     }
+
+    public function programStudi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'id_prodi', 'id');
+    }
 }

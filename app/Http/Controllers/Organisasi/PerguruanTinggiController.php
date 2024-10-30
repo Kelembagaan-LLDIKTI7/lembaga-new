@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
+use App\Models\JenisSuratKeputusan;
+use App\Models\Kota;
 use App\Models\Organisasi;
+use App\Models\SuratKeputusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
+use function Laravel\Prompts\select;
 
 class PerguruanTinggiController extends Controller
 {
@@ -40,6 +45,16 @@ class PerguruanTinggiController extends Controller
      */
     public function create()
     {
+        $jenis = JenisSuratKeputusan::select(
+            'id',
+            'jsk_nama'
+        )->get();
+
+        $kotas =  Kota::select(
+            'id',
+            'nama'
+        )->get();
+
         $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
             ->select(
                 'id',
@@ -54,8 +69,16 @@ class PerguruanTinggiController extends Controller
 
         return view('Organisasi.PerguruanTinggi.Create', [
             'badanPenyelenggaras' => $badanPenyelenggaras,
-            'perguruanTinggis' => $perguruanTinggis
+            'perguruanTinggis' => $perguruanTinggis,
+            'kotas' => $kotas,
+            'jenis' => $jenis
         ]);
+
+        // return response()->json([
+        //     'badanPenyelenggaras' => $badanPenyelenggaras,
+        //     'perguruanTinggis' => $perguruanTinggis,
+        //     'kota' => $kota
+        // ]);
     }
 
     /**
@@ -63,6 +86,7 @@ class PerguruanTinggiController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $validated = $request->validate([
             'organisasi_nama' => 'required|string|max:255',
             'organisasi_nama_singkat' => 'nullable|string|max:255',
@@ -73,6 +97,11 @@ class PerguruanTinggiController extends Controller
             'organisasi_website' => 'nullable|url|max:255',
             'organisasi_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'parent_id' => 'nullable',
+            'sk_nomor' => 'required',
+            'sk_tanggal' => 'required',
+            'sk_dokumen' => 'required',
+            'id_jenis_surat_keputusan' => 'required',
+            'perubahan' => 'required'
         ]);
 
         if ($request->input('changeType') === 'penyatuan' || $request->input('changeType') === 'penggabungan') {
@@ -102,19 +131,23 @@ class PerguruanTinggiController extends Controller
             Organisasi::whereIn('id', $organisasiBerubahId)->update(['organisasi_status' => 'Tidak Aktif']);
         }
 
-        $organisasiStatusBaru = 'Aktif';
-
-        if ($request->input('changeType') === 'penyatuan') {
+        if ($validated['perubahan'] === 'penyatuan') {
             $organisasiStatusBaru = 'Penyatuan';
-        } elseif ($request->input('changeType') === 'penggabungan') {
+        } elseif ($validated['perubahan'] === 'penggabungan') {
             $organisasiStatusBaru = 'Penggabungan';
+        } else {
+            $organisasiStatusBaru = 'Aktif';
         }
 
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
         }
 
-        Organisasi::create([
+        if ($request->hasFile('sk_dokumen')) {
+            $suratKeputusan = $request->file('sk_dokumen')->store('surat_keputusan', 'public');
+        }
+
+        $perguruanTinggi = Organisasi::create([
             'id' => Str::uuid(),
             'organisasi_nama' => $validated['organisasi_nama'],
             'organisasi_email' => $validated['organisasi_email'],
@@ -129,7 +162,14 @@ class PerguruanTinggiController extends Controller
             'organisasi_berubah_id' => !empty($organisasiBerubahId) ? json_encode($organisasiBerubahId) : null,
             'parent_id' => $validated['parent_id'],
         ]);
-
+        //     dd($perguruanTinggi);
+        SuratKeputusan::create([
+            'sk_nomor' => $validated['sk_nomor'],
+            'sk_tanggal' => $validated['sk_tanggal'],
+            'sk_dokumen' => $suratKeputusan,
+            'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
+            'id_organization' => $perguruanTinggi->id,
+        ]);
         return redirect()->route('perguruan-tinggi.index')->with('success', 'Perguruan Tinggi berhasil ditambahkan.');
     }
 
@@ -139,7 +179,26 @@ class PerguruanTinggiController extends Controller
      */
     public function show(string $id)
     {
-        $organisasi = Organisasi::findOrFail($id);
+        $organisasi = Organisasi::select(
+            'id',
+            'organisasi_nama',
+            'organisasi_nama_singkat',
+            'organisasi_email',
+            'organisasi_telp',
+            'organisasi_kota',
+            'organisasi_status',
+            'organisasi_alamat',
+            'parent_id',
+            'organisasi_logo',
+            'organisasi_website'
+        )->with(
+            'parent:id,organisasi_nama,organisasi_email,organisasi_telp,organisasi_status,organisasi_alamat,organisasi_kota'
+        )->with([
+            'prodis' => function ($query) {
+                $query->select('id', 'id_organization', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status')
+                    ->orderBy('created_at', 'asc');
+            }
+        ])->findOrFail($id);
 
         $berubahIds = json_decode($organisasi->organisasi_berubah_id, true);
 
@@ -180,6 +239,13 @@ class PerguruanTinggiController extends Controller
             'akreditasi' => $akreditasi,
             'sk' => $sk
         ]);
+
+        // return response()->json([
+        //     'organisasi' => $organisasi,
+        //     'berubahOrganisasi' => $berubahOrganisasi,
+        //     'akreditasi' => $akreditasi,
+        //     'sk' => $sk
+        // ]);
     }
 
     /**

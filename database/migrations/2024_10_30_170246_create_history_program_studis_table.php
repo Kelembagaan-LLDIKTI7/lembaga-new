@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('surat_keputusans', function (Blueprint $table) {
+        Schema::create('history_program_studis', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('id_prodi');
+            $table->string('prodi_nama', 100);
+            $table->string('prodi_jenjang');
+            $table->string('prodi_active_status');
+
             $table->string('sk_nomor');
             $table->date('sk_tanggal');
             $table->date('sk_berakhir')->nullable();
             $table->string('sk_dokumen', 100);
-            $table->uuid('id_jenis_surat_keputusan')->nullable();
-            $table->uuid('id_organization')->nullable();
-            $table->string('id_prodi')->nullable();
+            $table->string('id_jenis_surat_keputusan')->nullable();
+            $table->string('id_user')->nullable();
             $table->timestamps();
-
-            $table->foreign('id_jenis_surat_keputusan')->references('id')->on('jenis_surat_keputusans');
-            $table->foreign('id_organization')->references('id')->on('organisasis');
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('surat_keputusans');
+        Schema::dropIfExists('history_program_studis');
     }
 };

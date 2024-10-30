@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('akreditasi_tgl_akhir');
             $table->enum('akreditasi_status', ['Berlaku', 'Tidak Berlaku', 'Dicabut']);
             $table->string('akreditasi_dokumen', 100)->nullable();
-            $table->uuid('id_organization');
+            $table->uuid('id_organization')->nullable();
             $table->uuid('id_peringkat_akreditasi');
             $table->uuid('id_lembaga_akreditasi');
             $table->uuid('id_prodi')->nullable();

@@ -38,9 +38,9 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a href="{{ route('dashboard.index') }}"
-                                    class="text-nowrap logo-img d-block w-100 mb-5 text-center">
+                                    class="text-nowrap logo-img d-block w-100 mb-2 text-center">
                                     <img src="{{ asset('assets/images/logo_lldikti.png') }}" alt="LLDIKTI Logo"
-                                        style="height: 55px;">
+                                        style="height: 100px;">
                                 </a>
 
                                 <form method="post" action="{{ route('login.store') }}">
