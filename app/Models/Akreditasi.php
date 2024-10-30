@@ -8,30 +8,32 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class Akta extends Model
+class Akreditasi extends Model
 {
     use HasFactory, Notifiable, HasUuids, HasRoles;
 
     protected $guarded = [
         'id',
-        'akta_nomor',
-        'akta_tanggal',
-        'akta_nama_notaris',
-        'akta_kota_notaris',
-        'akta_status',
-        'akta_jenis',
-        'akta_dokumen',
-        'akta_referensi',
+        'akreditasi_sk',
+        'akreditasi_tgl_awal',
+        'akreditasi_tgl_akhir',
+        'akreditasi_status',
+        'id_peringkat_akreditasi',
         'id_organization',
+        'id_lembaga_akreditasi',
         'id_user',
         'id_prodi',
-        'created_at',
-        'updated_at',
+        'akreditasi_dokumen'
     ];
 
-    public function skKumham()
+    public function getIncrementing()
     {
-        return $this->hasOne(SkKumham::class, 'id_akta', 'id');
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
     }
 
     public function organization()
@@ -47,5 +49,15 @@ class Akta extends Model
     public function prodi()
     {
         return $this->belongsTo(ProgramStudi::class, 'id_prodi', 'id');
+    }
+
+    public function peringkat_akreditasi()
+    {
+        return $this->belongsTo(PeringkatAkreditasi::class, 'id_peringkat_akreditasi', 'id');
+    }
+
+    public function lembaga_akreditasi()
+    {
+        return $this->belongsTo(LembagaAkreditasi::class, 'id_lembaga_akreditasi', 'id');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organisasi;
 use App\Http\Controllers\Controller;
 use App\Models\Organisasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PerguruanTinggiController extends Controller
@@ -160,9 +161,24 @@ class PerguruanTinggiController extends Controller
             $berubahOrganisasi = collect();
         }
 
+        $akreditasi = DB::table('akreditasis')
+            ->where('akreditasis.id_organization', $id)
+            ->leftJoin('peringkat_akreditasis', 'peringkat_akreditasis.id', '=', 'akreditasis.id_peringkat_akreditasi')
+            ->leftJoin('lembaga_akreditasis', 'lembaga_akreditasis.id', '=', 'akreditasis.id_lembaga_akreditasi')
+            ->select('akreditasis.id', 'akreditasis.akreditasi_sk', 'akreditasis.akreditasi_tgl_akhir', 'akreditasis.akreditasi_status', 'lembaga_akreditasis.lembaga_nama_singkat', 'peringkat_akreditasis.peringkat_nama')
+            ->get();
+
+        $sk = DB::table('surat_keputusans')
+            ->where('surat_keputusans.id_organization', $id)
+            ->leftJoin('jenis_surat_keputusans', 'surat_keputusans.id_jenis_surat_keputusan', '=', 'jenis_surat_keputusans.id')
+            ->select('surat_keputusans.id', 'surat_keputusans.sk_nomor', 'surat_keputusans.sk_tanggal', 'jenis_surat_keputusans.jsk_nama')
+            ->get();
+
         return view('Organisasi.PerguruanTinggi.Show', [
             'organisasi' => $organisasi,
-            'berubahOrganisasi' => $berubahOrganisasi
+            'berubahOrganisasi' => $berubahOrganisasi,
+            'akreditasi' => $akreditasi,
+            'sk' => $sk
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kota;
 use App\Models\Organisasi;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,25 @@ class BadanPenyelenggaraController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $badanPenyelenggaras = Organisasi::where('org_type_id', 2)
+            ->where('id', $id)
+            ->with(['children', 'akta.skKumham', 'pimpinanOrganisasi.jabatan'])
+            ->firstOrFail();
+
+        $kota = Kota::all();
+
+        $listKota = $kota->map(function ($item) {
+            return [
+                $item->nama,
+            ];
+        });
+
+        // dd($listKota);
+
+        return view('Organisasi.BadanPenyelenggara.Show', [
+            'badanPenyelenggaras' => $badanPenyelenggaras,
+            'listKota' => $listKota
+        ]);
     }
 
     /**
