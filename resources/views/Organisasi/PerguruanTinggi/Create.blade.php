@@ -3,19 +3,19 @@
 @section('title', 'Tambah Perguruan-Tinggi')
 
 @section('css')
-    
+
 @endsection
 
 @section('content')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Tambah Perguruan Tinggi</h5>
+                <form action="{{ route('perguruan-tinggi.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Tambah Perguruan Tinggi</h5>
 
-                        <form action="{{ route('perguruan-tinggi.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -118,12 +118,11 @@
                                     <div id="dynamic-perguruan-tinggi"></div>
                                 </div>
                             </div>
-
                             <button type="submit" class="btn btn-primary">Simpan</button>
-                        </form>
 
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
