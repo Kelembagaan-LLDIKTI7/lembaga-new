@@ -15,10 +15,7 @@ class AkreditasiPerguruanTinggiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($id)
-    {
-        
-    }
+    public function index($id) {}
 
     /**
      * Show the form for creating a new resource.
@@ -68,7 +65,7 @@ class AkreditasiPerguruanTinggiController extends Controller
             'id_user' => Auth::user()->id,
         ]);
 
-        return redirect()->route('perguruan-tinggi.index')->with('success', 'Akreditasi Program Studi berhasil ditambahkan');
+        return redirect()->route('perguruan-tinggi.show', ['id' => $request->id_organization])->with('success', 'Akreditasi Program Studi berhasil ditambahkan');
     }
 
     /**

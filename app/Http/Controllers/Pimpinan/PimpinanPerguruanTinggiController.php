@@ -25,7 +25,7 @@ class PimpinanPerguruanTinggiController extends Controller
     {
         // dd($id);
         $pt = Organisasi::select('id')->findOrFail($id);
-        $jabatan = Jabatan::select('id','jabatan_nama', 'jabatan_status', 'jabatan_organisasi')
+        $jabatan = Jabatan::select('id', 'jabatan_nama', 'jabatan_status', 'jabatan_organisasi')
             ->where('jabatan_status', 'Aktif')
             ->where('jabatan_organisasi', 'perguruan tinggi')->get();
 
@@ -71,7 +71,7 @@ class PimpinanPerguruanTinggiController extends Controller
             'pimpinan_status' => 'Aktif',
         ]);
 
-        return redirect()->route('perguruan-tinggi.index')->with('success', 'Data pimpinan berhasil ditambahkan.');
+        return redirect()->route('perguruan-tinggi.show', ['id' => $request->id_organization])->with('success', 'Data pimpinan berhasil ditambahkan.');
     }
 
     /**
