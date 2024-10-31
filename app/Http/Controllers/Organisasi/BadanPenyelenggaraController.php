@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
+use App\Imports\BpImport;
 use App\Models\Kota;
 use App\Models\Organisasi;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BadanPenyelenggaraController extends Controller
 {
@@ -122,5 +124,18 @@ class BadanPenyelenggaraController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls|max:10240',
+        ]);
+
+        $file = $request->file('file');
+
+        Excel::import(new BpImport, $file);
+
+        return redirect()->route('badan-penyelenggara.index')->with('success', 'Badan Penyelenggara berhasil disimpan.');
     }
 }

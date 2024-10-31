@@ -49,8 +49,9 @@
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary me-2">Alih Bentuk</button>
                             <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
-                                Edit
-                            </a>
+                                <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
+                                    Edit
+                                </a>
                         </div>
                     </div>
                 </div>
@@ -167,16 +168,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($akreditasi as $jabatan)
+                                    @foreach ($akreditasi as $akre)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $jabatan->akreditasi_sk }}</td>
-                                            <td>
-                                                {{ \Carbon\Carbon::parse($jabatan->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
-                                            </td>
-                                            <td>{{ $jabatan->akreditasi_status }}</td>
-                                            <td>{{ $jabatan->lembaga_nama_singkat }}</td>
-                                            <td>{{ $jabatan->peringkat_nama }}</td>
+                                            <td>{{ $akre->akreditasi_sk }}</td>
+                                            <td>{{ $akre->akreditasi_tgl_akhir }}</td>
+                                            <td>{{ $akre->akreditasi_status }}</td>
+                                            <td>{{ $akre->lembaga_nama_singkat }}</td>
+                                            <td>{{ $akre->peringkat_nama }}</td>
+                                            <td></td>
                                         </tr>
                                     @endforeach
                                 </tbody>

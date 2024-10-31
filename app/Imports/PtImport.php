@@ -2,7 +2,9 @@
 
 namespace App\Imports;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -17,18 +19,31 @@ class PtImport implements ToCollection
             foreach ($rows as $index => $row) {
                 $rowArray = $row->toArray();
 
-                $id = Str::uuid()->toString();
+                $id_pt = Str::uuid()->toString();
 
                 DB::table('organisasis')->insert([
-                    'id' => $id,
-                    'org_nama' => $rowArray[0],
-                    'org_nama_singkat' => $this->singkatNama($rowArray[0]),
-                    'org_alamat' => $rowArray[1],
-                    'org_kota' => $rowArray[2],
-                    'org_telp' => $rowArray[3],
-                    'org_email' => $rowArray[4],
-                    'org_status' => 'Aktif',
-                    'org_type_id' => 3,
+                    'id' => $id_pt,
+                    'organisasi_nama' => $rowArray[0],
+                    'organisasi_alamat' => $rowArray[1],
+                    'organisasi_kota' => $rowArray[2],
+                    'organisasi_telp' => $rowArray[3],
+                    'organisasi_email' => $rowArray[4],
+                    'organisasi_status' => 'Aktif',
+                    'organisasi_type_id' => 3,
+                    'users_id' => Auth::user()->id,
+                    'created_at' => now(),
+                ]);
+
+                $peringkat = DB::table('peringkat_akreditasis')->where('peringkat_nama', $rowArray[6])->first();
+
+                DB::table('akreditasis')->insert([
+                    'id' => Str::uuid()->toString(),
+                    'akreditasi_sk' => $rowArray[5],
+                    'akreditasi_tgl_akhir' => $rowArray[7],
+                    'id_peringkat_akreditasi' => $peringkat->id,
+                    'id_organization' => $id_pt,
+                    'id_user' => Auth::user()->id,
+                    'created_at' => now(),
                 ]);
 
                 Log::info('Data ke-' . $index . ' berhasil diimport');

@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('akreditasis', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('akreditasi_sk', 105);
-            $table->date('akreditasi_tgl_awal');
-            $table->date('akreditasi_tgl_akhir');
-            $table->enum('akreditasi_status', ['Berlaku', 'Tidak Berlaku', 'Dicabut']);
+            $table->string('akreditasi_sk', 105)->nullable();
+            $table->date('akreditasi_tgl_awal')->nullable();
+            $table->date('akreditasi_tgl_akhir')->nullable();
+            $table->enum('akreditasi_status', ['Berlaku', 'Tidak Berlaku', 'Dicabut'])->nullable();
             $table->string('akreditasi_dokumen', 100)->nullable();
             $table->uuid('id_organization')->nullable();
             $table->uuid('id_peringkat_akreditasi');
-            $table->uuid('id_lembaga_akreditasi');
+            $table->uuid('id_lembaga_akreditasi')->nullable();
             $table->uuid('id_prodi')->nullable();
             $table->uuid('id_user')->nullable();
             $table->timestamps();

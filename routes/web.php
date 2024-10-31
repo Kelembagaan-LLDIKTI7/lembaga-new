@@ -3,6 +3,7 @@
 use App\Http\Controllers\Akreditasi\AkreditasiPerguruanTinggiController;
 use App\Http\Controllers\Akreditasi\AkreditasiProdiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dokumen\PimpinanOrganisasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Master\JabatanController;
 use App\Http\Controllers\Master\LembagaAkreditasiController;
@@ -94,6 +95,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [BadanPenyelenggaraController::class, 'create'])->name('create');
         Route::post('/', [BadanPenyelenggaraController::class, 'store'])->name('store');
         Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show');
+        Route::post('/import', [BadanPenyelenggaraController::class, 'import'])->name('import');
     });
 
     Route::prefix('program-studi')->name('program-studi.')->group(function () {
@@ -113,7 +115,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}', [AkreditasiProdiController::class, 'update'])->name('update');
         Route::get('/{id}', [AkreditasiProdiController::class, 'show'])->name('show');
     });
-    
+
     Route::prefix('akreditasi-perguruan-tinggi')->name('akreditasi-perguruan-tinggi.')->group(function () {
         Route::get('/', [AkreditasiPerguruanTinggiController::class, 'index'])->name('index');
         Route::get('/{id}/create', [AkreditasiPerguruanTinggiController::class, 'create'])->name('create');

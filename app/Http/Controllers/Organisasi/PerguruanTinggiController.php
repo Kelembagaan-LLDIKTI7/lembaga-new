@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
+use App\Imports\PtImport;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
@@ -11,6 +12,7 @@ use App\Models\SuratKeputusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use function Laravel\Prompts\select;
@@ -331,5 +333,15 @@ class PerguruanTinggiController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls|max:2048',
+        ]);
+        $file = $request->file('file');
+        Excel::import(new PtImport, $file);
+        return redirect()->route('perguruan-tinggi.index')->with('success', 'Perguruan Tinggi berhasil disimpan.');
     }
 }
