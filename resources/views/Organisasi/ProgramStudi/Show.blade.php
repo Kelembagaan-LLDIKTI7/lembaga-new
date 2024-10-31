@@ -26,8 +26,7 @@
                                 </tr>
                             </table>
                         </div>
-                        {{-- route('perguruan-tinggi.show', $perguruanTinggi->id) --}}
-                        <a href="{{route('program-studi.edit', $prodi->id)}}" class="btn btn-warning">edit</a>
+                        <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-warning">edit</a>
                     </div>
                 </div>
 
@@ -71,7 +70,7 @@
                     </div>
                 </section>
 
-                <section class="datatables">
+                {{-- <section class="datatables">
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-2">
@@ -93,26 +92,76 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($jabatans as $jabatan)
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section> --}}
+
+                <section class="datatables">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <h5 class="mb-05">
+                                    Akreditasi Program Studi
+                                </h5>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table id="complex_header"
+                                    class="table-striped table-bordered display text-nowrap table border"
+                                    style="width: 100%">
+                                    <a href="{{ route('akreditasi-program-studi.create', $prodi->id) }}"
+                                        class="btn btn-primary btn-sm mb-2">
+                                        Tambah Akreditasi
+                                    </a>
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $jabatan->jabatan_nama }}</td>
-                                            <td>{{ $jabatan->jabatan_status }}</td>
-                                            <td>{{ $jabatan->jabatan_organisasi }}</td>
+                                            <th rowspan="2" class="text-center align-middle">No</th>
+                                            <th colspan="2" class="text-center align-middle">Program Studi</th>
+                                            <th colspan="4" class="text-center align-middle">SK Akreditasi</th>
                                         </tr>
-                                        @endforeach --}}
+                                        <tr>
+                                            <th>Nama Prodi</th>
+                                            <th>Program</th>
+                                            <th>No SK</th>
+                                            <th>Akreditasi Tanggal</th>
+                                            <th>Akreditasi Kadaluarsa</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($akreditasis as $akreditasi)
+                                            @php
+                                                $isExpired = \Carbon\Carbon::parse(
+                                                    $akreditasi->akreditasi_tgl_akhir,
+                                                )->isBefore(\Carbon\Carbon::today());
+                                            @endphp
+                                            <tr class="{{ $isExpired ? 'table-danger' : '' }}">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $akreditasi->prodi->prodi_nama }}</td>
+                                                <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
+                                                <td>{{ $akreditasi->akreditasi_sk }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_awal)->translatedFormat('d F Y') }}
+                                                </td>
+                                                <td>{{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
+                                                </td>
+                                                <td>{{ $akreditasi->akreditasi_status }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </section>
-
-
-
+            </div>
+            <div class="btn-center mt-3">
+                <a href="{{ route('perguruan-tinggi.index') }}" type="submit" class="btn btn-primary">Keluar</a>
             </div>
         </div>
-
     </div>
 @endsection
 @section('js')
