@@ -10,7 +10,8 @@ use App\Models\SuratKeputusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use function Laravel\Prompts\select;
 
 class PerguruanTinggiController extends Controller
@@ -253,7 +254,24 @@ class PerguruanTinggiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $perguruanTinggi = Organisasi::findOrFail($id);
+        $kotas = Kota::select('id', 'nama')->orderBy('nama', 'asc')->get();
+        $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)->get();
+        $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)->get();
+        $skTypes = JenisSuratKeputusan::all();
+        $jenis = JenisSuratKeputusan::select(
+            'id',
+            'jsk_nama'
+        )->get();
+
+        return view('Organisasi.PerguruanTinggi.Edit', [
+            'perguruanTinggi' => $perguruanTinggi,
+            'kotas' => $kotas,
+            'perguruanTinggis' => $perguruanTinggis,
+            'skTypes' => $skTypes,
+            'badanPenyelenggaras' => $badanPenyelenggaras,
+            'jenis' => $jenis
+        ]);
     }
 
     /**
@@ -261,7 +279,37 @@ class PerguruanTinggiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // dd($request->all());
+        // Find the existing Perguruan Tinggi record
+        $perguruanTinggi = Organisasi::findOrFail($id);
+
+        // Validate the incoming request data
+        $validated = $request->validate([
+            'organisasi_nama' => 'required|string|max:255',
+            'organisasi_nama_singkat' => 'nullable|string|max:255',
+            'organisasi_email' => 'required|email|max:255',
+            'organisasi_telp' => 'required|string|max:15',
+            'organisasi_kota' => 'required|string|max:100',
+            'organisasi_alamat' => 'required|string|max:255',
+            'organisasi_website' => 'nullable|url|max:255',
+            'organisasi_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'parent_id' => 'nullable',
+            'sk_nomor' => 'required',
+            'sk_tanggal' => 'required',
+            'id_jenis_surat_keputusan' => 'required',
+            'perubahan' => 'required'
+        ]);
+
+        // Handle file uploads for logo and document
+        if ($request->hasFile('organisasi_logo')) {
+            $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
+            $validated['organisasi_logo'] = $logoPath; // Update the validated data with the new logo path
+        }
+
+        // Update the Perguruan Tinggi record
+        $perguruanTinggi->update($validated);
+
+        return redirect()->route('perguruan-tinggi.index')->with('success', 'Perguruan Tinggi berhasil diperbarui.');
     }
 
     /**
