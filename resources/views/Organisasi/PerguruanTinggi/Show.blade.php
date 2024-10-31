@@ -210,7 +210,8 @@
                         <div class="table-responsive">
                             <table id="sk_table" class="table-striped table-bordered display text-nowrap table border"
                                 style="overflow-x: auto; overflow-y: hidden;">
-                                <a href="#" class="btn btn-primary btn-sm mb-2">
+                                <a href="{{ route('sk-perguruan-tinggi.create', $organisasi->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
                                     Tambah SK
                                 </a>
                                 <thead>
@@ -219,6 +220,7 @@
                                         <th>Nomor SK</th>
                                         <th>Tanggal Terbit</th>
                                         <th>Jenis Sk</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -230,6 +232,19 @@
                                                 {{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}
                                             </td>
                                             <td>{{ $sk->jsk_nama }}</td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <div class="edit">
+                                                        <a href="{{ route('sk-perguruan-tinggi.edit', $sk->id) }}"
+                                                            class="btn btn-sm btn-success">Edit</a>
+                                                    </div>
+                                                    <div class="detail">
+                                                        <button class="btn btn-sm btn-info detail-item-btn sk-detail"
+                                                            data-bs-toggle="modal" data-bs-target="#detailRecordModalSK"
+                                                            data-id="{{ $sk->id }}">Detail</button>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -340,6 +355,7 @@
 
         @include('Akreditasi.PerguruanTinggi.Detail')
         @include('Pimpinan.PerguruanTinggi.Detail')
+        @include('SK.PerguruanTinggi.Detail')
     </div>
 
     </div>
@@ -397,6 +413,19 @@
                         document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
                     })
                     .catch(error => console.error('Error:', error));
+            }
+
+            if (event.target.classList.contains('sk-detail')) {
+                var skId = event.target.getAttribute('data-id');
+                fetch('{{ route('sk-perguruan-tinggi.show', ':id') }}'.replace(":id", skId))
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('sk_nomor').textContent = data.sk_nomor;
+                        document.getElementById('sk_tanggal').textContent = data.sk_tanggal;
+                        document.getElementById('sk_berakhir').textContent = data.sk_berakhir;
+                        document.getElementById('jsk_nama').textContent = data.jsk_nama;
+                        document.getElementById('sk_dokumen').value = data.sk_dokumen;
+                    })
             }
         });
     </script>

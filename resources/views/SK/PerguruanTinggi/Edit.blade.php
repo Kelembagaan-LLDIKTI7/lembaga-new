@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah SK Perguruan Tinggi')
+@section('title', 'Edit SK Perguruan Tinggi')
 
 @section('css')
     <style>
@@ -21,19 +21,23 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('sk-perguruan-tinggi.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('sk-perguruan-tinggi.update', ['id' => $sk->id]) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id_organization" value="{{ $id_organization }}" class="form-control" required>
+                    @method('PUT') <!-- Menentukan method PUT untuk update -->
+                    <input type="hidden" name="id_organization" value="{{ $sk->id_organization }}" class="form-control"
+                        required>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Form Tambah SK</h5>
+                            <h5 class="card-title">Form Edit SK</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="sk_nomor" class="required-label">
                                             No SK
                                         </label>
-                                        <input type="text" name="sk_nomor" class="form-control" required>
+                                        <input type="text" name="sk_nomor" class="form-control"
+                                            value="{{ $sk->sk_nomor }}" required>
                                         @error('sk_nomor')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -45,7 +49,8 @@
                                         <label for="sk_tanggal" class="required-label">
                                             Tanggal Terbit SK
                                         </label>
-                                        <input type="date" name="sk_tanggal" class="form-control" required>
+                                        <input type="date" name="sk_tanggal" class="form-control"
+                                            value="{{ $sk->sk_tanggal }}" required>
                                         @error('sk_tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -60,7 +65,10 @@
                                         <select name="id_jenis_surat_keputusan" class="form-control select-search">
                                             <option value="">-- Pilih Jenis --</option>
                                             @foreach ($jenis as $j)
-                                                <option value="{{ $j->id }}">{{ $j->jsk_nama }}</option>
+                                                <option value="{{ $j->id }}"
+                                                    {{ $j->id == $sk->id_jenis_surat_keputusan ? 'selected' : '' }}>
+                                                    {{ $j->jsk_nama }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('id_jenis_surat_keputusan')
@@ -81,10 +89,11 @@
                                         @enderror
                                     </div>
                                 </div>
+
                                 <div id="file-preview" class="mt-3"></div>
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('perguruan-tinggi.show', ['id' => $id_organization]) }}"
+                                    <a href="{{ route('perguruan-tinggi.show', ['id' => $sk->id_organization]) }}"
                                         class="btn btn-primary btn-sm-custom">Keluar</a>
                                     <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                 </div>
@@ -102,7 +111,7 @@
         function previewFile(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('file-preview');
-            previewContainer.innerHTML = '';
+            preview Container.innerHTML = '';
 
             if (file) {
                 const fileName = document.createElement('p');
