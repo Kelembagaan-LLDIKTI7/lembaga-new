@@ -77,7 +77,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [PerguruanTinggiController::class, 'index'])->name('index');
         Route::get('/create', [PerguruanTinggiController::class, 'create'])->name('create');
         Route::post('/', [PerguruanTinggiController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
         Route::get('/{id}', [PerguruanTinggiController::class, 'show'])->name('show');
+        Route::get('/{id}/create-prodi', [PerguruanTinggiController::class, 'createProdi'])->name('createProdi');
+        Route::delete('/{id}', [PerguruanTinggiController::class, 'destroy'])->name('destroy');
+        Route::post('/import', [PerguruanTinggiController::class, 'import'])->name('import');
+        Route::get('/{id}/alih-bentuk-PT', [PerguruanTinggiController::class, 'alihBentuk'])->name('alihBentuk');
+        Route::put('/{id}/update-alih-bentuk-PT', [PerguruanTinggiController::class, 'updateAlihBentuk'])->name('updateAlihBentuk');
     });
 
     Route::prefix('badan-penyelenggara')->name('badan-penyelenggara.')->group(function () {
