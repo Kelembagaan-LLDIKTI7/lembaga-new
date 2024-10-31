@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
 use App\Imports\BpImport;
+use App\Models\Akta;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
@@ -110,6 +111,18 @@ class BadanPenyelenggaraController extends Controller
                     $query->select('id', 'jabatan_nama')->get();
                 }
             ])->get();
+
+        $akta = Akta::where('id_organization', $id)
+            ->select(['id','akta_nomor', 'akta_tanggal', 'akta_status'])
+            ->with(['skKumham'])
+            ->get();
+            
+        // ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
+        // ->with([
+        //     'jabatan' => function ($query) {
+        //         $query->select('id', 'jabatan_nama')->get();
+        //     }
+        // ])->get();
         // $kota = Kota::all();
 
         // $listKota = $kota->map(function ($item) {
@@ -122,13 +135,14 @@ class BadanPenyelenggaraController extends Controller
 
         // return response()->json([
         //     'badanPenyelenggaras' => $badanPenyelenggaras,
-        //     'pimpinan' => $pimpinan
+        //     'pimpinan' => $pimpinan,
+        //     'akta' => $akta
         // ]);
 
         return view('Organisasi.BadanPenyelenggara.Show', [
             'badanPenyelenggaras' => $badanPenyelenggaras,
-            'pimpinan' => $pimpinan
-            // 'listKota' => $listKota
+            'pimpinan' => $pimpinan,
+            'akta' => $akta,
         ]);
     }
 

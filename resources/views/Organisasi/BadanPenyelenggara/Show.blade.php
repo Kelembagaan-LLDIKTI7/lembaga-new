@@ -131,13 +131,15 @@
                         <div class="table-responsive">
                             <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
-                                <a href="" class="btn btn-primary btn-sm mb-2">
+                                <a href="{{ route('akta-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
                                     Tambah Akta
                                 </a>
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Nomor Akta</th>
+                                        <th>Nomor Tanggal</th>
                                         <th>Status Akta</th>
                                         <th>Nomor SK Kumham</th>
                                         <th>Tanggal SK Kuham</th>
@@ -145,20 +147,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($organisasi->prodis as $prodi)
+                                    @foreach ($akta as $akta)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $prodi->prodi_nama }}</td>
-                                            <td>{{ $prodi->prodi_jenjang }}</td>
-                                            <td>{{ $prodi->prodi_active_status }}</td>
+                                            <td>{{ $akta->akta_nomor }}</td>
+                                            <td>{{ $akta->akta_tanggal }}</td>
+                                            <td>{{ $akta->akta_status }}</td>
+                                            <td>{{ optional($akta->skKumham)->kumham_nomor ?? 'N/A' }}</td>
+                                            <td>{{ optional($akta->skKumham)->kumham_tanggal ?? 'N/A' }}</td>
                                             <td>
-                                                <a href="{{ route('program-studi.show', $prodi->id) }}"
+                                                <a href="{{ route('akta-badan-penyelenggara.show', $akta->id) }}"
                                                     class="btn btn-sm btn-primary me-2">
                                                     <i class="ti ti-info-circle"></i>
                                                 </a>
                                             </td>
                                         </tr>
-                                    @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
