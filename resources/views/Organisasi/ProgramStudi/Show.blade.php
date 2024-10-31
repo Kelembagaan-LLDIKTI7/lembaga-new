@@ -144,9 +144,11 @@
                                                 <td>{{ $akreditasi->prodi->prodi_nama }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
                                                 <td>{{ $akreditasi->akreditasi_sk }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_awal)->translatedFormat('d F Y') }}
+                                                <td>
+                                                    {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_awal)->translatedFormat('d F Y') }}
                                                 </td>
-                                                <td>{{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
+                                                <td>
+                                                    {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
                                                 </td>
                                                 <td>{{ $akreditasi->akreditasi_status }}</td>
                                             </tr>

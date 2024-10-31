@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
+use App\Models\PimpinanOrganisasi;
 use App\Models\SuratKeputusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -191,7 +192,8 @@ class PerguruanTinggiController extends Controller
             'organisasi_alamat',
             'parent_id',
             'organisasi_logo',
-            'organisasi_website'
+            'organisasi_website',
+            'organisasi_berubah_id'
         )->with(
             'parent:id,organisasi_nama,organisasi_email,organisasi_telp,organisasi_status,organisasi_alamat,organisasi_kota'
         )->with([
@@ -199,7 +201,7 @@ class PerguruanTinggiController extends Controller
                 $query->select('id', 'id_organization', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status')
                     ->orderBy('created_at', 'asc');
             }
-        ])->findOrFail($id);
+        ])->with(['akreditasis'])->findOrFail($id);
 
         $berubahIds = json_decode($organisasi->organisasi_berubah_id, true);
 
@@ -226,6 +228,7 @@ class PerguruanTinggiController extends Controller
             ->leftJoin('peringkat_akreditasis', 'peringkat_akreditasis.id', '=', 'akreditasis.id_peringkat_akreditasi')
             ->leftJoin('lembaga_akreditasis', 'lembaga_akreditasis.id', '=', 'akreditasis.id_lembaga_akreditasi')
             ->select('akreditasis.id', 'akreditasis.akreditasi_sk', 'akreditasis.akreditasi_tgl_akhir', 'akreditasis.akreditasi_status', 'lembaga_akreditasis.lembaga_nama_singkat', 'peringkat_akreditasis.peringkat_nama')
+            ->orderBy('akreditasis.created_at')
             ->get();
 
         $sk = DB::table('surat_keputusans')
@@ -234,18 +237,28 @@ class PerguruanTinggiController extends Controller
             ->select('surat_keputusans.id', 'surat_keputusans.sk_nomor', 'surat_keputusans.sk_tanggal', 'jenis_surat_keputusans.jsk_nama')
             ->get();
 
+        $pimpinan = PimpinanOrganisasi::where('id_organization', $id)
+            ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
+            ->with([
+                'jabatan' => function ($query) {
+                    $query->select('id', 'jabatan_nama')->get();
+                }
+            ])->get();
+
         return view('Organisasi.PerguruanTinggi.Show', [
             'organisasi' => $organisasi,
             'berubahOrganisasi' => $berubahOrganisasi,
             'akreditasi' => $akreditasi,
-            'sk' => $sk
+            'sk' => $sk,
+            'pimpinan' => $pimpinan
         ]);
 
         // return response()->json([
         //     'organisasi' => $organisasi,
         //     'berubahOrganisasi' => $berubahOrganisasi,
         //     'akreditasi' => $akreditasi,
-        //     'sk' => $sk
+        //     'sk' => $sk,
+        //     'pimpinan' => $pimpinan
         // ]);
     }
 
