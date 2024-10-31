@@ -62,7 +62,23 @@ class PeringkatAkreditasiSeeder extends Seeder
                 'peringkat_status' => 'Aktif',
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
+            [
+                'id' => Str::uuid(),
+                'peringkat_nama' => 'belum Terakreditasi/Kedaluarsa',
+                'peringkat_logo' => 'belum Terakreditasi/Kedaluarsa.png',
+                'peringkat_status' => 'Aktif',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'peringkat_nama' => 'Tidak Terakreditasi',
+                'peringkat_logo' => 'Tidak Terakreditasi.png',
+                'peringkat_status' => 'Aktif',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

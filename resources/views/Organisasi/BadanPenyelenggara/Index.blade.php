@@ -12,8 +12,10 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Badan Penyelenggara</h5>
                             </div>
-
-                            <div class="table-responsive">
+                            <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#importExcel">
+                                Import Excel
+                            </button>
+                            <div class="table-responsive mt-2">
                                 <table id="dom_jq_event"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
@@ -52,5 +54,7 @@
                 </div>
             </div>
         </section>
+
+        @include('Organisasi.BadanPenyelenggara.Import')
     </div>
 @endsection

@@ -95,6 +95,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [BadanPenyelenggaraController::class, 'create'])->name('create');
         Route::post('/', [BadanPenyelenggaraController::class, 'store'])->name('store');
         Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show');
+        Route::post('/import', [BadanPenyelenggaraController::class, 'import'])->name('import');
     });
 
     Route::prefix('program-studi')->name('program-studi.')->group(function () {

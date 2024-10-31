@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -20,18 +21,14 @@ class BpImport implements ToCollection
                 $id = Str::uuid()->toString();
 
                 DB::table('organisasis')->updateOrInsert([
-                    'org_nama' => $rowArray[0],
+                    'organisasi_nama' => $rowArray[0],
                 ], [
                     'id' => $id,
-                    'org_nama' => $rowArray[0],
-                    'org_nama_singkat' => $this->singkatNama($rowArray[0]),
-                    // 'org_email' => $rowArray[1],
-                    // 'org_telp' => $rowArray[2],
-                    // 'org_kota' => $rowArray[3],
-                    // 'org_alamat' => $rowArray[4],
-                    // 'org_website' => $rowArray[5],
-                    'org_status' => 'Aktif',
-                    'org_type_id' => 2,
+                    'organisasi_nama' => $rowArray[0],
+                    'organisasi_status' => 'Aktif',
+                    'organisasi_type_id' => 2,
+                    'users_id' => Auth::user()->id,
+                    'created_at' => now(),
                 ]);
 
                 Log::info('Data ke-' . $index . ' berhasil diimport');
