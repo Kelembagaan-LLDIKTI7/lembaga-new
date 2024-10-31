@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Akreditasi\AkreditasiProdiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dokumen\PimpinanOrganisasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Master\JabatanController;
 use App\Http\Controllers\Master\LembagaAkreditasiController;
@@ -102,5 +103,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [AkreditasiProdiController::class, 'store'])->name('store');
         Route::put('/{id}', [AkreditasiProdiController::class, 'update'])->name('update');
         Route::get('/{id}', [AkreditasiProdiController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('pimpinan-organisasi')->name('pimpinan-organisasi.')->group(function () {
+        Route::get('/', [PimpinanOrganisasiController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [PimpinanOrganisasiController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [PimpinanOrganisasiController::class, 'edit'])->name('edit');
+        Route::post('/', [PimpinanOrganisasiController::class, 'store'])->name('store');
+        Route::put('/{id}', [PimpinanOrganisasiController::class, 'update'])->name('update');
+        Route::get('/{id}', [PimpinanOrganisasiController::class, 'show'])->name('show');
     });
 });

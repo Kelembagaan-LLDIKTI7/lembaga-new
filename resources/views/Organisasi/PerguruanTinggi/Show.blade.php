@@ -224,7 +224,8 @@
                         <div class="table-responsive">
                             <table id="pemimpin_perguruan_tinggi"
                                 class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
-                                <a href="#" class="btn btn-primary btn-sm">
+                                <a href="{{ route('pimpinan-organisasi.create', ['id' => $organisasi->id]) }}"
+                                    class="btn btn-primary btn-sm">
                                     Tambah Pempinan
                                 </a>
                                 <thead>
