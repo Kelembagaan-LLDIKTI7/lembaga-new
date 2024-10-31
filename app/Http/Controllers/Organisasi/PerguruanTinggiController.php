@@ -240,7 +240,6 @@ class PerguruanTinggiController extends Controller
             ->get();
 
         $pimpinan = PimpinanOrganisasi::where('id_organization', $id)
-            ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
             ->with([
                 'jabatan' => function ($query) {
                     $query->select('id', 'jabatan_nama')->get();

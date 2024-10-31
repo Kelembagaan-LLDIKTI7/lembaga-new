@@ -165,6 +165,7 @@
                                         <th>Status</th>
                                         <th>Lembaga Akreditasi</th>
                                         <th>Peringkat Akreditasi</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -176,6 +177,21 @@
                                             <td>{{ $akre->akreditasi_status }}</td>
                                             <td>{{ $akre->lembaga_nama_singkat }}</td>
                                             <td>{{ $akre->peringkat_nama }}</td>
+                                            <td>
+                                                <div class="d-flex gap-2">
+                                                    <div class="edit">
+                                                        <a href="{{ route('akreditasi-perguruan-tinggi.edit', $akre->id) }}"
+                                                            class="btn btn-sm btn-success">Edit</a>
+                                                    </div>
+                                                    <div class="detail">
+                                                        <button
+                                                            class="btn btn-sm btn-info detail-item-btn akreditasi-detail"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#detailRecordModalAkreditasi"
+                                                            data-id="{{ $akre->id }}">Detail</button>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -243,6 +259,7 @@
                                         <th>Email</th>
                                         <th>Jabatan</th>
                                         <th>Status</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -253,6 +270,20 @@
                                             <td>{{ $pimpinan->pimpinan_email }}</td>
                                             <td>{{ $pimpinan->pimpinan_status }}</td>
                                             <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <a href="{{ route('pimpinan-perguruan-tinggi.edit', ['id' => $pimpinan->id]) }}"
+                                                        class="btn btn-sm btn-success">
+                                                        <i class="ri-edit-2-line"></i> Edit
+                                                    </a>
+                                                    <div class="detail">
+                                                        <button class="btn btn-sm btn-info detail-item-btn pimpinan-detail"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#detailRecordModalPimpinan"
+                                                            data-id="{{ $pimpinan->id }}">Detail</button>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -306,6 +337,9 @@
                 </div>
             </section>
         </div>
+
+        @include('Akreditasi.PerguruanTinggi.Detail')
+        @include('Pimpinan.PerguruanTinggi.Detail')
     </div>
 
     </div>
@@ -322,6 +356,48 @@
             $('#pemimpin_perguruan_tinggi').DataTable();
 
             $('#program_studi').DataTable();
+        });
+    </script>
+
+    <script>
+        // Event listener untuk tombol detail
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('akreditasi-detail')) {
+                var akreditasiId = event.target.getAttribute('data-id');
+                fetch('{{ route('akreditasi-perguruan-tinggi.getAkreditasiDetail', ':id') }}'.replace(":id",
+                        akreditasiId))
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('org_nama').textContent = data.organisasi_nama;
+                        document.getElementById('prodi_nama').textContent = data.prodi_nama;
+                        document.getElementById('lembaga_nama').textContent = data
+                            .lembaga_nama;
+                        document.getElementById('peringkat_nama').textContent = data
+                            .peringkat_nama;
+                        document.getElementById('akreditasi_sk').textContent = data.akreditasi_sk;
+                        document.getElementById('akreditasi_status').textContent = data.akreditasi_status;
+                        document.getElementById('akreditasi_tgl_awal').textContent = data.akreditasi_tgl_awal;
+                        document.getElementById('akreditasi_tgl_akhir').textContent = data.akreditasi_tgl_akhir;
+                        document.getElementById('akreditasi_dokumen').value = data.akreditasi_dokumen;
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            if (event.target.classList.contains('pimpinan-detail')) {
+                var pimpinanId = event.target.getAttribute('data-id');
+                fetch('{{ route('pimpinan-perguruan-tinggi.show', ':id') }}'.replace(":id", pimpinanId))
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('jabatan_nama').textContent = data.jabatan_nama;
+                        document.getElementById('pimpinan_nama').textContent = data.pimpinan_nama;
+                        document.getElementById('pimpinan_email').textContent = data.pimpinan_email;
+                        document.getElementById('pimpinan_tanggal').textContent = data.pimpinan_tanggal;
+                        document.getElementById('pimpinan_status').textContent = data.pimpinan_status;
+                        document.getElementById('pimpinan_sk').textContent = data.pimpinan_sk;
+                        document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
         });
     </script>
 
