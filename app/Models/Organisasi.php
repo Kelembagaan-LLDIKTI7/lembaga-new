@@ -55,4 +55,9 @@ class Organisasi extends Model
     {
         return $this->hasMany(Akreditasi::class, 'id_organization', 'id');
     }
+
+    public function akta()
+    {
+        return $this->hasMany(Akta::class, 'id_organization', 'id');
+    }
 }

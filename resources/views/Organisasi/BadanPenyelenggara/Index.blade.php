@@ -12,9 +12,15 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Badan Penyelenggara</h5>
                             </div>
-                            <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#importExcel">
-                                Import Excel
-                            </button>
+                            <div class="mb-2">
+                                <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
+                                    data-bs-target="#importExcel">
+                                    Import Excel
+                                </button>
+                                <a href="{{ route('badan-penyelenggara.create') }}" class="btn btn-primary btn-sm">
+                                    Tambah Badan Penyelenggara
+                                </a>
+                            </div>
                             <div class="table-responsive mt-2">
                                 <table id="dom_jq_event"
                                     class="table-striped table-bordered display text-nowrap table border"

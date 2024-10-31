@@ -3,6 +3,7 @@
 use App\Http\Controllers\Akreditasi\AkreditasiPerguruanTinggiController;
 use App\Http\Controllers\Akreditasi\AkreditasiProdiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dokumen\AktaBpController;
 use App\Http\Controllers\Dokumen\PimpinanOrganisasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Master\JabatanController;
@@ -155,5 +156,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [PimpinanBadanPenyelenggaraController::class, 'store'])->name('store');
         Route::put('/{id}', [PimpinanBadanPenyelenggaraController::class, 'update'])->name('update');
         Route::get('/{id}', [PimpinanBadanPenyelenggaraController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('akta-badan-penyelenggara')->name('akta-badan-penyelenggara.')->group(function () {
+        Route::get('/', [AktaBpController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [AktaBpController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [AktaBpController::class, 'edit'])->name('edit');
+        Route::post('/', [AktaBpController::class, 'store'])->name('store');
+        Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
+        Route::get('/{id}', [AktaBpController::class, 'show'])->name('show');
     });
 });

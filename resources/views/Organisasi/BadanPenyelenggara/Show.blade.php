@@ -50,7 +50,8 @@
                         <div class="table-responsive">
                             <table id="pimpinan_table" class="table-striped table-bordered display text-nowrap table border"
                                 style="overflow-x: auto; overflow-y: hidden;">
-                                <a href="#" class="btn btn-primary btn-sm mb-2">
+                                <a href="{{ route('pimpinan-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
                                     Tambah Pimpinan BP
                                 </a>
                                 <thead>
@@ -60,18 +61,18 @@
                                         <th>Email</th>
                                         <th>Jabatan</th>
                                         <th>Status</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($jabatans as $jabatan)
+                                    @foreach ($pimpinan as $pimpinan)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $jabatan->jabatan_nama }}</td>
-                                            <td>{{ $jabatan->jabatan_status }}</td>
-                                            <td>{{ $jabatan->jabatan_organisasi }}</td>
+                                            <td>{{ $pimpinan->pimpinan_nama }}</td>
+                                            <td>{{ $pimpinan->pimpinan_email }}</td>
+                                            <td>{{ $pimpinan->pimpinan_status }}</td>
+                                            <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
                                         </tr>
-                                        @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -83,14 +84,11 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-2">
-                            <h5 class="mb-0">Akta</h5>
+                            <h5 class="mb-0">Perguruan Tinggi Yang Dimiliki</h5>
                         </div>
                         <div class="table-responsive">
                             <table id="perguruan_tinggi"
                                 class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
-                                <a href="" class="btn btn-primary btn-sm mb-2">
-                                    Tambah Akta
-                                </a>
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -110,9 +108,10 @@
                                             <td>{{ $bp->organisasi_kota }}</td>
                                             <td>{{ $bp->organisasi_status }}</td>
                                             <td>
-                                                <!-- Tambahkan aksi seperti tombol edit atau hapus -->
-                                                <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                                <a href="#" class="btn btn-danger btn-sm">Hapus</a>
+                                                <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
+                                                    class="btn btn-sm btn-primary me-2">
+                                                    <i class="ti ti-info-circle"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -127,18 +126,20 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-2">
-                            <h5 class="mb-0">Akta</h5>
+                            <h5 class="mb-0">Akta Yang Dimiliki</h5>
                         </div>
                         <div class="table-responsive">
                             <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
-                                <a href="" class="btn btn-primary btn-sm mb-2">
+                                <a href="{{ route('akta-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
                                     Tambah Akta
                                 </a>
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Nomor Akta</th>
+                                        <th>Nomor Tanggal</th>
                                         <th>Status Akta</th>
                                         <th>Nomor SK Kumham</th>
                                         <th>Tanggal SK Kuham</th>
@@ -146,20 +147,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($organisasi->prodis as $prodi)
+                                    @foreach ($akta as $akta)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $prodi->prodi_nama }}</td>
-                                            <td>{{ $prodi->prodi_jenjang }}</td>
-                                            <td>{{ $prodi->prodi_active_status }}</td>
+                                            <td>{{ $akta->akta_nomor }}</td>
+                                            <td>{{ $akta->akta_tanggal }}</td>
+                                            <td>{{ $akta->akta_status }}</td>
+                                            <td>{{ optional($akta->skKumham)->kumham_nomor ?? 'N/A' }}</td>
+                                            <td>{{ optional($akta->skKumham)->kumham_tanggal ?? 'N/A' }}</td>
                                             <td>
-                                                <a href="{{ route('program-studi.show', $prodi->id) }}"
+                                                <a href="{{ route('akta-badan-penyelenggara.show', $akta->id) }}"
                                                     class="btn btn-sm btn-primary me-2">
                                                     <i class="ti ti-info-circle"></i>
                                                 </a>
                                             </td>
                                         </tr>
-                                    @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
