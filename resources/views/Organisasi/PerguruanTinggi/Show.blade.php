@@ -49,8 +49,9 @@
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary me-2">Alih Bentuk</button>
                             <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
-                                Edit
-                            </a>
+                                <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
+                                    Edit
+                                </a>
                         </div>
                     </div>
                 </div>
@@ -152,6 +153,10 @@
                             <table id="akreditasi_table"
                                 class="table-striped table-bordered display text-nowrap table border"
                                 style="overflow-x: auto; overflow-y: hidden;">
+                                <a href="{{ route('akreditasi-perguruan-tinggi.create', $organisasi->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
+                                    Tambah Areditasi PT
+                                </a>
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -160,7 +165,6 @@
                                         <th>Status</th>
                                         <th>Lembaga Akreditasi</th>
                                         <th>Peringkat Akreditasi</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -191,7 +195,7 @@
                         <div class="table-responsive">
                             <table id="sk_table" class="table-striped table-bordered display text-nowrap table border"
                                 style="overflow-x: auto; overflow-y: hidden;">
-                                <a href="#" class="btn btn-primary btn-sm">
+                                <a href="#" class="btn btn-primary btn-sm mb-2">
                                     Tambah SK
                                 </a>
                                 <thead>
@@ -200,19 +204,19 @@
                                         <th>Nomor SK</th>
                                         <th>Tanggal Terbit</th>
                                         <th>Jenis Sk</th>
-                                        <th>Lembaga Akreditasi</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($jabatans as $jabatan)
+                                    @foreach ($sk as $sk)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $jabatan->jabatan_nama }}</td>
-                                            <td>{{ $jabatan->jabatan_status }}</td>
-                                            <td>{{ $jabatan->jabatan_organisasi }}</td>
+                                            <td>{{ $sk->sk_nomor }}</td>
+                                            <td>
+                                                {{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}
+                                            </td>
+                                            <td>{{ $sk->jsk_nama }}</td>
                                         </tr>
-                                        @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -229,34 +233,29 @@
                         <div class="table-responsive">
                             <table id="pemimpin_perguruan_tinggi"
                                 class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
-                                <a href="{{ route('pimpinan-organisasi.create', ['id' => $organisasi->id]) }}"
-                                    class="btn btn-primary btn-sm">
+                                <a href="{{ route('pimpinan-perguruan-tinggi.create', $organisasi->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
                                     Tambah Pempinan
                                 </a>
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Peringkat</th>
-                                        <th>Logo</th>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>Jabatan</th>
                                         <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($peringkats as $peringkat)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $peringkat->peringkat_nama }}</td>
-                                                <td>
-                                                    @if ($peringkat->peringkat_logo)
-                                                        <img src="{{ asset('storage/peringkat_akreditasi/' . $peringkat->peringkat_logo) }}"
-                                                            alt="Logo" width="50" height="50">
-                                                    @else
-                                                        <span>No Logo</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $peringkat->peringkat_status }}</td>
-                                            </tr>
-                                        @endforeach --}}
+                                    @foreach ($pimpinan as $pimpinan)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $pimpinan->pimpinan_nama }}</td>
+                                            <td>{{ $pimpinan->pimpinan_email }}</td>
+                                            <td>{{ $pimpinan->pimpinan_status }}</td>
+                                            <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

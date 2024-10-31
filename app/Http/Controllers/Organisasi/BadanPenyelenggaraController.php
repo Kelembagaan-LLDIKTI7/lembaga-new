@@ -51,24 +51,54 @@ class BadanPenyelenggaraController extends Controller
      */
     public function show(string $id)
     {
-        $badanPenyelenggaras = Organisasi::where('org_type_id', 2)
-            ->where('id', $id)
-            ->with(['children', 'akta.skKumham', 'pimpinanOrganisasi.jabatan'])
-            ->firstOrFail();
+        // dd($id);
+        $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
+            ->select(
+                'id',
+                'organisasi_nama',
+                'organisasi_email',
+                'organisasi_telp',
+                'organisasi_status',
+                'organisasi_alamat',
+                'organisasi_kota',
+            )
+            ->with(['children' => function ($query) {
+                $query->select(
+                    'id',
+                    'organisasi_nama',
+                    'organisasi_nama_singkat',
+                    'organisasi_kode',
+                    'organisasi_email',
+                    'organisasi_telp',
+                    'organisasi_kota',
+                    'organisasi_alamat',
+                    'organisasi_website',
+                    'organisasi_logo',
+                    'organisasi_status',
+                    'organisasi_type_id',
+                    'parent_id',
+                );
+            }])
+            ->firstOrFail($id);
 
-        $kota = Kota::all();
+        // $kota = Kota::all();
 
-        $listKota = $kota->map(function ($item) {
-            return [
-                $item->nama,
-            ];
-        });
+        // $listKota = $kota->map(function ($item) {
+        //     return [
+        //         $item->nama,
+        //     ];
+        // });
 
         // dd($listKota);
 
+        // return response()->json([
+        //     'badanPenyelenggaras' => $badanPenyelenggaras,
+        //     // 'listKota' => $listKota
+        // ]);
+
         return view('Organisasi.BadanPenyelenggara.Show', [
             'badanPenyelenggaras' => $badanPenyelenggaras,
-            'listKota' => $listKota
+            // 'listKota' => $listKota
         ]);
     }
 
