@@ -15,4 +15,9 @@ class OrganisasiType extends Model
     protected $guarded = [
         'id',
     ];
+
+    public function organization()
+    {
+        return $this->hasMany(Organisasi::class, 'org_type_id', 'id');
+    }
 }

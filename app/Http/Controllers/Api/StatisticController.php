@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\ProgramStudi;
 use App\Models\Organisasi;
-use App\Models\Kota;
 use Illuminate\Support\Facades\DB;
 
 class StatisticController extends Controller
@@ -17,7 +16,7 @@ class StatisticController extends Controller
         $totalPerguruanTinggi = Organisasi::count();
         $totalProdi = ProgramStudi::count();
         // $totalBentukPT = Organization::distinct('type')->count();
-        $totalWilayah = Kota::count();
+        $totalWilayah = Organisasi::distinct('organisasi_kota')->count();
 
 
         return response()->json([
@@ -25,7 +24,7 @@ class StatisticController extends Controller
             'data' => [
                 'total_perguruan_tinggi' => $totalPerguruanTinggi,
                 'total_prodi' => $totalProdi,
-                // 'total_bentuk_pt' => $totalBentukPT,
+                'total_bentuk_pt' => 6,
                 'total_wilayah' => $totalWilayah,
             ]
         ]);
@@ -58,8 +57,8 @@ class StatisticController extends Controller
     // Jumlah prodi berdasarkan program pendidikan
     public function jumlahProdiBerdasarkanProgram(): JsonResponse
     {
-        $data = ProgramStudi::select('program_pendidikan', DB::raw('count(*) as total'))
-            ->groupBy('program_pendidikan')
+        $data = ProgramStudi::select('prodi_jenjang', DB::raw('count(*) as total'))
+            ->groupBy('prodi_jenjang')
             ->get();
 
         return response()->json([

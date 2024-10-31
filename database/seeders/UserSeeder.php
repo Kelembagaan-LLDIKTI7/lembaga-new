@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             'email' => 'wsobirin2@gmail.com',
             'password' => static::$password ??= Hash::make('password'),
             'is_active' => 1,
-            'id_organisasi' => $organization->id,
+            'id_organization' => $organization->id,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
