@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Akreditasi\AkreditasiProdiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Master\JabatanController;
@@ -59,5 +60,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [ProgramStudiController::class, 'store'])->name('store');
         Route::put('/{id}', [ProgramStudiController::class, 'update'])->name('update');
         Route::get('/{id}', [ProgramStudiController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('akreditasi-program-studi')->name('akreditasi-program-studi.')->group(function () {
+        Route::get('/', [AkreditasiProdiController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [AkreditasiProdiController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [AkreditasiProdiController::class, 'edit'])->name('edit');
+        Route::post('/', [AkreditasiProdiController::class, 'store'])->name('store');
+        Route::put('/{id}', [AkreditasiProdiController::class, 'update'])->name('update');
+        Route::get('/{id}', [AkreditasiProdiController::class, 'show'])->name('show');
     });
 });

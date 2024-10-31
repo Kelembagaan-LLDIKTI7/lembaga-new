@@ -29,4 +29,9 @@ class ProgramStudi extends Model
     {
         return $this->hasMany(SuratKeputusan::class, 'id_prodi', 'id');
     }
+
+    public function akreditasis()
+    {
+        return $this->hasMany(SuratKeputusan::class, 'id_prodi', 'id');
+    }
 }

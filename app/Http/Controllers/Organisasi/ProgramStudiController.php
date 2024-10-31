@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
+use App\Models\Akreditasi;
 use App\Models\HistoryProgramStudi;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Organisasi;
@@ -115,8 +116,24 @@ class ProgramStudiController extends Controller
                     ->orderBy('created_at', 'asc');
             }
         ])->findOrFail($id);
-        return view('Organisasi.ProgramStudi.Show', ['prodi' => $prodi]);
-        // return response()->json(['prodi' => $prodi]);
+
+        $akreditasis = Akreditasi::where('id_prodi', $id)
+            ->select(
+                'id_prodi',
+                'akreditasi_sk',
+                'akreditasi_tgl_awal',
+                'akreditasi_tgl_akhir',
+                'akreditasi_status'
+            )->with(['prodi:id,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
+
+        return view('Organisasi.ProgramStudi.Show', [
+            'prodi' => $prodi,
+            'akreditasis' => $akreditasis
+        ]);
+        // return response()->json([
+        //     'prodi' => $prodi,
+        //     'akreditasis' => $akreditasis
+        // ]);
     }
 
     /**
