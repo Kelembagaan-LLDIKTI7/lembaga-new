@@ -40,4 +40,14 @@ class Organisasi extends Model
     {
         return $this->hasMany(ProgramStudi ::class, 'id_organization', 'id');
     }
+
+    public function organizationType()
+    {
+        return $this->belongsTo(OrganisasiType::class, 'org_type_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(Organisasi::class, 'org_id', 'id');
+    }
 }
