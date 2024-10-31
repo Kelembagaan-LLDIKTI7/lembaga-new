@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
 use App\Imports\BpImport;
+use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
+use App\Models\PimpinanOrganisasi;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -35,7 +37,27 @@ class BadanPenyelenggaraController extends Controller
      */
     public function create()
     {
-        //
+        $jenis = JenisSuratKeputusan::select(
+            'id',
+            'jsk_nama'
+        )->get();
+
+        $kotas =  Kota::select(
+            'id',
+            'nama'
+        )->get();
+
+        $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
+            ->select(
+                'id',
+                'organisasi_nama'
+            )->get();
+
+        return view('Organisasi.BadanPenyelenggara.Create', [
+            'badanPenyelenggaras' => $badanPenyelenggaras,
+            'kotas' => $kotas,
+            'jenis' => $jenis
+        ]);
     }
 
     /**
@@ -43,7 +65,7 @@ class BadanPenyelenggaraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -81,6 +103,13 @@ class BadanPenyelenggaraController extends Controller
             }])
             ->firstOrFail($id);
 
+        $pimpinan = PimpinanOrganisasi::where('id_organization', $id)
+            ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
+            ->with([
+                'jabatan' => function ($query) {
+                    $query->select('id', 'jabatan_nama')->get();
+                }
+            ])->get();
         // $kota = Kota::all();
 
         // $listKota = $kota->map(function ($item) {
@@ -93,11 +122,12 @@ class BadanPenyelenggaraController extends Controller
 
         // return response()->json([
         //     'badanPenyelenggaras' => $badanPenyelenggaras,
-        //     // 'listKota' => $listKota
+        //     'pimpinan' => $pimpinan
         // ]);
 
         return view('Organisasi.BadanPenyelenggara.Show', [
             'badanPenyelenggaras' => $badanPenyelenggaras,
+            'pimpinan' => $pimpinan
             // 'listKota' => $listKota
         ]);
     }

@@ -49,9 +49,8 @@
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary me-2">Alih Bentuk</button>
                             <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
-                                <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
-                                    Edit
-                                </a>
+                                Edit
+                            </a>
                         </div>
                     </div>
                 </div>
