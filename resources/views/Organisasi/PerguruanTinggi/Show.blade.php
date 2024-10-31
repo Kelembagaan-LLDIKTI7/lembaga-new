@@ -176,7 +176,6 @@
                                             <td>{{ $akre->akreditasi_status }}</td>
                                             <td>{{ $akre->lembaga_nama_singkat }}</td>
                                             <td>{{ $akre->peringkat_nama }}</td>
-                                            <td></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
