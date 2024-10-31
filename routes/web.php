@@ -123,6 +123,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [AkreditasiPerguruanTinggiController::class, 'store'])->name('store');
         Route::put('/{id}', [AkreditasiPerguruanTinggiController::class, 'update'])->name('update');
         Route::get('/{id}', [AkreditasiPerguruanTinggiController::class, 'show'])->name('show');
+        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail');
+        Route::post('/view-pdf', [AkreditasiPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
     });
 
     Route::prefix('pimpinan-perguruan-tinggi')->name('pimpinan-perguruan-tinggi.')->group(function () {
@@ -132,6 +134,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [PimpinanPerguruanTinggiController::class, 'store'])->name('store');
         Route::put('/{id}', [PimpinanPerguruanTinggiController::class, 'update'])->name('update');
         Route::get('/{id}', [PimpinanPerguruanTinggiController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [PimpinanPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
     });
 
     Route::prefix('pimpinan-badan-penyelenggara')->name('pimpinan-badan-penyelenggara.')->group(function () {
