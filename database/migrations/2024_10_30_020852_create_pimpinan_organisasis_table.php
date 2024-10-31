@@ -16,15 +16,15 @@ return new class extends Migration
             $table->string('pimpinan_nama', 100);
             $table->string('pimpinan_email', 100);
             $table->date('pimpinan_tanggal');
-            $table->string('pimpinan_sk', 45);
-            $table->string('pimpinan_sk_dokumen', 150);
+            $table->string('pimpinan_sk');
+            $table->string('pimpinan_sk_dokumen');
             $table->enum('pimpinan_status', ['Aktif', 'Tidak Aktif']);
             $table->uuid('id_jabatan');
-            $table->char('id_organization', 16);
+            $table->string('id_organization');
             $table->timestamps();
 
             $table->foreign('id_jabatan')->references('id')->on('jabatans');
-            $table->foreign('id_organization')->references('id')->on('organisasis');
+            // $table->foreign('id_organization')->references('id')->on('organisasis');
         });
     }
 

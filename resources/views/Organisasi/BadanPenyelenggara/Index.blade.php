@@ -25,6 +25,7 @@
                                             <th>Telepon BP</th>
                                             <th>Kota BP</th>
                                             <th>Status BP</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -36,6 +37,12 @@
                                                 <td>{{ $badanPenyelenggara->organisasi_telp }}</td>
                                                 <td>{{ $badanPenyelenggara->organisasi_kota }}</td>
                                                 <td>{{ $badanPenyelenggara->organisasi_status }}</td>
+                                                <td>
+                                                    <a href="{{ route('badan-penyelenggara.show', $badanPenyelenggara->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        <i class="ti ti-info-circle"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                 </table>

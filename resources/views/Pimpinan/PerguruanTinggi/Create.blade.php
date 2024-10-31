@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah Akreditasi Program Studi')
+@section('title', 'Tambah Pimpinan Perguruan Tinggi')
 
 @section('css')
     <style>
@@ -21,43 +21,40 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('akreditasi-program-studi.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('pimpinan-perguruan-tinggi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
+                    <input type="hidden" name="id_organization" value="{{ $pt->id }}" class="form-control" required>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Form Tambah Akreditasi</h5>
+                            <h5 class="card-title">Form Tambah Pimpinan</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="akreditasi_sk" class="required-label">Nomor Surat Keputusan
-                                            Akreditasi</label>
-                                        <input type="text" name="akreditasi_sk" class="form-control" required>
-                                        @error('akreditasi_sk')
+                                        <label for="pimpinan_nama" class="required-label">
+                                            Nama Pimpinan
+                                        </label>
+                                        <input type="text" name="pimpinan_nama" class="form-control" required>
+                                        @error('pimpinan_nama')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="akreditasi_tgl_awal" class="required-label">Tanggal Mulai
-                                            Berlaku</label>
-                                        <input type="date" name="akreditasi_tgl_awal" class="form-control" required>
-                                        @error('akreditasi_tgl_awal')
+                                        <label for="pimpinan_email" class="required-label">
+                                            Email Pimpinan
+                                        </label>
+                                        <input type="email" name="pimpinan_email" class="form-control" required>
+                                        @error('pimpinan_email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="id_peringkat_akreditasi" class="required-label">Peringkat
-                                            Akreditasi</label>
-                                        <select name="id_peringkat_akreditasi" class="form-control select-search">
-                                            <option value="">-- Pilih Peringkat --</option>
-                                            @foreach ($peringkat as $peringkat)
-                                                <option value="{{ $peringkat->id }}">{{ $peringkat->peringkat_nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('id_peringkat_akreditasi')
+                                        <label for="pimpinan_sk" class="required-label">
+                                            No SK Pimpinan
+                                        </label>
+                                        <input type="text" name="pimpinan_sk" class="form-control" required>
+                                        @error('pimpinan_sk')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
@@ -65,49 +62,44 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="akreditasi_status" class="required-label">Status Akreditasi</label>
-                                        <select name="akreditasi_status" class="form-control select-search" required>
-                                            <option value="">-- Pilih Peringkat --</option>
-                                            <option value="Berlaku">Berlaku</option>
-                                            <option value="Dicabut">Dicabut</option>
-                                            <option value="Tidak Berlaku">Tidak Berlaku</option>
-                                        </select>
-                                        @error('akreditasi_status')
+                                        <label for="pimpinan_tanggal" class="required-label">
+                                            Tanggal Dilantik
+                                        </label>
+                                        <input type="date" name="pimpinan_tanggal" class="form-control" required>
+                                        @error('pimpinan_tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="akreditasi_tgl_akhir" class="required-label">Tanggal Akhir
-                                            Berlaku</label>
-                                        <input type="date" name="akreditasi_tgl_akhir" class="form-control" required>
-                                        @error('akreditasi_tgl_akhir')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                        <label for="pimpinan_status" class="required-label">Status Akreditasi</label>
+                                        <input type="text" disabled value="Aktif" class="form-control"
+                                            name="pimpinan_status">
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="id_lembaga_akreditasi" class="required-label">Peringkat
-                                            Akreditasi</label>
-                                        <select name="id_lembaga_akreditasi" class="form-control select-search">
+                                        <label for="id_jabatan" class="required-label">
+                                            Jabatan Pimpinan
+                                        </label>
+                                        <select name="id_jabatan" class="form-control select-search">
                                             <option value="">-- Pilih Peringkat --</option>
-                                            @foreach ($lembaga as $lembaga)
-                                                <option value="{{ $lembaga->id }}">{{ $lembaga->lembaga_nama }}</option>
+                                            @foreach ($jabatan as $jabatan)
+                                                <option value="{{ $jabatan->id }}">{{ $jabatan->jabatan_nama }}</option>
                                             @endforeach
                                         </select>
-                                        @error('id_lembaga_akreditasi')
+                                        @error('id_jabatan')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <label for="sk_dokumen" class="required-label">Dokumen SK</label>
-                                    <input type="file" name="sk_dokumen" class="form-control" required
+                                    <label for="pimpinan_sk_dokumen" class="required-label">Dokumen SK</label>
+                                    <input type="file" name="pimpinan_sk_dokumen" class="form-control" required
                                         accept=".pdf,.doc,.docx" onchange="previewFile(event)">
                                     <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
-                                    <div id="file-preview" class="mt-3"></div> <!-- Tempat untuk preview -->
-                                    @error('sk_dokumen')
+                                    <div id="file-preview" class="mt-3"></div>
+                                    @error('pimpinan_sk_dokumen')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -131,7 +123,7 @@
         function previewFile(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('file-preview');
-            previewContainer.innerHTML = ''; // Kosongkan kontainer preview
+            previewContainer.innerHTML = '';
 
             if (file) {
                 const fileName = document.createElement('p');
