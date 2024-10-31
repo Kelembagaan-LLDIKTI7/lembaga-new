@@ -23,6 +23,16 @@ class User extends Authenticatable
         'id'
     ];
 
+    public function organization()
+    {
+        return $this->belongsTo(Organisasi::class, 'org_id', 'id');
+    }
+
+    public function organizationType()
+    {
+        return $this->hasOneThrough(OrganisasiType::class, Organisasi::class, 'id', 'id', 'org_id', 'org_type_id');
+    }
+
     public function getIncrementing()
     {
         return false;
