@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('pimpinan_email', 100);
             $table->date('pimpinan_tanggal');
             $table->string('pimpinan_sk', 45);
-            $table->string('pimpinan_sk_dokumen', 150);
+            $table->string('pimpinan_sk_dokumen', 150)->nullable();
             $table->enum('pimpinan_status', ['Aktif', 'Tidak Aktif']);
             $table->uuid('id_jabatan');
-            $table->char('id_organization', 16);
+            $table->uuid('id_organization');
             $table->timestamps();
 
             $table->foreign('id_jabatan')->references('id')->on('jabatans');

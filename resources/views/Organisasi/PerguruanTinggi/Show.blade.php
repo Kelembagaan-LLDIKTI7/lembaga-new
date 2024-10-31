@@ -48,8 +48,7 @@
 
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary me-2">Alih Bentuk</button>
-                            <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}"
-                                class="btn btn-warning">
+                            <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
                                 Edit
                             </a>
                         </div>
@@ -165,14 +164,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($jabatans as $jabatan)
+                                    @foreach ($akreditasi as $akre)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $jabatan->jabatan_nama }}</td>
-                                            <td>{{ $jabatan->jabatan_status }}</td>
-                                            <td>{{ $jabatan->jabatan_organisasi }}</td>
+                                            <td>{{ $akre->akreditasi_sk }}</td>
+                                            <td>{{ $akre->akreditasi_tgl_akhir }}</td>
+                                            <td>{{ $akre->akreditasi_status }}</td>
+                                            <td>{{ $akre->lembaga_nama_singkat }}</td>
+                                            <td>{{ $akre->peringkat_nama }}</td>
+                                            <td></td>
                                         </tr>
-                                        @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
