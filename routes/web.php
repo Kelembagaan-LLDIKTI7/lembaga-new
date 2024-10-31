@@ -16,6 +16,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Pimpinan\PimpinanBadanPenyelenggaraController;
 use App\Http\Controllers\Pimpinan\PimpinanPerguruanTinggiController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Sk\SkPerguruanTinggiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -123,6 +124,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [AkreditasiPerguruanTinggiController::class, 'store'])->name('store');
         Route::put('/{id}', [AkreditasiPerguruanTinggiController::class, 'update'])->name('update');
         Route::get('/{id}', [AkreditasiPerguruanTinggiController::class, 'show'])->name('show');
+        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail');
+        Route::post('/view-pdf', [AkreditasiPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
     });
 
     Route::prefix('pimpinan-perguruan-tinggi')->name('pimpinan-perguruan-tinggi.')->group(function () {
@@ -132,6 +135,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [PimpinanPerguruanTinggiController::class, 'store'])->name('store');
         Route::put('/{id}', [PimpinanPerguruanTinggiController::class, 'update'])->name('update');
         Route::get('/{id}', [PimpinanPerguruanTinggiController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [PimpinanPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
+    });
+
+    Route::prefix('sk-perguruan-tinggi')->name('sk-perguruan-tinggi.')->group(function () {
+        Route::get('/', [SkPerguruanTinggiController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [SkPerguruanTinggiController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [SkPerguruanTinggiController::class, 'edit'])->name('edit');
+        Route::post('/', [SkPerguruanTinggiController::class, 'store'])->name('store');
+        Route::put('/{id}', [SkPerguruanTinggiController::class, 'update'])->name('update');
+        Route::get('/{id}', [SkPerguruanTinggiController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [SkPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
     });
 
     Route::prefix('pimpinan-badan-penyelenggara')->name('pimpinan-badan-penyelenggara.')->group(function () {
