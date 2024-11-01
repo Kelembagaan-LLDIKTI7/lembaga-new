@@ -3,7 +3,7 @@
 @section('title', 'Tambah Akta')
 
 @section('css')
-    <!-- Tambahkan CSS jika diperlukan -->
+
 @endsection
 
 @section('content')
@@ -15,11 +15,11 @@
                     <input type="hidden" name="id_organization" value="{{ $bp->id }}" class="form-control" required>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Form Tambah Pimpinan</h5>
+                            <h5 class="card-title">Form Tambah Akta</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="validationCustom01" class="form-label">No Akta</label>
+                                        <label for="validationCustom01" class="required-label">No Akta</label>
                                         <input type="text" class="form-control" id="validationCustom01" name="akta_nomor"
                                             value="" required>
                                         @error('akta_nomor')
@@ -29,7 +29,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="validationCustom02" class="form-label">Tanggal Akta</label>
+                                        <label for="validationCustom02" class="required-label">Tanggal Akta</label>
                                         <input type="date" class="form-control" id="validationCustom02"
                                             name="akta_tanggal" value="" required>
                                         @error('akta_tanggal')
@@ -39,7 +39,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="validationCustom03" class="form-label">Nama Notaris</label>
+                                        <label for="validationCustom03" class="required-label">Nama Notaris</label>
                                         <input type="text" class="form-control" id="validationCustom03"
                                             name="akta_nama_notaris" value="" required>
                                         @error('akta_nama_notaris')
@@ -52,7 +52,7 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="aktaJenis" class="form-label">Jenis Akta</label>
+                                        <label for="aktaJenis" class="required-label">Jenis Akta</label>
                                         <select class="form-control select-search" id="aktaJenis" name="akta_jenis"
                                             required>
                                             <option value="">Jenis</option>
@@ -75,7 +75,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="referensiAkta" class="form-label">Referensi Akta</label>
+                                        <label for="referensiAkta" class="required-label">Referensi Akta</label>
                                         <select class="form-control" id="referensiAkta" name="akta_referensi" disabled>
                                             <option value="">-- Pilih Referensi Akta --</option>
                                             @foreach ($akta as $a)
@@ -121,13 +121,12 @@
             const aktaJenisSelect = document.getElementById('aktaJenis');
             const referensiAktaSelect = document.getElementById('referensiAkta');
 
-            // Event listener untuk memonitor perubahan pada select 'aktaJenis'
             aktaJenisSelect.addEventListener('change', function() {
                 if (aktaJenisSelect.value === 'Perubahan') {
-                    referensiAktaSelect.disabled = false; // Aktifkan input
+                    referensiAktaSelect.disabled = false;
                 } else {
-                    referensiAktaSelect.disabled = true; // Nonaktifkan input
-                    referensiAktaSelect.value = ''; // Kosongkan value saat jenis akta bukan 'Perubahan'
+                    referensiAktaSelect.disabled = true;
+                    referensiAktaSelect.value = '';
                 }
             });
         });

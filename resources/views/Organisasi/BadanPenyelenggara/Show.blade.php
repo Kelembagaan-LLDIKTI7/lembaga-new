@@ -160,6 +160,10 @@
                                                     class="btn btn-sm btn-primary me-2">
                                                     <i class="ti ti-info-circle"></i>
                                                 </a>
+                                                <a href="{{ route('sk-kumham.create', $akta->id) }}"
+                                                    class="btn btn-sm btn-warning me-2">
+                                                    <i class="ti ti-lock"></i>SK Kumham
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
