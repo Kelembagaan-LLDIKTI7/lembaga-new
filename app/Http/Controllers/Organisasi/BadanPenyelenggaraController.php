@@ -72,7 +72,7 @@ class BadanPenyelenggaraController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         // dd($id);
         $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
@@ -102,7 +102,8 @@ class BadanPenyelenggaraController extends Controller
                     'parent_id',
                 );
             }])
-            ->firstOrFail($id);
+            ->where('id', $id)
+            ->first();
 
         $pimpinan = PimpinanOrganisasi::where('id_organization', $id)
             ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
@@ -113,10 +114,12 @@ class BadanPenyelenggaraController extends Controller
             ])->get();
 
         $akta = Akta::where('id_organization', $id)
-            ->select(['id','akta_nomor', 'akta_tanggal', 'akta_status'])
+            ->select(['id', 'akta_nomor', 'akta_tanggal', 'akta_status'])
             ->with(['skKumham'])
             ->get();
-            
+
+        // dd($akta);
+
         // ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
         // ->with([
         //     'jabatan' => function ($query) {

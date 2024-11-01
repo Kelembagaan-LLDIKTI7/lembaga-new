@@ -156,14 +156,20 @@
                                             <td>{{ optional($akta->skKumham)->kumham_nomor ?? 'N/A' }}</td>
                                             <td>{{ optional($akta->skKumham)->kumham_tanggal ?? 'N/A' }}</td>
                                             <td>
-                                                <a href="{{ route('akta-badan-penyelenggara.show', $akta->id) }}"
-                                                    class="btn btn-sm btn-primary me-2">
-                                                    <i class="ti ti-info-circle"></i>
-                                                </a>
-                                                <a href="{{ route('sk-kumham.create', $akta->id) }}"
-                                                    class="btn btn-sm btn-warning me-2">
-                                                    <i class="ti ti-lock"></i>SK Kumham
-                                                </a>
+                                                <div class="edit">
+                                                    <a href="{{ route('akta-badan-penyelenggara.edit', $akta->id) }}"
+                                                        class="btn btn-sm btn-success mb-2">Edit</a>
+                                                </div>
+                                                <div class="kumham">
+                                                    <a href="{{ route('sk-kumham.create', $akta->id) }}"
+                                                        class="btn btn-sm btn-warning mb-2">
+                                                        SK Kumham
+                                                    </a>
+                                                </div>
+                                                <button class="btn btn-info btn-sm mb-2 akta-detail" data-bs-toggle="modal"
+                                                    data-bs-target="#detailRecordModalAkta" data-id="{{ $akta->id }}">
+                                                    Detail
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -174,6 +180,8 @@
                 </div>
             </section>
         </div>
+
+        @include('Dokumen.AktaBp.Detail')
     </div>
 
     </div>
@@ -189,6 +197,37 @@
             $('#pemimpin_perguruan_tinggi').DataTable();
 
             $('#program_studi').DataTable();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('akta-detail')) {
+                var aktaId = event.target.getAttribute('data-id');
+                fetch('{{ route('akta-badan-penyelenggara.show', ':id') }}'.replace(":id",
+                        aktaId))
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('akta_nomor').textContent = data.akta_nomor;
+                        document.getElementById('akta_jenis').textContent = data.akta_jenis;
+                        document.getElementById('akta_tanggal').textContent = data
+                            .akta_tanggal;
+                        document.getElementById('akta_notaris_nama').textContent = data
+                            .akta_nama_notaris;
+                        document.getElementById('akta_notaris_kota').textContent = data.akta_kota_notaris;
+                        document.getElementById('akta_status').textContent = data.akta_status;
+                        document.getElementById('akta_dokumen').value = data.akta_dokumen;
+                        document.getElementById('kumham_nomor').textContent = data.kumham_nomor ??
+                            '-';
+                        document.getElementById('kumham_perihal').textContent = data.kumham_perihal ??
+                            '-';
+                        document.getElementById('kumham_tanggal').textContent = data.kumham_tanggal ??
+                            '-';
+                        document.getElementById('kumham_dokumen').value = data.kumham_dokumen ??
+                            '';
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
         });
     </script>
 
