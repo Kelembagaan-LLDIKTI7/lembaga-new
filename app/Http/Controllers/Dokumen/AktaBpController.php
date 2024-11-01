@@ -8,6 +8,7 @@ use App\Models\Kota;
 use App\Models\Organisasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AktaBpController extends Controller
 {
@@ -71,23 +72,45 @@ class AktaBpController extends Controller
             'id_user' => Auth::user()->id,
         ]);
 
-        return redirect()->route('badan-penyelenggara.index')->with('success', 'Data akta berhasil ditambahkan.');
+        return redirect()->route('badan-penyelenggara.show', ['id' => $request->id_organization])->with('success', 'Data akta berhasil ditambahkan.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        // $akta = Akta::where('id', $id)->with('skKumham')->first();
+        $akta = DB::table('aktas')
+            ->where('aktas.id', $id)
+            ->leftJoin('sk_kumhams', 'aktas.id', '=', 'sk_kumhams.id_akta')
+            ->select('aktas.*', 'sk_kumhams.kumham_nomor', 'sk_kumhams.kumham_tanggal', 'sk_kumhams.kumham_perihal', 'sk_kumhams.kumham_dokumen')
+            ->first();
+
+        return response()->json($akta);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $akta = DB::table('aktas')
+            ->where('aktas.id', $id)
+            ->first();
+
+        $aktas  = DB::table('aktas')->get();
+
+        $kota =  Kota::select(
+            'id',
+            'nama'
+        )->get();
+
+        return view('Dokumen.AktaBp.Edit', [
+            'akta' => $akta,
+            'aktas' => $aktas,
+            'kota' => $kota,
+        ]);
     }
 
     /**
@@ -95,7 +118,46 @@ class AktaBpController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'id_organization' => 'required',
+            'akta_nomor' => 'required|string|max:255',
+            'akta_tanggal' => 'required|date',
+            'akta_nama_notaris' => 'required|string|max:255',
+            'akta_jenis' => 'required',
+            'kotaAkta' => 'required|string',
+            'akta_referensi' => 'nullable|exists:akta,id',
+            'aktaDokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ]);
+
+        if ($request->hasFile('aktaDokumen')) {
+            $akta = $request->file('aktaDokumen')->store('akta', 'public');
+
+            Akta::where('id', $id)->update([
+                'akta_nomor' => $request->akta_nomor,
+                'akta_tanggal' => $request->akta_tanggal,
+                'akta_nama_notaris' => $request->akta_nama_notaris,
+                'akta_kota_notaris' => $request->kotaAkta,
+                'id_organization' => $request->id_organization,
+                'akta_jenis' => $request->akta_jenis,
+                'akta_referensi' => $request->akta_referensi,
+                'akta_dokumen' => $akta,
+                'id_user' => Auth::user()->id,
+            ]);
+        } else {
+            Akta::where('id', $id)->update([
+                'akta_nomor' => $request->akta_nomor,
+                'akta_tanggal' => $request->akta_tanggal,
+                'akta_nama_notaris' => $request->akta_nama_notaris,
+                'akta_kota_notaris' => $request->kotaAkta,
+                'id_organization' => $request->id_organization,
+                'akta_jenis' => $request->akta_jenis,
+                'akta_referensi' => $request->akta_referensi,
+                'id_user' => Auth::user()->id,
+            ]);
+        }
+
+
+        return redirect()->route('badan-penyelenggara.show', ['id' => $request->id_organization])->with('success', 'Data akta berhasil ditambahkan.');
     }
 
     /**
@@ -104,5 +166,13 @@ class AktaBpController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function viewPdf(Request $request)
+    {
+        if (!$request->akta_dokumen) {
+            return abort(404);
+        }
+        return response()->file(storage_path('app/public/' . $request->akta_dokumen));
     }
 }

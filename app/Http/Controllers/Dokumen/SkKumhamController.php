@@ -73,7 +73,9 @@ class SkKumhamController extends Controller
             'kumham_dokumen' => $filePath ?? null,
         ]);
 
-        return redirect()->route('badan-penyelenggara.index')->with('success', 'Data SK Kumham berhasil disimpan.');
+        $akta =  Akta::select('id_organization')->where('id', $request->id_akta)->first();
+
+        return redirect()->route('badan-penyelenggara.show', ['id' => $akta->id_organization])->with('success', 'Data SK Kumham berhasil disimpan.');
     }
 
     public function edit(string $id)
@@ -102,17 +104,26 @@ class SkKumhamController extends Controller
         $filePath = $skKumham->kumham_dokumen;
         if ($request->hasFile('kumham_dokumen')) {
             $filePath = $request->file('kumham_dokumen')->store('sk_kumham', 'public');
+            $skKumham->update([
+                'id_akta' => $request->input('id_akta'),
+                'kumham_nomor' => $request->input('kumham_nomor'),
+                'kumham_tanggal' => $request->input('kumham_tanggal'),
+                'kumham_perihal' => $request->input('kumham_perihal'),
+                'kumham_dokumen' => $filePath,
+            ]);
+        } else {
+            $skKumham->update([
+                'id_akta' => $request->input('id_akta'),
+                'kumham_nomor' => $request->input('kumham_nomor'),
+                'kumham_tanggal' => $request->input('kumham_tanggal'),
+                'kumham_perihal' => $request->input('kumham_perihal'),
+            ]);
         }
 
-        $skKumham->update([
-            'id_akta' => $request->input('id_akta'),
-            'kumham_nomor' => $request->input('kumham_nomor'),
-            'kumham_tanggal' => $request->input('kumham_tanggal'),
-            'kumham_perihal' => $request->input('kumham_perihal'),
-            'kumham_dokumen' => $filePath,
-        ]);
 
-        return redirect()->route('badan-penyelenggara.index')->with('success', 'Data SK Kumham berhasil diperbarui.');
+        $akta =  Akta::select('id_organization')->where('id', $request->id_akta)->first();
+
+        return redirect()->route('badan-penyelenggara.show', ['id' => $akta->id_organization])->with('success', 'Data SK Kumham berhasil diperbarui.');
     }
 
     public function createPdfSession(Request $request)
@@ -122,11 +133,8 @@ class SkKumhamController extends Controller
         return redirect()->route('sk-kumham.viewPdf');
     }
 
-    public function viewPdf()
+    public function viewPdf(Request $request)
     {
-        $filename = session('pdf_kumham');
-        $path = storage_path('app/public/dokumen/kumham/' . $filename);
-
-        return response()->file($path);
+        return response()->file(storage_path('app/public/' . $request->kumham_dokumen));
     }
 }

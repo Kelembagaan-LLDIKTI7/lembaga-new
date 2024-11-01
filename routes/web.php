@@ -167,6 +167,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [AktaBpController::class, 'store'])->name('store');
         Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
         Route::get('/{id}', [AktaBpController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [AktaBpController::class, 'viewPdf'])->name('viewPdf');
     });
 
     Route::prefix('sk-kumham')->name('sk-kumham.')->group(function () {
@@ -176,5 +177,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [SkKumhamController::class, 'store'])->name('store');
         Route::put('/{id}', [SkKumhamController::class, 'update'])->name('update');
         Route::get('/{id}', [SkKumhamController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [SkKumhamController::class, 'viewPdf'])->name('viewPdf');
     });
 });
