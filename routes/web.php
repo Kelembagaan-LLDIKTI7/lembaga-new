@@ -34,8 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('roles')->name('roles.')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');
         Route::post('/', [RoleController::class, 'store'])->name('store');
-        Route::get('/{id}', [RoleController::class, 'show'])->name('show');
-        Route::put('/{role}', [RoleController::class, 'update'])->name('update'); 
+        Route::put('/{role}', [RoleController::class, 'update'])->name('update');
         Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
     });
 
@@ -47,8 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('permission')->name('permission.')->group(function () {
         Route::get('/', [PermissionController::class, 'index'])->name('index');
         Route::post('/', [PermissionController::class, 'store'])->name('store');
-        Route::put('/{id}', [PermissionController::class, 'update'])->name('update');
-        Route::get('/{id}', [PermissionController::class, 'show'])->name('show');
+        Route::put('/{permission}', [PermissionController::class, 'update'])->name('update');
+        Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
     });
 
     // Routes for User

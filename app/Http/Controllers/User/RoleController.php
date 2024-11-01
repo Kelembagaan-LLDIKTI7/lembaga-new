@@ -41,14 +41,18 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $validateData = $request->validate([
-            'name' => 'string|required|unique:roles,name,' . $role->id,
+        // Validation for role name to be unique except for the current role
+        $validatedData = $request->validate([
+            'name' => 'required|string|unique:roles,name,' . $role->id,
         ]);
 
-        $validateData['guard_name'] = 'web';
-        $updated = $role->update($validateData);
+        // Update the role with the validated data
+        $validatedData['guard_name'] = 'web';
+        $updated = $role->update($validatedData);
 
-        return $updated ? redirect()->route('roles.index')->with('success', 'Data Berhasil Diubah')
+        // Redirect back with a success or failure message
+        return $updated
+            ? redirect()->route('roles.index')->with('success', 'Data Berhasil Diubah')
             : redirect()->route('roles.index')->with('failed', 'Data Gagal Diubah');
     }
 
@@ -71,7 +75,7 @@ class RoleController extends Controller
             ->pluck('permission_id')
             ->toArray();
 
-        return view('role.addRolePermission', compact('role', 'permissions', 'rolePermissions'));
+        return view('Roles.addRolePermission', compact('role', 'permissions', 'rolePermissions'));
     }
 
     public function storePermissionToRole(Request $request, Role $role)
