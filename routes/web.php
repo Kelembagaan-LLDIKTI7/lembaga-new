@@ -14,12 +14,12 @@ use App\Http\Controllers\Master\PeringkatAkademiController;
 use App\Http\Controllers\Organisasi\BadanPenyelenggaraController;
 use App\Http\Controllers\Organisasi\PerguruanTinggiController;
 use App\Http\Controllers\Organisasi\ProgramStudiController;
-use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\User\PermissionController;
 use App\Http\Controllers\Pimpinan\PimpinanBadanPenyelenggaraController;
 use App\Http\Controllers\Pimpinan\PimpinanPerguruanTinggiController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\User\RoleController;
 use App\Http\Controllers\Sk\SkPerguruanTinggiController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,8 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('roles')->name('roles.')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');
         Route::post('/', [RoleController::class, 'store'])->name('store');
-        Route::put('/{id}', [RoleController::class, 'update'])->name('update');
         Route::get('/{id}', [RoleController::class, 'show'])->name('show');
+        Route::put('/{role}', [RoleController::class, 'update'])->name('update'); 
+        Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
     });
 
     //Actions Role Permissions Pengguna
@@ -54,11 +55,12 @@ Route::middleware('auth')->group(function () {
     // Routes for User
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [UserController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
         Route::post('/', [UserController::class, 'store'])->name('store');
-        Route::put('/{id}', [UserController::class, 'update'])->name('update');
-        Route::get('/{id}', [UserController::class, 'show'])->name('show');
+        Route::put('/{user}', [UserController::class, 'update'])->name('update');
+        Route::get('/{user}', [UserController::class, 'show'])->name('show');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');

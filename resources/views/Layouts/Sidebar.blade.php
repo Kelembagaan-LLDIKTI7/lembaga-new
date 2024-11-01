@@ -93,6 +93,40 @@
                         </li>
                     </ul>
                 </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
+                        <span class="d-flex">
+                            <i class="ti ti-chart-donut-3"></i>
+                        </span>
+                        <span class="hide-menu">Manajemen User</span>
+                    </a>
+                    <ul aria-expanded="false" class="first-level collapse">
+                        <li class="sidebar-item">
+                            <a href="{{ route('user.index') }}" class="sidebar-link">
+                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-circle"></i>
+                                </div>
+                                <span class="hide-menu">User</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ route('roles.index') }}" class="sidebar-link">
+                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-circle"></i>
+                                </div>
+                                <span class="hide-menu">Role User</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="{{ route('permission.index') }}" class="sidebar-link">
+                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                    <i class="ti ti-circle"></i>
+                                </div>
+                                <span class="hide-menu">Permission User</span>
+                            </a>
+                        </li
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>

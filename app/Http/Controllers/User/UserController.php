@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Organisasi;
 use Illuminate\Http\Request;
@@ -16,8 +18,9 @@ class UserController extends Controller
     public function index()
     {
         $user = User::all();
+        $organization = Organisasi::all();
 
-        return view('user.view', ['user' => $user]);
+        return view('User.Index', ['user' => $user, 'organization' => $organization]);
     }
 
     /**
@@ -26,9 +29,9 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
-        $organizations = Organisasi::all();
+        $organization = Organisasi::all();
 
-        return view('user.create', ['roles' => $roles, 'organizations' => $organizations]);
+        return view('user.create', ['roles' => $roles, 'organization' => $organization]);
     }
 
     /**
@@ -42,7 +45,7 @@ class UserController extends Controller
             'password' => 'string|required|min:10',
             'nip' => 'string|required',
             'is_active' => 'boolean',
-            'id_organization' => 'string|required|exists:organizations,id',
+            'id_organization' => 'string|required|exists:organisasis,id',
             'roles' => 'required',
         ]);
 
@@ -72,9 +75,9 @@ class UserController extends Controller
     {
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
-        $organizations = Organisasi::all();
+        $organization = Organisasi::all();
 
-        return view('user.edit', ['user' => $user, 'roles' => $roles, 'userRoles' => $userRoles, 'organizations' => $organizations]);
+        return view('user.edit', ['user' => $user, 'roles' => $roles, 'userRoles' => $userRoles, 'organization' => $organization]);
     }
 
     /**
@@ -88,7 +91,7 @@ class UserController extends Controller
             'password' => 'nullable|string|min:10',
             'nip' => 'required|string|max:50|unique:users,nip,' . $user->id,
             'is_active' => 'boolean|required',
-            'id_organization' => 'string|required|exists:organizations,id',
+            'id_organization' => 'string|required|exists:organisasis,id',
             'roles' => 'required',
         ]);
 
