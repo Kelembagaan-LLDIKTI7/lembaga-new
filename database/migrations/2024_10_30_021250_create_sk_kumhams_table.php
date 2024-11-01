@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('kumham_nomor', 105);
             $table->longText('kumham_perihal');
             $table->date('kumham_tanggal');
-            $table->string('kumham_dokumen', 100);
+            $table->string('kumham_dokumen', 100)->nullable();
             $table->uuid('id_akta');
             $table->timestamps();
 

@@ -12,8 +12,16 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Badan Penyelenggara</h5>
                             </div>
-
-                            <div class="table-responsive">
+                            <div class="mb-2">
+                                <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
+                                    data-bs-target="#importExcel">
+                                    Import Excel
+                                </button>
+                                <a href="{{ route('badan-penyelenggara.create') }}" class="btn btn-primary btn-sm">
+                                    Tambah Badan Penyelenggara
+                                </a>
+                            </div>
+                            <div class="table-responsive mt-2">
                                 <table id="dom_jq_event"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
@@ -25,6 +33,7 @@
                                             <th>Telepon BP</th>
                                             <th>Kota BP</th>
                                             <th>Status BP</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -36,6 +45,12 @@
                                                 <td>{{ $badanPenyelenggara->organisasi_telp }}</td>
                                                 <td>{{ $badanPenyelenggara->organisasi_kota }}</td>
                                                 <td>{{ $badanPenyelenggara->organisasi_status }}</td>
+                                                <td>
+                                                    <a href="{{ route('badan-penyelenggara.show', $badanPenyelenggara->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        <i class="ti ti-info-circle"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                 </table>
@@ -45,5 +60,7 @@
                 </div>
             </div>
         </section>
+
+        @include('Organisasi.BadanPenyelenggara.Import')
     </div>
 @endsection

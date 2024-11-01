@@ -18,27 +18,27 @@ class Organisasi extends Model
 
     public function parent()
     {
-        return $this->belongsTo(Organisasi ::class, 'parent_id', 'id');
+        return $this->belongsTo(Organisasi::class, 'parent_id', 'id');
     }
 
     public function children()
     {
-        return $this->hasMany(Organisasi ::class, 'parent_id', 'id');
+        return $this->hasMany(Organisasi::class, 'parent_id', 'id');
     }
 
     public function berubah()
     {
-        return $this->belongsTo(Organisasi ::class, 'organisasi_berubah_id', 'id');
+        return $this->belongsTo(Organisasi::class, 'organisasi_berubah_id', 'id');
     }
 
     public function changed()
     {
-        return $this->hasMany(Organisasi ::class, 'organisasi_berubah_id', 'id');
+        return $this->hasMany(Organisasi::class, 'organisasi_berubah_id', 'id');
     }
-    
+
     public function prodis()
     {
-        return $this->hasMany(ProgramStudi ::class, 'id_organization', 'id');
+        return $this->hasMany(ProgramStudi::class, 'id_organization', 'id');
     }
 
     public function organizationType()
@@ -49,5 +49,15 @@ class Organisasi extends Model
     public function user()
     {
         return $this->hasOne(Organisasi::class, 'id_organization', 'id');
+    }
+
+    public function akreditasis()
+    {
+        return $this->hasMany(Akreditasi::class, 'id_organization', 'id');
+    }
+
+    public function akta()
+    {
+        return $this->hasMany(Akta::class, 'id_organization', 'id');
     }
 }

@@ -14,19 +14,12 @@ use Illuminate\Support\Str;
 
 class PimpinanOrganisasiController extends Controller
 {
-    public function createSession(Request $request)
+    public function create($id)
     {
-        session(['org_uuid' => $request->id]);
-        return redirect()->route('pimpinan-organisasi.create');
-    }
+        $jabatan = DB::table('jabatans')->orderBy('jabatan_nama', 'asc')->get();
+        $org = DB::table('organisasis')->get();
 
-    public function create()
-    {
-        $jabatan = DB::table('jabatans')->get();
-
-        $id_organization = session('org_uuid');
-
-        return view('pimpinan_organisasi.create', compact('jabatan', 'id_organization'));
+        return view('Pimpinan-Organisasi.Create', compact('jabatan', 'org', 'id'));
     }
 
     public function store(Request $request)
@@ -34,12 +27,7 @@ class PimpinanOrganisasiController extends Controller
         $request->validate([
             'pimpinan_nama' => 'required|string|max:100',
             'pimpinan_email' => 'required|email|max:100|unique:pimpinan_organisasis,pimpinan_email',
-            'pimpinan_tanggal' => ['required', function ($attribute, $value, $fail) {
-                $date = Carbon::createFromFormat('d M, Y', $value);
-                if (!$date) {
-                    $fail('Format tanggal tidak valid.');
-                }
-            }],
+            'pimpinan_tanggal' => 'required',
             'pimpinan_sk' => 'required|string|max:45|unique:pimpinan_organisasis,pimpinan_sk',
             'pimpinan_sk_dokumen' => 'nullable|mimes:pdf|max:2048',
             'pimpinan_status' => 'required|in:Aktif,Tidak Aktif',
@@ -70,8 +58,6 @@ class PimpinanOrganisasiController extends Controller
             $filename_sk = $this->generateFileName($request->file('pimpinan_sk_dokumen')->getClientOriginalExtension(), 'pimpinan_sk_dokumen', $id_pimpinan);
         }
 
-        $formatted_date = Carbon::createFromFormat('d M, Y', $request->pimpinan_tanggal)->format('Y-m-d');
-
         DB::beginTransaction();
         try {
             if ($request->hasFile('pimpinan_sk_dokumen')) {
@@ -79,7 +65,7 @@ class PimpinanOrganisasiController extends Controller
                     'id' => $id_pimpinan,
                     'pimpinan_nama' => $request->pimpinan_nama,
                     'pimpinan_email' => $request->pimpinan_email,
-                    'pimpinan_tanggal' => $formatted_date,
+                    'pimpinan_tanggal' => $request->pimpinan_tanggal,
                     'pimpinan_sk' => $request->pimpinan_sk,
                     'pimpinan_sk_dokumen' => $filename_sk,
                     'pimpinan_status' => $request->pimpinan_status,
@@ -93,7 +79,7 @@ class PimpinanOrganisasiController extends Controller
                     'id' => $id_pimpinan,
                     'pimpinan_nama' => $request->pimpinan_nama,
                     'pimpinan_email' => $request->pimpinan_email,
-                    'pimpinan_tanggal' => $formatted_date,
+                    'pimpinan_tanggal' => $request->pimpinan_tanggal,
                     'pimpinan_sk' => $request->pimpinan_sk,
                     'pimpinan_status' => $request->pimpinan_status,
                     'id_jabatan' => $request->id_jabatan,
@@ -114,9 +100,9 @@ class PimpinanOrganisasiController extends Controller
             ->where('id', $request->id_organization)
             ->first();
 
-        if ($checkOrg->org_type_id == 2) {
+        if ($checkOrg->organisasi_type_id == 2) {
             return redirect()->route('badan-penyelenggara.show', ['id' => $request->id_organization]);
-        } elseif ($checkOrg->org_type_id == 3) {
+        } elseif ($checkOrg->organisasi_type_id == 3) {
             return redirect()->route('perguruan-tinggi.show', ['id' => $request->id_organization]);
         }
     }

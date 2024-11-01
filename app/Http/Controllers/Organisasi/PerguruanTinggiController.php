@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
+use App\Imports\PtImport;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
+use App\Models\PimpinanOrganisasi;
 use App\Models\SuratKeputusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use function Laravel\Prompts\select;
 
 class PerguruanTinggiController extends Controller
@@ -190,7 +194,8 @@ class PerguruanTinggiController extends Controller
             'organisasi_alamat',
             'parent_id',
             'organisasi_logo',
-            'organisasi_website'
+            'organisasi_website',
+            'organisasi_berubah_id'
         )->with(
             'parent:id,organisasi_nama,organisasi_email,organisasi_telp,organisasi_status,organisasi_alamat,organisasi_kota'
         )->with([
@@ -198,7 +203,7 @@ class PerguruanTinggiController extends Controller
                 $query->select('id', 'id_organization', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status')
                     ->orderBy('created_at', 'asc');
             }
-        ])->findOrFail($id);
+        ])->with(['akreditasis'])->findOrFail($id);
 
         $berubahIds = json_decode($organisasi->organisasi_berubah_id, true);
 
@@ -225,6 +230,7 @@ class PerguruanTinggiController extends Controller
             ->leftJoin('peringkat_akreditasis', 'peringkat_akreditasis.id', '=', 'akreditasis.id_peringkat_akreditasi')
             ->leftJoin('lembaga_akreditasis', 'lembaga_akreditasis.id', '=', 'akreditasis.id_lembaga_akreditasi')
             ->select('akreditasis.id', 'akreditasis.akreditasi_sk', 'akreditasis.akreditasi_tgl_akhir', 'akreditasis.akreditasi_status', 'lembaga_akreditasis.lembaga_nama_singkat', 'peringkat_akreditasis.peringkat_nama')
+            ->orderBy('akreditasis.created_at')
             ->get();
 
         $sk = DB::table('surat_keputusans')
@@ -233,18 +239,27 @@ class PerguruanTinggiController extends Controller
             ->select('surat_keputusans.id', 'surat_keputusans.sk_nomor', 'surat_keputusans.sk_tanggal', 'jenis_surat_keputusans.jsk_nama')
             ->get();
 
+        $pimpinan = PimpinanOrganisasi::where('id_organization', $id)
+            ->with([
+                'jabatan' => function ($query) {
+                    $query->select('id', 'jabatan_nama')->get();
+                }
+            ])->get();
+
         return view('Organisasi.PerguruanTinggi.Show', [
             'organisasi' => $organisasi,
             'berubahOrganisasi' => $berubahOrganisasi,
             'akreditasi' => $akreditasi,
-            'sk' => $sk
+            'sk' => $sk,
+            'pimpinan' => $pimpinan
         ]);
 
         // return response()->json([
         //     'organisasi' => $organisasi,
         //     'berubahOrganisasi' => $berubahOrganisasi,
         //     'akreditasi' => $akreditasi,
-        //     'sk' => $sk
+        //     'sk' => $sk,
+        //     'pimpinan' => $pimpinan
         // ]);
     }
 
@@ -253,7 +268,24 @@ class PerguruanTinggiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $perguruanTinggi = Organisasi::findOrFail($id);
+        $kotas = Kota::select('id', 'nama')->orderBy('nama', 'asc')->get();
+        $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)->get();
+        $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)->get();
+        $skTypes = JenisSuratKeputusan::all();
+        $jenis = JenisSuratKeputusan::select(
+            'id',
+            'jsk_nama'
+        )->get();
+
+        return view('Organisasi.PerguruanTinggi.Edit', [
+            'perguruanTinggi' => $perguruanTinggi,
+            'kotas' => $kotas,
+            'perguruanTinggis' => $perguruanTinggis,
+            'skTypes' => $skTypes,
+            'badanPenyelenggaras' => $badanPenyelenggaras,
+            'jenis' => $jenis
+        ]);
     }
 
     /**
@@ -261,7 +293,37 @@ class PerguruanTinggiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // dd($request->all());
+        // Find the existing Perguruan Tinggi record
+        $perguruanTinggi = Organisasi::findOrFail($id);
+
+        // Validate the incoming request data
+        $validated = $request->validate([
+            'organisasi_nama' => 'required|string|max:255',
+            'organisasi_nama_singkat' => 'nullable|string|max:255',
+            'organisasi_email' => 'required|email|max:255',
+            'organisasi_telp' => 'required|string|max:15',
+            'organisasi_kota' => 'required|string|max:100',
+            'organisasi_alamat' => 'required|string|max:255',
+            'organisasi_website' => 'nullable|url|max:255',
+            'organisasi_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'parent_id' => 'nullable',
+            'sk_nomor' => 'required',
+            'sk_tanggal' => 'required',
+            'id_jenis_surat_keputusan' => 'required',
+            'perubahan' => 'required'
+        ]);
+
+        // Handle file uploads for logo and document
+        if ($request->hasFile('organisasi_logo')) {
+            $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
+            $validated['organisasi_logo'] = $logoPath; // Update the validated data with the new logo path
+        }
+
+        // Update the Perguruan Tinggi record
+        $perguruanTinggi->update($validated);
+
+        return redirect()->route('perguruan-tinggi.index')->with('success', 'Perguruan Tinggi berhasil diperbarui.');
     }
 
     /**
@@ -270,5 +332,15 @@ class PerguruanTinggiController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls|max:2048',
+        ]);
+        $file = $request->file('file');
+        Excel::import(new PtImport, $file);
+        return redirect()->route('perguruan-tinggi.index')->with('success', 'Perguruan Tinggi berhasil disimpan.');
     }
 }

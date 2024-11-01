@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah Akreditasi Program Studi')
+@section('title', 'Edit Akreditasi Perguruan Tinggi')
 
 @section('css')
     <style>
@@ -21,18 +21,22 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('akreditasi-program-studi.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('akreditasi-perguruan-tinggi.update', $akreditasi->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
+                    @method('PUT') <!-- Menggunakan metode PUT untuk update -->
+                    <input type="hidden" name="id_organization" value="{{ $akreditasi->id_organization }}" class="form-control"
+                        required>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Form Tambah Akreditasi</h5>
+                            <h5 class="card-title">Form Edit Akreditasi</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="akreditasi_sk" class="required-label">Nomor Surat Keputusan
                                             Akreditasi</label>
-                                        <input type="text" name="akreditasi_sk" class="form-control" required>
+                                        <input type="text" name="akreditasi_sk" class="form-control"
+                                            value="{{ old('akreditasi_sk', $akreditasi->akreditasi_sk) }}" required>
                                         @error('akreditasi_sk')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -41,7 +45,9 @@
                                     <div class="form-group mb-3">
                                         <label for="akreditasi_tgl_awal" class="required-label">Tanggal Mulai
                                             Berlaku</label>
-                                        <input type="date" name="akreditasi_tgl_awal" class="form-control" required>
+                                        <input type="date" name="akreditasi_tgl_awal" class="form-control"
+                                            value="{{ old('akreditasi_tgl_awal', $akreditasi->akreditasi_tgl_awal) }}"
+                                            required>
                                         @error('akreditasi_tgl_awal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -50,10 +56,12 @@
                                     <div class="form-group mb-3">
                                         <label for="id_peringkat_akreditasi" class="required-label">Peringkat
                                             Akreditasi</label>
-                                        <select name="id_peringkat_akreditasi" class="form-control select-search">
+                                        <select name="id_peringkat_akreditasi" class="form-control select-search" required>
                                             <option value="">-- Pilih Peringkat --</option>
                                             @foreach ($peringkat as $peringkat)
-                                                <option value="{{ $peringkat->id }}">{{ $peringkat->peringkat_nama }}
+                                                <option value="{{ $peringkat->id }}"
+                                                    {{ $akreditasi->id_peringkat_akreditasi == $peringkat->id ? 'selected' : '' }}>
+                                                    {{ $peringkat->peringkat_nama }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -67,10 +75,16 @@
                                     <div class="form-group mb-3">
                                         <label for="akreditasi_status" class="required-label">Status Akreditasi</label>
                                         <select name="akreditasi_status" class="form-control select-search" required>
-                                            <option value="">-- Pilih Peringkat --</option>
-                                            <option value="Berlaku">Berlaku</option>
-                                            <option value="Dicabut">Dicabut</option>
-                                            <option value="Tidak Berlaku">Tidak Berlaku</option>
+                                            <option value="">-- Pilih Status --</option>
+                                            <option value="Berlaku"
+                                                {{ $akreditasi->akreditasi_status == 'Berlaku' ? 'selected' : '' }}>Berlaku
+                                            </option>
+                                            <option value="Dicabut"
+                                                {{ $akreditasi->akreditasi_status == 'Dicabut' ? 'selected' : '' }}>Dicabut
+                                            </option>
+                                            <option value="Tidak Berlaku"
+                                                {{ $akreditasi->akreditasi_status == 'Tidak Berlaku' ? 'selected' : '' }}>
+                                                Tidak Berlaku</option>
                                         </select>
                                         @error('akreditasi_status')
                                             <small class="text-danger">{{ $message }}</small>
@@ -80,19 +94,23 @@
                                     <div class="form-group mb-3">
                                         <label for="akreditasi_tgl_akhir" class="required-label">Tanggal Akhir
                                             Berlaku</label>
-                                        <input type="date" name="akreditasi_tgl_akhir" class="form-control" required>
+                                        <input type="date" name="akreditasi_tgl_akhir" class="form-control"
+                                            value="{{ old('akreditasi_tgl_akhir', $akreditasi->akreditasi_tgl_akhir) }}"
+                                            required>
                                         @error('akreditasi_tgl_akhir')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="id_lembaga_akreditasi" class="required-label">Peringkat
-                                            Akreditasi</label>
-                                        <select name="id_lembaga_akreditasi" class="form-control select-search">
-                                            <option value="">-- Pilih Peringkat --</option>
+                                        <label for="id_lembaga_akreditasi" class="required-label">Lembaga Akreditasi</label>
+                                        <select name="id_lembaga_akreditasi" class="form-control select-search" required>
+                                            <option value="">-- Pilih Lembaga --</option>
                                             @foreach ($lembaga as $lembaga)
-                                                <option value="{{ $lembaga->id }}">{{ $lembaga->lembaga_nama }}</option>
+                                                <option value="{{ $lembaga->id }}"
+                                                    {{ $akreditasi->id_lembaga_akreditasi == $lembaga->id ? 'selected' : '' }}>
+                                                    {{ $lembaga->lembaga_nama }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('id_lembaga_akreditasi')
@@ -103,8 +121,8 @@
 
                                 <div class="form-group mb-3">
                                     <label for="sk_dokumen" class="required-label">Dokumen SK</label>
-                                    <input type="file" name="sk_dokumen" class="form-control" required
-                                        accept=".pdf,.doc,.docx" onchange="previewFile(event)">
+                                    <input type="file" name="sk_dokumen" class="form-control" accept=".pdf,.doc,.docx"
+                                        onchange="previewFile(event)">
                                     <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
                                     <div id="file-preview" class="mt-3"></div> <!-- Tempat untuk preview -->
                                     @error('sk_dokumen')
@@ -131,7 +149,7 @@
         function previewFile(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('file-preview');
-            previewContainer.innerHTML = ''; // Kosongkan kontainer preview
+            previewContainer.innerHTML = '';
 
             if (file) {
                 const fileName = document.createElement('p');

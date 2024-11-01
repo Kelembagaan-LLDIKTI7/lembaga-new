@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('organisasi_nama');
             $table->string('organisasi_nama_singkat')->nullable();
             $table->string('organisasi_kode')->nullable();
-            $table->longText('organisasi_email');
-            $table->longText('organisasi_telp');
-            $table->string('organisasi_kota');
-            $table->longText('organisasi_alamat');
+            $table->longText('organisasi_email')->nullable();
+            $table->longText('organisasi_telp')->nullable();
+            $table->string('organisasi_kota')->nullable();
+            $table->longText('organisasi_alamat')->nullable();
             $table->string('organisasi_website')->nullable();
             $table->string('organisasi_logo')->nullable();
             $table->string('organisasi_status')->nullable();

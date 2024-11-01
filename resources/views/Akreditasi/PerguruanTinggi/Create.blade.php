@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah Akreditasi Program Studi')
+@section('title', 'Tambah Akreditasi Perguruan Tinggi')
 
 @section('css')
     <style>
@@ -21,9 +21,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('akreditasi-program-studi.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('akreditasi-perguruan-tinggi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
+                    <input type="hidden" name="id_organization" value="{{ $pt->id }}" class="form-control" required>
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Form Tambah Akreditasi</h5>
@@ -131,7 +131,7 @@
         function previewFile(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('file-preview');
-            previewContainer.innerHTML = ''; // Kosongkan kontainer preview
+            previewContainer.innerHTML = '';
 
             if (file) {
                 const fileName = document.createElement('p');

@@ -73,7 +73,7 @@ class AkreditasiProdiController extends Controller
             'id_user' => Auth::user()->id,
         ]);
 
-        return redirect()->route('perguruan-tinggi.index')->with('success', 'Akreditasi Program Studi berhasil ditambahkan');
+        return redirect()->route('perguruan-tinggi.show', ['id' => $request->id_prodi])->with('success', 'Akreditasi Program Studi berhasil ditambahkan');
     }
 
     /**

@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Akreditasi\AkreditasiPerguruanTinggiController;
 use App\Http\Controllers\Akreditasi\AkreditasiProdiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dokumen\AktaBpController;
+use App\Http\Controllers\Dokumen\PimpinanOrganisasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Master\JabatanController;
 use App\Http\Controllers\Master\LembagaAkreditasiController;
@@ -11,7 +14,10 @@ use App\Http\Controllers\Organisasi\BadanPenyelenggaraController;
 use App\Http\Controllers\Organisasi\PerguruanTinggiController;
 use App\Http\Controllers\Organisasi\ProgramStudiController;
 use App\Http\Controllers\User\PermissionController;
+use App\Http\Controllers\Pimpinan\PimpinanBadanPenyelenggaraController;
+use App\Http\Controllers\Pimpinan\PimpinanPerguruanTinggiController;
 use App\Http\Controllers\User\RoleController;
+use App\Http\Controllers\Sk\SkPerguruanTinggiController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -78,7 +84,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [PerguruanTinggiController::class, 'index'])->name('index');
         Route::get('/create', [PerguruanTinggiController::class, 'create'])->name('create');
         Route::post('/', [PerguruanTinggiController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
         Route::get('/{id}', [PerguruanTinggiController::class, 'show'])->name('show');
+        Route::get('/{id}/create-prodi', [PerguruanTinggiController::class, 'createProdi'])->name('createProdi');
+        Route::delete('/{id}', [PerguruanTinggiController::class, 'destroy'])->name('destroy');
+        Route::post('/import', [PerguruanTinggiController::class, 'import'])->name('import');
+        Route::get('/{id}/alih-bentuk-PT', [PerguruanTinggiController::class, 'alihBentuk'])->name('alihBentuk');
+        Route::put('/{id}/update-alih-bentuk-PT', [PerguruanTinggiController::class, 'updateAlihBentuk'])->name('updateAlihBentuk');
     });
 
     Route::prefix('badan-penyelenggara')->name('badan-penyelenggara.')->group(function () {
@@ -86,6 +99,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [BadanPenyelenggaraController::class, 'create'])->name('create');
         Route::post('/', [BadanPenyelenggaraController::class, 'store'])->name('store');
         Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show');
+        Route::post('/import', [BadanPenyelenggaraController::class, 'import'])->name('import');
     });
 
     Route::prefix('program-studi')->name('program-studi.')->group(function () {
@@ -104,5 +118,54 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [AkreditasiProdiController::class, 'store'])->name('store');
         Route::put('/{id}', [AkreditasiProdiController::class, 'update'])->name('update');
         Route::get('/{id}', [AkreditasiProdiController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('akreditasi-perguruan-tinggi')->name('akreditasi-perguruan-tinggi.')->group(function () {
+        Route::get('/', [AkreditasiPerguruanTinggiController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [AkreditasiPerguruanTinggiController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [AkreditasiPerguruanTinggiController::class, 'edit'])->name('edit');
+        Route::post('/', [AkreditasiPerguruanTinggiController::class, 'store'])->name('store');
+        Route::put('/{id}', [AkreditasiPerguruanTinggiController::class, 'update'])->name('update');
+        Route::get('/{id}', [AkreditasiPerguruanTinggiController::class, 'show'])->name('show');
+        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail');
+        Route::post('/view-pdf', [AkreditasiPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
+    });
+
+    Route::prefix('pimpinan-perguruan-tinggi')->name('pimpinan-perguruan-tinggi.')->group(function () {
+        Route::get('/', [PimpinanPerguruanTinggiController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [PimpinanPerguruanTinggiController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [PimpinanPerguruanTinggiController::class, 'edit'])->name('edit');
+        Route::post('/', [PimpinanPerguruanTinggiController::class, 'store'])->name('store');
+        Route::put('/{id}', [PimpinanPerguruanTinggiController::class, 'update'])->name('update');
+        Route::get('/{id}', [PimpinanPerguruanTinggiController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [PimpinanPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
+    });
+
+    Route::prefix('sk-perguruan-tinggi')->name('sk-perguruan-tinggi.')->group(function () {
+        Route::get('/', [SkPerguruanTinggiController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [SkPerguruanTinggiController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [SkPerguruanTinggiController::class, 'edit'])->name('edit');
+        Route::post('/', [SkPerguruanTinggiController::class, 'store'])->name('store');
+        Route::put('/{id}', [SkPerguruanTinggiController::class, 'update'])->name('update');
+        Route::get('/{id}', [SkPerguruanTinggiController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [SkPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
+    });
+
+    Route::prefix('pimpinan-badan-penyelenggara')->name('pimpinan-badan-penyelenggara.')->group(function () {
+        Route::get('/', [PimpinanBadanPenyelenggaraController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [PimpinanBadanPenyelenggaraController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [PimpinanBadanPenyelenggaraController::class, 'edit'])->name('edit');
+        Route::post('/', [PimpinanBadanPenyelenggaraController::class, 'store'])->name('store');
+        Route::put('/{id}', [PimpinanBadanPenyelenggaraController::class, 'update'])->name('update');
+        Route::get('/{id}', [PimpinanBadanPenyelenggaraController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('akta-badan-penyelenggara')->name('akta-badan-penyelenggara.')->group(function () {
+        Route::get('/', [AktaBpController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [AktaBpController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [AktaBpController::class, 'edit'])->name('edit');
+        Route::post('/', [AktaBpController::class, 'store'])->name('store');
+        Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
+        Route::get('/{id}', [AktaBpController::class, 'show'])->name('show');
     });
 });

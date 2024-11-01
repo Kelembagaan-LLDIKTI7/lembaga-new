@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('sk_nomor');
             $table->date('sk_tanggal');
             $table->date('sk_berakhir')->nullable();
-            $table->string('sk_dokumen', 100);
+            $table->string('sk_dokumen', 100)->nullable();
             $table->uuid('id_jenis_surat_keputusan')->nullable();
             $table->uuid('id_organization')->nullable();
             $table->string('id_prodi')->nullable();

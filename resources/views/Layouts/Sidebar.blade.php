@@ -37,7 +37,7 @@
                                 <div class="round-16 d-flex align-items-center justify-content-center">
                                     <i class="ti ti-circle"></i>
                                 </div>
-                                <span class="hide-menu">Peringkat Akademi</span>
+                                <span class="hide-menu">Peringkat Akreditasi</span>
                             </a>
                         </li>
                         <li class="sidebar-item">
