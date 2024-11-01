@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Filter\ListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\StatisticController;
@@ -19,5 +20,4 @@ Route::get('/perguruan-tinggi/{id}', [PerguruanTinggiController::class, 'show'])
 Route::get('/prodi', [ProdiController::class, 'index']);
 Route::get('/prodi/{id}', [ProdiController::class, 'show']);
 
-
-
+Route::get('/list', [ListController::class, 'getList']);

@@ -60,4 +60,9 @@ class Organisasi extends Model
     {
         return $this->hasMany(Akta::class, 'id_organization', 'id');
     }
+
+    public function bentukPt()
+    {
+        return $this->belongsTo(BentukPt::class, 'organisasi_bentuk_pt', 'id');
+    }
 }

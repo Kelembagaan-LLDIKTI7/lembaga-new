@@ -15,196 +15,37 @@ class KotaSeeder extends Seeder
     public function run(): void
     {
         $listKota = [
-            [
-                'id' => 3501,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN PACITAN'
-            ],
-            [
-                'id' => 3502,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN PONOROGO'
-            ],
-            [
-                'id' => 3503,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN TRENGGALEK'
-            ],
-            [
-                'id' => 3504,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN TULUNGAGUNG'
-            ],
-            [
-                'id' => 3505,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN BLITAR'
-            ],
-            [
-                'id' => 3506,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN KEDIRI'
-            ],
-            [
-                'id' => 3507,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN MALANG'
-            ],
-            [
-                'id' => 3508,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN LUMAJANG'
-            ],
-            [
-                'id' => 3509,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN JEMBER'
-            ],
-            [
-                'id' => 3510,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN BANYUWANGI'
-            ],
-            [
-                'id' => 3511,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN BONDOWOSO'
-            ],
-            [
-                'id' => 3512,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN SITUBONDO'
-            ],
-            [
-                'id' => 3513,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN PROBOLINGGO'
-            ],
-            [
-                'id' => 3514,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN PASURUAN'
-            ],
-            [
-                'id' => 3515,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN SIDOARJO'
-            ],
-            [
-                'id' => 3516,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN MOJOKERTO'
-            ],
-            [
-                'id' => 3517,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN JOMBANG'
-            ],
-            [
-                'id' => 3518,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN NGANJUK'
-            ],
-            [
-                'id' => 3519,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN MADIUN'
-            ],
-            [
-                'id' => 3520,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN MAGETAN'
-            ],
-            [
-                'id' => 3521,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN NGAWI'
-            ],
-            [
-                'id' => 3522,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN BOJONEGORO'
-            ],
-            [
-                'id' => 3523,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN TUBAN'
-            ],
-            [
-                'id' => 3524,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN LAMONGAN'
-            ],
-            [
-                'id' => 3525,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN GRESIK'
-            ],
-            [
-                'id' => 3526,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN BANGKALAN'
-            ],
-            [
-                'id' => 3527,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN SAMPANG'
-            ],
-            [
-                'id' => 3528,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN PAMEKASAN'
-            ],
-            [
-                'id' => 3529,
-                'provinsi_id' => 35,
-                'nama' => 'KABUPATEN SUMENEP'
-            ],
-            [
-                'id' => 3571,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA KEDIRI'
-            ],
-            [
-                'id' => 3572,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA BLITAR'
-            ],
-            [
-                'id' => 3573,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA MALANG'
-            ],
-            [
-                'id' => 3574,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA PROBOLINGGO'
-            ],
-            [
-                'id' => 3575,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA PASURUAN'
-            ],
-            [
-                'id' => 3576,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA MOJOKERTO'
-            ],
-            [
-                'id' => 3577,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA MADIUN'
-            ],
-            [
-                'id' => 3578,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA SURABAYA'
-            ],
-            [
-                'id' => 3579,
-                'provinsi_id' => 35,
-                'nama' => 'KOTA BATU'
-            ],
+            ['id' => 1, 'provinsi_id' => 35, 'nama' => 'Surabaya', 'jumlah' => 126],
+            ['id' => 2, 'provinsi_id' => 35, 'nama' => 'Malang', 'jumlah' => 80],
+            ['id' => 3, 'provinsi_id' => 35, 'nama' => 'Sidoarjo', 'jumlah' => 16],
+            ['id' => 4, 'provinsi_id' => 35, 'nama' => 'Jember', 'jumlah' => 16],
+            ['id' => 5, 'provinsi_id' => 35, 'nama' => 'Kediri', 'jumlah' => 21],
+            ['id' => 6, 'provinsi_id' => 35, 'nama' => 'Mojokerto', 'jumlah' => 14],
+            ['id' => 7, 'provinsi_id' => 35, 'nama' => 'Gresik', 'jumlah' => 15],
+            ['id' => 8, 'provinsi_id' => 35, 'nama' => 'Banyuwangi', 'jumlah' => 12],
+            ['id' => 9, 'provinsi_id' => 35, 'nama' => 'Pasuruan', 'jumlah' => 10],
+            ['id' => 10, 'provinsi_id' => 35, 'nama' => 'Ponorogo', 'jumlah' => 7],
+            ['id' => 11, 'provinsi_id' => 35, 'nama' => 'Tuban', 'jumlah' => 9],
+            ['id' => 12, 'provinsi_id' => 35, 'nama' => 'Probolinggo', 'jumlah' => 7],
+            ['id' => 13, 'provinsi_id' => 35, 'nama' => 'Blitar', 'jumlah' => 6],
+            ['id' => 14, 'provinsi_id' => 35, 'nama' => 'Madiun', 'jumlah' => 7],
+            ['id' => 15, 'provinsi_id' => 35, 'nama' => 'Lumajang', 'jumlah' => 7],
+            ['id' => 16, 'provinsi_id' => 35, 'nama' => 'Ngawi', 'jumlah' => 3],
+            ['id' => 17, 'provinsi_id' => 35, 'nama' => 'Bojonegoro', 'jumlah' => 10],
+            ['id' => 18, 'provinsi_id' => 35, 'nama' => 'Sumenep', 'jumlah' => 6],
+            ['id' => 19, 'provinsi_id' => 35, 'nama' => 'Lamongan', 'jumlah' => 6],
+            ['id' => 20, 'provinsi_id' => 35, 'nama' => 'Jombang', 'jumlah' => 18],
+            ['id' => 21, 'provinsi_id' => 35, 'nama' => 'Magetan', 'jumlah' => 2],
+            ['id' => 22, 'provinsi_id' => 35, 'nama' => 'Situbondo', 'jumlah' => 4],
+            ['id' => 23, 'provinsi_id' => 35, 'nama' => 'Nganjuk', 'jumlah' => 7],
+            ['id' => 24, 'provinsi_id' => 35, 'nama' => 'Bangkalan', 'jumlah' => 5],
+            ['id' => 25, 'provinsi_id' => 35, 'nama' => 'Sampang', 'jumlah' => 3],
+            ['id' => 26, 'provinsi_id' => 35, 'nama' => 'Trenggalek', 'jumlah' => 3],
+            ['id' => 27, 'provinsi_id' => 35, 'nama' => 'Pamekasan', 'jumlah' => 4],
+            ['id' => 28, 'provinsi_id' => 35, 'nama' => 'Tulungagung', 'jumlah' => 6],
+            ['id' => 29, 'provinsi_id' => 35, 'nama' => 'Pacitan', 'jumlah' => 1],
+            ['id' => 30, 'provinsi_id' => 35, 'nama' => 'Bondowoso', 'jumlah' => 2],
+            ['id' => 31, 'provinsi_id' => 35, 'nama' => 'Batu', 'jumlah' => 1]
         ];
 
         foreach ($listKota as $kota) {
