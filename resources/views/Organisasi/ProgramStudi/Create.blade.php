@@ -26,9 +26,9 @@
 
 
                                     <div class="form-group mb-3">
-                                        <label for="prodi_active_status" class="required-label">Program</label>
+                                        <label for="prodi_active_status" class="required-label">Status</label>
                                         <select name="prodi_active_status" class="form-control select-search" required>
-                                            <option value="">-- Pilih Program --</option>
+                                            <option value="">-- Pilih Status --</option>
                                             <option value="Aktif">Aktif</option>
                                             <option value="Tidak Aktif">Tidak Aktif</option>
                                         </select>
@@ -37,9 +37,9 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="prodi_jenjang" class="required-label">Program</label>
+                                        <label for="prodi_jenjang" class="required-label">Jenjang</label>
                                         <select name="prodi_jenjang" class="form-control select-search" required>
-                                            <option value="">-- Pilih Program --</option>
+                                            <option value="">-- Pilih Jenjang --</option>
                                             <option value="D1">D1</option>
                                             <option value="D2">D2</option>
                                             <option value="D3">D3</option>

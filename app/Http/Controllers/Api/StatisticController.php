@@ -11,29 +11,46 @@ use Illuminate\Support\Facades\DB;
 
 class StatisticController extends Controller
 {
-    public function statistics(): JsonResponse
+    public function statistics(Request $request): JsonResponse
     {
-        $totalPerguruanTinggi = Organisasi::count();
-        $totalProdi = ProgramStudi::count();
-        // $totalBentukPT = Organization::distinct('type')->count();
-        $totalWilayah = Organisasi::distinct('organisasi_kota')->count();
+        // Menghitung total berdasarkan filter yang diterapkan
+        $queryPT = Organisasi::query();
+        $queryProdi = ProgramStudi::query();
 
+        // Menerapkan filter jika tersedia
+        if ($request->filled('organisasi_nama')) {
+            $queryPT->where('organisasi_nama', $request->input('organisasi_nama'));
+        }
+
+        if ($request->filled('program')) {
+            $queryProdi->where('prodi_jenjang', $request->input('program'));
+        }
+
+        if ($request->filled('wilayah')) {
+            $queryPT->where('organisasi_kota', $request->input('wilayah'));
+        }
+
+        // Menghitung total sesuai dengan filter
+        $totalPerguruanTinggi = $queryPT->count();
+        $totalProdi = $queryProdi->count();
+        $totalWilayah = Organisasi::distinct('organisasi_kota')->count();
 
         return response()->json([
             'status' => '200 OK - Success',
             'data' => [
                 'total_perguruan_tinggi' => $totalPerguruanTinggi,
                 'total_prodi' => $totalProdi,
-                'total_bentuk_pt' => 6,
                 'total_wilayah' => $totalWilayah,
             ]
         ]);
     }
 
-    // Jumlah berdasarkan bentuk wilayah
-    public function jumlahPerguruanTinggiBerdasarkanWilayah(): JsonResponse
+    public function jumlahPerguruanTinggiBerdasarkanWilayah(Request $request): JsonResponse
     {
         $data = Organisasi::select('organisasi_kota as kota', DB::raw('count(*) as total'))
+            ->when($request->filled('organisasi_nama'), function ($query) use ($request) {
+                $query->where('organisasi_nama', $request->input('organisasi_nama'));
+            })
             ->groupBy('organisasi_kota')
             ->get();
 
@@ -42,10 +59,12 @@ class StatisticController extends Controller
         ]);
     }
 
-    // Jumlah berdasarkan bentuk lembaga
-    public function jumlahPerguruanTinggiBerdasarkanBentukLembaga(): JsonResponse
+    public function jumlahPerguruanTinggiBerdasarkanBentukLembaga(Request $request): JsonResponse
     {
         $data = Organisasi::select('bentuk_lembaga', DB::raw('count(*) as total'))
+            ->when($request->filled('organisasi_nama'), function ($query) use ($request) {
+                $query->where('organisasi_nama', $request->input('organisasi_nama'));
+            })
             ->groupBy('bentuk_lembaga')
             ->get();
 
@@ -54,10 +73,12 @@ class StatisticController extends Controller
         ]);
     }
 
-    // Jumlah prodi berdasarkan program pendidikan
-    public function jumlahProdiBerdasarkanProgram(): JsonResponse
+    public function jumlahProdiBerdasarkanProgram(Request $request): JsonResponse
     {
         $data = ProgramStudi::select('prodi_jenjang', DB::raw('count(*) as total'))
+            ->when($request->filled('organisasi_nama'), function ($query) use ($request) {
+                $query->where('organisasi_nama', $request->input('organisasi_nama'));
+            })
             ->groupBy('prodi_jenjang')
             ->get();
 
