@@ -49,10 +49,24 @@ class UserSeeder extends Seeder
         $user->assignRole($role);
 
         $permissions = [
+            'Create Permission',
+            'Edit Permission',
+            'Delete Permission',
+            'View Permission',
+
+            'Create Roles',
+            'Edit Roles',
+            'Delete Roles',
+            'View Roles',
+
+            'View Role Permissions',
+            'Add Role Permissions', 
+
             'Create User',
             'Edit User',
             'Delete User',
             'View User',
+            
             'Create Akreditasi',
             'Edit Akreditasi',
             'Delete Akreditasi',
