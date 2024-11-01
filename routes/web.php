@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('index');
         Route::post('/', [RoleController::class, 'store'])->name('store');
         Route::get('/{id}', [RoleController::class, 'show'])->name('show');
-        Route::put('/{role}', [RoleController::class, 'update'])->name('update'); 
+        Route::put('/{role}', [RoleController::class, 'update'])->name('update');
         Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
     });
 
@@ -168,6 +168,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [AktaBpController::class, 'store'])->name('store');
         Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
         Route::get('/{id}', [AktaBpController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [AktaBpController::class, 'viewPdf'])->name('viewPdf');
     });
 
     Route::prefix('sk-kumham')->name('sk-kumham.')->group(function () {
@@ -177,5 +178,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [SkKumhamController::class, 'store'])->name('store');
         Route::put('/{id}', [SkKumhamController::class, 'update'])->name('update');
         Route::get('/{id}', [SkKumhamController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [SkKumhamController::class, 'viewPdf'])->name('viewPdf');
     });
 });
