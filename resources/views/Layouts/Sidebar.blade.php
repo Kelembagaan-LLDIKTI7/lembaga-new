@@ -72,7 +72,7 @@
                         <span class="d-flex">
                             <i class="fa fa-sitemap"></i>
                         </span>
-                        <span class="hide-menu">Master</span>
+                        <span class="hide-menu">Organisasi</span>
                     </a>
                     <ul aria-expanded="false" class="first-level collapse">
                         <li class="sidebar-item">
