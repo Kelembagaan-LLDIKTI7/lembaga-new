@@ -17,7 +17,7 @@ class PermissionController extends Controller
     {
         $permission = DB::table('permissions')->get();
 
-        return view('role.permissionIndex', ['permission' => $permission]);
+        return view('Permission.Index', ['permission' => $permission]);
     }
 
     /**
