@@ -61,6 +61,7 @@
                                         <th>Email</th>
                                         <th>Jabatan</th>
                                         <th>Status</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,6 +72,19 @@
                                             <td>{{ $pimpinan->pimpinan_email }}</td>
                                             <td>{{ $pimpinan->pimpinan_status }}</td>
                                             <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <a href="{{ route('pimpinan-badan-penyelenggara.edit', ['id' => $pimpinan->id]) }}"
+                                                        class="btn btn-sm btn-success">
+                                                        <i class="ri-edit-2-line"></i> Edit
+                                                    </a>
+                                                    <button class="btn btn-info btn-sm pimpinan-detail"
+                                                        data-bs-toggle="modal" data-bs-target="#detailRecordModalPimpinan"
+                                                        data-id="{{ $pimpinan->id }}">
+                                                        Detail
+                                                    </button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -182,6 +196,7 @@
         </div>
 
         @include('Dokumen.AktaBp.Detail')
+        @include('Pimpinan.BadanPenyelenggara.Detail')
     </div>
 
     </div>
@@ -202,6 +217,22 @@
 
     <script>
         document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('pimpinan-detail')) {
+                var pimpinanId = event.target.getAttribute('data-id');
+                fetch('{{ route('pimpinan-badan-penyelenggara.show', ':id') }}'.replace(":id", pimpinanId))
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('jabatan_nama').textContent = data.jabatan_nama;
+                        document.getElementById('pimpinan_nama').textContent = data.pimpinan_nama;
+                        document.getElementById('pimpinan_email').textContent = data.pimpinan_email;
+                        document.getElementById('pimpinan_tanggal').textContent = data.pimpinan_tanggal;
+                        document.getElementById('pimpinan_status').textContent = data.pimpinan_status;
+                        document.getElementById('pimpinan_sk').textContent = data.pimpinan_sk;
+                        document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
             if (event.target.classList.contains('akta-detail')) {
                 var aktaId = event.target.getAttribute('data-id');
                 fetch('{{ route('akta-badan-penyelenggara.show', ':id') }}'.replace(":id",
