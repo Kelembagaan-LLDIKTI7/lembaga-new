@@ -33,33 +33,36 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     // Routes for Role
     Route::prefix('roles')->name('roles.')->group(function () {
-        Route::get('/', [RoleController::class, 'index'])->name('index');
-        Route::post('/', [RoleController::class, 'store'])->name('store');
-        Route::put('/{role}', [RoleController::class, 'update'])->name('update');
-        Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
+        Route::get('/', [RoleController::class, 'index'])->name('index')->middleware('role.access:View Roles');
+        Route::post('/', [RoleController::class, 'store'])->name('store')->middleware('role.access:Create Roles');
+        Route::put('/{role}', [RoleController::class, 'update'])->name('update')->middleware('role.access:Edit Roles');
+        Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Roles');
     });
 
     //Actions Role Permissions Pengguna
-    Route::get('/roles/{role}/give-permission', [RoleController::class, 'addPermissionToRole'])->name('addRolePermission');
-    Route::post('/roles/{role}/store-permission', [RoleController::class, 'storePermissionToRole'])->name('addRolePermission.store');
+    Route::get('/roles/{role}/give-permission', [RoleController::class, 'addPermissionToRole'])->name('addRolePermission')->middleware('role.access:View Role Permissions');
+    Route::post('/roles/{role}/store-permission', [RoleController::class, 'storePermissionToRole'])->name('addRolePermission.store')->middleware('role.access:Add Role Permissions');
 
     // Routes for Permission
     Route::prefix('permission')->name('permission.')->group(function () {
-        Route::get('/', [PermissionController::class, 'index'])->name('index');
-        Route::post('/', [PermissionController::class, 'store'])->name('store');
-        Route::put('/{permission}', [PermissionController::class, 'update'])->name('update');
-        Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy');
+        Route::get('/', [PermissionController::class, 'index'])->name('index')->middleware('role.access:View Permission');
+        Route::post('/', [PermissionController::class, 'store'])->name('store')->middleware('role.access:Create Permission');
+        Route::put('/{permission}', [PermissionController::class, 'update'])->name('update')->middleware('role.access:Edit Permission');
+        Route::delete('/{permission}', [PermissionController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Permission');
     });
 
     // Routes for User
     Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('index');
-        Route::get('/create', [UserController::class, 'create'])->name('create');
-        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
-        Route::post('/', [UserController::class, 'store'])->name('store');
-        Route::put('/{user}', [UserController::class, 'update'])->name('update');
-        Route::get('/{user}', [UserController::class, 'show'])->name('show');
-        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
+        Route::get('/', [UserController::class, 'index'])->name('index')->middleware('role.access:View User');
+        Route::middleware('role.access:Create User')->group(function () {
+            Route::get('/create', [UserController::class, 'create'])->name('create');
+            Route::post('/', [UserController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit User')->group(function () {
+            Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+            Route::put('/{user}', [UserController::class, 'update'])->name('update');
+        });
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete User');
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -81,103 +84,139 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('perguruan-tinggi')->name('perguruan-tinggi.')->group(function () {
-        Route::get('/', [PerguruanTinggiController::class, 'index'])->name('index');
-        Route::get('/create', [PerguruanTinggiController::class, 'create'])->name('create');
-        Route::post('/', [PerguruanTinggiController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
-        Route::get('/{id}', [PerguruanTinggiController::class, 'show'])->name('show');
-        Route::get('/{id}/create-prodi', [PerguruanTinggiController::class, 'createProdi'])->name('createProdi');
-        Route::delete('/{id}', [PerguruanTinggiController::class, 'destroy'])->name('destroy');
-        Route::post('/import', [PerguruanTinggiController::class, 'import'])->name('import');
-        Route::get('/{id}/alih-bentuk-PT', [PerguruanTinggiController::class, 'alihBentuk'])->name('alihBentuk');
-        Route::put('/{id}/update-alih-bentuk-PT', [PerguruanTinggiController::class, 'updateAlihBentuk'])->name('updateAlihBentuk');
+        Route::get('/', [PerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View Perguruan Tinggi');
+        Route::middleware('role.access:Create Perguruan Tinggi')->group(function () {
+            Route::get('/create', [PerguruanTinggiController::class, 'create'])->name('create');
+            Route::post('/', [PerguruanTinggiController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit Perguruan Tinggi')->group(function () {
+            Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}', [PerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail Perguruan Tinggi');
+        Route::delete('/{id}', [PerguruanTinggiController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Perguruan Tinggi');
+        Route::post('/import', [PerguruanTinggiController::class, 'import'])->name('import')->middleware('role.access:Import Perguruan Tinggi');
     });
 
     Route::prefix('badan-penyelenggara')->name('badan-penyelenggara.')->group(function () {
         Route::get('/', [BadanPenyelenggaraController::class, 'index'])->name('index')->middleware('role.access:View Badan Penyelenggara');
-        Route::get('/create', [BadanPenyelenggaraController::class, 'create'])->name('create');
-        Route::post('/', [BadanPenyelenggaraController::class, 'store'])->name('store');
-        Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show');
-        Route::post('/import', [BadanPenyelenggaraController::class, 'import'])->name('import');
+        Route::middleware('role.access:Create Badan Penyelenggara')->group(function () {
+            Route::get('/create', [BadanPenyelenggaraController::class, 'create'])->name('create');
+            Route::post('/', [BadanPenyelenggaraController::class, 'store'])->name('store');
+        });
+        Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show')->middleware('role.access:Detail Badan Penyelenggara');
+        Route::post('/import', [BadanPenyelenggaraController::class, 'import'])->name('import')->middleware('role.access:Import Badan Penyelenggara');
     });
 
     Route::prefix('program-studi')->name('program-studi.')->group(function () {
-        Route::get('/', [ProgramStudiController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [ProgramStudiController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [ProgramStudiController::class, 'edit'])->name('edit');
-        Route::post('/', [ProgramStudiController::class, 'store'])->name('store');
-        Route::put('/{id}', [ProgramStudiController::class, 'update'])->name('update');
-        Route::get('/{id}', [ProgramStudiController::class, 'show'])->name('show');
+        Route::get('/', [ProgramStudiController::class, 'index'])->name('index')->middleware('role.access:View Program Studi');
+        Route::middleware('role.access:Create Program Studi')->group(function () {
+            Route::get('/{id}/create', [ProgramStudiController::class, 'create'])->name('create');
+            Route::post('/', [ProgramStudiController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit Program Studi')->group(function () {
+            Route::get('/{id}/edit', [ProgramStudiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [ProgramStudiController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}', [ProgramStudiController::class, 'show'])->name('show')->middleware('role.access:Detail Program Studi');
     });
 
     Route::prefix('akreditasi-program-studi')->name('akreditasi-program-studi.')->group(function () {
-        Route::get('/', [AkreditasiProdiController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [AkreditasiProdiController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [AkreditasiProdiController::class, 'edit'])->name('edit');
-        Route::post('/', [AkreditasiProdiController::class, 'store'])->name('store');
-        Route::put('/{id}', [AkreditasiProdiController::class, 'update'])->name('update');
-        Route::get('/{id}', [AkreditasiProdiController::class, 'show'])->name('show');
+        Route::get('/', [AkreditasiProdiController::class, 'index'])->name('index')->middleware('role.access:View Akreditasi Program Studi');
+        Route::middleware('role.access:Create Akreditasi Program Studi')->group(function () {
+            Route::get('/{id}/create', [AkreditasiProdiController::class, 'create'])->name('create');
+            Route::post('/', [AkreditasiProdiController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit Akreditasi Program Studi')->group(function () {
+            Route::get('/{id}/edit', [AkreditasiProdiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AkreditasiProdiController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}', [AkreditasiProdiController::class, 'show'])->name('show')->middleware('role.access:Detail Akreditasi Program Studi');
     });
 
     Route::prefix('akreditasi-perguruan-tinggi')->name('akreditasi-perguruan-tinggi.')->group(function () {
-        Route::get('/', [AkreditasiPerguruanTinggiController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [AkreditasiPerguruanTinggiController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [AkreditasiPerguruanTinggiController::class, 'edit'])->name('edit');
-        Route::post('/', [AkreditasiPerguruanTinggiController::class, 'store'])->name('store');
-        Route::put('/{id}', [AkreditasiPerguruanTinggiController::class, 'update'])->name('update');
-        Route::get('/{id}', [AkreditasiPerguruanTinggiController::class, 'show'])->name('show');
-        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail');
-        Route::post('/view-pdf', [AkreditasiPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
+        Route::get('/', [AkreditasiPerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View Akreditasi Perguruan Tinggi');
+        Route::middleware('role.access:Create Akreditasi Perguruan Tinggi')->group(function () {
+            Route::get('/{id}/create', [AkreditasiPerguruanTinggiController::class, 'create'])->name('create');
+            Route::post('/', [AkreditasiPerguruanTinggiController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit Akreditasi Perguruan Tinggi')->group(function () {
+            Route::get('/{id}/edit', [AkreditasiPerguruanTinggiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AkreditasiPerguruanTinggiController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail')->middleware('role.access:Detal Akreditasi Perguruan Tinggi');
+        Route::post('/view-pdf', [AkreditasiPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akreditasi Perguruan Tinggi');
     });
 
     Route::prefix('pimpinan-perguruan-tinggi')->name('pimpinan-perguruan-tinggi.')->group(function () {
-        Route::get('/', [PimpinanPerguruanTinggiController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [PimpinanPerguruanTinggiController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [PimpinanPerguruanTinggiController::class, 'edit'])->name('edit');
-        Route::post('/', [PimpinanPerguruanTinggiController::class, 'store'])->name('store');
-        Route::put('/{id}', [PimpinanPerguruanTinggiController::class, 'update'])->name('update');
-        Route::get('/{id}', [PimpinanPerguruanTinggiController::class, 'show'])->name('show');
-        Route::post('/view-pdf', [PimpinanPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
+        Route::get('/', [PimpinanPerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View Pimpinan Perguruan Tinggi');
+        Route::middleware('role.access:Create Pimpinan Perguruan Tinggi')->group(function () {
+            Route::get('/{id}/create', [PimpinanPerguruanTinggiController::class, 'create'])->name('create');
+            Route::post('/', [PimpinanPerguruanTinggiController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit Pimpinan Perguruan Tinggi')->group(function () {
+            Route::get('/{id}/edit', [PimpinanPerguruanTinggiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PimpinanPerguruanTinggiController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}', [PimpinanPerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail Pimpinan Perguruan Tinggi');
+        Route::post('/view-pdf', [PimpinanPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Pimpinan Perguruan Tinggi');
     });
 
     Route::prefix('sk-perguruan-tinggi')->name('sk-perguruan-tinggi.')->group(function () {
-        Route::get('/', [SkPerguruanTinggiController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [SkPerguruanTinggiController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [SkPerguruanTinggiController::class, 'edit'])->name('edit');
-        Route::post('/', [SkPerguruanTinggiController::class, 'store'])->name('store');
-        Route::put('/{id}', [SkPerguruanTinggiController::class, 'update'])->name('update');
-        Route::get('/{id}', [SkPerguruanTinggiController::class, 'show'])->name('show');
-        Route::post('/view-pdf', [SkPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf');
+        Route::get('/', [SkPerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View SK Perguruan Tinggi');
+        Route::middleware('role.access:Create SK Perguruan Tinggi')->group(function () {
+            Route::get('/{id}/create', [SkPerguruanTinggiController::class, 'create'])->name('create');
+            Route::get('/{id}/edit', [SkPerguruanTinggiController::class, 'edit'])->name('edit');
+        });
+        Route::middleware('role.access:Edit SK Perguruan Tinggi')->group(function () {
+            Route::post('/', [SkPerguruanTinggiController::class, 'store'])->name('store');
+            Route::put('/{id}', [SkPerguruanTinggiController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}', [SkPerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail SK Perguruan Tinggi');
+        Route::post('/view-pdf', [SkPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Perguruan Tinggi');
     });
 
     Route::prefix('pimpinan-badan-penyelenggara')->name('pimpinan-badan-penyelenggara.')->group(function () {
-        Route::get('/', [PimpinanBadanPenyelenggaraController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [PimpinanBadanPenyelenggaraController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [PimpinanBadanPenyelenggaraController::class, 'edit'])->name('edit');
-        Route::post('/', [PimpinanBadanPenyelenggaraController::class, 'store'])->name('store');
-        Route::put('/{id}', [PimpinanBadanPenyelenggaraController::class, 'update'])->name('update');
-        Route::get('/{id}', [PimpinanBadanPenyelenggaraController::class, 'show'])->name('show');
-        Route::post('/view-pdf', [PimpinanBadanPenyelenggaraController::class, 'viewPdf'])->name('viewPdf');
+        Route::get('/', [PimpinanBadanPenyelenggaraController::class, 'index'])->name('index')->middleware('role.access:View Pimpinan Badan Penyelenggara');
+        Route::middleware('role.access:Create Pimpinan Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/create', [PimpinanBadanPenyelenggaraController::class, 'create'])->name('create');
+            Route::post('/', [PimpinanBadanPenyelenggaraController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [PimpinanBadanPenyelenggaraController::class, 'edit'])->name('edit');
+        });
+        Route::middleware('role.access:Edit Pimpinan Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/edit', [PimpinanBadanPenyelenggaraController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PimpinanBadanPenyelenggaraController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}', [PimpinanBadanPenyelenggaraController::class, 'show'])->name('show')->middleware('role.access:Detail Pimpinan Badan Penyelenggara');;
+        Route::post('/view-pdf', [PimpinanBadanPenyelenggaraController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Pimpinan Badan Penyelenggara');;
     });
 
     Route::prefix('akta-badan-penyelenggara')->name('akta-badan-penyelenggara.')->group(function () {
-        Route::get('/', [AktaBpController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [AktaBpController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [AktaBpController::class, 'edit'])->name('edit');
-        Route::post('/', [AktaBpController::class, 'store'])->name('store');
-        Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
-        Route::get('/{id}', [AktaBpController::class, 'show'])->name('show');
-        Route::post('/view-pdf', [AktaBpController::class, 'viewPdf'])->name('viewPdf');
+        Route::get('/', [AktaBpController::class, 'index'])->name('index')->middleware('role.access:View Akta Badan Penyelenggara');
+        Route::middleware('role.access:Create Akta Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/create', [AktaBpController::class, 'create'])->name('create');
+            Route::post('/', [AktaBpController::class, 'store'])->name('store');
+        });
+
+        Route::middleware('role.access:Edit Akta Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/edit', [AktaBpController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}', [AktaBpController::class, 'show'])->name('show')->middleware('role.access:Detal Akta Badan Penyelenggara');
+        Route::post('/view-pdf', [AktaBpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akta Badan Penyelenggara');
     });
 
     Route::prefix('sk-kumham')->name('sk-kumham.')->group(function () {
-        Route::get('/', [SkKumhamController::class, 'index'])->name('index');
-        Route::get('/{id}/create', [SkKumhamController::class, 'create'])->name('create');
-        Route::get('/{id}/edit', [SkKumhamController::class, 'edit'])->name('edit');
-        Route::post('/', [SkKumhamController::class, 'store'])->name('store');
-        Route::put('/{id}', [SkKumhamController::class, 'update'])->name('update');
-        Route::get('/{id}', [SkKumhamController::class, 'show'])->name('show');
-        Route::post('/view-pdf', [SkKumhamController::class, 'viewPdf'])->name('viewPdf');
+        Route::get('/', [SkKumhamController::class, 'index'])->name('index')->middleware('role.access:View SK Kumham Badan Penyelenggara');
+        Route::middleware('role.access:Create SK Kumham Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/create', [SkKumhamController::class, 'create'])->name('create');
+            Route::get('/{id}/edit', [SkKumhamController::class, 'edit'])->name('edit');
+        });
+        Route::middleware('role.access:Edit SK Kumham Badan Penyelenggara')->group(function () {
+            Route::post('/', [SkKumhamController::class, 'store'])->name('store');
+            Route::put('/{id}', [SkKumhamController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}', [SkKumhamController::class, 'show'])->name('show')->middleware('role.access:Detail SK Kumham Badan Penyelenggara');
+        Route::post('/view-pdf', [SkKumhamController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Badan Penyelenggara');
     });
 });

@@ -94,6 +94,7 @@
                 </div>
             </section>
 
+            @can('View Perguruan Tinggi')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
@@ -135,6 +136,7 @@
                     </div>
                 </div>
             </section>
+            @endCan
 
             <section class="datatables">
                 <div class="card">
