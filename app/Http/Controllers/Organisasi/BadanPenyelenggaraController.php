@@ -106,7 +106,7 @@ class BadanPenyelenggaraController extends Controller
             ->first();
 
         $pimpinan = PimpinanOrganisasi::where('id_organization', $id)
-            ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
+            ->select('id', 'pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
             ->with([
                 'jabatan' => function ($query) {
                     $query->select('id', 'jabatan_nama')->get();

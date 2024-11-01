@@ -158,6 +158,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [PimpinanBadanPenyelenggaraController::class, 'store'])->name('store');
         Route::put('/{id}', [PimpinanBadanPenyelenggaraController::class, 'update'])->name('update');
         Route::get('/{id}', [PimpinanBadanPenyelenggaraController::class, 'show'])->name('show');
+        Route::post('/view-pdf', [PimpinanBadanPenyelenggaraController::class, 'viewPdf'])->name('viewPdf');
     });
 
     Route::prefix('akta-badan-penyelenggara')->name('akta-badan-penyelenggara.')->group(function () {
