@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +17,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return view('role.index', compact('roles'));
+        return view('Roles.Index', compact('roles'));
     }
 
     /**

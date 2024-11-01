@@ -43,11 +43,11 @@ class Organisasi extends Model
 
     public function organizationType()
     {
-        return $this->belongsTo(OrganisasiType::class, 'org_type_id', 'id');
+        return $this->belongsTo(OrganisasiType::class, 'organisasi_type_id', 'id');
     }
 
     public function user()
     {
-        return $this->hasOne(Organisasi::class, 'org_id', 'id');
+        return $this->hasOne(Organisasi::class, 'id_organization', 'id');
     }
 }
