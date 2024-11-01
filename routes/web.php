@@ -5,6 +5,7 @@ use App\Http\Controllers\Akreditasi\AkreditasiProdiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dokumen\AktaBpController;
 use App\Http\Controllers\Dokumen\PimpinanOrganisasiController;
+use App\Http\Controllers\Dokumen\SkKumhamController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Master\JabatanController;
 use App\Http\Controllers\Master\LembagaAkreditasiController;
@@ -165,5 +166,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [AktaBpController::class, 'store'])->name('store');
         Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
         Route::get('/{id}', [AktaBpController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('sk-kumham')->name('sk-kumham.')->group(function () {
+        Route::get('/', [SkKumhamController::class, 'index'])->name('index');
+        Route::get('/{id}/create', [SkKumhamController::class, 'create'])->name('create');
+        Route::get('/{id}/edit', [SkKumhamController::class, 'edit'])->name('edit');
+        Route::post('/', [SkKumhamController::class, 'store'])->name('store');
+        Route::put('/{id}', [SkKumhamController::class, 'update'])->name('update');
+        Route::get('/{id}', [SkKumhamController::class, 'show'])->name('show');
     });
 });
