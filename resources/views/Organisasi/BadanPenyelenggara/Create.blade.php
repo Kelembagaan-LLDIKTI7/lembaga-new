@@ -20,7 +20,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_nama" class="required-label">Nama Perguruan Tinggi</label>
+                                        <label for="organisasi_nama" class="required-label">Nama Badan Penyelenggara</label>
                                         <input type="text" name="organisasi_nama" class="form-control" required>
                                     </div>
                                     <div class="form-group mb-3">
@@ -28,7 +28,7 @@
                                         <input type="text" name="organisasi_nama_singkat" class="form-control">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_email" class="required-label">Email Perguruan Tinggi</label>
+                                        <label for="organisasi_email" class="required-label">Email Badan Penyelenggara</label>
                                         <input type="email" name="organisasi_email" class="form-control" required>
                                     </div>
                                     <div class="form-group mb-3">
