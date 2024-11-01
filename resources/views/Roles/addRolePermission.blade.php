@@ -29,16 +29,36 @@
                     </div>
                 </div>
 
-                <!-- Permission Cards (Vertical list) Start -->
+                <!-- Permission Categories Start -->
                 <div class="row">
-                    @foreach (['Akreditasi', 'Akta', 'Program Studi', 'Jabatan', 'Surat Keputusan', 'Perguruan Tinggi', 'Badan Penyelenggara', 'SK Kumham', 'User'] as $category)
+                    @php
+                    $categories = [
+                    'General Permissions' => ['Create Permission', 'Edit Permission', 'Delete Permission', 'View Permission'],
+                    'Role Management' => ['Create Roles', 'Edit Roles', 'Delete Roles', 'View Roles', 'View Role Permissions', 'Add Role Permissions'],
+                    'User Management' => ['Create User', 'Edit User', 'Delete User', 'View User'],
+                    'Perguruan Tinggi' => ['Create Perguruan Tinggi', 'Edit Perguruan Tinggi', 'Delete Perguruan Tinggi', 'View Perguruan Tinggi', 'Import Perguruan Tinggi', 'Detail Perguruan Tinggi'],
+                    'Badan Penyelenggara' => ['Create Badan Penyelenggara', 'Edit Badan Penyelenggara', 'Delete Badan Penyelenggara', 'View Badan Penyelenggara', 'Import Badan Penyelenggara', 'Detail Badan Penyelenggara'],
+                    'Program Studi' => ['Create Program Studi', 'Edit Program Studi', 'View Program Studi', 'Detail Program Studi'],
+                    'Akreditasi' => ['Create Akreditasi Program Studi', 'Edit Akreditasi Program Studi', 'View Akreditasi Program Studi', 'Detail Akreditasi Program Studi', 'Create Akreditasi Perguruan Tinggi', 'Edit Akreditasi Perguruan Tinggi', 'Delete Akreditasi Perguruan Tinggi', 'View Akreditasi Perguruan Tinggi', 'Detail Akreditasi Perguruan Tinggi', 'View PDF Akreditasi Perguruan Tinggi'],
+                    'Pimpinan' => ['Create Pimpinan Perguruan Tinggi', 'Edit Pimpinan Perguruan Tinggi', 'Delete Pimpinan Perguruan Tinggi', 'View Pimpinan Perguruan Tinggi', 'Detail Pimpinan Perguruan Tinggi', 'View PDF Pimpinan Perguruan Tinggi'],
+                    'Surat Keputusan' => ['Create SK Perguruan Tinggi', 'Edit SK Perguruan Tinggi', 'Delete SK Perguruan Tinggi', 'View SK Perguruan Tinggi', 'Detail SK Perguruan Tinggi', 'View PDF SK Perguruan Tinggi'],
+                    'Jabatan' => ['Create Jabatan', 'Edit Jabatan', 'Delete Jabatan', 'View Jabatan'],
+                    'Akta' => ['Create Akta Badan Penyelenggara', 'Edit Akta Badan Penyelenggara', 'Delete Akta Badan Penyelenggara', 'View Akta Badan Penyelenggara', 'Detail Akta Badan Penyelenggara', 'View PDF Akta Badan Penyelenggara'],
+                    'SK Kumham' => ['Create SK Kumham Badan Penyelenggara', 'Edit SK Kumham Badan Penyelenggara', 'Delete SK Kumham Badan Penyelenggara', 'View SK Kumham Badan Penyelenggara', 'Detail SK Kumham Badan Penyelenggara', 'View PDF SK Kumham Badan Penyelenggara'],
+                    ];
+                    @endphp
+
+                    @foreach ($categories as $category => $permissionNames)
                     <div class="col-md-4">
-                        <div class="card">
+                        <div class="card mb-4">
                             <div class="card-header">{{ $category }}</div>
                             <div class="card-body">
                                 <div class="list-group">
-                                    @foreach ($permissions as $permission)
-                                    @if (Str::contains($permission->name, $category))
+                                    @foreach ($permissionNames as $permissionName)
+                                    @php
+                                    $permission = $permissions->firstWhere('name', $permissionName);
+                                    @endphp
+                                    @if ($permission)
                                     <div class="form-check form-switch">
                                         <input type="checkbox" class="form-check-input" id="permission_{{ $permission->id }}" name="permission[]" value="{{ $permission->id }}"
                                             {{ in_array($permission->id, $rolePermissions) ? 'checked' : '' }}>
@@ -52,7 +72,7 @@
                     </div>
                     @endforeach
                 </div>
-                <!-- Permission Cards End -->
+                <!-- Permission Categories End -->
 
                 <button type="submit" class="btn btn-primary mt-4">Submit</button>
             </form>
