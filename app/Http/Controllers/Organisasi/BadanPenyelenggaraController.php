@@ -10,7 +10,9 @@ use App\Models\Kota;
 use App\Models\Organisasi;
 use App\Models\PimpinanOrganisasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class BadanPenyelenggaraController extends Controller
 {
@@ -66,7 +68,79 @@ class BadanPenyelenggaraController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
+        $validatedData = $request->validate([
+            'organisasi_nama' => 'required|string|max:255',
+            'organisasi_nama_singkat' => 'nullable|string|max:255',
+            'organisasi_email' => 'required|email|max:255',
+            'organisasi_telp' => 'required|string|max:20',
+            'organisasi_alamat' => 'required|string',
+            'organisasi_kota' => 'required|string',
+            'organisasi_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'akta_nomor' => 'required|string|max:255',
+            'akta_tanggal' => 'required|date',
+            'akta_nama_notaris' => 'required|string|max:255',
+            'kotaAkta' => 'required|string',
+            'akta_jenis' => 'required|string|in:Pendirian,Perubahan',
+            'aktaDokumen' => 'required|mimes:pdf,doc,docx|max:2048',
+            'selectedBP' => 'nullable|exists:badan_penyelenggara,id',
+            'organisasi_website' => 'nullable',
+        ]);
+
+        if ($request->hasFile('organisasi_logo')) {
+            $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
+            $validatedData['organisasi_logo'] = $logoPath;
+        }
+
+        if ($request->hasFile('ataDokumen')) {
+            $aktaPath = $request->file('aktaDokumen')->store('akta', 'public');
+            $validatedData['akta_dokumen'] = $aktaPath;
+        }
+
+        // $table->string('organisasi_nama');
+        //     $table->string('organisasi_nama_singkat')->nullable();
+        //     $table->string('organisasi_kode')->nullable();
+        //     $table->longText('organisasi_email')->nullable();
+        //     $table->longText('organisasi_telp')->nullable();
+        //     $table->string('organisasi_kota')->nullable();
+        //     $table->longText('organisasi_alamat')->nullable();
+        //     $table->string('organisasi_website')->nullable();
+        //     $table->string('organisasi_logo')->nullable();
+        //     $table->string('organisasi_status')->nullable();
+        //     $table->string('organisasi_type_id')->nullable();
+        //     $table->string('organisasi_berubah_id')->nullable();
+        //     $table->string('organisasi_berubah_status')->nullable();
+        //     $table->string('parent_id')->nullable();
+        //     $table->string('users_id')->nullable();
+
+        $bp = Organisasi::create([
+            'id' => Str::uuid(),
+            'organisasi_nama' => $validatedData['organisasi_nama'],
+            'organisasi_nama_singkat' => $validatedData['organisasi_nama_singkat'] ?? null,
+            'organisasi_email' => $validatedData['organisasi_email'],
+            'organisasi_telp' => $validatedData['organisasi_telp'],
+            'organisasi_website' => $validatedData['organisasi_website'],
+            'organisasi_alamat' => $validatedData['organisasi_alamat'],
+            'organisasi_kota' => $validatedData['organisasi_kota'],
+            'organisasi_status' => 'Aktif',
+            'organisasi_logo' => $validatedData['organisasi_logo'],
+            'organisasi_type_id' => 2,
+            'users_id' => Auth::user()->id,
+        ]);
+        
+        Akta::create([
+            'akta_nomor' => $validatedData['akta_nomor'],
+            'akta_tanggal' => $validatedData['akta_tanggal'],
+            'akta_nama_notaris' => $validatedData['akta_nama_notaris'],
+            'akta_kota_notaris' => $validatedData['kotaAkta'],
+            'akta_jenis' => $validatedData['akta_jenis'],
+            'akta_status' => 'Aktif',
+            'akta_dokumen' => $validatedData['aktaDokumen'],
+            'id_organization' => $bp->id,
+            'id_user' => Auth::user()->id,
+        ]);
+
+        return redirect()->route('badan-penyelenggara.index')->with('success', 'Badan Penyelenggara berhasil ditambahkan.');
     }
 
     /**
