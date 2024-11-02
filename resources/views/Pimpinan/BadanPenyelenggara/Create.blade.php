@@ -63,7 +63,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="pimpinan_tanggal" class="required-label">
-                                            Tanggal Dilantik
+                                            Tanggal Terbit SK
                                         </label>
                                         <input type="date" name="pimpinan_tanggal" class="form-control" required>
                                         @error('pimpinan_tanggal')
@@ -72,9 +72,14 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_status" class="required-label">Status Akreditasi</label>
-                                        <input type="text" disabled value="Aktif" class="form-control"
-                                            name="pimpinan_status">
+                                        <label for="pimpinan_tanggal" class="required-label">
+                                            Tanggal Berakhir SK
+                                        </label>
+                                        <input type="date" name="pimpinan_tanggal_berakhir" class="form-control"
+                                            required>
+                                        @error('pimpinan_tanggal_berakhir')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">

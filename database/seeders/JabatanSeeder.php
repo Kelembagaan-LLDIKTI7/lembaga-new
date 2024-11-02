@@ -94,6 +94,16 @@ class JabatanSeeder extends Seeder
                 'bentuk_pt' => $universitas->id,
                 'created_at' => now(),
             ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Ketua Yayasan',
+                'created_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Wakil Ketua Yayasan',
+                'created_at' => now(),
+            ],
         ];
 
         foreach ($listJabatan as $jabatan) {
