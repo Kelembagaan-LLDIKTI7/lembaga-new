@@ -14,41 +14,90 @@ class JabatanSeeder extends Seeder
      */
     public function run(): void
     {
-        $jabatans = [
+        $akademi = DB::table('bentuk_pts')->where('bentuk_nama', 'Akademi')->first();
+        $akademiKomunitas = DB::table('bentuk_pts')->where('bentuk_nama', 'Akademi Komunitas')->first();
+        $institut = DB::table('bentuk_pts')->where('bentuk_nama', 'Institut')->first();
+        $politeknik = DB::table('bentuk_pts')->where('bentuk_nama', 'Politeknik')->first();
+        $st = DB::table('bentuk_pts')->where('bentuk_nama', 'Sekolah Tinggi')->first();
+        $universitas = DB::table('bentuk_pts')->where('bentuk_nama', 'Universitas')->first();
+
+        $listJabatan = [
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Ketua',
+                'bentuk_pt' => $st->id,
+                'created_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Wakil Ketua',
+                'bentuk_pt' => $st->id,
+                'created_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Direktur',
+                'bentuk_pt' => $akademi->id,
+                'created_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Wakil Direktur',
+                'bentuk_pt' => $akademi->id,
+                'created_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Direktur',
+                'bentuk_pt' => $akademiKomunitas->id,
+                'created_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Wakil Direktur',
+                'bentuk_pt' => $akademiKomunitas->id,
+                'created_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Direktur',
+                'bentuk_pt' => $politeknik->id,
+                'created_at' => now(),
+            ],
+            [
+                'id' => Str::uuid(),
+                'jabatan_nama' => 'Wakil Direktur',
+                'bentuk_pt' => $politeknik->id,
+                'created_at' => now(),
+            ],
             [
                 'id' => Str::uuid(),
                 'jabatan_nama' => 'Rektor',
-                'jabatan_status' => 'Aktif',
-                'jabatan_organisasi' => 'perguruan tinggi',
+                'bentuk_pt' => $institut->id,
                 'created_at' => now(),
-                'updated_at' => now()
             ],
             [
                 'id' => Str::uuid(),
-                'jabatan_nama' => 'Wakil Rektor I',
-                'jabatan_status' => 'Aktif',
-                'jabatan_organisasi' => 'perguruan tinggi',
+                'jabatan_nama' => 'Wakil Rektor',
+                'bentuk_pt' => $institut->id,
                 'created_at' => now(),
-                'updated_at' => now()
             ],
             [
                 'id' => Str::uuid(),
-                'jabatan_nama' => 'Wakil Rektor II',
-                'jabatan_status' => 'Aktif',
-                'jabatan_organisasi' => 'perguruan tinggi',
+                'jabatan_nama' => 'Rektor',
+                'bentuk_pt' => $universitas->id,
                 'created_at' => now(),
-                'updated_at' => now()
             ],
             [
                 'id' => Str::uuid(),
-                'jabatan_nama' => 'Wakil Rektor III',
-                'jabatan_status' => 'Aktif',
-                'jabatan_organisasi' => 'perguruan tinggi',
+                'jabatan_nama' => 'Wakil Rektor',
+                'bentuk_pt' => $universitas->id,
                 'created_at' => now(),
-                'updated_at' => now()
             ],
         ];
 
-        DB::table('jabatans')->insert($jabatans);
+        foreach ($listJabatan as $jabatan) {
+            DB::table('jabatans')->insert($jabatan);
+        }
     }
 }
