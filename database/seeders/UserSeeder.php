@@ -127,6 +127,11 @@ class UserSeeder extends Seeder
             'Detail Akta Badan Penyelenggara',
             'View PDF Akta Badan Penyelenggara',
 
+            'View SK Badan Penyelenggara',
+            'Create SK Badan Penyelenggara',
+            'Edit SK Badan Penyelenggara',
+            'View PDF SK Badan Penyelenggara',
+
             'Create SK Kumham Badan Penyelenggara',
             'Edit SK Kumham Badan Penyelenggara',
             'Delete SK Kumham Badan Penyelenggara',

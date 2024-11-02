@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
 use App\Imports\PtImport;
+use App\Models\BentukPt;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
@@ -195,13 +196,17 @@ class PerguruanTinggiController extends Controller
             'parent_id',
             'organisasi_logo',
             'organisasi_website',
-            'organisasi_berubah_id'
+            'organisasi_berubah_id',
+            'organisasi_bentuk_pt'
         )->with(
             'parent:id,organisasi_nama,organisasi_email,organisasi_telp,organisasi_status,organisasi_alamat,organisasi_kota'
         )->with([
             'prodis' => function ($query) {
                 $query->select('id', 'id_organization', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status')
                     ->orderBy('created_at', 'asc');
+            },
+            'bentukPt' => function ($query) {
+                $query->select('id', 'bentuk_nama')->first();
             }
         ])->with(['akreditasis'])->findOrFail($id);
 
@@ -277,6 +282,7 @@ class PerguruanTinggiController extends Controller
             'id',
             'jsk_nama'
         )->get();
+        $bentukPt = BentukPt::all();
 
         return view('Organisasi.PerguruanTinggi.Edit', [
             'perguruanTinggi' => $perguruanTinggi,
@@ -284,7 +290,8 @@ class PerguruanTinggiController extends Controller
             'perguruanTinggis' => $perguruanTinggis,
             'skTypes' => $skTypes,
             'badanPenyelenggaras' => $badanPenyelenggaras,
-            'jenis' => $jenis
+            'jenis' => $jenis,
+            'bentukPt' => $bentukPt
         ]);
     }
 
@@ -307,23 +314,32 @@ class PerguruanTinggiController extends Controller
             'organisasi_alamat' => 'required|string|max:255',
             'organisasi_website' => 'nullable|url|max:255',
             'organisasi_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'organisasi_bentuk_pt' => 'required|exists:bentuk_pts,id',
             'parent_id' => 'nullable',
-            'sk_nomor' => 'required',
-            'sk_tanggal' => 'required',
-            'id_jenis_surat_keputusan' => 'required',
-            'perubahan' => 'required'
         ]);
 
         // Handle file uploads for logo and document
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
             $validated['organisasi_logo'] = $logoPath; // Update the validated data with the new logo path
+            // Update the Perguruan Tinggi record
+            $perguruanTinggi->update($validated);
+        } else {
+            DB::table('organisasis')->where('id', $id)
+                ->update([
+                    'organisasi_nama' => $request->input('organisasi_nama'),
+                    'organisasi_nama_singkat' => $request->input('organisasi_nama_singkat'),
+                    'organisasi_email' => $request->input('organisasi_email'),
+                    'organisasi_telp' => $request->input('organisasi_telp'),
+                    'organisasi_kota' => $request->input('organisasi_kota'),
+                    'organisasi_alamat' => $request->input('organisasi_alamat'),
+                    'organisasi_website' => $request->input('organisasi_website'),
+                    'organisasi_bentuk_pt' => $request->input('organisasi_bentuk_pt'),
+                    'parent_id' => $request->input('parent_id'),
+                ]);
         }
 
-        // Update the Perguruan Tinggi record
-        $perguruanTinggi->update($validated);
-
-        return redirect()->route('perguruan-tinggi.index')->with('success', 'Perguruan Tinggi berhasil diperbarui.');
+        return redirect()->route('perguruan-tinggi.show', ['id' => $id])->with('success', 'Perguruan Tinggi berhasil diperbarui.');
     }
 
     /**

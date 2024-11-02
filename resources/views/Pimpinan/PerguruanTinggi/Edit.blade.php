@@ -64,12 +64,28 @@
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="pimpinan_status" class="required-label">Status Akreditasi</label>
+                                        <select name="pimpinan_status" class=" form-control select-search">
+                                            <option value="">-- Pilih Status --</option>
+                                            <option value="Berlaku"
+                                                {{ $pimpinan->pimpinan_status == 'Berlaku' ? 'selected' : '' }}>Berlaku
+                                            </option>
+                                            <option value="Berakhir"
+                                                {{ $pimpinan->pimpinan_status == 'Berakhir' ? 'selected' : '' }}>Berakhir
+                                            </option>
+                                            <option value="Dicabut"
+                                                {{ $pimpinan->pimpinan_status == 'Dicabut' ? 'selected' : '' }}>Dicabut
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="pimpinan_tanggal" class="required-label">
-                                            Tanggal Dilantik
+                                            Tanggal Terbit SK
                                         </label>
                                         <input type="date" name="pimpinan_tanggal" class="form-control"
                                             value="{{ $pimpinan->pimpinan_tanggal }}" required>
@@ -79,9 +95,14 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_status" class="required-label">Status Akreditasi</label>
-                                        <input type="text" disabled value="{{ $pimpinan->pimpinan_status }}"
-                                            class="form-control" name="pimpinan_status">
+                                        <label for="pimpinan_tanggal" class="required-label">
+                                            Tanggal Berakhir SK
+                                        </label>
+                                        <input type="date" name="pimpinan_tanggal_berakhir" class="form-control"
+                                            value="{{ $pimpinan->pimpinan_tanggal_berakhir }}" required>
+                                        @error('pimpinan_tanggal_berakhir')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -100,21 +121,22 @@
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+                                    <div class="form-group mb-3">
+                                        <label for="pimpinan_sk_dokumen" class="required-label">Dokumen SK</label>
+                                        <input type="file" name="pimpinan_sk_dokumen" class="form-control"
+                                            accept=".pdf,.doc,.docx" onchange="previewFile(event)">
+                                    </div>
                                 </div>
 
-                                <div class="form-group mb-3">
-                                    <label for="pimpinan_sk_dokumen" class="required-label">Dokumen SK</label>
-                                    <input type="file" name="pimpinan_sk_dokumen" class="form-control"
-                                        accept=".pdf,.doc,.docx" onchange="previewFile(event)">
-                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
-                                    <div id="file-preview" class="mt-3"></div>
-                                    @error('pimpinan_sk_dokumen')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
+
+                                <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
+                                <div id="file-preview" class="mt-3"></div>
+                                @error('pimpinan_sk_dokumen')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('perguruan-tinggi.show', ['id' => $id_organization]) }}"
+                                    <a href="{{ route('perguruan-tinggi.show', ['id' => $pimpinan->id_organization]) }}"
                                         class="btn btn-primary btn-sm-custom">Keluar</a>
                                     <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                 </div>

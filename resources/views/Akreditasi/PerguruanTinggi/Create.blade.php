@@ -113,8 +113,10 @@
                                 </div>
 
                                 <div class="btn-center mt-3">
+                                    @can('View Perguruan Tinggi')
                                     <a href="{{ route('perguruan-tinggi.index') }}"
                                         class="btn btn-primary btn-sm-custom">Keluar</a>
+                                        @endCan
                                     <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                 </div>
                             </div>

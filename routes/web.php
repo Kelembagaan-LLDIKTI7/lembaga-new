@@ -5,6 +5,7 @@ use App\Http\Controllers\Akreditasi\AkreditasiProdiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dokumen\AktaBpController;
 use App\Http\Controllers\Dokumen\PimpinanOrganisasiController;
+use App\Http\Controllers\Dokumen\SkbpController;
 use App\Http\Controllers\Dokumen\SkKumhamController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Master\JabatanController;
@@ -144,7 +145,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [AkreditasiPerguruanTinggiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [AkreditasiPerguruanTinggiController::class, 'update'])->name('update');
         });
-        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail')->middleware('role.access:Detal Akreditasi Perguruan Tinggi');
+        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail')->middleware('role.access:Detail Akreditasi Perguruan Tinggi');
         Route::post('/view-pdf', [AkreditasiPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akreditasi Perguruan Tinggi');
     });
 
@@ -202,7 +203,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [AktaBpController::class, 'edit'])->name('edit');
             Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
         });
-        Route::get('/{id}', [AktaBpController::class, 'show'])->name('show')->middleware('role.access:Detal Akta Badan Penyelenggara');
+        Route::get('/{id}', [AktaBpController::class, 'show'])->name('show')->middleware('role.access:Detail Akta Badan Penyelenggara');
         Route::post('/view-pdf', [AktaBpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akta Badan Penyelenggara');
     });
 
@@ -218,5 +219,17 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('/{id}', [SkKumhamController::class, 'show'])->name('show')->middleware('role.access:Detail SK Kumham Badan Penyelenggara');
         Route::post('/view-pdf', [SkKumhamController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Badan Penyelenggara');
+    });
+
+    Route::prefix('skbp-badan-penyelenggara')->name('skbp-badan-penyelenggara.')->group(function () {
+        Route::middleware('role.access:Create SK Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/create', [SkbpController::class, 'create'])->name('create');
+            Route::post('/', [SkbpController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit SK Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/edit', [SkbpController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [SkbpController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}/view-pdf', [SkbpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Badan Penyelenggara');
     });
 });
