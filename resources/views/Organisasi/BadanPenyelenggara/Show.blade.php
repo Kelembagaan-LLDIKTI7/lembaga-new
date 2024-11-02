@@ -105,6 +105,59 @@
                 </div>
             </section>
 
+            <section class="datatables">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <h5 class="mb-0">SKBP</h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="skbp" class="table-striped table-bordered display text-nowrap table border"
+                                style="width: 100%">
+                                <a href="{{ route('skbp-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
+                                    Tambah SKBP
+                                </a>
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nomor SK</th>
+                                        <th>Tanggal SK</th>
+                                        <th>Jenis SK</th>
+                                        <th>Dokumen</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($skbp as $sk)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $sk->nomor }}</td>
+                                            <td>{{ $sk->tanggal }}</td>
+                                            <td>{{ $sk->jenis }}</td>
+                                            <td>
+                                                @if ($sk->dokumen)
+                                                    <a href="{{ route('skbp-badan-penyelenggara.viewPdf', $sk->id) }}"
+                                                        target="_blank">
+                                                        Dokumen
+                                                    </a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('skbp-badan-penyelenggara.edit', $sk->id) }}"
+                                                    class="btn btn-info btn-sm">
+                                                    Edit
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             @can('View Perguruan Tinggi')
                 <section class="datatables">
                     <div class="card">
@@ -221,6 +274,8 @@
             $('#pimpinan_table').DataTable();
 
             $('#perguruan_tinggi').DataTable();
+
+            $('#skbp').DataTable();
 
             $('#pemimpin_perguruan_tinggi').DataTable();
 

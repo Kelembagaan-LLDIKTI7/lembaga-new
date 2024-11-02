@@ -5,6 +5,7 @@ use App\Http\Controllers\Akreditasi\AkreditasiProdiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dokumen\AktaBpController;
 use App\Http\Controllers\Dokumen\PimpinanOrganisasiController;
+use App\Http\Controllers\Dokumen\SkbpController;
 use App\Http\Controllers\Dokumen\SkKumhamController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Master\JabatanController;
@@ -218,5 +219,13 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('/{id}', [SkKumhamController::class, 'show'])->name('show')->middleware('role.access:Detail SK Kumham Badan Penyelenggara');
         Route::post('/view-pdf', [SkKumhamController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Badan Penyelenggara');
+    });
+
+    Route::prefix('skbp-badan-penyelenggara')->name('skbp-badan-penyelenggara.')->group(function () {
+        Route::get('/{id}/create', [SkbpController::class, 'create'])->name('create');
+        Route::post('/', [SkbpController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [SkbpController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [SkbpController::class, 'update'])->name('update');
+        Route::get('/{id}/view-pdf', [SkbpController::class, 'viewPdf'])->name('viewPdf');
     });
 });

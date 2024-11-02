@@ -9,6 +9,7 @@ use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
 use App\Models\PimpinanOrganisasi;
+use App\Models\Skbp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -191,6 +192,9 @@ class BadanPenyelenggaraController extends Controller
             ->with(['skKumham'])
             ->get();
 
+        $skbp = Skbp::where('id_organization', $id)
+            ->get();
+
         // dd($akta);
 
         // ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
@@ -219,6 +223,7 @@ class BadanPenyelenggaraController extends Controller
             'badanPenyelenggaras' => $badanPenyelenggaras,
             'pimpinan' => $pimpinan,
             'akta' => $akta,
+            'skbp' => $skbp,
         ]);
     }
 
