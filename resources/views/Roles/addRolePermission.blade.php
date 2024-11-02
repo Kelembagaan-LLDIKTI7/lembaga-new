@@ -45,6 +45,8 @@
                     'Jabatan' => ['Create Jabatan', 'Edit Jabatan', 'Delete Jabatan', 'View Jabatan'],
                     'Akta' => ['Create Akta Badan Penyelenggara', 'Edit Akta Badan Penyelenggara', 'Delete Akta Badan Penyelenggara', 'View Akta Badan Penyelenggara', 'Detail Akta Badan Penyelenggara', 'View PDF Akta Badan Penyelenggara'],
                     'SK Kumham' => ['Create SK Kumham Badan Penyelenggara', 'Edit SK Kumham Badan Penyelenggara', 'Delete SK Kumham Badan Penyelenggara', 'View SK Kumham Badan Penyelenggara', 'Detail SK Kumham Badan Penyelenggara', 'View PDF SK Kumham Badan Penyelenggara'],
+                    'Master' => ['View Peringkat Akreditasi', 'View Lembaga Akreditasi', 'View Jenis Organisasi'],
+                    'SK Badan Penyelenggara' => ['Create SK Badan Penyelenggara', 'Edit SK Badan Penyelenggara', 'View PDF Badan Penyelenggara'],
                     ];
                     @endphp
 

@@ -29,9 +29,11 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-4">
+                                @can('Create Permission')
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermissionModal">
                                     Tambah Permission Role User
                                 </button>
+                                @endCan
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover" id="permissionTable">
@@ -49,9 +51,12 @@
                                             <td>{{ $item->name }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
+                                                    @can('Edit Permission')
                                                     <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editPermissionModal-{{ $item->id }}">
                                                         <i class="ri-edit-2-line"></i> Edit
                                                     </button>
+                                                    @endCan
+                                                    @can('Delete Permission')
                                                     <a href="#" class="btn btn-sm btn-danger" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                                         <i class="ri-delete-bin-line"></i> Delete
                                                     </a>
@@ -59,6 +64,7 @@
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
+                                                    @endCan
                                                 </div>
                                             </td>
                                         </tr>

@@ -51,10 +51,11 @@
                         </table>
 
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary me-2">Alih Bentuk</button>
+                            @can('Edit Perguruan Tinggi')
                             <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
                                 Edit
                             </a>
+                            @endCan
                         </div>
                     </div>
                 </div>
@@ -146,6 +147,7 @@
                 </div>
             </section>
 
+            @can('View Akreditasi Perguruan Tinggi')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
@@ -156,10 +158,12 @@
                             <table id="akreditasi_table"
                                 class="table-striped table-bordered display text-nowrap table border"
                                 style="overflow-x: auto; overflow-y: hidden;">
+                                @can('Create Akreditasi Perguruan Tinggi')
                                 <a href="{{ route('akreditasi-perguruan-tinggi.create', $organisasi->id) }}"
                                     class="btn btn-primary btn-sm mb-2">
                                     Tambah Areditasi PT
                                 </a>
+                                @endCan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -185,10 +189,13 @@
                                             <td>{{ $akre->peringkat_nama }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
+                                                    @can('Edit Akreditasi Perguruan Tinggi')
                                                     <div class="edit">
                                                         <a href="{{ route('akreditasi-perguruan-tinggi.edit', $akre->id) }}"
                                                             class="btn btn-sm btn-success">Edit</a>
                                                     </div>
+                                                    @endCan
+                                                    @can('Detail Akreditasi Perguruan Tinggi')
                                                     <div class="detail">
                                                         <button
                                                             class="btn btn-sm btn-info detail-item-btn akreditasi-detail"
@@ -196,6 +203,7 @@
                                                             data-bs-target="#detailRecordModalAkreditasi"
                                                             data-id="{{ $akre->id }}">Detail</button>
                                                     </div>
+                                                    @endCan
                                                 </div>
                                             </td>
                                         </tr>
@@ -206,7 +214,9 @@
                     </div>
                 </div>
             </section>
+            @endCan
 
+            @can('View SK Perguruan Tinggi')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
@@ -216,10 +226,12 @@
                         <div class="table-responsive">
                             <table id="sk_table" class="table-striped table-bordered display text-nowrap table border"
                                 style="overflow-x: auto; overflow-y: hidden;">
+                                @can('Create SK Perguruan Tinggi')
                                 <a href="{{ route('sk-perguruan-tinggi.create', $organisasi->id) }}"
                                     class="btn btn-primary btn-sm mb-2">
                                     Tambah SK
                                 </a>
+                                @endCan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -240,15 +252,19 @@
                                             <td>{{ $sk->jsk_nama }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
+                                                    @can('Edit SK Perguruan Tinggi')
                                                     <div class="edit">
                                                         <a href="{{ route('sk-perguruan-tinggi.edit', $sk->id) }}"
                                                             class="btn btn-sm btn-success">Edit</a>
                                                     </div>
+                                                    @endCan
+                                                    @can('Detail SK Perguruan Tinggi')
                                                     <div class="detail">
                                                         <button class="btn btn-sm btn-info detail-item-btn sk-detail"
                                                             data-bs-toggle="modal" data-bs-target="#detailRecordModalSK"
                                                             data-id="{{ $sk->id }}">Detail</button>
                                                     </div>
+                                                    @endCan
                                                 </div>
                                             </td>
                                         </tr>
@@ -259,7 +275,9 @@
                     </div>
                 </div>
             </section>
+            @endCan
 
+            @can('View Pimpinan Perguruan Tinggi')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
@@ -269,10 +287,12 @@
                         <div class="table-responsive">
                             <table id="pemimpin_perguruan_tinggi"
                                 class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
+                                @can('Create Pimpinan Perguruan Tinggi')
                                 <a href="{{ route('pimpinan-perguruan-tinggi.create', $organisasi->id) }}"
                                     class="btn btn-primary btn-sm mb-2">
                                     Tambah Pempinan
                                 </a>
+                                @endCan
                                 <thead>
                                     <tr>
                                         <th rowspan="2" class="text-center align-middle">No</th>
@@ -304,15 +324,19 @@
                                             <td>{{ $pimpinan->pimpinan_tanggal_berakhir }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
+                                                    @can('Edit Pimpinan Perguruan Tinggi')
                                                     <a href="{{ route('pimpinan-perguruan-tinggi.edit', ['id' => $pimpinan->id]) }}"
                                                         class="btn btn-sm btn-success">
                                                         <i class="ri-edit-2-line"></i> Edit
                                                     </a>
+                                                    @endCan
+                                                    @can('Detail Pimpinan Perguruan Tinggi')
                                                     <button class="btn btn-info btn-sm pimpinan-detail"
                                                         data-bs-toggle="modal" data-bs-target="#detailRecordModalPimpinan"
                                                         data-id="{{ $pimpinan->id }}">
                                                         Detail
                                                     </button>
+                                                    @endCan
                                                 </div>
                                             </td>
                                         </tr>
@@ -323,7 +347,9 @@
                     </div>
                 </div>
             </section>
+            @endCan
 
+            @can('View Program Studi')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
@@ -333,10 +359,12 @@
                         <div class="table-responsive">
                             <table id="program_studi"
                                 class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
+                                @can('Create Program Studi')
                                 <a href="{{ route('program-studi.create', $organisasi->id) }}"
                                     class="btn btn-primary btn-sm">
                                     Tambah Program Studi
                                 </a>
+                                @endCan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -354,10 +382,12 @@
                                             <td>{{ $prodi->prodi_jenjang }}</td>
                                             <td>{{ $prodi->prodi_active_status }}</td>
                                             <td>
+                                                @can('Detail Program Studi')
                                                 <a href="{{ route('program-studi.show', $prodi->id) }}"
                                                     class="btn btn-sm btn-primary me-2">
                                                     <i class="ti ti-info-circle"></i>
                                                 </a>
+                                                @endCan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -367,6 +397,7 @@
                     </div>
                 </div>
             </section>
+            @endCan
         </div>
 
         @include('Akreditasi.PerguruanTinggi.Detail')
@@ -392,6 +423,7 @@
     </script>
 
     <script>
+         var hasAkreditasiDokumenPermission = @json(auth()->user()->can('View PDF Akreditasi Perguruan Tinggi'));
         // Event listener untuk tombol detail
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('akreditasi-detail')) {
@@ -410,9 +442,13 @@
                         document.getElementById('akreditasi_status').textContent = data.akreditasi_status;
                         document.getElementById('akreditasi_tgl_awal').textContent = data.akreditasi_tgl_awal;
                         document.getElementById('akreditasi_tgl_akhir').textContent = data.akreditasi_tgl_akhir;
-                        document.getElementById('akreditasi_dokumen').value = data.akreditasi_dokumen;
-                    })
-                    .catch(error => console.error('Error:', error));
+                        if (hasAkreditasiDokumenPermission) {
+                    document.getElementById('akreditasi_dokumen').value = data.akreditasi_dokumen;
+                } else {
+                    document.getElementById('akreditasi_dokumen').value = 'Access Denied';
+                }
+            })
+            .catch(error => console.error('Error:', error));
             }
 
             if (event.target.classList.contains('pimpinan-detail')) {

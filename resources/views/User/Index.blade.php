@@ -14,9 +14,11 @@
                 <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                     <table id="dom_jq_event" class="table-striped table-bordered display text-nowrap table border"
                         style="width: 100%">
+                        @can('Create User')
                         <a href="{{ route('user.create') }}" class="btn btn-primary btn-sm">
                             Tambah User
                         </a>
+                        @endCan
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -25,7 +27,9 @@
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th>Organisasi</th>
+                                @canAny(['Edit User', 'Delete User'])
                                 <th>Aksi</th>
+                                @endCanAny
                             </tr>
                         </thead>
                         <tbody>
@@ -47,11 +51,15 @@
                                     </span>
                                 </td>
                                 <td>{{ $item->organization->organisasi_nama }}</td>
+                                @canAny(['Edit User', 'Delete User'])
                                 <td>
+                                    @can('Edit User')
                                     <a href="{{ route('user.edit', $item->id) }}" class="btn btn-sm btn-success">
                                         <i class="ri-edit-2-line"></i> Edit
                                     </a>
+                                    @endCan
 
+                                    @can('Delete User')
                                     <a href="#" class="btn btn-sm btn-danger" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                         <i class="ri-delete-bin-line"></i> Delete
                                     </a>
@@ -59,7 +67,9 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
+                                    @endCan
                                 </td>
+                                @endCanAny
                             </tr>
                             @endforeach
                         </tbody>
