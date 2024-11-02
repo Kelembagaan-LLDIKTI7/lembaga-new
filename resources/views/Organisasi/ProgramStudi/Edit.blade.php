@@ -124,7 +124,8 @@
                                     @endif
 
                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('perguruan-tinggi.index') }}" class="btn btn-secondary">Keluar</a>
+                                    <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"
+                                        class="btn btn-secondary">Keluar</a>
                                 </div>
                             </div>
                         </div>

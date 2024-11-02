@@ -121,7 +121,7 @@
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>
                                             <th colspan="2" class="text-center align-middle">Program Studi</th>
-                                            <th colspan="4" class="text-center align-middle">SK Akreditasi</th>
+                                            <th colspan="4" class="text-center align-middle">SK Pimpinan</th>
                                         </tr>
                                         <tr>
                                             <th>Nama Prodi</th>

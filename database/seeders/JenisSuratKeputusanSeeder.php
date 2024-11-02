@@ -16,27 +16,32 @@ class JenisSuratKeputusanSeeder extends Seeder
     {
         DB::table('jenis_surat_keputusans')->insert([
             'id' => Str::uuid()->toString(),
-            'jsk_nama' => 'SK Pendirian PT',
+            'jsk_nama' => 'SK Pendirian',
         ]);
 
         DB::table('jenis_surat_keputusans')->insert([
             'id' => Str::uuid()->toString(),
-            'jsk_nama' => 'SK Penutupan PT',
+            'jsk_nama' => 'SK Penutupan',
         ]);
 
         DB::table('jenis_surat_keputusans')->insert([
             'id' => Str::uuid()->toString(),
-            'jsk_nama' => 'SK Alih Bentuk PT',
+            'jsk_nama' => 'SK Alih Bentuk',
         ]);
 
         DB::table('jenis_surat_keputusans')->insert([
             'id' => Str::uuid()->toString(),
-            'jsk_nama' => 'SK Alih Kelola PT',
+            'jsk_nama' => 'SK Alih Kelola',
         ]);
 
         DB::table('jenis_surat_keputusans')->insert([
             'id' => Str::uuid()->toString(),
             'jsk_nama' => 'SK Perubahan/Penetapan BP',
+        ]);
+
+        DB::table('jenis_surat_keputusans')->insert([
+            'id' => Str::uuid()->toString(),
+            'jsk_nama' => 'SK Pembinaan',
         ]);
     }
 }

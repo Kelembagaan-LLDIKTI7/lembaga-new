@@ -25,10 +25,9 @@ class PimpinanPerguruanTinggiController extends Controller
     public function create($id)
     {
         // dd($id);
-        $pt = Organisasi::select('id')->findOrFail($id);
+        $pt = Organisasi::findOrFail($id);
         $jabatan = Jabatan::select('id', 'jabatan_nama', 'jabatan_status', 'jabatan_organisasi')
-            ->where('jabatan_status', 'Aktif')
-            ->where('jabatan_organisasi', 'perguruan tinggi')->get();
+            ->where('bentuk_pt', $pt->organisasi_bentuk_pt)->get();
 
         return view('Pimpinan.PerguruanTinggi.Create', [
             'pt' => $pt,
@@ -46,12 +45,12 @@ class PimpinanPerguruanTinggiController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'pimpinan_nama' => 'required|string|max:255',
             'pimpinan_email' => 'required|email|max:255',
             'pimpinan_sk' => 'required|string|max:255',
             'pimpinan_tanggal' => 'required|date',
+            'pimpinan_tanggal_berakhir' => 'required|date',
             'id_jabatan' => 'required|exists:jabatans,id',
             'pimpinan_sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ]);
@@ -67,9 +66,10 @@ class PimpinanPerguruanTinggiController extends Controller
             'pimpinan_email' => $request->pimpinan_email,
             'pimpinan_sk' => $request->pimpinan_sk,
             'pimpinan_tanggal' => $request->pimpinan_tanggal,
+            'pimpinan_tanggal_berakhir' => $request->pimpinan_tanggal_berakhir,
             'id_jabatan' => $request->id_jabatan,
             'pimpinan_sk_dokumen' => $filePath,
-            'pimpinan_status' => 'Aktif',
+            'pimpinan_status' => 'Berlaku',
         ]);
 
         return redirect()->route('perguruan-tinggi.show', ['id' => $request->id_organization])->with('success', 'Data pimpinan berhasil ditambahkan.');
@@ -95,7 +95,10 @@ class PimpinanPerguruanTinggiController extends Controller
     public function edit($id)
     {
         $pimpinan = PimpinanOrganisasi::findOrFail($id);
-        $jabatan = Jabatan::select('id', 'jabatan_nama')->orderBy('jabatan_nama', 'asc')->get();
+        $jabatan = Jabatan::select('id', 'jabatan_nama')
+            ->where('bentuk_pt', $pimpinan->organization->organisasi_bentuk_pt)
+            ->orderBy('jabatan_nama', 'asc')
+            ->get();
 
         return view('Pimpinan.PerguruanTinggi.Edit', [
             'pimpinan' => $pimpinan,
@@ -114,6 +117,8 @@ class PimpinanPerguruanTinggiController extends Controller
             'pimpinan_email' => 'required|email|max:255',
             'pimpinan_sk' => 'required|string|max:255',
             'pimpinan_tanggal' => 'required|date',
+            'pimpinan_tanggal_berakhir' => 'required|date',
+            'pimpinan_status' => 'required|string|max:255',
             'id_jabatan' => 'required|exists:jabatans,id',
             'pimpinan_sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ]);
@@ -127,9 +132,10 @@ class PimpinanPerguruanTinggiController extends Controller
                 'pimpinan_email' => $request->pimpinan_email,
                 'pimpinan_sk' => $request->pimpinan_sk,
                 'pimpinan_tanggal' => $request->pimpinan_tanggal,
+                'pimpinan_tanggal_berakhir' => $request->pimpinan_tanggal_berakhir,
                 'id_jabatan' => $request->id_jabatan,
                 'pimpinan_sk_dokumen' => $filePath,
-                'pimpinan_status' => 'Aktif',
+                'pimpinan_status' => $request->pimpinan_status,
             ]);
         } else {
             PimpinanOrganisasi::where('id', $id)->update([
@@ -138,8 +144,9 @@ class PimpinanPerguruanTinggiController extends Controller
                 'pimpinan_email' => $request->pimpinan_email,
                 'pimpinan_sk' => $request->pimpinan_sk,
                 'pimpinan_tanggal' => $request->pimpinan_tanggal,
+                'pimpinan_tanggal_berakhir' => $request->pimpinan_tanggal_berakhir,
                 'id_jabatan' => $request->id_jabatan,
-                'pimpinan_status' => 'Aktif',
+                'pimpinan_status' => $request->pimpinan_status,
             ]);
         }
 

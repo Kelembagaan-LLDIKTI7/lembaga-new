@@ -76,7 +76,7 @@
                                 </div>
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('badan-penyelenggara.index') }}"
+                                    <a href="{{ route('badan-penyelenggara.show', ['id' => $akta->id_organization]) }}"
                                         class="btn btn-primary btn-sm-custom">Keluar</a>
                                     <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                 </div>

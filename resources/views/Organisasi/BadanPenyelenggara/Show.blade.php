@@ -56,22 +56,33 @@
                                 </a>
                                 <thead>
                                     <tr>
-                                        <th>No</th>
+                                        <th rowspan="2" class="text-center align-middle">No</th>
+                                        <th colspan="2" class="text-center align-middle">Jabatan</th>
+                                        <th colspan="3" class="text-center align-middle">SK Akreditasi</th>
+                                        <th rowspan="2" class="text-center align-middle">Aksi</th>
+                                    </tr>
+                                    <tr>
                                         <th>Nama</th>
-                                        <th>Email</th>
                                         <th>Jabatan</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <th>No SK</th>
+                                        <th>Tanggal Terbit</th>
+                                        <th>Tanggal Berakhir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($pimpinan as $pimpinan)
-                                        <tr>
+                                        @php
+                                            $isExpired = \Carbon\Carbon::parse(
+                                                $pimpinan->pimpinan_tanggal_berakhir,
+                                            )->isBefore(\Carbon\Carbon::today());
+                                        @endphp
+                                        <tr class="{{ $isExpired ? 'table-danger' : '' }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $pimpinan->pimpinan_nama }}</td>
-                                            <td>{{ $pimpinan->pimpinan_email }}</td>
-                                            <td>{{ $pimpinan->pimpinan_status }}</td>
                                             <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
+                                            <td>{{ $pimpinan->pimpinan_sk }}</td>
+                                            <td>{{ $pimpinan->pimpinan_tanggal }}</td>
+                                            <td>{{ $pimpinan->pimpinan_tanggal_berakhir }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
                                                     <a href="{{ route('pimpinan-badan-penyelenggara.edit', ['id' => $pimpinan->id]) }}"
@@ -94,38 +105,48 @@
                 </div>
             </section>
 
-            @can('View Perguruan Tinggi')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-2">
-                            <h5 class="mb-0">Perguruan Tinggi Yang Dimiliki</h5>
+                            <h5 class="mb-0">SKBP</h5>
                         </div>
                         <div class="table-responsive">
-                            <table id="perguruan_tinggi"
-                                class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
+                            <table id="skbp" class="table-striped table-bordered display text-nowrap table border"
+                                style="width: 100%">
+                                <a href="{{ route('skbp-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
+                                    Tambah SKBP
+                                </a>
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Perguruan Tinggi</th>
-                                        <th>Nama Singkatan</th>
-                                        <th>Kota</th>
-                                        <th>Status</th>
+                                        <th>Nomor SK</th>
+                                        <th>Tanggal SK</th>
+                                        <th>Jenis SK</th>
+                                        <th>Dokumen</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($badanPenyelenggaras->children as $bp)
+                                    @foreach ($skbp as $sk)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $bp->organisasi_nama }}</td>
-                                            <td>{{ $bp->organisasi_nama_singkat }}</td>
-                                            <td>{{ $bp->organisasi_kota }}</td>
-                                            <td>{{ $bp->organisasi_status }}</td>
+                                            <td>{{ $sk->nomor }}</td>
+                                            <td>{{ $sk->tanggal }}</td>
+                                            <td>{{ $sk->jenis }}</td>
                                             <td>
-                                                <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
-                                                    class="btn btn-sm btn-primary me-2">
-                                                    <i class="ti ti-info-circle"></i>
+                                                @if ($sk->dokumen)
+                                                    <a href="{{ route('skbp-badan-penyelenggara.viewPdf', $sk->id) }}"
+                                                        target="_blank">
+                                                        Dokumen
+                                                    </a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('skbp-badan-penyelenggara.edit', $sk->id) }}"
+                                                    class="btn btn-info btn-sm">
+                                                    Edit
                                                 </a>
                                             </td>
                                         </tr>
@@ -136,6 +157,49 @@
                     </div>
                 </div>
             </section>
+
+            @can('View Perguruan Tinggi')
+                <section class="datatables">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <h5 class="mb-0">Perguruan Tinggi Yang Dimiliki</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="perguruan_tinggi"
+                                    class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Perguruan Tinggi</th>
+                                            <th>Nama Singkatan</th>
+                                            <th>Kota</th>
+                                            <th>Status</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($badanPenyelenggaras->children as $bp)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $bp->organisasi_nama }}</td>
+                                                <td>{{ $bp->organisasi_nama_singkat }}</td>
+                                                <td>{{ $bp->organisasi_kota }}</td>
+                                                <td>{{ $bp->organisasi_status }}</td>
+                                                <td>
+                                                    <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        <i class="ti ti-info-circle"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             @endCan
 
             <section class="datatables">
@@ -211,6 +275,8 @@
 
             $('#perguruan_tinggi').DataTable();
 
+            $('#skbp').DataTable();
+
             $('#pemimpin_perguruan_tinggi').DataTable();
 
             $('#program_studi').DataTable();
@@ -228,9 +294,15 @@
                         document.getElementById('pimpinan_nama').textContent = data.pimpinan_nama;
                         document.getElementById('pimpinan_email').textContent = data.pimpinan_email;
                         document.getElementById('pimpinan_tanggal').textContent = data.pimpinan_tanggal;
+                        document.getElementById('pimpinan_tanggal_berakhir').textContent = data
+                            .pimpinan_tanggal_berakhir;
                         document.getElementById('pimpinan_status').textContent = data.pimpinan_status;
                         document.getElementById('pimpinan_sk').textContent = data.pimpinan_sk;
-                        document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
+                        if (data.pimpinan_sk_dokumen) {
+                            document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
+                        } else {
+                            document.getElementById('btn_pdf').hidden = true;
+                        }
                     })
                     .catch(error => console.error('Error:', error));
             }
@@ -249,15 +321,24 @@
                             .akta_nama_notaris;
                         document.getElementById('akta_notaris_kota').textContent = data.akta_kota_notaris;
                         document.getElementById('akta_status').textContent = data.akta_status;
-                        document.getElementById('akta_dokumen').value = data.akta_dokumen;
+                        if (data.akta_dokumen) {
+                            document.getElementById('btn_pdf_akta').hidden = false;
+                            document.getElementById('akta_dokumen').value = data.akta_dokumen;
+                        } else {
+                            document.getElementById('btn_pdf_akta').hidden = true;
+                        }
                         document.getElementById('kumham_nomor').textContent = data.kumham_nomor ??
-                            '-';
-                        document.getElementById('kumham_perihal').textContent = data.kumham_perihal ??
-                            '-';
-                        document.getElementById('kumham_tanggal').textContent = data.kumham_tanggal ??
-                            '-';
-                        document.getElementById('kumham_dokumen').value = data.kumham_dokumen ??
                             '';
+                        document.getElementById('kumham_perihal').textContent = data.kumham_perihal ??
+                            '';
+                        document.getElementById('kumham_tanggal').textContent = data.kumham_tanggal ??
+                            '';
+                        if (data.kumham_dokumen) {
+                            document.getElementById('btn_pdf_kumham').hidden = false;
+                            document.getElementById('kumham_dokumen').value = data.kumham_dokumen;
+                        } else {
+                            document.getElementById('btn_pdf_kumham').hidden = true;
+                        }
                     })
                     .catch(error => console.error('Error:', error));
             }

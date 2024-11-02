@@ -23,12 +23,16 @@
                             <td id="pimpinan_email"></td>
                         </tr>
                         <tr>
-                            <th>Tanggal Dilantik</th>
+                            <th>Nomor SK Pimpinan</th>
+                            <td id="pimpinan_sk"></td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Terbit SK</th>
                             <td id="pimpinan_tanggal"></td>
                         </tr>
                         <tr>
-                            <th>Nomor SK Pimpinan</th>
-                            <td id="pimpinan_sk"></td>
+                            <th>Tanggal Berakhir SK</th>
+                            <td id="pimpinan_tanggal_berakhir"></td>
                         </tr>
                         <tr>
                             <th>Status Pimpinan</th>
@@ -42,7 +46,8 @@
                                     @csrf
                                     <input type="hidden" name="pimpinan_sk_dokumen" id="pimpinan_sk_dokumen"
                                         value="">
-                                    <button type="submit" class="btn btn-link waves-effect">Dokumen</button>
+                                    <button type="submit" class="btn btn-link waves-effect"
+                                        id="btn_pdf">Dokumen</button>
                                 </form>
                             </td>
                         </tr>

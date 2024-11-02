@@ -131,7 +131,7 @@
                                 </div>
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('perguruan-tinggi.index') }}"
+                                    <a href="{{ route('perguruan-tinggi.show', ['id' => $akreditasi->id_organization]) }}"
                                         class="btn btn-primary btn-sm-custom">Keluar</a>
                                     <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                 </div>
