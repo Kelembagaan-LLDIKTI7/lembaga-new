@@ -266,15 +266,24 @@
                             .akta_nama_notaris;
                         document.getElementById('akta_notaris_kota').textContent = data.akta_kota_notaris;
                         document.getElementById('akta_status').textContent = data.akta_status;
-                        document.getElementById('akta_dokumen').value = data.akta_dokumen;
+                        if (data.akta_dokumen) {
+                            document.getElementById('btn_pdf_akta').hidden = false;
+                            document.getElementById('akta_dokumen').value = data.akta_dokumen;
+                        } else {
+                            document.getElementById('btn_pdf_akta').hidden = true;
+                        }
                         document.getElementById('kumham_nomor').textContent = data.kumham_nomor ??
-                            '-';
-                        document.getElementById('kumham_perihal').textContent = data.kumham_perihal ??
-                            '-';
-                        document.getElementById('kumham_tanggal').textContent = data.kumham_tanggal ??
-                            '-';
-                        document.getElementById('kumham_dokumen').value = data.kumham_dokumen ??
                             '';
+                        document.getElementById('kumham_perihal').textContent = data.kumham_perihal ??
+                            '';
+                        document.getElementById('kumham_tanggal').textContent = data.kumham_tanggal ??
+                            '';
+                        if (data.kumham_dokumen) {
+                            document.getElementById('btn_pdf_kumham').hidden = false;
+                            document.getElementById('kumham_dokumen').value = data.kumham_dokumen;
+                        } else {
+                            document.getElementById('btn_pdf_kumham').hidden = true;
+                        }
                     })
                     .catch(error => console.error('Error:', error));
             }

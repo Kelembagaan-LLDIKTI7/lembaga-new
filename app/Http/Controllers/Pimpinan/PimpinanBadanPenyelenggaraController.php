@@ -92,7 +92,10 @@ class PimpinanBadanPenyelenggaraController extends Controller
     public function edit($id)
     {
         $pimpinan = PimpinanOrganisasi::findOrFail($id);
-        $jabatan = Jabatan::select('id', 'jabatan_nama')->orderBy('jabatan_nama', 'asc')->get();
+        $jabatan = Jabatan::select('id', 'jabatan_nama')
+            ->where('bentuk_pt', null)
+            ->orderBy('jabatan_nama', 'asc')
+            ->get();
 
         return view('Pimpinan.BadanPenyelenggara.Edit', [
             'pimpinan' => $pimpinan,
@@ -105,6 +108,7 @@ class PimpinanBadanPenyelenggaraController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $request->validate([
             'pimpinan_nama' => 'required|string|max:255',
             'pimpinan_email' => 'required|email|max:255',
@@ -157,6 +161,9 @@ class PimpinanBadanPenyelenggaraController extends Controller
 
     public function viewPdf(Request $request)
     {
+        if (!$request->pimpinan_sk_dokumen) {
+            return abort(404);
+        }
         return response()->file(storage_path('app/public/' . $request->pimpinan_sk_dokumen));
     }
 }

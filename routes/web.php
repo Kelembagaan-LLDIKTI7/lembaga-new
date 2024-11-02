@@ -144,7 +144,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [AkreditasiPerguruanTinggiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [AkreditasiPerguruanTinggiController::class, 'update'])->name('update');
         });
-        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail')->middleware('role.access:Detal Akreditasi Perguruan Tinggi');
+        Route::get('/{id}/get-akreditasi-detail', [AkreditasiPerguruanTinggiController::class, 'getAkreditasiDetail'])->name('getAkreditasiDetail')->middleware('role.access:Detail Akreditasi Perguruan Tinggi');
         Route::post('/view-pdf', [AkreditasiPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akreditasi Perguruan Tinggi');
     });
 
@@ -202,7 +202,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [AktaBpController::class, 'edit'])->name('edit');
             Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
         });
-        Route::get('/{id}', [AktaBpController::class, 'show'])->name('show')->middleware('role.access:Detal Akta Badan Penyelenggara');
+        Route::get('/{id}', [AktaBpController::class, 'show'])->name('show')->middleware('role.access:Detail Akta Badan Penyelenggara');
         Route::post('/view-pdf', [AktaBpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akta Badan Penyelenggara');
     });
 

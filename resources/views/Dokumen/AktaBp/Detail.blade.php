@@ -41,7 +41,8 @@
                                     enctype="multipart/form-data" target="_blank">
                                     @csrf
                                     <input type="hidden" name="akta_dokumen" id="akta_dokumen" value="">
-                                    <button type="submit" class="btn btn-link waves-effect">Dokumen</button>
+                                    <button type="submit" class="btn btn-link waves-effect"
+                                        id="btn_pdf_akta">Dokumen</button>
                                 </form>
                             </td>
                         </tr>
@@ -64,7 +65,8 @@
                                     enctype="multipart/form-data" target="_blank">
                                     @csrf
                                     <input type="hidden" name="kumham_dokumen" id="kumham_dokumen" value="">
-                                    <button type="submit" class="btn btn-link waves-effect">Dokumen</button>
+                                    <button type="submit" class="btn btn-link waves-effect"
+                                        id="btn_pdf_kumham">Dokumen</button>
                                 </form>
                             </td>
                         </tr>

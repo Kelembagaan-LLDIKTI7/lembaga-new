@@ -11,7 +11,11 @@
                         <h5 class="card-title">{{ $organisasi->organisasi_nama }}</h5>
                         <table class="table-borderless table">
                             <tr>
-                                <th>Nama Singkatan</th>
+                                <th>Bentuk PT</th>
+                                <td>{{ $organisasi->bentukPt->bentuk_nama ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Singkatan</th>
                                 <td>{{ $organisasi->organisasi_nama_singkat ?? '-' }}</td>
                             </tr>
                             <tr>
@@ -161,7 +165,6 @@
                                         <th>No</th>
                                         <th>Nomor SK</th>
                                         <th>Berlaku</th>
-                                        <th>Status</th>
                                         <th>Lembaga Akreditasi</th>
                                         <th>Peringkat Akreditasi</th>
                                         <th>Aksi</th>
@@ -169,11 +172,15 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($akreditasi as $akre)
-                                        <tr>
+                                        @php
+                                            $isExpired = \Carbon\Carbon::parse($akre->akreditasi_tgl_akhir)->isBefore(
+                                                \Carbon\Carbon::today(),
+                                            );
+                                        @endphp
+                                        <tr class="{{ $isExpired ? 'table-danger' : '' }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $akre->akreditasi_sk }}</td>
                                             <td>{{ $akre->akreditasi_tgl_akhir }}</td>
-                                            <td>{{ $akre->akreditasi_status }}</td>
                                             <td>{{ $akre->lembaga_nama_singkat }}</td>
                                             <td>{{ $akre->peringkat_nama }}</td>
                                             <td>
@@ -268,34 +275,44 @@
                                 </a>
                                 <thead>
                                     <tr>
-                                        <th>No</th>
+                                        <th rowspan="2" class="text-center align-middle">No</th>
+                                        <th colspan="2" class="text-center align-middle">Jabatan</th>
+                                        <th colspan="3" class="text-center align-middle">SK Pimpinan</th>
+                                        <th rowspan="2" class="text-center align-middle">Aksi</th>
+                                    </tr>
+                                    <tr>
                                         <th>Nama</th>
-                                        <th>Email</th>
                                         <th>Jabatan</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <th>No SK</th>
+                                        <th>Tanggal Terbit</th>
+                                        <th>Tanggal Berakhir</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($pimpinan as $pimpinan)
-                                        <tr>
+                                        @php
+                                            $isExpired = \Carbon\Carbon::parse(
+                                                $pimpinan->pimpinan_tanggal_berakhir,
+                                            )->isBefore(\Carbon\Carbon::today());
+                                        @endphp
+                                        <tr class="{{ $isExpired ? 'table-danger' : '' }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $pimpinan->pimpinan_nama }}</td>
-                                            <td>{{ $pimpinan->pimpinan_email }}</td>
-                                            <td>{{ $pimpinan->pimpinan_status }}</td>
                                             <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
+                                            <td>{{ $pimpinan->pimpinan_sk }}</td>
+                                            <td>{{ $pimpinan->pimpinan_tanggal }}</td>
+                                            <td>{{ $pimpinan->pimpinan_tanggal_berakhir }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
                                                     <a href="{{ route('pimpinan-perguruan-tinggi.edit', ['id' => $pimpinan->id]) }}"
                                                         class="btn btn-sm btn-success">
                                                         <i class="ri-edit-2-line"></i> Edit
                                                     </a>
-                                                    <div class="detail">
-                                                        <button class="btn btn-sm btn-info detail-item-btn pimpinan-detail"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#detailRecordModalPimpinan"
-                                                            data-id="{{ $pimpinan->id }}">Detail</button>
-                                                    </div>
+                                                    <button class="btn btn-info btn-sm pimpinan-detail"
+                                                        data-bs-toggle="modal" data-bs-target="#detailRecordModalPimpinan"
+                                                        data-id="{{ $pimpinan->id }}">
+                                                        Detail
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -314,8 +331,8 @@
                             <h5 class="mb-0">Program Studi</h5>
                         </div>
                         <div class="table-responsive">
-                            <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
-                                style="width: 100%">
+                            <table id="program_studi"
+                                class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
                                 <a href="{{ route('program-studi.create', $organisasi->id) }}"
                                     class="btn btn-primary btn-sm">
                                     Tambah Program Studi
