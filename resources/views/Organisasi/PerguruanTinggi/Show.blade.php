@@ -47,10 +47,11 @@
                         </table>
 
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary me-2">Alih Bentuk</button>
+                            @can('Edit Perguruan Tinggi')
                             <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
                                 Edit
                             </a>
+                            @endCan
                         </div>
                     </div>
                 </div>
@@ -142,6 +143,7 @@
                 </div>
             </section>
 
+            @can('View Akreditasi Perguruan Tinggi')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
@@ -152,10 +154,12 @@
                             <table id="akreditasi_table"
                                 class="table-striped table-bordered display text-nowrap table border"
                                 style="overflow-x: auto; overflow-y: hidden;">
+                                @can('Create Akreditasi Perguruan Tinggi')
                                 <a href="{{ route('akreditasi-perguruan-tinggi.create', $organisasi->id) }}"
                                     class="btn btn-primary btn-sm mb-2">
                                     Tambah Areditasi PT
                                 </a>
+                                @endCan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -178,10 +182,13 @@
                                             <td>{{ $akre->peringkat_nama }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
+                                                    @can('Edit Akreditasi Perguruan Tinggi')
                                                     <div class="edit">
                                                         <a href="{{ route('akreditasi-perguruan-tinggi.edit', $akre->id) }}"
                                                             class="btn btn-sm btn-success">Edit</a>
                                                     </div>
+                                                    @endCan
+                                                    @can('Detail Akreditasi Perguruan Tinggi')
                                                     <div class="detail">
                                                         <button
                                                             class="btn btn-sm btn-info detail-item-btn akreditasi-detail"
@@ -189,6 +196,7 @@
                                                             data-bs-target="#detailRecordModalAkreditasi"
                                                             data-id="{{ $akre->id }}">Detail</button>
                                                     </div>
+                                                    @endCan
                                                 </div>
                                             </td>
                                         </tr>
@@ -199,6 +207,7 @@
                     </div>
                 </div>
             </section>
+            @endCan
 
             <section class="datatables">
                 <div class="card">
@@ -375,6 +384,7 @@
     </script>
 
     <script>
+         var hasAkreditasiDokumenPermission = @json(auth()->user()->can('View PDF Akreditasi Perguruan Tinggi'));
         // Event listener untuk tombol detail
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('akreditasi-detail')) {
@@ -393,9 +403,13 @@
                         document.getElementById('akreditasi_status').textContent = data.akreditasi_status;
                         document.getElementById('akreditasi_tgl_awal').textContent = data.akreditasi_tgl_awal;
                         document.getElementById('akreditasi_tgl_akhir').textContent = data.akreditasi_tgl_akhir;
-                        document.getElementById('akreditasi_dokumen').value = data.akreditasi_dokumen;
-                    })
-                    .catch(error => console.error('Error:', error));
+                        if (hasAkreditasiDokumenPermission) {
+                    document.getElementById('akreditasi_dokumen').value = data.akreditasi_dokumen;
+                } else {
+                    document.getElementById('akreditasi_dokumen').value = 'Access Denied';
+                }
+            })
+            .catch(error => console.error('Error:', error));
             }
 
             if (event.target.classList.contains('pimpinan-detail')) {

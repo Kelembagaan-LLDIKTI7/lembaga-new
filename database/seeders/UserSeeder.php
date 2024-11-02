@@ -73,6 +73,7 @@ class UserSeeder extends Seeder
             'View Perguruan Tinggi',
             'Import Perguruan Tinggi',
             'Detail Perguruan Tinggi',
+            'View History Perguruan Tinggi',
 
             'Create Badan Penyelenggara',
             'Edit Badan Penyelenggara',
@@ -137,6 +138,10 @@ class UserSeeder extends Seeder
             'Edit Jabatan',
             'Delete Jabatan',
             'View Jabatan',
+
+            'View Peringkat Akreditasi',
+            'View Lembaga Akreditasi',
+            'View Jenis Organisasi',
         ];
 
         foreach ($permissions as $permissionName) {

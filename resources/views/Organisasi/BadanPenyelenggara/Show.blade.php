@@ -33,14 +33,16 @@
                     </table>
 
                     <div class="d-flex justify-content-end">
-                        <a href="" class="btn btn-primary me-2">Alih Bentuk</a>
+                        @can('Edit Badan Penyelenggara')
                         <a href="" class="btn btn-warning">
                             Edit
                         </a>
+                        @endCan
                     </div>
                 </div>
             </div>
 
+            @can('View Pimpinan Badan Penyelenggara')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
@@ -50,10 +52,12 @@
                         <div class="table-responsive">
                             <table id="pimpinan_table" class="table-striped table-bordered display text-nowrap table border"
                                 style="overflow-x: auto; overflow-y: hidden;">
+                                @can('Create Pimpinan Badan Penyelenggara')
                                 <a href="{{ route('pimpinan-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
                                     class="btn btn-primary btn-sm mb-2">
                                     Tambah Pimpinan BP
                                 </a>
+                                @endCan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -74,15 +78,19 @@
                                             <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
+                                                    @can('Edit Pimpinan Badan Penyelenggara')
                                                     <a href="{{ route('pimpinan-badan-penyelenggara.edit', ['id' => $pimpinan->id]) }}"
                                                         class="btn btn-sm btn-success">
                                                         <i class="ri-edit-2-line"></i> Edit
                                                     </a>
+                                                    @endcan
+                                                    @can('Detail Pimpinan Badan Penyelenggara')
                                                     <button class="btn btn-info btn-sm pimpinan-detail"
                                                         data-bs-toggle="modal" data-bs-target="#detailRecordModalPimpinan"
                                                         data-id="{{ $pimpinan->id }}">
                                                         Detail
                                                     </button>
+                                                    @endcan
                                                 </div>
                                             </td>
                                         </tr>
@@ -93,6 +101,7 @@
                     </div>
                 </div>
             </section>
+            @endCan
 
             @can('View Perguruan Tinggi')
             <section class="datatables">
@@ -123,10 +132,12 @@
                                             <td>{{ $bp->organisasi_kota }}</td>
                                             <td>{{ $bp->organisasi_status }}</td>
                                             <td>
+                                                @can('Detail Perguruan Tinggi')
                                                 <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
                                                     class="btn btn-sm btn-primary me-2">
                                                     <i class="ti ti-info-circle"></i>
                                                 </a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -138,6 +149,7 @@
             </section>
             @endCan
 
+            @can('View Akta Badan Penyelenggara')
             <section class="datatables">
                 <div class="card">
                     <div class="card-body">
@@ -147,10 +159,12 @@
                         <div class="table-responsive">
                             <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
+                                @can('Create Akta Badan Penyelenggara')
                                 <a href="{{ route('akta-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
                                     class="btn btn-primary btn-sm mb-2">
                                     Tambah Akta
                                 </a>
+                                @endcan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -172,20 +186,26 @@
                                             <td>{{ optional($akta->skKumham)->kumham_nomor ?? 'N/A' }}</td>
                                             <td>{{ optional($akta->skKumham)->kumham_tanggal ?? 'N/A' }}</td>
                                             <td>
+                                                @can('Edit Akta Badan Penyelenggara')
                                                 <div class="edit">
                                                     <a href="{{ route('akta-badan-penyelenggara.edit', $akta->id) }}"
                                                         class="btn btn-sm btn-success mb-2">Edit</a>
                                                 </div>
+                                                @endCan
+                                                @can('Create SK Kumham Badan Penyelenggara')
                                                 <div class="kumham">
                                                     <a href="{{ route('sk-kumham.create', $akta->id) }}"
                                                         class="btn btn-sm btn-warning mb-2">
                                                         SK Kumham
                                                     </a>
                                                 </div>
+                                                @endCan
+                                                @can('Detail Akta Badan Penyelenggara')
                                                 <button class="btn btn-info btn-sm mb-2 akta-detail" data-bs-toggle="modal"
                                                     data-bs-target="#detailRecordModalAkta" data-id="{{ $akta->id }}">
                                                     Detail
                                                 </button>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -195,6 +215,7 @@
                     </div>
                 </div>
             </section>
+            @endCan
         </div>
 
         @include('Dokumen.AktaBp.Detail')

@@ -15,13 +15,17 @@
                         <table id="dom_jq_event" class="table-striped table-bordered display text-nowrap table border"
                             style="width: 100%">
                             <div class="mb-3">
+                                @can('Import Perguruan Tinggi')
                                 <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
                                     data-bs-target="#importExcel">
                                     Import Excel
                                 </button>
+                                @endCan
+                                @can('Create Perguruan Tinggi')
                                 <a href="{{ route('perguruan-tinggi.create') }}" class="btn btn-primary btn-sm">
                                     Tambah Perguruan Tinggi
                                 </a>
+                                @endCan
                             </div>
 
                             <thead>
@@ -49,10 +53,12 @@
                                         <td>{{ $perguruanTinggi->organisasi_status }}</td>
                                         <td>{{ $perguruanTinggi->parent->organisasi_nama ?? '-' }}</td>
                                         <td>
+                                            @can('Detail Perguruan Tinggi')
                                             <a href="{{ route('perguruan-tinggi.show', $perguruanTinggi->id) }}"
                                                 class="btn btn-sm btn-primary me-2">
                                                 <i class="ti ti-info-circle"></i>
                                             </a>
+                                            @endCan
                                         </td>
                                     </tr>
                                 @endforeach

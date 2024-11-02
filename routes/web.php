@@ -68,15 +68,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('peringkat-akademik')->name('peringkat-akademik.')->group(function () {
-        Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index');
+        Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index')->middleware('role:access:View Peringkat Akreditasi');
     });
 
     Route::prefix('lembaga-akademik')->name('lembaga-akademik.')->group(function () {
-        Route::get('/', [LembagaAkreditasiController::class, 'index'])->name('index');
+        Route::get('/', [LembagaAkreditasiController::class, 'index'])->name('index')->middleware('role.access:View Lembaga Akreditasi');
     });
 
     Route::prefix('organisasi-type')->name('organisasi-type.')->group(function () {
-        Route::get('/', [OrganisasiTypeController::class, 'index'])->name('index');
+        Route::get('/', [OrganisasiTypeController::class, 'index'])->name('index')->middleware('role.access:View Jenis Organisasi');
     });
 
     Route::prefix('jabatan')->name('jabatan.')->group(function () {
