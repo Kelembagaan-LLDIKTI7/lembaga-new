@@ -17,14 +17,12 @@ class UserSeeder extends Seeder
 
     public function run(): void
     {
-        // Create Super Admin Role and Permissions
         $superAdminRole = Role::create([
             'id' => Str::uuid()->toString(),
             'name' => 'Super Admin',
             'guard_name' => 'web',
         ]);
 
-        // Assign Super Admin Permissions
         $permissions = [
             'Create Permission',
             'Edit Permission',
@@ -136,7 +134,6 @@ class UserSeeder extends Seeder
             $superAdminRole->givePermissionTo($permission);
         }
 
-        // Create 'Perguruan Tinggi' Role and Assign Permissions
         $perguruanTinggiRole = Role::create([
             'id' => Str::uuid()->toString(),
             'name' => 'Perguruan Tinggi',
@@ -188,7 +185,6 @@ class UserSeeder extends Seeder
             $perguruanTinggiRole->givePermissionTo($permission);
         }
 
-        // Create 'Badan Penyelenggara' Role and Assign Permissions
         $badanPenyelenggaraRole = Role::create([
             'id' => Str::uuid()->toString(),
             'name' => 'Badan Penyelenggara',
@@ -268,7 +264,6 @@ class UserSeeder extends Seeder
             $badanPenyelenggaraRole->givePermissionTo($permission);
         }
 
-        // Create Users and Assign Roles
         $organization = Organisasi::where('organisasi_nama', 'Lembaga Layanan Pendidikan Tinggi Wilayah VII')->first();
 
         $superAdmin = User::create([

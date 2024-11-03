@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -122,5 +123,18 @@ class UserController extends Controller
         return $user
             ? to_route('user.index')->with('success', 'User successfully deleted')
             : to_route('user.index')->with('failed', 'Failed to delete user');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'new_password' => 'required|string|min:10|confirmed',
+        ]);
+
+        $user = Auth::user();
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        
+        return redirect()->back()->with('success', 'Password berhasil diperbarui');
     }
 }

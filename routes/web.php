@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
             Route::put('/{user}', [UserController::class, 'update'])->name('update');
         });
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete User');
+        Route::post('/user/update-password', [UserController::class, 'updatePassword'])->middleware('auth')->name('user.updatePassword');
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
