@@ -409,12 +409,6 @@
                             <div class="table-responsive">
                                 <table id="akreditasi_program_studi"
                                     class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
-                                    @can('Create Program Studi')
-                                        <a href="{{ route('program-studi.create', $organisasi->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah Program Studi
-                                        </a>
-                                    @endCan
                                     <thead>
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>

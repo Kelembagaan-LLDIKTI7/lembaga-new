@@ -65,4 +65,14 @@ class Organisasi extends Model
     {
         return $this->belongsTo(BentukPt::class, 'organisasi_bentuk_pt', 'id');
     }
+
+    public function dari()
+    {
+        return $this->belongsTo(Organisasi::class, 'organisasi_berubah_status', 'id');
+    }
+
+    public function referensi()
+    {
+        return $this->hasMany(Organisasi::class, 'organisasi_berubah_status', 'id');
+    }
 }

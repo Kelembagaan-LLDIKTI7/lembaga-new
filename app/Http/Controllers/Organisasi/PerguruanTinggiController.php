@@ -72,7 +72,7 @@ class PerguruanTinggiController extends Controller
         )->get();
 
         $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
-            ->where('id', $user->id_organization)
+            // ->where('id', $user->id_organization)
             ->select('id', 'organisasi_nama')
             ->get();
 
@@ -92,7 +92,7 @@ class PerguruanTinggiController extends Controller
         // return response()->json([
         //     'badanPenyelenggaras' => $badanPenyelenggaras,
         //     'perguruanTinggis' => $perguruanTinggis,
-        //     'kota' => $kota
+        //     'kotas' => $kotas
         // ]);
     }
 

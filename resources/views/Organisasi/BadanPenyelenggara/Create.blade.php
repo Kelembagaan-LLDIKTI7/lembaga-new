@@ -50,7 +50,7 @@
                                     <div class="form-group mb-3" id="selectBPContainer" style="display: none;">
                                         <label for="selectedBP" class="required-label">Pilih Badan Penyelenggara
                                             Lama</label>
-                                        <select name="selectedBP" id="selectedBP" class="form-control">
+                                        <select name="selectedBP" id="selectedBP" class="form-control select-search">
                                             <option value="">-- Pilih Badan Penyelenggara --</option>
                                             @foreach ($badanPenyelenggaras as $badan)
                                                 <option value="{{ $badan->id }}">{{ $badan->organisasi_nama }}</option>
