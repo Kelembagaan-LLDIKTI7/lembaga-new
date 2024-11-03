@@ -110,12 +110,15 @@ class ProgramStudiController extends Controller
             'prodi_nama',
             'prodi_jenjang',
             'prodi_active_status',
+            'id_organization',
         )->with([
             'historiPerguruanTinggi' => function ($query) {
                 $query->select('id', 'id_prodi', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status', 'sk_nomor', 'sk_tanggal')
                     ->orderBy('created_at', 'asc');
             }
-        ])->findOrFail($id);
+        ])->with(['perguruanTinggi' => function ($query) {
+            $query->select('id');
+        }])->findOrFail($id);
 
         $akreditasis = Akreditasi::where('id_prodi', $id)
             ->select(
@@ -123,7 +126,8 @@ class ProgramStudiController extends Controller
                 'akreditasi_sk',
                 'akreditasi_tgl_awal',
                 'akreditasi_tgl_akhir',
-                'akreditasi_status'
+                'akreditasi_status',
+                'aktif'
             )->with(['prodi:id,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
 
         return view('Organisasi.ProgramStudi.Show', [

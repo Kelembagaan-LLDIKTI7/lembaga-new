@@ -23,6 +23,7 @@ return new class extends Migration
             $table->uuid('id_lembaga_akreditasi')->nullable();
             $table->uuid('id_prodi')->nullable();
             $table->uuid('id_user')->nullable();
+            $table->string('aktif')->nullable();
             $table->timestamps();
 
             $table->foreign('id_organization')->references('id')->on('organisasis');

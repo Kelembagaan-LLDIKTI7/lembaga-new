@@ -334,7 +334,7 @@
                             <table id="program_studi"
                                 class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
                                 <a href="{{ route('program-studi.create', $organisasi->id) }}"
-                                    class="btn btn-primary btn-sm">
+                                    class="btn btn-primary btn-sm mb-2">
                                     Tambah Program Studi
                                 </a>
                                 <thead>
@@ -366,7 +366,11 @@
                         </div>
                     </div>
                 </div>
+                <a href="{{ route('perguruan-tinggi.index') }}" class="btn btn-sm btn-primary float-end me-2 mt-3">
+                    Kembali
+                </a>
             </section>
+            
         </div>
 
         @include('Akreditasi.PerguruanTinggi.Detail')

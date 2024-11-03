@@ -25,7 +25,11 @@ class AkreditasiProdiController extends Controller
      */
     public function create($id)
     {
-        $prodi = ProgramStudi::select('id')->findOrFail($id);
+        $prodi = ProgramStudi::select('id', 'id_organization')
+            ->with(['perguruanTinggi' => function ($query) {
+                $query->select('id');
+            }])
+            ->findOrFail($id);
         $peringkat = PeringkatAkreditasi::select('id', 'peringkat_nama')->orderBy('peringkat_nama', 'asc')->get();
         $lembaga = LembagaAkreditasi::select('id', 'lembaga_nama')->orderBy('lembaga_nama', 'asc')->get();
         return view('Akreditasi.ProgramStudi.Create', [
@@ -52,10 +56,17 @@ class AkreditasiProdiController extends Controller
             'akreditasi_tgl_awal' => 'required|date',
             'akreditasi_tgl_akhir' => 'required|date',
             'id_peringkat_akreditasi' => 'required',
+            'id_organization' => 'required',
             'akreditasi_status' => 'required|string|in:Berlaku,Dicabut,Tidak Berlaku',
             'id_lembaga_akreditasi' => 'required',
             'sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ]);
+
+        $updateAkreditasi = Akreditasi::where('id_prodi', $request->id_prodi)->where('aktif', 'Ya')->first();
+        // dd($updateAkreditasi);
+        if($updateAkreditasi){
+            $updateAkreditasi->update(['aktif' => 'Tidak']);
+        }
 
         if ($request->hasFile('sk_dokumen')) {
             $suratKeputusan = $request->file('sk_dokumen')->store('surat_keputusan', 'public');
@@ -70,10 +81,12 @@ class AkreditasiProdiController extends Controller
             'id_lembaga_akreditasi' => $request->id_lembaga_akreditasi,
             'akreditasi_dokumen' => $suratKeputusan ?? null,
             'id_prodi' => $request->id_prodi,
+            'id_organization' => $request->id_organization,
+            'aktif' => 'Ya',
             'id_user' => Auth::user()->id,
         ]);
 
-        return redirect()->route('perguruan-tinggi.show', ['id' => $request->id_prodi])->with('success', 'Akreditasi Program Studi berhasil ditambahkan');
+        return redirect()->route('program-studi.show', $request->id_prodi)->with('success', 'Akreditasi Program Studi berhasil ditambahkan');
     }
 
     /**

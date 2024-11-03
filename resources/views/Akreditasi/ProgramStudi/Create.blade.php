@@ -24,6 +24,8 @@
                 <form action="{{ route('akreditasi-program-studi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
+                    <input type="hidden" name="id_organization" value="{{ $prodi->perguruanTinggi->id }}"
+                        class="form-control" required>
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Form Tambah Akreditasi</h5>
