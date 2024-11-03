@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 
+use function Laravel\Prompts\select;
+
 class BadanPenyelenggaraController extends Controller
 {
     /**
@@ -59,6 +61,7 @@ class BadanPenyelenggaraController extends Controller
         )->get();
 
         $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
+            ->where('organisasi_status', 'Aktif')
             ->select(
                 'id',
                 'organisasi_nama'
@@ -91,9 +94,20 @@ class BadanPenyelenggaraController extends Controller
             'kotaAkta' => 'required|string',
             'akta_jenis' => 'required|string|in:Pendirian,Perubahan',
             'aktaDokumen' => 'required|mimes:pdf,doc,docx|max:2048',
-            'selectedBP' => 'nullable|exists:badan_penyelenggara,id',
+            'selectedBP' => 'nullable',
             'organisasi_website' => 'nullable',
         ]);
+
+        $bpLama = Organisasi::where('id', $validatedData['selectedBP'])
+            ->where('organisasi_status', 'Aktif')
+            ->select('id', 'organisasi_nama')
+            ->with(['children' => function ($query) {
+                $query->select(
+                    'id',
+                    'parent_id',
+                    'organisasi_nama'
+                );
+            }])->first();
 
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
@@ -104,22 +118,6 @@ class BadanPenyelenggaraController extends Controller
             $aktaPath = $request->file('aktaDokumen')->store('akta', 'public');
             $validatedData['akta_dokumen'] = $aktaPath;
         }
-
-        // $table->string('organisasi_nama');
-        //     $table->string('organisasi_nama_singkat')->nullable();
-        //     $table->string('organisasi_kode')->nullable();
-        //     $table->longText('organisasi_email')->nullable();
-        //     $table->longText('organisasi_telp')->nullable();
-        //     $table->string('organisasi_kota')->nullable();
-        //     $table->longText('organisasi_alamat')->nullable();
-        //     $table->string('organisasi_website')->nullable();
-        //     $table->string('organisasi_logo')->nullable();
-        //     $table->string('organisasi_status')->nullable();
-        //     $table->string('organisasi_type_id')->nullable();
-        //     $table->string('organisasi_berubah_id')->nullable();
-        //     $table->string('organisasi_berubah_status')->nullable();
-        //     $table->string('parent_id')->nullable();
-        //     $table->string('users_id')->nullable();
 
         $bp = Organisasi::create([
             'id' => Str::uuid(),
@@ -134,7 +132,20 @@ class BadanPenyelenggaraController extends Controller
             'organisasi_logo' => $validatedData['organisasi_logo'],
             'organisasi_type_id' => 2,
             'users_id' => Auth::user()->id,
+            'organisasi_berubah_status' => $validatedData['selectedBP'],
         ]);
+
+        if ($bpLama) {
+            $bpLama->update([
+                'organisasi_status' => 'Tidak',
+            ]);
+
+            foreach ($bpLama->children as $child) {
+                $child->update([
+                    'parent_id' => $bp->id,
+                ]);
+            }
+        }
 
         Akta::create([
             'akta_nomor' => $validatedData['akta_nomor'],
