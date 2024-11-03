@@ -29,17 +29,23 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between mb-4">
+                                @can('Create Permission')
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermissionModal">
                                     Tambah Permission Role User
                                 </button>
+                                @endCan
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="permissionTable">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
+                               <table id="dom_jq_event"
+                                    class="table-striped table-bordered display text-nowrap table border"
+                                    style="width: 100%" id="PermissionTable">
                                     <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Permission</th>
+                                            @canAny(['Edit Permission', 'Delete Permission'])
                                             <th>Actions</th>
+                                            @endCanAny
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -47,11 +53,15 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name }}</td>
+                                            @canAny(['Edit Permission', 'Delete Permission'])
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
+                                                    @can('Edit Permission')
                                                     <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editPermissionModal-{{ $item->id }}">
                                                         <i class="ri-edit-2-line"></i> Edit
                                                     </button>
+                                                    @endCan
+                                                    @can('Delete Permission')
                                                     <a href="#" class="btn btn-sm btn-danger" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                                         <i class="ri-delete-bin-line"></i> Delete
                                                     </a>
@@ -59,8 +69,10 @@
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
+                                                    @endCan
                                                 </div>
                                             </td>
+                                            @endCanAny
                                         </tr>
 
                                         <!-- Edit Role Modal for each role -->
@@ -130,11 +142,11 @@
                 <div class="col-sm-6">
                     <script>
                         document.write(new Date().getFullYear())
-                    </script> © Velzon.
+                    </script> © LLDIKTI 7.
                 </div>
                 <div class="col-sm-6">
                     <div class="text-sm-end d-none d-sm-block">
-                        Design & Develop by Themesbrand
+                        Develop by Tim Kelembagaan MSIB 7
                     </div>
                 </div>
             </div>

@@ -191,6 +191,11 @@
                                         </p>
                                     </div>
                                 </div>
+                                <div class="d-grid px-7 py-4 pt-8">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                        Ubah Password
+                                    </button>
+                                </div>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <div class="d-grid px-7 py-4 pt-8">
@@ -205,4 +210,33 @@
         </div>
     </nav>
 </header>
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Ubah Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm" action="{{ route('user.user.updatePassword') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="new_password" class="form-label">Password Baru</label>
+                        <input type="password" class="form-control" id="new_password" name="new_password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="new_password_confirmation" class="form-label">Konfirmasi Password Baru</label>
+                        <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
+                    </div>
+                    <div id="passwordError" class="alert alert-danger hidden" role="alert" style="display: none;">
+                        Konfirmasi password baru tidak cocok.
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Header End -->

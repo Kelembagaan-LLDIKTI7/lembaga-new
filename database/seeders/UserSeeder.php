@@ -13,40 +13,15 @@ use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     protected static ?string $password;
 
     public function run(): void
     {
-        $role = Role::create([
+        $superAdminRole = Role::create([
             'id' => Str::uuid()->toString(),
             'name' => 'Super Admin',
             'guard_name' => 'web',
         ]);
-
-        $role = Role::create([
-            'id' => Str::uuid()->toString(),
-            'name' => 'Guest',
-            'guard_name' => 'web',
-        ]);
-
-        $organization = Organisasi::where('organisasi_nama', 'Lembaga Layanan Pendidikan Tinggi Wilayah VII')->first();
-
-        $user = User::create([
-            'id' => Str::uuid(),
-            'name' => 'super_admin',
-            'nip' => '200301102025011001',
-            'email' => 'wsobirin2@gmail.com',
-            'password' => static::$password ??= Hash::make('password'),
-            'is_active' => 1,
-            'id_organization' => $organization->id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        $user->assignRole($role);
 
         $permissions = [
             'Create Permission',
@@ -73,6 +48,7 @@ class UserSeeder extends Seeder
             'View Perguruan Tinggi',
             'Import Perguruan Tinggi',
             'Detail Perguruan Tinggi',
+            'View History Perguruan Tinggi',
 
             'Create Badan Penyelenggara',
             'Edit Badan Penyelenggara',
@@ -126,6 +102,11 @@ class UserSeeder extends Seeder
             'Detail Akta Badan Penyelenggara',
             'View PDF Akta Badan Penyelenggara',
 
+            'View SK Badan Penyelenggara',
+            'Create SK Badan Penyelenggara',
+            'Edit SK Badan Penyelenggara',
+            'View PDF SK Badan Penyelenggara',
+
             'Create SK Kumham Badan Penyelenggara',
             'Edit SK Kumham Badan Penyelenggara',
             'Delete SK Kumham Badan Penyelenggara',
@@ -137,6 +118,10 @@ class UserSeeder extends Seeder
             'Edit Jabatan',
             'Delete Jabatan',
             'View Jabatan',
+
+            'View Peringkat Akreditasi',
+            'View Lembaga Akreditasi',
+            'View Jenis Organisasi',
         ];
 
         foreach ($permissions as $permissionName) {
@@ -146,7 +131,172 @@ class UserSeeder extends Seeder
                 'guard_name' => 'web',
             ]);
 
-            $role->givePermissionTo($permission);
+            $superAdminRole->givePermissionTo($permission);
         }
+
+        $perguruanTinggiRole = Role::create([
+            'id' => Str::uuid()->toString(),
+            'name' => 'Perguruan Tinggi',
+            'guard_name' => 'web',
+        ]);
+
+        $perguruanTinggiPermissions = [
+            'Create Perguruan Tinggi',
+            'Edit Perguruan Tinggi',
+            'Delete Perguruan Tinggi',
+            'View Perguruan Tinggi',
+            'Import Perguruan Tinggi',
+            'Detail Perguruan Tinggi',
+            'View History Perguruan Tinggi',
+            'Create Program Studi',
+            'Edit Program Studi',
+            'View Program Studi',
+            'Detail Program Studi',
+            'Create Akreditasi Program Studi',
+            'Edit Akreditasi Program Studi',
+            'View Akreditasi Program Studi',
+            'Detail Akreditasi Program Studi',
+            'Create Akreditasi Perguruan Tinggi',
+            'Edit Akreditasi Perguruan Tinggi',
+            'Delete Akreditasi Perguruan Tinggi',
+            'View Akreditasi Perguruan Tinggi',
+            'Detail Akreditasi Perguruan Tinggi',
+            'View PDF Akreditasi Perguruan Tinggi',
+            'Create Pimpinan Perguruan Tinggi',
+            'Edit Pimpinan Perguruan Tinggi',
+            'Delete Pimpinan Perguruan Tinggi',
+            'View Pimpinan Perguruan Tinggi',
+            'Detail Pimpinan Perguruan Tinggi',
+            'View PDF Pimpinan Perguruan Tinggi',
+            'Create SK Perguruan Tinggi',
+            'Edit SK Perguruan Tinggi',
+            'Delete SK Perguruan Tinggi',
+            'View SK Perguruan Tinggi',
+            'Detail SK Perguruan Tinggi',
+            'View PDF SK Perguruan Tinggi',
+        ];
+
+        foreach ($perguruanTinggiPermissions as $permissionName) {
+            $permission = Permission::firstOrCreate([
+                'name' => $permissionName,
+                'guard_name' => 'web',
+            ]);
+
+            $perguruanTinggiRole->givePermissionTo($permission);
+        }
+
+        $badanPenyelenggaraRole = Role::create([
+            'id' => Str::uuid()->toString(),
+            'name' => 'Badan Penyelenggara',
+            'guard_name' => 'web',
+        ]);
+
+        $badanPenyelenggaraPermissions = array_merge($perguruanTinggiPermissions, [
+            'Create Badan Penyelenggara',
+            'Edit Badan Penyelenggara',
+            'Delete Badan Penyelenggara',
+            'View Badan Penyelenggara',
+            'Import Badan Penyelenggara',
+            'Detail Badan Penyelenggara',
+            'Create Pimpinan Badan Penyelenggara',
+            'Edit Pimpinan Badan Penyelenggara',
+            'Delete Pimpinan Badan Penyelenggara',
+            'View Pimpinan Badan Penyelenggara',
+            'Detail Pimpinan Badan Penyelenggara',
+            'View PDF Pimpinan Badan Penyelenggara',
+            'Create Akta Badan Penyelenggara',
+            'Edit Akta Badan Penyelenggara',
+            'Delete Akta Badan Penyelenggara',
+            'View Akta Badan Penyelenggara',
+            'Detail Akta Badan Penyelenggara',
+            'View PDF Akta Badan Penyelenggara',
+            'View SK Badan Penyelenggara',
+            'Create SK Badan Penyelenggara',
+            'Edit SK Badan Penyelenggara',
+            'View PDF SK Badan Penyelenggara',
+            'Create SK Kumham Badan Penyelenggara',
+            'Edit SK Kumham Badan Penyelenggara',
+            'Delete SK Kumham Badan Penyelenggara',
+            'View SK Kumham Badan Penyelenggara',
+            'Detail SK Kumham Badan Penyelenggara',
+            'View PDF SK Kumham Badan Penyelenggara',
+            'Create Perguruan Tinggi',
+            'Edit Perguruan Tinggi',
+            'Delete Perguruan Tinggi',
+            'View Perguruan Tinggi',
+            'Import Perguruan Tinggi',
+            'Detail Perguruan Tinggi',
+            'View History Perguruan Tinggi',
+            'Create Program Studi',
+            'Edit Program Studi',
+            'View Program Studi',
+            'Detail Program Studi',
+            'Create Akreditasi Program Studi',
+            'Edit Akreditasi Program Studi',
+            'View Akreditasi Program Studi',
+            'Detail Akreditasi Program Studi',
+            'Create Akreditasi Perguruan Tinggi',
+            'Edit Akreditasi Perguruan Tinggi',
+            'Delete Akreditasi Perguruan Tinggi',
+            'View Akreditasi Perguruan Tinggi',
+            'Detail Akreditasi Perguruan Tinggi',
+            'View PDF Akreditasi Perguruan Tinggi',
+            'Create Pimpinan Perguruan Tinggi',
+            'Edit Pimpinan Perguruan Tinggi',
+            'Delete Pimpinan Perguruan Tinggi',
+            'View Pimpinan Perguruan Tinggi',
+            'Detail Pimpinan Perguruan Tinggi',
+            'View PDF Pimpinan Perguruan Tinggi',
+            'Create SK Perguruan Tinggi',
+            'Edit SK Perguruan Tinggi',
+            'Delete SK Perguruan Tinggi',
+            'View SK Perguruan Tinggi',
+            'Detail SK Perguruan Tinggi',
+            'View PDF SK Perguruan Tinggi',
+        ]);
+
+        foreach ($badanPenyelenggaraPermissions as $permissionName) {
+            $permission = Permission::firstOrCreate([
+                'name' => $permissionName,
+                'guard_name' => 'web',
+            ]);
+
+            $badanPenyelenggaraRole->givePermissionTo($permission);
+        }
+
+        $organization = Organisasi::where('organisasi_nama', 'Lembaga Layanan Pendidikan Tinggi Wilayah VII')->first();
+
+        $superAdmin = User::create([
+            'id' => Str::uuid(),
+            'name' => 'super_admin',
+            'nip' => '200301102025011001',
+            'email' => 'wsobirin2@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'is_active' => 1,
+            'id_organization' => $organization->id,
+        ]);
+        $superAdmin->assignRole($superAdminRole);
+
+        $acxell = User::create([
+            'id' => Str::uuid(),
+            'name' => 'acxell',
+            'nip' => '200301102025011002',
+            'email' => 'acxell@gmail.com',
+            'password' => Hash::make('password'),
+            'is_active' => 1,
+            'id_organization' => $organization->id,
+        ]);
+        $acxell->assignRole($perguruanTinggiRole);
+
+        $nopal = User::create([
+            'id' => Str::uuid(),
+            'name' => 'nopal',
+            'nip' => '200301102025011003',
+            'email' => 'nopal@gmail.com',
+            'password' => Hash::make('password'),
+            'is_active' => 1,
+            'id_organization' => $organization->id,
+        ]);
+        $nopal->assignRole($badanPenyelenggaraRole);
     }
 }

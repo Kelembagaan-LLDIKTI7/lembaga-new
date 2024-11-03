@@ -64,20 +64,21 @@ Route::middleware('auth')->group(function () {
             Route::put('/{user}', [UserController::class, 'update'])->name('update');
         });
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete User');
+        Route::post('/user/update-password', [UserController::class, 'updatePassword'])->middleware('auth')->name('user.updatePassword');
     });
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('peringkat-akademik')->name('peringkat-akademik.')->group(function () {
-        Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index');
+        Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index')->middleware('role.access:View Peringkat Akreditasi');
     });
 
     Route::prefix('lembaga-akademik')->name('lembaga-akademik.')->group(function () {
-        Route::get('/', [LembagaAkreditasiController::class, 'index'])->name('index');
+        Route::get('/', [LembagaAkreditasiController::class, 'index'])->name('index')->middleware('role.access:View Lembaga Akreditasi');
     });
 
     Route::prefix('organisasi-type')->name('organisasi-type.')->group(function () {
-        Route::get('/', [OrganisasiTypeController::class, 'index'])->name('index');
+        Route::get('/', [OrganisasiTypeController::class, 'index'])->name('index')->middleware('role.access:View Jenis Organisasi');
     });
 
     Route::prefix('jabatan')->name('jabatan.')->group(function () {
@@ -222,10 +223,14 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('skbp-badan-penyelenggara')->name('skbp-badan-penyelenggara.')->group(function () {
-        Route::get('/{id}/create', [SkbpController::class, 'create'])->name('create');
-        Route::post('/', [SkbpController::class, 'store'])->name('store');
-        Route::get('/{id}/edit', [SkbpController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [SkbpController::class, 'update'])->name('update');
-        Route::get('/{id}/view-pdf', [SkbpController::class, 'viewPdf'])->name('viewPdf');
+        Route::middleware('role.access:Create SK Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/create', [SkbpController::class, 'create'])->name('create');
+            Route::post('/', [SkbpController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit SK Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/edit', [SkbpController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [SkbpController::class, 'update'])->name('update');
+        });
+        Route::get('/{id}/view-pdf', [SkbpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Badan Penyelenggara');
     });
 });

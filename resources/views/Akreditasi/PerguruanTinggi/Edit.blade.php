@@ -131,8 +131,10 @@
                                 </div>
 
                                 <div class="btn-center mt-3">
+                                    @can('Detail Perguruan Tinggi')
                                     <a href="{{ route('perguruan-tinggi.show', ['id' => $akreditasi->id_organization]) }}"
                                         class="btn btn-primary btn-sm-custom">Keluar</a>
+                                        @endCan
                                     <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                 </div>
                             </div>

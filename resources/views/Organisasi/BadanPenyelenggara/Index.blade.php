@@ -13,13 +13,17 @@
                                 <h5 class="mb-0">Badan Penyelenggara</h5>
                             </div>
                             <div class="mb-2">
+                                @can('Import Badan Penyelenggara')
                                 <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
                                     data-bs-target="#importExcel">
                                     Import Excel
                                 </button>
+                                @endCan
+                                @can('Create Badan Penyelenggara')
                                 <a href="{{ route('badan-penyelenggara.create') }}" class="btn btn-primary btn-sm">
                                     Tambah Badan Penyelenggara
                                 </a>
+                                @endCan
                             </div>
                             <div class="table-responsive mt-2">
                                 <table id="dom_jq_event"
@@ -46,10 +50,12 @@
                                                 <td>{{ $badanPenyelenggara->organisasi_kota }}</td>
                                                 <td>{{ $badanPenyelenggara->organisasi_status }}</td>
                                                 <td>
+                                                    @can('Detail Badan Penyelenggara')
                                                     <a href="{{ route('badan-penyelenggara.show', $badanPenyelenggara->id) }}"
                                                         class="btn btn-sm btn-primary me-2">
                                                         <i class="ti ti-info-circle"></i>
                                                     </a>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -58,6 +64,22 @@
                         </div>
                     </div>
                 </div>
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> © LLDIKTI 7.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Develop by Tim Kelembagaan MSIB 7
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </section>
 

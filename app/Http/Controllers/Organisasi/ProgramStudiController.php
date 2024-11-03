@@ -97,7 +97,7 @@ class ProgramStudiController extends Controller
             'id_user' => Auth::user()->id
         ]);
 
-        return back()->with('success', 'Data Sudah Terekam');
+        return redirect()->route('perguruan-tinggi.show', $validated['id_organization'])->with('success', 'Program Studi berhasil ditambah.');
     }
 
     /**

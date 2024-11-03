@@ -22,7 +22,8 @@ class BadanPenyelenggaraController extends Controller
      */
     public function index()
     {
-        $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
+        $user = Auth::user();
+        $query = Organisasi::where('organisasi_type_id', 2)
             ->select(
                 'id',
                 'organisasi_nama',
@@ -31,8 +32,14 @@ class BadanPenyelenggaraController extends Controller
                 'organisasi_kota',
                 'organisasi_status',
             )
-            ->orderBy('organisasi_nama', 'asc')
-            ->get();
+            ->orderBy('organisasi_nama', 'asc');
+
+        if ($user->hasRole('Badan Penyelenggara')) {
+            $query->where('id', $user->id_organization);
+        }
+
+        $badanPenyelenggaras = $query->get();
+
         return view('Organisasi.BadanPenyelenggara.Index', ['badanPenyelenggaras' => $badanPenyelenggaras]);
     }
 

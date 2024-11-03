@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Jabatan;
+use App\Models\BentukPt;
 use Illuminate\Http\Request;
 
 class JabatanController extends Controller
@@ -14,11 +15,14 @@ class JabatanController extends Controller
     public function index()
     {
         $jabatans = Jabatan::selectRaw(
-            'id, jabatan_nama, jabatan_status, jabatan_organisasi'
+            'id, jabatan_nama, jabatan_status, jabatan_organisasi, bentuk_pt'
         )
             ->orderBy('jabatan_nama', 'asc')
             ->get();
-        return view('Master.Jabatan.Index', ['jabatans' => $jabatans]);
+
+        $bentuk_pts = BentukPt::pluck('bentuk_nama', 'id');
+
+        return view('Master.Jabatan.Index', compact('jabatans', 'bentuk_pts'));
     }
 
     /**

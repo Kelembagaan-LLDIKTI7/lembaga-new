@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
 use App\Imports\PtImport;
+use App\Models\Akreditasi;
 use App\Models\BentukPt;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
@@ -25,7 +26,8 @@ class PerguruanTinggiController extends Controller
      */
     public function index()
     {
-        $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)
+        $user = Auth::user();
+        $query = Organisasi::where('organisasi_type_id', 3)
             ->select(
                 'id',
                 'organisasi_nama as pt_nama',
@@ -37,19 +39,28 @@ class PerguruanTinggiController extends Controller
                 'parent_id'
             )
             ->with('parent:id,organisasi_nama')
-            ->orderBy('pt_nama', 'asc')
-            ->get();
+            ->orderBy('pt_nama', 'asc');
+
+        if ($user->hasRole('Perguruan Tinggi')) {
+            $query->where('id', $user->id_organization);
+        } elseif ($user->hasRole('Badan Penyelenggara')) {
+            $query->where('parent_id', $user->id_organization);
+        }
+
+        $perguruanTinggis = $query->get();
 
         return view('Organisasi.PerguruanTinggi.Index', [
             'perguruanTinggis' => $perguruanTinggis
         ]);
     }
 
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $user = Auth::user();
         $jenis = JenisSuratKeputusan::select(
             'id',
             'jsk_nama'
@@ -61,10 +72,9 @@ class PerguruanTinggiController extends Controller
         )->get();
 
         $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
-            ->select(
-                'id',
-                'organisasi_nama'
-            )->get();
+            ->where('id', $user->id_organization)
+            ->select('id', 'organisasi_nama')
+            ->get();
 
         $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)
             ->select(
@@ -251,12 +261,23 @@ class PerguruanTinggiController extends Controller
                 }
             ])->get();
 
+        $akreditasisProdi = Akreditasi::where('id_organization', $id)
+            ->select(
+                'id_prodi',
+                'akreditasi_sk',
+                'akreditasi_tgl_awal',
+                'akreditasi_tgl_akhir',
+                'akreditasi_status',
+                'aktif'
+            )->with(['prodi:id,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
+
         return view('Organisasi.PerguruanTinggi.Show', [
             'organisasi' => $organisasi,
             'berubahOrganisasi' => $berubahOrganisasi,
             'akreditasi' => $akreditasi,
             'sk' => $sk,
-            'pimpinan' => $pimpinan
+            'pimpinan' => $pimpinan,
+            'akreditasisProdi' => $akreditasisProdi,
         ]);
 
         // return response()->json([
