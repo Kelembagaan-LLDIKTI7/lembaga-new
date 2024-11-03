@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Organisasi;
 
 use App\Http\Controllers\Controller;
 use App\Imports\PtImport;
+use App\Models\Akreditasi;
 use App\Models\BentukPt;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
@@ -45,14 +46,14 @@ class PerguruanTinggiController extends Controller
         } elseif ($user->hasRole('Badan Penyelenggara')) {
             $query->where('parent_id', $user->id_organization);
         }
-    
+
         $perguruanTinggis = $query->get();
-    
+
         return view('Organisasi.PerguruanTinggi.Index', [
             'perguruanTinggis' => $perguruanTinggis
         ]);
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -260,12 +261,23 @@ class PerguruanTinggiController extends Controller
                 }
             ])->get();
 
+        $akreditasisProdi = Akreditasi::where('id_organization', $id)
+            ->select(
+                'id_prodi',
+                'akreditasi_sk',
+                'akreditasi_tgl_awal',
+                'akreditasi_tgl_akhir',
+                'akreditasi_status',
+                'aktif'
+            )->with(['prodi:id,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
+
         return view('Organisasi.PerguruanTinggi.Show', [
             'organisasi' => $organisasi,
             'berubahOrganisasi' => $berubahOrganisasi,
             'akreditasi' => $akreditasi,
             'sk' => $sk,
-            'pimpinan' => $pimpinan
+            'pimpinan' => $pimpinan,
+            'akreditasisProdi' => $akreditasisProdi,
         ]);
 
         // return response()->json([

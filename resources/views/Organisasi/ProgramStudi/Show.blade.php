@@ -122,6 +122,7 @@
                                             <th rowspan="2" class="text-center align-middle">No</th>
                                             <th colspan="2" class="text-center align-middle">Program Studi</th>
                                             <th colspan="4" class="text-center align-middle">SK Pimpinan</th>
+                                            <th rowspan="2" class="text-center align-middle">Status</th>
                                         </tr>
                                         <tr>
                                             <th>Nama Prodi</th>
@@ -129,7 +130,7 @@
                                             <th>No SK</th>
                                             <th>Akreditasi Tanggal</th>
                                             <th>Akreditasi Kadaluarsa</th>
-                                            <th>Status</th>
+                                            <th>Status Akreditasi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -151,6 +152,7 @@
                                                     {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
                                                 </td>
                                                 <td>{{ $akreditasi->akreditasi_status }}</td>
+                                                <td>{{ $akreditasi->aktif }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -161,7 +163,8 @@
                 </section>
             </div>
             <div class="btn-center mt-3">
-                <a href="{{ route('perguruan-tinggi.index') }}" type="submit" class="btn btn-primary">Keluar</a>
+                <a href="{{ route('perguruan-tinggi.show', $prodi->perguruanTinggi->id) }}"
+                    class="btn btn-primary">Keluar</a>
             </div>
         </div>
     </div>
