@@ -191,9 +191,11 @@
                                         </p>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-outline-secondary ms-3" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                                    Ubah Password
-                                </button>
+                                <div class="d-grid px-7 py-4 pt-8">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                        Ubah Password
+                                    </button>
+                                </div>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <div class="d-grid px-7 py-4 pt-8">
@@ -226,6 +228,10 @@
                         <label for="new_password_confirmation" class="form-label">Konfirmasi Password Baru</label>
                         <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
                     </div>
+                    <div id="passwordError" class="alert alert-danger hidden" role="alert" style="display: none;">
+                        Konfirmasi password baru tidak cocok.
+                    </div>
+
                     <button type="submit" class="btn btn-primary w-100">Simpan Perubahan</button>
                 </form>
             </div>
