@@ -69,7 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('peringkat-akademik')->name('peringkat-akademik.')->group(function () {
-        Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index')->middleware('role:access:View Peringkat Akreditasi');
+        Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index')->middleware('role.access:View Peringkat Akreditasi');
     });
 
     Route::prefix('lembaga-akademik')->name('lembaga-akademik.')->group(function () {
