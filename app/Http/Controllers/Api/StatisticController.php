@@ -45,6 +45,7 @@ class StatisticController extends Controller
         ]);
     }
 
+    // Jumlah berdasarkan bentuk wilayah
     public function jumlahPerguruanTinggiBerdasarkanWilayah(Request $request): JsonResponse
     {
         $data = Organisasi::select('organisasi_kota as kota', DB::raw('count(*) as total'))
@@ -55,10 +56,12 @@ class StatisticController extends Controller
             ->get();
 
         return response()->json([
+            'status' => '200 OK - Success',
             'data' => $data
         ]);
     }
 
+    // Jumlah berdasarkan bentuk lembaga
     public function jumlahPerguruanTinggiBerdasarkanBentukLembaga(Request $request): JsonResponse
     {
         $data = Organisasi::select('bentuk_lembaga', DB::raw('count(*) as total'))
@@ -69,10 +72,12 @@ class StatisticController extends Controller
             ->get();
 
         return response()->json([
+            'status' => '200 OK - Success',
             'data' => $data
         ]);
     }
 
+    // Jumlah prodi berdasarkan program pendidikan
     public function jumlahProdiBerdasarkanProgram(Request $request): JsonResponse
     {
         $data = ProgramStudi::select('prodi_jenjang', DB::raw('count(*) as total'))
@@ -83,6 +88,7 @@ class StatisticController extends Controller
             ->get();
 
         return response()->json([
+            'status' => '200 OK - Success',
             'data' => $data
         ]);
     }

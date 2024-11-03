@@ -142,11 +142,11 @@
                 <div class="col-sm-6">
                     <script>
                         document.write(new Date().getFullYear())
-                    </script> © Velzon.
+                    </script> © LLDIKTI 7.
                 </div>
                 <div class="col-sm-6">
                     <div class="text-sm-end d-none d-sm-block">
-                        Design & Develop by Themesbrand
+                        Develop by Tim Kelembagaan MSIB 7
                     </div>
                 </div>
             </div>
