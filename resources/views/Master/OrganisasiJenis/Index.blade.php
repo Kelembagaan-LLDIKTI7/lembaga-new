@@ -20,7 +20,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Organisasi Jenis Nama</th>
+                                            <th>Nama Organisasi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -37,5 +37,21 @@
                 </div>
             </div>
         </section>
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script> © LLDIKTI 7.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Develop by Tim Kelembagaan MSIB 7
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 @endsection

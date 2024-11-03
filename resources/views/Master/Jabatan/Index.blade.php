@@ -21,8 +21,9 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Jabatan</th>
-                                            <th>Jabatan Status</th>
-                                            <th>Jabatan Kategori Organisasi</th>
+                                            <th>Status</th>
+                                            <th>Organisasi</th>
+                                            <th>Bentuk PT</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -32,8 +33,10 @@
                                                 <td>{{ $jabatan->jabatan_nama }}</td>
                                                 <td>{{ $jabatan->jabatan_status }}</td>
                                                 <td>{{ $jabatan->jabatan_organisasi }}</td>
+                                                <td>{{ $bentuk_pts[$jabatan->bentuk_pt] ?? 'Unknown' }}</td>
                                             </tr>
                                         @endforeach
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -41,5 +44,21 @@
                 </div>
             </div>
         </section>
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script> © LLDIKTI 7.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Develop by Tim Kelembagaan MSIB 7
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 @endsection
