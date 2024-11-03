@@ -159,7 +159,21 @@
             });
         });
     </script>
+    <script>
+    $(document).ready(function() {
+        $('#changePasswordForm').on('submit', function(e) {
+            const newPassword = $('#new_password').val();
+            const confirmPassword = $('#new_password_confirmation').val();
+
+            if (newPassword !== confirmPassword) {
+                e.preventDefault();
+                alert('Konfirmasi password baru tidak cocok.');
+            }
+        });
+    });
+</script>
     @yield('js')
+    
 </body>
 
 </html>

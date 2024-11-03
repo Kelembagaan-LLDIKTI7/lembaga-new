@@ -39,12 +39,11 @@ class PerguruanTinggiController extends Controller
             )
             ->with('parent:id,organisasi_nama')
             ->orderBy('pt_nama', 'asc');
-    
-        // Filter data based on user role
+
         if ($user->hasRole('Perguruan Tinggi')) {
-            $query->where('id', $user->id_organization); // Only show user’s own organization
+            $query->where('id', $user->id_organization);
         } elseif ($user->hasRole('Badan Penyelenggara')) {
-            $query->where('parent_id', $user->id_organization); // Show organizations under their "Badan Penyelenggara"
+            $query->where('parent_id', $user->id_organization);
         }
     
         $perguruanTinggis = $query->get();

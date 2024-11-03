@@ -34,9 +34,8 @@ class BadanPenyelenggaraController extends Controller
             )
             ->orderBy('organisasi_nama', 'asc');
 
-        // Only show organizations linked to "Badan Penyelenggara" for this user
         if ($user->hasRole('Badan Penyelenggara')) {
-            $query->where('id', $user->id_organization); // Show only their own organization
+            $query->where('id', $user->id_organization);
         }
 
         $badanPenyelenggaras = $query->get();
