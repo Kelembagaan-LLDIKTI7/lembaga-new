@@ -35,13 +35,17 @@
                                 </button>
                                 @endCan
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="permissionTable">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
+                               <table id="dom_jq_event"
+                                    class="table-striped table-bordered display text-nowrap table border"
+                                    style="width: 100%" id="PermissionTable">
                                     <thead>
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Permission</th>
+                                            @canAny(['Edit Permission', 'Delete Permission'])
                                             <th>Actions</th>
+                                            @endCanAny
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -49,6 +53,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name }}</td>
+                                            @canAny(['Edit Permission', 'Delete Permission'])
                                             <td>
                                                 <div class="d-flex align-items-center gap-2">
                                                     @can('Edit Permission')
@@ -67,6 +72,7 @@
                                                     @endCan
                                                 </div>
                                             </td>
+                                            @endCanAny
                                         </tr>
 
                                         <!-- Edit Role Modal for each role -->

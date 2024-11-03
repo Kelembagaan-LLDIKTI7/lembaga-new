@@ -35,8 +35,10 @@
                                 </button>
                                 @endCan
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="roleTable">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
+                               <table id="dom_jq_event"
+                                    class="table-striped table-bordered display text-nowrap table border"
+                                    style="width: 100%">
                                     <thead>
                                         <tr>
                                             <th>No</th>

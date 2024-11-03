@@ -25,7 +25,8 @@ class PerguruanTinggiController extends Controller
      */
     public function index()
     {
-        $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)
+        $user = Auth::user();
+        $query = Organisasi::where('organisasi_type_id', 3)
             ->select(
                 'id',
                 'organisasi_nama as pt_nama',
@@ -37,19 +38,29 @@ class PerguruanTinggiController extends Controller
                 'parent_id'
             )
             ->with('parent:id,organisasi_nama')
-            ->orderBy('pt_nama', 'asc')
-            ->get();
-
+            ->orderBy('pt_nama', 'asc');
+    
+        // Filter data based on user role
+        if ($user->hasRole('Perguruan Tinggi')) {
+            $query->where('id', $user->id_organization); // Only show user’s own organization
+        } elseif ($user->hasRole('Badan Penyelenggara')) {
+            $query->where('parent_id', $user->id_organization); // Show organizations under their "Badan Penyelenggara"
+        }
+    
+        $perguruanTinggis = $query->get();
+    
         return view('Organisasi.PerguruanTinggi.Index', [
             'perguruanTinggis' => $perguruanTinggis
         ]);
     }
+    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $user = Auth::user();
         $jenis = JenisSuratKeputusan::select(
             'id',
             'jsk_nama'
@@ -61,10 +72,9 @@ class PerguruanTinggiController extends Controller
         )->get();
 
         $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
-            ->select(
-                'id',
-                'organisasi_nama'
-            )->get();
+            ->where('id', $user->id_organization)
+            ->select('id', 'organisasi_nama')
+            ->get();
 
         $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)
             ->select(

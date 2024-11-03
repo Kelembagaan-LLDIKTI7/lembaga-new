@@ -33,8 +33,8 @@
                         <span class="hide-menu">Master</span>
                     </a>
                     <ul aria-expanded="false" class="first-level collapse">
-                        @can('View Peringkat Akreditasi')
-                        <li class="sidebar-item">
+                    @can('View Peringkat Akreditasi')    
+                    <li class="sidebar-item">
                             <a href="{{ route('peringkat-akademik.index') }}" class="sidebar-link">
                                 <div class="round-16 d-flex align-items-center justify-content-center">
                                     <i class="ti ti-circle"></i>
