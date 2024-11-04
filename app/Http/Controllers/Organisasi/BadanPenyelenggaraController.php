@@ -178,23 +178,43 @@ class BadanPenyelenggaraController extends Controller
                 'organisasi_alamat',
                 'organisasi_kota',
             )
-            ->with(['children' => function ($query) {
-                $query->select(
-                    'id',
-                    'organisasi_nama',
-                    'organisasi_nama_singkat',
-                    'organisasi_kode',
-                    'organisasi_email',
-                    'organisasi_telp',
-                    'organisasi_kota',
-                    'organisasi_alamat',
-                    'organisasi_website',
-                    'organisasi_logo',
-                    'organisasi_status',
-                    'organisasi_type_id',
-                    'parent_id',
-                );
-            }])
+            ->with([
+                'children' => function ($query) {
+                    $query->select(
+                        'id',
+                        'organisasi_nama',
+                        'organisasi_nama_singkat',
+                        'organisasi_kode',
+                        'organisasi_email',
+                        'organisasi_telp',
+                        'organisasi_kota',
+                        'organisasi_alamat',
+                        'organisasi_website',
+                        'organisasi_logo',
+                        'organisasi_status',
+                        'organisasi_type_id',
+                        'parent_id',
+                    );
+                },
+                'referensi' => function ($query) {
+                    $query->select(
+                        'id',
+                        'organisasi_nama',
+                        'organisasi_nama_singkat',
+                        'organisasi_kode',
+                        'organisasi_email',
+                        'organisasi_telp',
+                        'organisasi_kota',
+                        'organisasi_alamat',
+                        'organisasi_website',
+                        'organisasi_logo',
+                        'organisasi_status',
+                        'organisasi_type_id',
+                        'parent_id',
+                        'organisasi_berubah_status'
+                    );
+                }
+            ])
             ->where('id', $id)
             ->first();
 
@@ -212,24 +232,6 @@ class BadanPenyelenggaraController extends Controller
 
         $skbp = Skbp::where('id_organization', $id)
             ->get();
-
-        // dd($akta);
-
-        // ->select('pimpinan_nama', 'pimpinan_email', 'pimpinan_status', 'id_jabatan')
-        // ->with([
-        //     'jabatan' => function ($query) {
-        //         $query->select('id', 'jabatan_nama')->get();
-        //     }
-        // ])->get();
-        // $kota = Kota::all();
-
-        // $listKota = $kota->map(function ($item) {
-        //     return [
-        //         $item->nama,
-        //     ];
-        // });
-
-        // dd($listKota);
 
         // return response()->json([
         //     'badanPenyelenggaras' => $badanPenyelenggaras,

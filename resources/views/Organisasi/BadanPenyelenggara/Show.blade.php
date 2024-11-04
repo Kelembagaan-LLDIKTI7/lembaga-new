@@ -5,7 +5,6 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">test</h5>
@@ -34,145 +33,193 @@
 
                     <div class="d-flex justify-content-end">
                         @can('Edit Badan Penyelenggara')
-                        <a href="" class="btn btn-warning">
-                            Edit
-                        </a>
+                            <a href="" class="btn btn-warning">
+                                Edit
+                            </a>
                         @endCan
                     </div>
                 </div>
             </div>
 
-            @can('View Pimpinan Badan Penyelenggara')
-            <section class="datatables">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="mb-2">
-                            <h5 class="mb-0">Pimpinan Badan Penyelenggara Yang dimiliki</h5>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="pimpinan_table" class="table-striped table-bordered display text-nowrap table border"
-                                style="overflow-x: auto; overflow-y: hidden;">
-                                @can('Create Pimpinan Badan Penyelenggara')
-                                <a href="{{ route('pimpinan-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
-                                    class="btn btn-primary btn-sm mb-2">
-                                    Tambah Pimpinan BP
-                                </a>
-                                @endCan
-                                <thead>
-                                    <tr>
-                                        <th rowspan="2" class="text-center align-middle">No</th>
-                                        <th colspan="2" class="text-center align-middle">Jabatan</th>
-                                        <th colspan="3" class="text-center align-middle">SK Akreditasi</th>
-                                        <th rowspan="2" class="text-center align-middle">Aksi</th>
-                                    </tr>
-                                    <tr>
-                                        <th>Nama</th>
-                                        <th>Jabatan</th>
-                                        <th>No SK</th>
-                                        <th>Tanggal Terbit</th>
-                                        <th>Tanggal Berakhir</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($pimpinan as $pimpinan)
-                                        @php
-                                            $isExpired = \Carbon\Carbon::parse(
-                                                $pimpinan->pimpinan_tanggal_berakhir,
-                                            )->isBefore(\Carbon\Carbon::today());
-                                        @endphp
-                                        <tr class="{{ $isExpired ? 'table-danger' : '' }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $pimpinan->pimpinan_nama }}</td>
-                                            <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
-                                            <td>{{ $pimpinan->pimpinan_sk }}</td>
-                                            <td>{{ $pimpinan->pimpinan_tanggal }}</td>
-                                            <td>{{ $pimpinan->pimpinan_tanggal_berakhir }}</td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    @can('Edit Pimpinan Badan Penyelenggara')
-                                                    <a href="{{ route('pimpinan-badan-penyelenggara.edit', ['id' => $pimpinan->id]) }}"
-                                                        class="btn btn-sm btn-success">
-                                                        <i class="ri-edit-2-line"></i> Edit
-                                                    </a>
-                                                    @endcan
-                                                    @can('Detail Pimpinan Badan Penyelenggara')
-                                                    <button class="btn btn-info btn-sm pimpinan-detail"
-                                                        data-bs-toggle="modal" data-bs-target="#detailRecordModalPimpinan"
-                                                        data-id="{{ $pimpinan->id }}">
-                                                        Detail
-                                                    </button>
-                                                    @endcan
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+            @if ($badanPenyelenggaras->referensi->isNotEmpty())
+                @foreach ($badanPenyelenggaras->referensi as $ref)
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Badan Penyelenggara Telah Dipindah Bentuk Ke</h5>
+                            <table class="table-borderless table">
+                                <tr>
+                                    <th>Nama Organisasi</th>
+                                    <td>{{ $ref->organisasi_nama }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nama Singkatan</th>
+                                    <td>{{ $ref->organisasi_nama_singkat }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Kode Organisasi</th>
+                                    <td>{{ $ref->organisasi_kode }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{{ $ref->organisasi_email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Telepon</th>
+                                    <td>{{ $ref->organisasi_telp }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Kota</th>
+                                    <td>{{ $ref->organisasi_kota }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Alamat</th>
+                                    <td>{{ $ref->organisasi_alamat }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Website</th>
+                                    <td>{{ $ref->organisasi_website }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>{{ $ref->organisasi_status }}</td>
+                                </tr>
                             </table>
                         </div>
                     </div>
-                </div>
-            </section>
+                @endforeach
+            @endif
+
+            @can('View Pimpinan Badan Penyelenggara')
+                <section class="datatables">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <h5 class="mb-0">Pimpinan Badan Penyelenggara Yang dimiliki</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="pimpinan_table" class="table-striped table-bordered display text-nowrap table border"
+                                    style="overflow-x: auto; overflow-y: hidden;">
+                                    @can('Create Pimpinan Badan Penyelenggara')
+                                        <a href="{{ route('pimpinan-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                            class="btn btn-primary btn-sm mb-2">
+                                            Tambah Pimpinan BP
+                                        </a>
+                                    @endCan
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" class="text-center align-middle">No</th>
+                                            <th colspan="2" class="text-center align-middle">Jabatan</th>
+                                            <th colspan="3" class="text-center align-middle">SK Akreditasi</th>
+                                            <th rowspan="2" class="text-center align-middle">Aksi</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>Jabatan</th>
+                                            <th>No SK</th>
+                                            <th>Tanggal Terbit</th>
+                                            <th>Tanggal Berakhir</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($pimpinan as $pimpinan)
+                                            @php
+                                                $isExpired = \Carbon\Carbon::parse(
+                                                    $pimpinan->pimpinan_tanggal_berakhir,
+                                                )->isBefore(\Carbon\Carbon::today());
+                                            @endphp
+                                            <tr class="{{ $isExpired ? 'table-danger' : '' }}">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $pimpinan->pimpinan_nama }}</td>
+                                                <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
+                                                <td>{{ $pimpinan->pimpinan_sk }}</td>
+                                                <td>{{ $pimpinan->pimpinan_tanggal }}</td>
+                                                <td>{{ $pimpinan->pimpinan_tanggal_berakhir }}</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        @can('Edit Pimpinan Badan Penyelenggara')
+                                                            <a href="{{ route('pimpinan-badan-penyelenggara.edit', ['id' => $pimpinan->id]) }}"
+                                                                class="btn btn-sm btn-success">
+                                                                <i class="ri-edit-2-line"></i> Edit
+                                                            </a>
+                                                        @endcan
+                                                        @can('Detail Pimpinan Badan Penyelenggara')
+                                                            <button class="btn btn-info btn-sm pimpinan-detail"
+                                                                data-bs-toggle="modal" data-bs-target="#detailRecordModalPimpinan"
+                                                                data-id="{{ $pimpinan->id }}">
+                                                                Detail
+                                                            </button>
+                                                        @endcan
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             @endCan
 
             @can('View SK Badan Penyelenggara')
-            <section class="datatables">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="mb-2">
-                            <h5 class="mb-0">SKBP</h5>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="skbp" class="table-striped table-bordered display text-nowrap table border"
-                                style="width: 100%">
-                                @can('Create SK Badan Penyelenggara')
-                                <a href="{{ route('skbp-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
-                                    class="btn btn-primary btn-sm mb-2">
-                                    Tambah SKBP
-                                </a>
-                                @endCan
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nomor SK</th>
-                                        <th>Tanggal SK</th>
-                                        <th>Jenis SK</th>
-                                        <th>Dokumen</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($skbp as $sk)
+                <section class="datatables">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <h5 class="mb-0">SKBP</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="skbp" class="table-striped table-bordered display text-nowrap table border"
+                                    style="width: 100%">
+                                    @can('Create SK Badan Penyelenggara')
+                                        <a href="{{ route('skbp-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                            class="btn btn-primary btn-sm mb-2">
+                                            Tambah SKBP
+                                        </a>
+                                    @endCan
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $sk->nomor }}</td>
-                                            <td>{{ $sk->tanggal }}</td>
-                                            <td>{{ $sk->jenis }}</td>
-                                            <td>
-                                                @can('View PDF SK Badan Penyelenggara')
-                                                @if ($sk->dokumen)
-                                                    <a href="{{ route('skbp-badan-penyelenggara.viewPdf', $sk->id) }}"
-                                                        target="_blank">
-                                                        Dokumen
-                                                    </a>
-                                                @endif
-                                                @endCan
-                                            </td>
-                                            <td>
-                                                @can('Edit SK Badan Penyelenggara')
-                                                <a href="{{ route('skbp-badan-penyelenggara.edit', $sk->id) }}"
-                                                    class="btn btn-info btn-sm">
-                                                    Edit
-                                                </a>
-                                                @endCan
-                                            </td>
+                                            <th>No</th>
+                                            <th>Nomor SK</th>
+                                            <th>Tanggal SK</th>
+                                            <th>Jenis SK</th>
+                                            <th>Dokumen</th>
+                                            <th>Aksi</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($skbp as $sk)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $sk->nomor }}</td>
+                                                <td>{{ $sk->tanggal }}</td>
+                                                <td>{{ $sk->jenis }}</td>
+                                                <td>
+                                                    @can('View PDF SK Badan Penyelenggara')
+                                                        @if ($sk->dokumen)
+                                                            <a href="{{ route('skbp-badan-penyelenggara.viewPdf', $sk->id) }}"
+                                                                target="_blank">
+                                                                Dokumen
+                                                            </a>
+                                                        @endif
+                                                    @endCan
+                                                </td>
+                                                <td>
+                                                    @can('Edit SK Badan Penyelenggara')
+                                                        <a href="{{ route('skbp-badan-penyelenggara.edit', $sk->id) }}"
+                                                            class="btn btn-info btn-sm">
+                                                            Edit
+                                                        </a>
+                                                    @endCan
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
             @endCan
 
             @can('View Perguruan Tinggi')
@@ -205,12 +252,12 @@
                                                 <td>{{ $bp->organisasi_status }}</td>
                                                 <td>
                                                     @can('Detail Perguruan Tinggi')
-                                                <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
-                                                        class="btn btn-sm btn-primary me-2">
-                                                        <i class="ti ti-info-circle"></i>
-                                                    </a>
+                                                        <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
+                                                            class="btn btn-sm btn-primary me-2">
+                                                            <i class="ti ti-info-circle"></i>
+                                                        </a>
                                                     @endcan
-                                            </td>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -222,71 +269,71 @@
             @endCan
 
             @can('View Akta Badan Penyelenggara')
-            <section class="datatables">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="mb-2">
-                            <h5 class="mb-0">Akta Yang Dimiliki</h5>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
-                                style="width: 100%">
-                                @can('Create Akta Badan Penyelenggara')
-                                <a href="{{ route('akta-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
-                                    class="btn btn-primary btn-sm mb-2">
-                                    Tambah Akta
-                                </a>
-                                @endcan
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nomor Akta</th>
-                                        <th>Nomor Tanggal</th>
-                                        <th>Status Akta</th>
-                                        <th>Nomor SK Kumham</th>
-                                        <th>Tanggal SK Kuham</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($akta as $akta)
+                <section class="datatables">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <h5 class="mb-0">Akta Yang Dimiliki</h5>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
+                                    style="width: 100%">
+                                    @can('Create Akta Badan Penyelenggara')
+                                        <a href="{{ route('akta-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                            class="btn btn-primary btn-sm mb-2">
+                                            Tambah Akta
+                                        </a>
+                                    @endcan
+                                    <thead>
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $akta->akta_nomor }}</td>
-                                            <td>{{ $akta->akta_tanggal }}</td>
-                                            <td>{{ $akta->akta_status }}</td>
-                                            <td>{{ optional($akta->skKumham)->kumham_nomor ?? 'N/A' }}</td>
-                                            <td>{{ optional($akta->skKumham)->kumham_tanggal ?? 'N/A' }}</td>
-                                            <td>
-                                                @can('Edit Akta Badan Penyelenggara')
-                                                <div class="edit">
-                                                    <a href="{{ route('akta-badan-penyelenggara.edit', $akta->id) }}"
-                                                        class="btn btn-sm btn-success mb-2">Edit</a>
-                                                </div>
-                                                @endCan
-                                                @can('Create SK Kumham Badan Penyelenggara')
-                                                <div class="kumham">
-                                                    <a href="{{ route('sk-kumham.create', $akta->id) }}"
-                                                        class="btn btn-sm btn-warning mb-2">
-                                                        SK Kumham
-                                                    </a>
-                                                </div>
-                                                @endCan
-                                                @can('Detail Akta Badan Penyelenggara')
-                                                <button class="btn btn-info btn-sm mb-2 akta-detail" data-bs-toggle="modal"
-                                                    data-bs-target="#detailRecordModalAkta" data-id="{{ $akta->id }}">
-                                                    Detail
-                                                </button>
-                                                @endcan
-                                            </td>
+                                            <th>No</th>
+                                            <th>Nomor Akta</th>
+                                            <th>Nomor Tanggal</th>
+                                            <th>Status Akta</th>
+                                            <th>Nomor SK Kumham</th>
+                                            <th>Tanggal SK Kuham</th>
+                                            <th>Aksi</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($akta as $akta)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $akta->akta_nomor }}</td>
+                                                <td>{{ $akta->akta_tanggal }}</td>
+                                                <td>{{ $akta->akta_status }}</td>
+                                                <td>{{ optional($akta->skKumham)->kumham_nomor ?? 'N/A' }}</td>
+                                                <td>{{ optional($akta->skKumham)->kumham_tanggal ?? 'N/A' }}</td>
+                                                <td>
+                                                    @can('Edit Akta Badan Penyelenggara')
+                                                        <div class="edit">
+                                                            <a href="{{ route('akta-badan-penyelenggara.edit', $akta->id) }}"
+                                                                class="btn btn-sm btn-success mb-2">Edit</a>
+                                                        </div>
+                                                    @endCan
+                                                    @can('Create SK Kumham Badan Penyelenggara')
+                                                        <div class="kumham">
+                                                            <a href="{{ route('sk-kumham.create', $akta->id) }}"
+                                                                class="btn btn-sm btn-warning mb-2">
+                                                                SK Kumham
+                                                            </a>
+                                                        </div>
+                                                    @endCan
+                                                    @can('Detail Akta Badan Penyelenggara')
+                                                        <button class="btn btn-info btn-sm akta-detail mb-2" data-bs-toggle="modal"
+                                                            data-bs-target="#detailRecordModalAkta" data-id="{{ $akta->id }}">
+                                                            Detail
+                                                        </button>
+                                                    @endcan
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
             @endCan
         </div>
 
