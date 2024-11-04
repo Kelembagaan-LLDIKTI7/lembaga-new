@@ -106,6 +106,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/create', [BadanPenyelenggaraController::class, 'create'])->name('create');
             Route::post('/', [BadanPenyelenggaraController::class, 'store'])->name('store');
         });
+        Route::middleware('role.access:Edit Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/edit', [BadanPenyelenggaraController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [BadanPenyelenggaraController::class, 'update'])->name('update');
+        });
         Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show')->middleware('role.access:Detail Badan Penyelenggara');
         Route::post('/import', [BadanPenyelenggaraController::class, 'import'])->name('import')->middleware('role.access:Import Badan Penyelenggara');
     });

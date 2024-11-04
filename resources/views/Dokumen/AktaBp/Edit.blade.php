@@ -86,16 +86,9 @@
                                         </select>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="referensiAkta" class="required-label">Referensi Akta</label>
-                                        <select class="form-control" id="referensiAkta" name="akta_referensi" disabled>
-                                            <option value="">-- Pilih Referensi Akta --</option>
-                                            @foreach ($aktas as $a)
-                                                <option value="{{ $a->id }}"
-                                                    {{ $a->id == old('akta_referensi', $akta->akta_referensi) ? 'selected' : '' }}>
-                                                    {{ $a->akta_nomor }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('akta_referensi')
+                                        <label for="akta_keterangan" class="required-label">Keterangan Akta</label>
+                                        <textarea class="form-control" id="akta_keterangan" name="akta_keterangan">{{ $akta->akta_keterangan }}</textarea>
+                                        @error('akta_keterangan')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -130,20 +123,6 @@
 
 @section('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const aktaJenisSelect = document.getElementById('aktaJenis');
-            const referensiAktaSelect = document.getElementById('referensiAkta');
-
-            aktaJenisSelect.addEventListener('change', function() {
-                if (aktaJenisSelect.value === 'Perubahan') {
-                    referensiAktaSelect.disabled = false;
-                } else {
-                    referensiAktaSelect.disabled = true;
-                    referensiAktaSelect.value = '';
-                }
-            });
-        });
-
         function previewFile(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('file-preview');

@@ -33,7 +33,7 @@
 
                     <div class="d-flex justify-content-end">
                         @can('Edit Badan Penyelenggara')
-                            <a href="" class="btn btn-warning">
+                            <a href="{{ route('badan-penyelenggara.edit', $badanPenyelenggaras->id) }}" class="btn btn-warning">
                                 Edit
                             </a>
                         @endCan
@@ -421,7 +421,6 @@
                                             <th>No</th>
                                             <th>Nomor Akta</th>
                                             <th>Nomor Tanggal</th>
-                                            <th>Status Akta</th>
                                             <th>Nomor SK Kumham</th>
                                             <th>Tanggal SK Kuham</th>
                                             <th>Aksi</th>
@@ -433,7 +432,6 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $akta->akta_nomor }}</td>
                                                 <td>{{ $akta->akta_tanggal }}</td>
-                                                <td>{{ $akta->akta_status }}</td>
                                                 <td>{{ optional($akta->skKumham)->kumham_nomor ?? 'N/A' }}</td>
                                                 <td>{{ optional($akta->skKumham)->kumham_tanggal ?? 'N/A' }}</td>
                                                 <td>
@@ -529,7 +527,7 @@
                         document.getElementById('akta_notaris_nama').textContent = data
                             .akta_nama_notaris;
                         document.getElementById('akta_notaris_kota').textContent = data.akta_kota_notaris;
-                        document.getElementById('akta_status').textContent = data.akta_status;
+                        document.getElementById('akta_keterangan').textContent = data.akta_keterangan;
                         if (data.akta_dokumen) {
                             document.getElementById('btn_pdf_akta').hidden = false;
                             document.getElementById('akta_dokumen').value = data.akta_dokumen;

@@ -31,8 +31,8 @@
                             <td id="akta_notaris_kota"></td>
                         </tr>
                         <tr>
-                            <th>Status Akta</th>
-                            <td id="akta_status"></td>
+                            <th>Keterangan Akta</th>
+                            <td id="akta_keterangan"></td>
                         </tr>
                         <tr>
                             <th>Dokumen Akta</th>
