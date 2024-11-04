@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('program_studis', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('prodi_kode')->nullable();
             $table->string('prodi_nama', 100);
             $table->string('prodi_jenjang');
             $table->string('prodi_active_status');

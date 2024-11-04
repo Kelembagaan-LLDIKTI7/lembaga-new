@@ -43,6 +43,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
+                                            <th>Kode</th>
                                             <th>Nama Prodi</th>
                                             <th>Program</th>
                                             <th>Status</th>
@@ -54,6 +55,7 @@
                                         @foreach ($prodi->historiPerguruanTinggi as $histori)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $histori->prodi_kode }}</td>
                                                 <td>{{ $histori->prodi_nama }}</td>
                                                 <td>{{ $histori->prodi_jenjang }}</td>
                                                 <td>{{ $histori->prodi_active_status }}</td>
