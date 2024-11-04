@@ -118,43 +118,9 @@ class PerguruanTinggiController extends Controller
             'sk_tanggal' => 'required',
             'sk_dokumen' => 'required',
             'id_jenis_surat_keputusan' => 'required',
-            'perubahan' => 'required'
+            'berubah' => 'required',
+            'organisasi_berubah_id' => 'nullable|array',
         ]);
-
-        if ($request->input('changeType') === 'penyatuan' || $request->input('changeType') === 'penggabungan') {
-            $request->validate([
-                'perguruan_tinggi_1' => 'required',
-                'perguruan_tinggi_2' => 'required',
-                'perguruan_tinggi_tambahan.*' => 'nullable'
-            ]);
-        }
-
-        $organisasiBerubahId = [];
-
-        if ($request->has('perguruan_tinggi_1') && $request->has('perguruan_tinggi_2')) {
-            $organisasiBerubahId[] = $request->input('perguruan_tinggi_1');
-            $organisasiBerubahId[] = $request->input('perguruan_tinggi_2');
-        }
-
-        if ($request->has('perguruan_tinggi_tambahan')) {
-            foreach ($request->input('perguruan_tinggi_tambahan') as $ptTambahan) {
-                if (!is_null($ptTambahan)) {
-                    $organisasiBerubahId[] = $ptTambahan;
-                }
-            }
-        }
-
-        if (!empty($organisasiBerubahId)) {
-            Organisasi::whereIn('id', $organisasiBerubahId)->update(['organisasi_status' => 'Tidak Aktif']);
-        }
-
-        if ($validated['perubahan'] === 'penyatuan') {
-            $organisasiStatusBaru = 'Penyatuan';
-        } elseif ($validated['perubahan'] === 'penggabungan') {
-            $organisasiStatusBaru = 'Penggabungan';
-        } else {
-            $organisasiStatusBaru = 'Aktif';
-        }
 
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
@@ -163,6 +129,8 @@ class PerguruanTinggiController extends Controller
         if ($request->hasFile('sk_dokumen')) {
             $suratKeputusan = $request->file('sk_dokumen')->store('surat_keputusan', 'public');
         }
+
+        $organisasiBerubahId = $request->input('organisasi_berubah_id');
 
         $perguruanTinggi = Organisasi::create([
             'id' => Str::uuid(),
@@ -174,13 +142,12 @@ class PerguruanTinggiController extends Controller
             'organisasi_nama_singkat' => $validated['organisasi_nama_singkat'],
             'organisasi_website' => $validated['organisasi_website'] ?? null,
             'organisasi_alamat' => $validated['organisasi_alamat'],
-            'organisasi_logo' => $logoPath ?? null,
+            'organisasi_logo' => $logoPath,
             'organisasi_type_id' => 3,
-            'organisasi_status' => $organisasiStatusBaru,
+            'organisasi_status' => $validated['berubah'],
             'organisasi_berubah_id' => !empty($organisasiBerubahId) ? json_encode($organisasiBerubahId) : null,
             'parent_id' => $validated['parent_id'],
         ]);
-        //     dd($perguruanTinggi);
         SuratKeputusan::create([
             'sk_nomor' => $validated['sk_nomor'],
             'sk_tanggal' => $validated['sk_tanggal'],
