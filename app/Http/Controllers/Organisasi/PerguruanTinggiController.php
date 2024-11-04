@@ -30,6 +30,7 @@ class PerguruanTinggiController extends Controller
         $query = Organisasi::where('organisasi_type_id', 3)
             ->select(
                 'id',
+                'organisasi_kode',
                 'organisasi_nama as pt_nama',
                 'organisasi_nama_singkat',
                 'organisasi_email',
