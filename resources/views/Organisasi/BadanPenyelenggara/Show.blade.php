@@ -33,7 +33,7 @@
 
                     <div class="d-flex justify-content-end">
                         @can('Edit Badan Penyelenggara')
-                            <a href="" class="btn btn-warning">
+                            <a href="{{ route('badan-penyelenggara.edit', $badanPenyelenggaras->id) }}" class="btn btn-warning">
                                 Edit
                             </a>
                         @endCan

@@ -28,7 +28,8 @@
                                         <input type="text" name="organisasi_nama_singkat" class="form-control">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_email" class="required-label">Email Badan Penyelenggara</label>
+                                        <label for="organisasi_email" class="required-label">Email Badan
+                                            Penyelenggara</label>
                                         <input type="email" name="organisasi_email" class="form-control" required>
                                     </div>
                                     <div class="form-group mb-3">
@@ -145,6 +146,17 @@
                                         </select>
                                         @error('akta_jenis')
                                             <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="akta_keterangan" class="required-label">Keterangan Akta</label>
+                                        <textarea class="form-control" id="akta_keterangan" name="akta_keterangan"></textarea>
+                                        @error('akta_keterangan')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
                                         @enderror
                                     </div>
                                 </div>
