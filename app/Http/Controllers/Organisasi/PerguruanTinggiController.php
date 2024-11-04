@@ -30,6 +30,7 @@ class PerguruanTinggiController extends Controller
         $query = Organisasi::where('organisasi_type_id', 3)
             ->select(
                 'id',
+                'organisasi_kode',
                 'organisasi_nama as pt_nama',
                 'organisasi_nama_singkat',
                 'organisasi_email',
@@ -103,6 +104,7 @@ class PerguruanTinggiController extends Controller
     {
         // dd($request->all());
         $validated = $request->validate([
+            'organisasi_kode' => 'required|string|size:6|unique:organisasis',
             'organisasi_nama' => 'required|string|max:255',
             'organisasi_nama_singkat' => 'nullable|string|max:255',
             'organisasi_email' => 'required|email|max:255',
@@ -164,6 +166,7 @@ class PerguruanTinggiController extends Controller
 
         $perguruanTinggi = Organisasi::create([
             'id' => Str::uuid(),
+            'organisasi_kode' => $validated['organisasi_kode'],
             'organisasi_nama' => $validated['organisasi_nama'],
             'organisasi_email' => $validated['organisasi_email'],
             'organisasi_telp' => $validated['organisasi_telp'],
@@ -196,6 +199,7 @@ class PerguruanTinggiController extends Controller
     {
         $organisasi = Organisasi::select(
             'id',
+            'organisasi_kode',
             'organisasi_nama',
             'organisasi_nama_singkat',
             'organisasi_email',
@@ -209,10 +213,10 @@ class PerguruanTinggiController extends Controller
             'organisasi_berubah_id',
             'organisasi_bentuk_pt'
         )->with(
-            'parent:id,organisasi_nama,organisasi_email,organisasi_telp,organisasi_status,organisasi_alamat,organisasi_kota'
+            'parent:id,organisasi_kode,organisasi_nama,organisasi_email,organisasi_telp,organisasi_status,organisasi_alamat,organisasi_kota'
         )->with([
             'prodis' => function ($query) {
-                $query->select('id', 'id_organization', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status')
+                $query->select('id', 'id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status')
                     ->orderBy('created_at', 'asc');
             },
             'bentukPt' => function ($query) {
@@ -226,6 +230,7 @@ class PerguruanTinggiController extends Controller
             $berubahOrganisasi = Organisasi::whereIn('id', $berubahIds)
                 ->select(
                     'id',
+                    'organisasi_kode',
                     'organisasi_nama',
                     'organisasi_nama_singkat',
                     'organisasi_email',
@@ -269,7 +274,7 @@ class PerguruanTinggiController extends Controller
                 'akreditasi_tgl_akhir',
                 'akreditasi_status',
                 'aktif'
-            )->with(['prodi:id,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
+            )->with(['prodi:id,prodi_kode,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
 
         return view('Organisasi.PerguruanTinggi.Show', [
             'organisasi' => $organisasi,
@@ -321,12 +326,12 @@ class PerguruanTinggiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // dd($request->all());
         // Find the existing Perguruan Tinggi record
         $perguruanTinggi = Organisasi::findOrFail($id);
-
+    
         // Validate the incoming request data
         $validated = $request->validate([
+            'organisasi_kode' => 'required|string|size:6|unique:organisasis',
             'organisasi_nama' => 'required|string|max:255',
             'organisasi_nama_singkat' => 'nullable|string|max:255',
             'organisasi_email' => 'required|email|max:255',
@@ -338,30 +343,21 @@ class PerguruanTinggiController extends Controller
             'organisasi_bentuk_pt' => 'required|exists:bentuk_pts,id',
             'parent_id' => 'nullable',
         ]);
-
-        // Handle file uploads for logo and document
+    
+        // Handle file upload for the logo if present
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
-            $validated['organisasi_logo'] = $logoPath; // Update the validated data with the new logo path
-            // Update the Perguruan Tinggi record
-            $perguruanTinggi->update($validated);
-        } else {
-            DB::table('organisasis')->where('id', $id)
-                ->update([
-                    'organisasi_nama' => $request->input('organisasi_nama'),
-                    'organisasi_nama_singkat' => $request->input('organisasi_nama_singkat'),
-                    'organisasi_email' => $request->input('organisasi_email'),
-                    'organisasi_telp' => $request->input('organisasi_telp'),
-                    'organisasi_kota' => $request->input('organisasi_kota'),
-                    'organisasi_alamat' => $request->input('organisasi_alamat'),
-                    'organisasi_website' => $request->input('organisasi_website'),
-                    'organisasi_bentuk_pt' => $request->input('organisasi_bentuk_pt'),
-                    'parent_id' => $request->input('parent_id'),
-                ]);
+            $validated['organisasi_logo'] = $logoPath; // Add the new logo path to the validated data
         }
-
-        return redirect()->route('perguruan-tinggi.show', ['id' => $id])->with('success', 'Perguruan Tinggi berhasil diperbarui.');
+    
+        // Update the Perguruan Tinggi record with the validated data
+        $perguruanTinggi->update($validated);
+    
+        // Redirect to the show page with a success message
+        return redirect()->route('perguruan-tinggi.show', ['id' => $id])
+            ->with('success', 'Perguruan Tinggi berhasil diperbarui.');
     }
+    
 
     /**
      * Remove the specified resource from storage.

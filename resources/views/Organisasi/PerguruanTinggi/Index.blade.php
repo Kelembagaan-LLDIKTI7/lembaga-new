@@ -31,6 +31,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Kode Perguruan Tinggi</th>
                                     <th>Nama Perguruan Tinggi</th>
                                     <th>Akronim PT</th>
                                     <th>Alamat Email</th>
@@ -45,6 +46,7 @@
                                 @foreach ($perguruanTinggis as $perguruanTinggi)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $perguruanTinggi->organisasi_kode }}</td>
                                         <td>{{ $perguruanTinggi->pt_nama }}</td>
                                         <td>{{ $perguruanTinggi->organisasi_nama_singkat }}</td>
                                         <td>{{ $perguruanTinggi->organisasi_email }}</td>
