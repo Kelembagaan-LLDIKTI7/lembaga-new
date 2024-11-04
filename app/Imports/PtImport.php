@@ -34,17 +34,30 @@ class PtImport implements ToCollection
                     'created_at' => now(),
                 ]);
 
-                $peringkat = DB::table('peringkat_akreditasis')->where('peringkat_nama', $rowArray[6])->first();
-
-                DB::table('akreditasis')->insert([
-                    'id' => Str::uuid()->toString(),
-                    'akreditasi_sk' => $rowArray[5],
-                    'akreditasi_tgl_akhir' => $rowArray[7],
-                    'id_peringkat_akreditasi' => $peringkat->id,
-                    'id_organization' => $id_pt,
-                    'id_user' => Auth::user()->id,
-                    'created_at' => now(),
-                ]);
+                if ($rowArray[7] == null) {
+                    if ($rowArray[5] != null) {
+                        $peringkat = DB::table('peringkat_akreditasis')->where('peringkat_nama', 'belum Terakreditasi/Kedaluarsa')->first();
+                        DB::table('akreditasis')->insert([
+                            'id' => Str::uuid()->toString(),
+                            'akreditasi_sk' => $rowArray[5],
+                            'id_peringkat_akreditasi' => $peringkat->id,
+                            'id_organization' => $id_pt,
+                            'id_user' => Auth::user()->id,
+                            'created_at' => now(),
+                        ]);
+                    }
+                } else {
+                    $peringkat = DB::table('peringkat_akreditasis')->where('peringkat_nama', $rowArray[6])->first();
+                    DB::table('akreditasis')->insert([
+                        'id' => Str::uuid()->toString(),
+                        'akreditasi_sk' => $rowArray[5],
+                        'akreditasi_tgl_akhir' => $rowArray[7],
+                        'id_peringkat_akreditasi' => $peringkat->id,
+                        'id_organization' => $id_pt,
+                        'id_user' => Auth::user()->id,
+                        'created_at' => now(),
+                    ]);
+                }
 
                 Log::info('Data ke-' . $index . ' berhasil diimport');
             }
