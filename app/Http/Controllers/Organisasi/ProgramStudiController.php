@@ -54,6 +54,7 @@ class ProgramStudiController extends Controller
         // dd($request->all());
         $validated = $request->validate([
             'id_organization' => 'required',
+            'prodi_kode' => 'required|string|size:6|unique:program_studis',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
             'prodi_active_status' => 'required',
@@ -70,6 +71,7 @@ class ProgramStudiController extends Controller
         $prodi = ProgramStudi::create([
             'id' => Str::uuid(),
             'id_organization' => $validated['id_organization'],
+            'prodi_kode' => $validated['prodi_kode'],
             'prodi_nama' => $validated['prodi_nama'],
             'prodi_jenjang' => $validated['prodi_jenjang'],
             'prodi_active_status' => $validated['prodi_active_status'],
@@ -87,6 +89,7 @@ class ProgramStudiController extends Controller
         HistoryProgramStudi::create([
             'id' => Str::uuid(),
             'id_prodi' => $prodi->id,
+            'prodi_kode' => $request->prodi_kode,
             'prodi_nama' => $validated['prodi_nama'],
             'prodi_jenjang' => $validated['prodi_jenjang'],
             'prodi_active_status' => $validated['prodi_active_status'],
@@ -107,13 +110,14 @@ class ProgramStudiController extends Controller
     {
         $prodi = ProgramStudi::select(
             'id',
+            'prodi_kode',
             'prodi_nama',
             'prodi_jenjang',
             'prodi_active_status',
             'id_organization',
         )->with([
             'historiPerguruanTinggi' => function ($query) {
-                $query->select('id', 'id_prodi', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status', 'sk_nomor', 'sk_tanggal')
+                $query->select('id', 'id_prodi','prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status', 'sk_nomor', 'sk_tanggal')
                     ->orderBy('created_at', 'asc');
             }
         ])->with(['perguruanTinggi' => function ($query) {
@@ -148,6 +152,7 @@ class ProgramStudiController extends Controller
         // dd($id);
         $prodi = ProgramStudi::select(
             'id',
+            'prodi_kode',
             'prodi_nama',
             'prodi_jenjang',
             'prodi_active_status'
@@ -175,6 +180,7 @@ class ProgramStudiController extends Controller
         $prodi = ProgramStudi::findOrFail($id);
 
         $request->validate([
+            'prodi_kode' => 'required|string|size:6|unique:program_studis',
             'prodi_nama' => 'required|string|max:255',
             'prodi_active_status' => 'required|string',
             'prodi_jenjang' => 'required|string',
@@ -185,6 +191,7 @@ class ProgramStudiController extends Controller
         ]);
 
         $prodi->update([
+            'prodi_kode' => $request->prodi_kode,
             'prodi_nama' => $request->prodi_nama,
             'prodi_active_status' => $request->prodi_active_status,
             'prodi_jenjang' => $request->prodi_jenjang,
@@ -207,6 +214,7 @@ class ProgramStudiController extends Controller
         HistoryProgramStudi::create([
             'id' => Str::uuid(),
             'id_prodi' => $prodi->id,
+            'prodi_kode' => $request->prodi_kode,
             'prodi_nama' => $request->prodi_nama,
             'prodi_active_status' => $request->prodi_active_status,
             'prodi_jenjang' => $request->prodi_jenjang,

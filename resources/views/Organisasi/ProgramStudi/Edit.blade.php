@@ -3,7 +3,26 @@
 @section('title', 'Edit Program Studi')
 
 @section('css')
+<style>
+    .prodi-kode-input-group {
+        display: flex;
+        gap: 5px;
+    }
 
+    .prodi-kode {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 0;
+    }
+
+    input:focus {
+        border-color: #66afe9;
+        outline: none;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -20,6 +39,17 @@
 
                             <div class="row">
                                 <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <label for="validationCustom01" class="form-label">Kode Program Studi</label>
+                                    <div class="prodi-kode-input-group" id="prodi-kode-input-group">
+                                        @for ($i = 0; $i < 6; $i++)
+                                            <input type="text" maxlength="1" class="form-control prodi-kode"
+                                                id="prodi_kode_{{ $i + 1 }}"
+                                                value="{{ $prodi->prodi_kode[$i] ?? '' }}" required>
+                                        @endfor
+                                        <input type="hidden" id="prodi_kode" name="prodi_kode" value="{{ $prodi->prodi_kode }}">
+                                    </div>
+                                </div>
                                     <div class="form-group mb-3">
                                         <label for="prodi_nama" class="required-label">Nama Program Studi</label>
                                         <input type="text" value="{{ $prodi->prodi_nama }}" name="prodi_nama"
@@ -168,4 +198,29 @@
             }
         });
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const kodeInputs = document.querySelectorAll('.prodi-kode');
+        const kodeHiddenInput = document.getElementById('prodi_kode');
+
+        kodeInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                if (input.value.length === 1 && index < kodeInputs.length - 1) {
+                    kodeInputs[index + 1].focus();
+                }
+                let kodeValue = '';
+                kodeInputs.forEach(kodeInput => {
+                    kodeValue += kodeInput.value;
+                });
+                kodeHiddenInput.value = kodeValue;
+            });
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                    kodeInputs[index - 1].focus();
+                }
+            });
+        });
+    });
+</script>
 @endsection
