@@ -52,7 +52,7 @@ class AktaBpController extends Controller
             'akta_nama_notaris' => 'required|string|max:255',
             'akta_jenis' => 'required',
             'kotaAkta' => 'required|string',
-            'akta_referensi' => 'nullable|exists:akta,id',
+            'akta_keterangan' => 'nullable|string',
             'aktaDokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
@@ -67,8 +67,8 @@ class AktaBpController extends Controller
             'akta_kota_notaris' => $request->kotaAkta,
             'id_organization' => $request->id_organization,
             'akta_jenis' => $request->akta_jenis,
-            'akta_referensi' => $request->akta_referensi,
             'akta_dokumen' => $akta,
+            'akta_keterangan' => $request->akta_keterangan,
             'id_user' => Auth::user()->id,
         ]);
 
@@ -125,7 +125,7 @@ class AktaBpController extends Controller
             'akta_nama_notaris' => 'required|string|max:255',
             'akta_jenis' => 'required',
             'kotaAkta' => 'required|string',
-            'akta_referensi' => 'nullable|exists:akta,id',
+            'akta_keterangan' => 'nullable|string',
             'aktaDokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
@@ -139,7 +139,7 @@ class AktaBpController extends Controller
                 'akta_kota_notaris' => $request->kotaAkta,
                 'id_organization' => $request->id_organization,
                 'akta_jenis' => $request->akta_jenis,
-                'akta_referensi' => $request->akta_referensi,
+                'akta_keterangan' => $request->akta_keterangan,
                 'akta_dokumen' => $akta,
                 'id_user' => Auth::user()->id,
             ]);
@@ -151,11 +151,10 @@ class AktaBpController extends Controller
                 'akta_kota_notaris' => $request->kotaAkta,
                 'id_organization' => $request->id_organization,
                 'akta_jenis' => $request->akta_jenis,
-                'akta_referensi' => $request->akta_referensi,
+                'akta_keterangan' => $request->akta_keterangan,
                 'id_user' => Auth::user()->id,
             ]);
         }
-
 
         return redirect()->route('badan-penyelenggara.show', ['id' => $request->id_organization])->with('success', 'Data akta berhasil ditambahkan.');
     }
