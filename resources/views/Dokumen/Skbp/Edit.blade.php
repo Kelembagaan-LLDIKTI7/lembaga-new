@@ -64,9 +64,9 @@
                                         </label>
                                         <select name="jenis" class="form-control select-search">
                                             <option value="">-- Pilih Jenis --</option>
-                                            <option value="Penetapan" @if ($skbp->jenis == 'Penetapan') selected @endif>
+                                            <option value="Penetapan" @if (old('jenis', $skbp->jenis) == 'Penetapan') selected @endif>
                                                 Penetapan</option>
-                                            <option value="Perubahan" @if ($skbp->jenis == 'Perubahan') selected @endif>
+                                            <option value="Perubahan" @if (old('jenis', $skbp->jenis) == 'Perubahan') selected @endif>
                                                 Perubahan</option>
                                         </select>
                                         @error('jenis')

@@ -59,6 +59,16 @@ class SkKumhamController extends Controller
             'kumham_tanggal' => 'required|date',
             'kumham_perihal' => 'required|string|max:255',
             'kumham_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'kumham_nomor.required' => 'Nomor harus diisi.',
+            'kumham_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
+            'kumham_tanggal.required' => 'Tanggal harus diisi.',
+            'kumham_tanggal.date' => 'Tanggal harus valid.',
+            'kumham_perihal.required' => 'Perihal harus diisi.',
+            'kumham_perihal.max' => 'Perihal tidak boleh lebih dari 255 karakter.',
+            'kumham_dokumen.required' => 'Dokumen harus diisi.',
+            'kumham_dokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
+            'kumham_dokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
         ]);
 
         if ($request->hasFile('kumham_dokumen')) {
@@ -80,13 +90,17 @@ class SkKumhamController extends Controller
 
     public function edit(string $id)
     {
-        $sk_kumham = DB::table('sk_kumhams')
+        $skKumham = DB::table('sk_kumhams')
+            ->where('id_akta', $id)
+            ->first();
+
+        $akta = DB::table('aktas')
             ->where('id', $id)
             ->first();
 
-        // dd($sk_kumham);
+        // dd($skKumham);
 
-        return view('sk-kumham.edit', compact('sk_kumham'));
+        return view('Dokumen.SkKumham.Edit', compact('skKumham', 'akta'));
     }
 
     public function update(Request $request, string $id)
@@ -97,6 +111,15 @@ class SkKumhamController extends Controller
             'kumham_tanggal' => 'required|date',
             'kumham_perihal' => 'required|string|max:255',
             'kumham_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'kumham_nomor.required' => 'Nomor harus diisi.',
+            'kumham_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
+            'kumham_tanggal.required' => 'Tanggal harus diisi.',
+            'kumham_tanggal.date' => 'Tanggal harus valid.',
+            'kumham_perihal.required' => 'Perihal harus diisi.',
+            'kumham_perihal.max' => 'Perihal tidak boleh lebih dari 255 karakter.',
+            'kumham_dokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
+            'kumham_dokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
         ]);
 
         $skKumham = SkKumham::findOrFail($id);

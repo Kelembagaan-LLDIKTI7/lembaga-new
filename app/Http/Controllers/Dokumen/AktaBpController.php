@@ -54,6 +54,18 @@ class AktaBpController extends Controller
             'kotaAkta' => 'required|string',
             'akta_keterangan' => 'nullable|string',
             'aktaDokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'akta_nomor.required' => 'Nomor harus diisi.',
+            'akta_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
+            'akta_tanggal.required' => 'Tanggal harus diisi.',
+            'akta_tanggal.date' => 'Tanggal harus valid.',
+            'akta_nama_notaris.required' => 'Nama Notaris harus diisi.',
+            'akta_nama_notaris.max' => 'Nama Notaris tidak boleh lebih dari 255 karakter.',
+            'akta_jenis.required' => 'Jenis harus diisi.',
+            'kotaAkta.required' => 'Kota harus diisi.',
+            'aktaDokumen.required' => 'Dokumen harus diisi.',
+            'aktaDokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
+            'aktaDokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
         ]);
 
         if ($request->hasFile('aktaDokumen')) {
@@ -127,6 +139,17 @@ class AktaBpController extends Controller
             'kotaAkta' => 'required|string',
             'akta_keterangan' => 'nullable|string',
             'aktaDokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'akta_nomor.required' => 'Nomor harus diisi.',
+            'akta_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
+            'akta_tanggal.required' => 'Tanggal harus diisi.',
+            'akta_tanggal.date' => 'Tanggal harus valid.',
+            'akta_nama_notaris.required' => 'Nama Notaris harus diisi.',
+            'akta_nama_notaris.max' => 'Nama Notaris tidak boleh lebih dari 255 karakter.',
+            'akta_jenis.required' => 'Jenis harus diisi.',
+            'kotaAkta.required' => 'Kota harus diisi.',
+            'aktaDokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
+            'aktaDokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
         ]);
 
         if ($request->hasFile('aktaDokumen')) {

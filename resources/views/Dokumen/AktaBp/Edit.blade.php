@@ -80,14 +80,14 @@
                                             <option value="">-- Pilih Kota --</option>
                                             @foreach ($kota as $k)
                                                 <option value="{{ $k->nama }}"
-                                                    {{ $akta->akta_kota_notaris == $k->nama ? 'selected' : '' }}>
+                                                    {{ old('kotaAkta', $akta->akta_kota_notaris) == $k->nama ? 'selected' : '' }}>
                                                     {{ $k->nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="akta_keterangan" class="required-label">Keterangan Akta</label>
-                                        <textarea class="form-control" id="akta_keterangan" name="akta_keterangan">{{ $akta->akta_keterangan }}</textarea>
+                                        <textarea class="form-control" id="akta_keterangan" name="akta_keterangan">{{ old('akta_keterangan', $akta->akta_keterangan) }}</textarea>
                                         @error('akta_keterangan')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
