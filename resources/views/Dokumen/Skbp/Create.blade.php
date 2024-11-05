@@ -33,7 +33,8 @@
                                         <label for="nomor" class="required-label">
                                             No SK
                                         </label>
-                                        <input type="text" name="nomor" class="form-control" required>
+                                        <input type="text" name="nomor" class="form-control"
+                                            value="{{ old('nomor') }}" required>
                                         @error('nomor')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -45,7 +46,8 @@
                                         <label for="tanggal" class="required-label">
                                             Tanggal Terbit SK
                                         </label>
-                                        <input type="date" name="tanggal" class="form-control" required>
+                                        <input type="date" name="tanggal" class="form-control"
+                                            value="{{ old('tanggal') }}" required>
                                         @error('tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -59,8 +61,10 @@
                                         </label>
                                         <select name="jenis" class="form-control select-search">
                                             <option value="">-- Pilih Jenis --</option>
-                                            <option value="Penetapan">Penetapan</option>
-                                            <option value="Perubahan">Perubahan</option>
+                                            <option value="Penetapan" {{ old('jenis') == 'Penetapan' ? 'selected' : '' }}>
+                                                Penetapan</option>
+                                            <option value="Perubahan" {{ old('jenis') == 'Perubahan' ? 'selected' : '' }}>
+                                                Perubahan</option>
                                         </select>
                                         @error('jenis')
                                             <small class="text-danger">{{ $message }}</small>
