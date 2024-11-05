@@ -69,11 +69,17 @@
                                                 id="organisasi_kode_6" required>
                                             <input type="hidden" id="organisasi_kode" name="organisasi_kode"
                                                 value="">
+                                            @error('organisasi_kode')
+                                            <small class="text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="organisasi_nama" class="required-label">Nama Perguruan Tinggi</label>
                                         <input type="text" name="organisasi_nama" class="form-control" required>
+                                        @error('organisasi_nama')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -84,11 +90,17 @@
                                     <div class="form-group mb-3">
                                         <label for="organisasi_email" class="required-label">Email Perguruan Tinggi</label>
                                         <input type="email" name="organisasi_email" class="form-control" required>
+                                        @error('organisasi_email')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_telp" class="required-label">No Telepon</label>
                                         <input type="text" name="organisasi_telp" class="form-control" required>
+                                        @error('organisasi_telp')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -105,6 +117,9 @@
                                     <div class="form-group mb-3">
                                         <label for="organisasi_alamat" class="required-label">Alamat</label>
                                         <input type="text" name="organisasi_alamat" class="form-control" required>
+                                        @error('organisasi_alamat')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -133,6 +148,9 @@
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
                                             GIF.</small>
                                         <img id="logo-preview" src="#" alt="Preview Logo" style="display: none;">
+                                        @error('organisasi_logo')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -147,9 +165,10 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_berubah_id">Pt Yang diubah</label>
+                                        <label for="organisasi_berubah_id">PT Yang diubah</label>
                                         <select class="form-control select-search" name="organisasi_berubah_id[]"
                                             id="organisasi_berubah_id" multiple>
+                                            <option value="">-- Pilih Perguruan Tinggi --</option>
                                             @foreach ($perguruanTinggis as $perguruanTinggi)
                                                 <option value="{{ $perguruanTinggi->id }}">
                                                     {{ $perguruanTinggi->organisasi_nama }}</option>
@@ -169,11 +188,17 @@
                                     <div class="form-group mb-3">
                                         <label for="sk_nomor" class="required-label">Nomor Surat Keputusan</label>
                                         <input type="text" name="sk_nomor" class="form-control" required>
+                                        @error('sk_nomor')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="sk_tanggal" class="required-label">Tanggal SK</label>
                                         <input type="date" name="sk_tanggal" class="form-control" required>
+                                        @error('sk_tanggal')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -195,6 +220,9 @@
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
                                             DOCX.</small>
+                                        @error('sk_dokumen')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                     <a href="{{ route('perguruan-tinggi.index') }}" type="submit"

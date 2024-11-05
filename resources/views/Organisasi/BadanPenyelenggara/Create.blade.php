@@ -22,24 +22,39 @@
                                     <div class="form-group mb-3">
                                         <label for="organisasi_nama" class="required-label">Nama Badan Penyelenggara</label>
                                         <input type="text" name="organisasi_nama" class="form-control" required>
+                                        @error('organisasi_nama')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="organisasi_nama_singkat" class="required-label">Nama Singkat</label>
                                         <input type="text" name="organisasi_nama_singkat" class="form-control">
+                                        @error('organisasi_nama_singkat')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="organisasi_email" class="required-label">Email Badan
                                             Penyelenggara</label>
                                         <input type="email" name="organisasi_email" class="form-control" required>
+                                        @error('organisasi_email')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="organisasi_telp" class="required-label">No Telepon</label>
                                         <input type="text" name="organisasi_telp" class="form-control" required>
+                                        @error('organisasi_telp')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_alamat" class="required-label">Alamat</label>
                                         <input type="text" name="organisasi_alamat" class="form-control" required>
+                                        @error('organisasi_alamat')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -76,12 +91,15 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_logo" class="required-label">Logo Perguruan Tinggi</label>
+                                        <label for="organisasi_logo" class="required-label">Logo Badan Penyelenggara</label>
                                         <input type="file" name="organisasi_logo" class="form-control" required
                                             accept="image/png, image/jpg, image/jpeg, image/gif"
                                             onchange="previewLogo(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
                                             GIF.</small>
+                                        @error('organisasi_logo')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                         <img id="logo-preview" src="#" alt="Preview Logo" style="display: none;">
                                     </div>
                                 </div>
@@ -167,6 +185,9 @@
                                             accept=".pdf,.doc,.docx" onchange="previewPdf(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
                                             DOCX.</small>
+                                        @error('aktaDokumen')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

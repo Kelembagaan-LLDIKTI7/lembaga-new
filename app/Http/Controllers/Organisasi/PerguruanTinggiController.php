@@ -120,6 +120,22 @@ class PerguruanTinggiController extends Controller
             'id_jenis_surat_keputusan' => 'required',
             'berubah' => 'required',
             'organisasi_berubah_id' => 'nullable|array',
+        ], [
+            'organisasi_kode.required' => 'Kode Perguruan Tinggi harus diisi.',
+            'organisasi_kode.size' => 'Kode Perguruan Tinggi harus terdiri dari 6 karakter.',
+            'organisasi_kode.unique' => 'Kode Perguruan Tinggi sudah terdaftar.',
+            'organisasi_nama.required' => 'Nama Perguruan Tinggi harus diisi.',
+            'organisasi_email.required' => 'Email Perguruan Tinggi harus diisi.',
+            'organisasi_email.email' => 'Format email tidak valid.',
+            'organisasi_telp.required' => 'Nomor Telepon Perguruan Tinggi harus diisi.',
+            'organisasi_kota.required' => 'Kota Perguruan Tinggi harus diisi.',
+            'organisasi_alamat.required' => 'Alamat Perguruan Tinggi harus diisi.',
+            'organisasi_logo.required' => 'Logo Perguruan Tinggi harus diisi.',
+            'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
+            'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
+            'sk_dokumen.required' => 'Dokumen Surat Keputusan harus diisi.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
+            'berubah.required' => 'Jenis Surat Keputusan harus diisi.',
         ]);
 
         if ($request->hasFile('organisasi_logo')) {
@@ -295,7 +311,7 @@ class PerguruanTinggiController extends Controller
     {
         // Find the existing Perguruan Tinggi record
         $perguruanTinggi = Organisasi::findOrFail($id);
-    
+
         // Validate the incoming request data
         $validated = $request->validate([
             'organisasi_kode' => 'required|string|size:6|unique:organisasis',
@@ -310,21 +326,21 @@ class PerguruanTinggiController extends Controller
             'organisasi_bentuk_pt' => 'required|exists:bentuk_pts,id',
             'parent_id' => 'nullable',
         ]);
-    
+
         // Handle file upload for the logo if present
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
             $validated['organisasi_logo'] = $logoPath; // Add the new logo path to the validated data
         }
-    
+
         // Update the Perguruan Tinggi record with the validated data
         $perguruanTinggi->update($validated);
-    
+
         // Redirect to the show page with a success message
         return redirect()->route('perguruan-tinggi.show', ['id' => $id])
             ->with('success', 'Perguruan Tinggi berhasil diperbarui.');
     }
-    
+
 
     /**
      * Remove the specified resource from storage.
