@@ -73,6 +73,15 @@ class SkbpController extends Controller
             'jenis' => 'required|string|max:9',
             'id_organization' => 'required',
             'dokumen' => 'nullable|mimes:pdf|max:2048',
+        ], [
+            'nomor.required' => 'Nomor SKBP wajib diisi',
+            'nomor.max' => 'Nomor SKBP tidak boleh lebih dari 45 karakter',
+            'tanggal.required' => 'Tanggal SKBP wajib diisi',
+            'jenis.required' => 'Jenis SKBP wajib diisi',
+            'jenis.max' => 'Jenis SKBP tidak boleh lebih dari 9 karakter',
+            'id_organization.required' => 'Organisasi wajib diisi',
+            'dokumen.mimes' => 'File harus berupa PDF',
+            'dokumen.max' => 'File tidak boleh lebih dari 2 MB',
         ]);
 
         if ($request->hasFile('dokumen')) {

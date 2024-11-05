@@ -442,12 +442,21 @@
                                                         </div>
                                                     @endCan
                                                     @can('Create SK Kumham Badan Penyelenggara')
-                                                        <div class="kumham">
-                                                            <a href="{{ route('sk-kumham.create', $akta->id) }}"
-                                                                class="btn btn-sm btn-warning mb-2">
-                                                                SK Kumham
-                                                            </a>
-                                                        </div>
+                                                        @if ($akta->skKumham)
+                                                            <div class="kumham">
+                                                                <a href="{{ route('sk-kumham.edit', $akta->id) }}"
+                                                                    class="btn btn-sm btn-warning mb-2">
+                                                                    SK Kumham
+                                                                </a>
+                                                            </div>
+                                                        @else
+                                                            <div class="kumham">
+                                                                <a href="{{ route('sk-kumham.create', $akta->id) }}"
+                                                                    class="btn btn-sm btn-warning mb-2">
+                                                                    SK Kumham
+                                                                </a>
+                                                            </div>
+                                                        @endif
                                                     @endCan
                                                     @can('Detail Akta Badan Penyelenggara')
                                                         <button class="btn btn-info btn-sm akta-detail mb-2"

@@ -13,16 +13,16 @@
                 <form action="{{ route('sk-kumham.update', $skKumham->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" name="id_akta" value="{{ $akta->id }}" class="form-control" required>
+                    <input type="hidden" name="id_akta" value="{{ $skKumham->id_akta }}" class="form-control" required>
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Form Update SK Kumham</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="kumham_nomor" class="required-label">No Akta</label>
+                                        <label for="kumham_nomor" class="required-label">No Kumham</label>
                                         <input type="text" class="form-control" id="kumham_nomor" name="kumham_nomor"
-                                            value="{{ $skKumham->kumham_nomor }}" required>
+                                            value="{{ old('kumham_nomor', $skKumham->kumham_nomor) }}" required>
                                         @error('kumham_nomor')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -30,9 +30,9 @@
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="kumham_tanggal" class="required-label">Tanggal Akta</label>
+                                        <label for="kumham_tanggal" class="required-label">Tanggal Kumham</label>
                                         <input type="date" class="form-control" id="kumham_tanggal" name="kumham_tanggal"
-                                            value="{{ $skKumham->kumham_tanggal }}" required>
+                                            value="{{ old('kumham_tanggal', $skKumham->kumham_tanggal) }}" required>
                                         @error('kumham_tanggal')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -45,7 +45,7 @@
                                     <div class="form-group mb-3">
                                         <label for="kumham_perihal" class="required-label">Perihal</label>
                                         <input type="text" class="form-control" id="kumham_perihal" name="kumham_perihal"
-                                            value="{{ $skKumham->kumham_perihal }}" required>
+                                            value="{{ old('kumham_perihal', $skKumham->kumham_perihal) }}" required>
                                         @error('kumham_perihal')
                                             <div class="invalid-feedback">
                                                 {{ $message }}

@@ -19,7 +19,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="kumham_nomor" class="required-label">No Akta</label>
+                                        <label for="kumham_nomor" class="required-label">No Kumham</label>
                                         <input type="text" class="form-control" id="kumham_nomor" name="kumham_nomor"
                                             value="" required>
                                         @error('kumham_nomor')
@@ -29,9 +29,9 @@
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="kumham_tanggal" class="required-label">Tanggal Akta</label>
-                                        <input type="date" class="form-control" id="kumham_tanggal"
-                                            name="kumham_tanggal" value="" required>
+                                        <label for="kumham_tanggal" class="required-label">Tanggal Kumham</label>
+                                        <input type="date" class="form-control" id="kumham_tanggal" name="kumham_tanggal"
+                                            value="" required>
                                         @error('kumham_tanggal')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -43,8 +43,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="kumham_perihal" class="required-label">Perihal</label>
-                                        <input type="text" class="form-control" id="kumham_perihal"
-                                            name="kumham_perihal" value="" required>
+                                        <input type="text" class="form-control" id="kumham_perihal" name="kumham_perihal"
+                                            value="" required>
                                         @error('kumham_perihal')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
