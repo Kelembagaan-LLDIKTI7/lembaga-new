@@ -40,7 +40,7 @@ class PerguruanTinggiController extends Controller
                 'parent_id'
             )
             ->with('parent:id,organisasi_nama')
-            ->orderBy('pt_nama', 'asc');
+            ->orderBy('organisasi_kode', 'asc');
 
         if ($user->hasRole('Perguruan Tinggi')) {
             $query->where('id', $user->id_organization);
@@ -83,11 +83,14 @@ class PerguruanTinggiController extends Controller
                 'organisasi_nama'
             )->get();
 
+        $bentukPt = BentukPt::all();
+
         return view('Organisasi.PerguruanTinggi.Create', [
             'badanPenyelenggaras' => $badanPenyelenggaras,
             'perguruanTinggis' => $perguruanTinggis,
             'kotas' => $kotas,
-            'jenis' => $jenis
+            'jenis' => $jenis,
+            'bentukPt' => $bentukPt
         ]);
 
         // return response()->json([
@@ -113,6 +116,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_alamat' => 'required|string|max:255',
             'organisasi_website' => 'nullable|url|max:255',
             'organisasi_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'organisasi_bentuk_pt' => 'required|uuid|exists:bentuk_pts,id',
             'parent_id' => 'nullable',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
@@ -131,6 +135,11 @@ class PerguruanTinggiController extends Controller
             'organisasi_kota.required' => 'Kota Perguruan Tinggi harus diisi.',
             'organisasi_alamat.required' => 'Alamat Perguruan Tinggi harus diisi.',
             'organisasi_logo.required' => 'Logo Perguruan Tinggi harus diisi.',
+            'organisasi_logo.image' => 'Logo Perguruan Tinggi harus berupa gambar.',
+            'organisasi_logo.mimes' => 'Logo Perguruan Tinggi harus berformat jpeg, png, jpg, atau gif.',
+            'organisasi_logo.max' => 'Logo Perguruan Tinggi tidak boleh lebih dari 2MB.',
+            'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
+            'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
             'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
             'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
             'sk_dokumen.required' => 'Dokumen Surat Keputusan harus diisi.',
@@ -162,6 +171,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_type_id' => 3,
             'organisasi_status' => $validated['berubah'],
             'organisasi_berubah_id' => !empty($organisasiBerubahId) ? json_encode($organisasiBerubahId) : null,
+            'organisasi_bentuk_pt_id' => $validated['organisasi_bentuk_pt'],
             'parent_id' => $validated['parent_id'],
         ]);
         SuratKeputusan::create([
@@ -324,7 +334,24 @@ class PerguruanTinggiController extends Controller
             'organisasi_website' => 'nullable|url|max:255',
             'organisasi_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'organisasi_bentuk_pt' => 'required|exists:bentuk_pts,id',
-            'parent_id' => 'nullable',
+            'parent_id' => 'nullable|exists:organisasis,id',
+        ], [
+            'organisasi_kode.required' => 'Kode Perguruan Tinggi harus diisi.',
+            'organisasi_kode.size' => 'Kode Perguruan Tinggi harus terdiri dari 6 karakter.',
+            'organisasi_kode.unique' => 'Kode Perguruan Tinggi sudah terdaftar.',
+            'organisasi_nama.required' => 'Nama Perguruan Tinggi harus diisi.',
+            'organisasi_alamat.required' => 'Alamat Perguruan Tinggi harus diisi.',
+            'organisasi_email.required' => 'Email Perguruan Tinggi harus diisi.',
+            'organisasi_email.email' => 'Format email tidak valid.',
+            'organisasi_telp.required' => 'Nomor Telepon Perguruan Tinggi harus diisi.',
+            'organisasi_kota.required' => 'Kota Perguruan Tinggi harus diisi.',
+            'organisasi_logo.image' => 'Logo Perguruan Tinggi harus berupa gambar.',
+            'organisasi_logo.mimes' => 'Logo Perguruan Tinggi harus berformat jpeg, png, jpg, atau gif.',
+            'organisasi_logo.max' => 'Logo Perguruan Tinggi tidak boleh lebih dari 2MB.',
+            'organisasi_website.url' => 'Format website tidak valid.',
+            'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
+            'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
+            'parent_id.exists' => 'Perguruan Tinggi induk tidak valid.',
         ]);
 
         // Handle file upload for the logo if present
