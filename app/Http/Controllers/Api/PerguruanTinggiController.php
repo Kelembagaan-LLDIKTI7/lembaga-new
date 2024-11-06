@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Organisasi;
+use Illuminate\Support\Facades\DB;
 
 class PerguruanTinggiController extends Controller
 {
@@ -54,7 +55,22 @@ class PerguruanTinggiController extends Controller
         // Pagination dengan 10 data per halaman
         $perguruanTinggi = $query->paginate(10);
 
-        return response()->json($perguruanTinggi);
+        $chartData = Organisasi::where('organisasi_type_id', 3)
+            ->with('bentukPT:id,bentuk_nama')
+            ->select('organisasi_bentuk_pt', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('organisasi_bentuk_pt')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'bentuk_pt' => $item->bentukPT->bentuk_nama ?? 'Tidak Diketahui',
+                    'jumlah' => $item->jumlah,
+                ];
+            });
+
+        return response()->json([
+            'perguruanTinggi' => $perguruanTinggi,
+            'chartData' => $chartData,
+        ]);
     }
 
     // Mendapatkan detail perguruan tinggi tertentu berdasarkan ID
