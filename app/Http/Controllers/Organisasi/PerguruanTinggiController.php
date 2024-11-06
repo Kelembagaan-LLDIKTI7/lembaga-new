@@ -40,7 +40,7 @@ class PerguruanTinggiController extends Controller
                 'parent_id'
             )
             ->with('parent:id,organisasi_nama')
-            ->orderBy('pt_nama', 'asc');
+            ->orderBy('organisasi_kode', 'asc');
 
         if ($user->hasRole('Perguruan Tinggi')) {
             $query->where('id', $user->id_organization);
