@@ -30,6 +30,7 @@ class PtImport implements ToCollection
                     'organisasi_email' => $rowArray[4],
                     'organisasi_status' => 'Aktif',
                     'organisasi_type_id' => 3,
+                    'organisasi_kode' => $rowArray[8],
                     'users_id' => Auth::user()->id,
                     'created_at' => now(),
                 ]);

@@ -435,28 +435,30 @@
                                                     $akreditasi->akreditasi_tgl_akhir,
                                                 )->isBefore(\Carbon\Carbon::today());
                                             @endphp
-                                            <tr class="{{ $isExpired ? 'table-danger' : '' }}">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $akreditasi->prodi->prodi_nama }}</td>
-                                                <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
-                                                <td>{{ $akreditasi->akreditasi_sk }}</td>
-                                                <td>
-                                                    {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_awal)->translatedFormat('d F Y') }}
-                                                </td>
-                                                <td>
-                                                    {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
-                                                </td>
-                                                <td>{{ $akreditasi->akreditasi_status }}</td>
-                                                <td>{{ $akreditasi->aktif }}</td>
-                                                <td>
-                                                    @can('Detail Program Studi')
-                                                        <a href="{{ route('program-studi.show', $akreditasi->prodi->id) }}"
-                                                            class="btn btn-sm btn-primary me-2">
-                                                            <i class="ti ti-info-circle"></i>
-                                                        </a>
-                                                    @endCan
-                                                </td>
-                                            </tr>
+                                            @if ($akreditasi->prodi)
+                                                <tr class="{{ $isExpired ? 'table-danger' : '' }}">
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $akreditasi->prodi->prodi_nama }}</td>
+                                                    <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
+                                                    <td>{{ $akreditasi->akreditasi_sk }}</td>
+                                                    <td>
+                                                        {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_awal)->translatedFormat('d F Y') }}
+                                                    </td>
+                                                    <td>
+                                                        {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
+                                                    </td>
+                                                    <td>{{ $akreditasi->akreditasi_status }}</td>
+                                                    <td>{{ $akreditasi->aktif }}</td>
+                                                    <td>
+                                                        @can('Detail Program Studi')
+                                                            <a href="{{ route('program-studi.show', $akreditasi->prodi->id) }}"
+                                                                class="btn btn-sm btn-primary me-2">
+                                                                <i class="ti ti-info-circle"></i>
+                                                            </a>
+                                                        @endCan
+                                                    </td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                         {{-- @foreach ($organisasi->prodis as $prodi)
                                             <tr>
