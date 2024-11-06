@@ -70,7 +70,7 @@
                                             <input type="hidden" id="organisasi_kode" name="organisasi_kode"
                                                 value="">
                                             @error('organisasi_kode')
-                                            <small class="text-danger">{{ $message }}</small>
+                                                <small class="text-danger">{{ $message }}</small>
                                             @enderror
                                         </div>
                                     </div>
@@ -141,6 +141,17 @@
                                     </div>
 
                                     <div class="form-group mb-3">
+                                        <label for="organisasi_bentuk_pt">Bentuk Perguruan Tinggi</label>
+                                        <select name="organisasi_bentuk_pt" class="form-control select-search" required>
+                                            <option value="">-- Pilih Bentuk PT --</option>
+                                            @foreach ($bentukPt as $pt)
+                                                <option value="{{ $pt->id }}">
+                                                    {{ $pt->bentuk_nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-3">
                                         <label for="organisasi_logo" class="required-label">Logo Perguruan Tinggi</label>
                                         <input type="file" name="organisasi_logo" class="form-control" required
                                             accept="image/png, image/jpg, image/jpeg, image/gif"
@@ -155,8 +166,8 @@
 
                                     <div class="form-group mb-3">
                                         <label for="berubah">Tipe Perubahan</label>
-                                        <select class="form-control select-search" name="berubah"
-                                            id="berubah" required>
+                                        <select class="form-control select-search" name="berubah" id="berubah"
+                                            required>
                                             <option value="Aktif">Pendirian</option>
                                             <option value="Alih Bentuk">Alih Bentuk</option>
                                             <option value="penyatuan">Penyatuan</option>
