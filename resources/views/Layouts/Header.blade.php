@@ -29,7 +29,7 @@
                     <i class="ti ti-align-justified fs-7"></i>
                 </a>
                 <ul class="navbar-nav align-items-center justify-content-center ms-auto flex-row">
-                    <li class="nav-item dropdown">
+                    {{-- <li class="nav-item dropdown">
                         <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/svgs/icon-flag-en.svg"
@@ -163,7 +163,7 @@
                                 </button>
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
                     <li class="nav-item dropdown">
                         <a class="nav-link pe-0" href="javascript:void(0)" id="drop1" data-bs-toggle="dropdown"
                             aria-expanded="false">
@@ -192,7 +192,8 @@
                                     </div>
                                 </div>
                                 <div class="d-grid px-7 py-4 pt-8">
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#changePasswordModal">
                                         Ubah Password
                                     </button>
                                 </div>
@@ -210,7 +211,8 @@
         </div>
     </nav>
 </header>
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -226,7 +228,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="new_password_confirmation" class="form-label">Konfirmasi Password Baru</label>
-                        <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
+                        <input type="password" class="form-control" id="new_password_confirmation"
+                            name="new_password_confirmation" required>
                     </div>
                     <div id="passwordError" class="alert alert-danger hidden" role="alert" style="display: none;">
                         Konfirmasi password baru tidak cocok.

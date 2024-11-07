@@ -54,14 +54,27 @@ class ProgramStudiController extends Controller
         // dd($request->all());
         $validated = $request->validate([
             'id_organization' => 'required',
-            'prodi_kode' => 'required|string|size:6|unique:program_studis',
+            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
             'id_jenis_surat_keputusan' => 'required',
-            'sk_dokumen' => 'required',
+            'sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'prodi_kode.required' => 'Kode Program Studi harus diisi.',
+            'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
+            'prodi_kode.unique' => 'Kode Program Studi sudah digunakan.',
+            'prodi_nama.required' => 'Nama Program Studi harus diisi.',
+            'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
+            'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
+            'sk_nomor.required' => 'Nomor SK harus diisi.',
+            'sk_tanggal.required' => 'Tanggal SK harus diisi.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
+            'sk_dokumen.required' => 'Dokumen SK harus diisi.',
+            'sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
         ]);
 
         if ($request->hasFile('sk_dokumen')) {
@@ -117,7 +130,7 @@ class ProgramStudiController extends Controller
             'id_organization',
         )->with([
             'historiPerguruanTinggi' => function ($query) {
-                $query->select('id', 'id_prodi','prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status', 'sk_nomor', 'sk_tanggal')
+                $query->select('id', 'id_prodi', 'prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status', 'sk_nomor', 'sk_tanggal')
                     ->orderBy('created_at', 'asc');
             }
         ])->with(['perguruanTinggi' => function ($query) {
@@ -180,14 +193,18 @@ class ProgramStudiController extends Controller
         $prodi = ProgramStudi::findOrFail($id);
 
         $request->validate([
-            'prodi_kode' => 'required|string|size:6|unique:program_studis',
+            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode,' . $prodi->id,
             'prodi_nama' => 'required|string|max:255',
             'prodi_active_status' => 'required|string',
             'prodi_jenjang' => 'required|string',
-            'sk_nomor' => 'required|string|max:255',
-            'sk_tanggal' => 'required|date',
-            'sk_dokumen' => 'nullable|mimes:pdf,doc,docx|max:2048',
-            'id_jenis_surat_keputusan' => 'required'
+        ], [
+            'prodi_kode.required' => 'Kode Program Studi harus diisi.',
+            'prodi_kode.max' => 'Kode Program Studi harus terdiri dari 6 karakter.',
+            'prodi_kode.unique' => 'Kode Program Studi sudah terdaftar.',
+            'prodi_nama.required' => 'Nama Program Studi harus diisi.',
+            'prodi_nama.max' => 'Nama Program Studi tidak boleh lebih dari 255 karakter.',
+            'prodi_active_status.required' => 'Status Program Studi harus diisi.',
+            'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
         ]);
 
         $prodi->update([
@@ -197,20 +214,6 @@ class ProgramStudiController extends Controller
             'prodi_jenjang' => $request->prodi_jenjang,
         ]);
 
-        if ($request->hasFile('sk_dokumen')) {
-            $skFilePath = $request->file('sk_dokumen')->store('dokumen/sk', 'public');
-        } else {
-            $skFilePath = $request->input('existing_sk_dokumen');
-        }
-
-        SuratKeputusan::create([
-            'sk_nomor' => $request->sk_nomor,
-            'sk_tanggal' => $request->sk_tanggal,
-            'sk_dokumen' => $skFilePath,
-            'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
-            'id_prodi' => $prodi->id,
-        ]);
-
         HistoryProgramStudi::create([
             'id' => Str::uuid(),
             'id_prodi' => $prodi->id,
@@ -218,14 +221,10 @@ class ProgramStudiController extends Controller
             'prodi_nama' => $request->prodi_nama,
             'prodi_active_status' => $request->prodi_active_status,
             'prodi_jenjang' => $request->prodi_jenjang,
-            'sk_nomor' => $request->sk_nomor,
-            'sk_tanggal' => $request->sk_tanggal,
-            'sk_dokumen' => $skFilePath,
-            'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
             'id_user' => Auth::user()->id,
         ]);
 
-        return back()->with('success', 'Data Sudah Terekam');
+        return redirect()->route('program-studi.show', ['id' => $prodi->id])->with('success', 'Data Sudah Terekam');
     }
 
     /**
