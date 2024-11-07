@@ -6,13 +6,27 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\ProgramStudi;
+use App\Models\Organisasi;
 
 class ProdiController extends Controller
 {
     // Mendapatkan semua data prodi dengan filter dan pagination
     public function index(Request $request): JsonResponse
     {
-        $query = ProgramStudi::query();
+        $query = Organisasi::query()
+            ->where('organisasi_type_id', 3) // Menambahkan filter untuk jenis organisasi
+            ->select(
+                'id',
+                'organisasi_kode as kode_pt',
+                'organisasi_nama as nama_pt',
+                'organisasi_kota as kota',
+                'organisasi_bentuk_pt',
+                'parent_id'
+            )
+            ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama', 'prodis' => function($q) {
+                $q->select('id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang');
+            }])
+            ->orderBy('nama_pt', 'asc');
 
         // Filter berdasarkan nama prodi
         if ($request->has('name')) {
@@ -30,20 +44,22 @@ class ProdiController extends Controller
         }
 
         // Pagination dengan 10 data per halaman
-        $prodi = $query->paginate(10);
+        $perguruanTinggi = $query->paginate(10);
 
-        return response()->json($prodi);
+        return response()->json($perguruanTinggi);
     }
 
     // Mendapatkan detail prodi tertentu berdasarkan ID
     public function show($id): JsonResponse
     {
-        $prodi = ProgramStudi::find($id);
+        $perguruanTinggi = Organisasi::with(['bentukPT:id,bentuk_nama', 'prodis' => function($q) {
+            $q->select('kode_prodi', 'program_jenjang', 'kota', 'id_organization'); // Pastikan 'id_organization' ada di tabel program_studis
+        }])->find($id);
 
-        if (!$prodi) {
+        if (!$perguruanTinggi) {
             return response()->json(['message' => 'Prodi tidak ditemukan'], 404);
         }
 
-        return response()->json($prodi);
+        return response()->json($perguruanTinggi);
     }
 }
