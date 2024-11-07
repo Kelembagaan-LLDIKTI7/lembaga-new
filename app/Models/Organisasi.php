@@ -63,7 +63,7 @@ class Organisasi extends Model
 
     public function bentukPT()
     {
-        return $this->belongsTo(BentukPt::class, 'organisasi_bentuk_pt');
+        return $this->belongsTo(BentukPt::class, 'organisasi_bentuk_pt', 'id');
     }
 
     public function dari()

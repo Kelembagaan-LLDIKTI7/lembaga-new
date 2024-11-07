@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class PerguruanTinggiController extends Controller
 {
-    // Mendapatkan semua data perguruan tinggi dengan pencarian dan pagination
     public function index(Request $request): JsonResponse
     {
         $query = Organisasi::query()
@@ -30,46 +29,47 @@ class PerguruanTinggiController extends Controller
             ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama'])
             ->orderBy('pt_nama', 'asc');
 
-        // Filter berdasarkan kode perguruan tinggi
         if ($request->has('kode_pt')) {
             $query->where('organisasi_kode', 'LIKE', '%' . $request->input('kode_pt') . '%');
         }
 
-        // Filter berdasarkan nama perguruan tinggi
         if ($request->has('nama_pt')) {
             $query->where('organisasi_nama', 'LIKE', '%' . $request->input('nama_pt') . '%');
         }
 
-        // Filter berdasarkan bentuk PT berdasarkan bentuk_pt_nama
         if ($request->has('bentuk_pt')) {
             $query->whereHas('bentukPT', function ($q) use ($request) {
                 $q->where('bentuk_nama', 'LIKE', '%' . $request->input('bentuk_pt') . '%');
             });
         }
 
-        // Filter berdasarkan kota
         if ($request->has('kota')) {
             $query->where('organisasi_kota', 'LIKE', '%' . $request->input('kota') . '%');
         }
 
-        // Pagination dengan 10 data per halaman
         $perguruanTinggi = $query->paginate(10);
 
-        $chartData = Organisasi::where('organisasi_type_id', 3)
-            ->with('bentukPT:id,bentuk_nama')
-            ->select('organisasi_bentuk_pt', DB::raw('COUNT(*) as jumlah'))
-            ->groupBy('organisasi_bentuk_pt')
+        $totalPerguruanTinggi = Organisasi::where('organisasi_type_id', 3)->count();
+
+        $totalProgramStudi = Organisasi::where('organisasi_type_id', 3)
+            ->withCount('prodis')
             ->get()
-            ->map(function ($item) {
-                return [
-                    'bentuk_pt' => $item->bentukPT->bentuk_nama ?? 'Tidak Diketahui',
-                    'jumlah' => $item->jumlah,
-                ];
-            });
+            ->sum('prodis_count');
+
+        $totalBentukPerguruanTinggi = Organisasi::where('organisasi_type_id', 3)
+            ->distinct('organisasi_bentuk_pt')
+            ->count('organisasi_bentuk_pt');
+
+        $totalWilayah = Organisasi::where('organisasi_type_id', 3)
+            ->distinct('organisasi_kota')
+            ->count('organisasi_kota');
 
         return response()->json([
             'perguruanTinggi' => $perguruanTinggi,
-            'chartData' => $chartData,
+            'Perguruan Tinggi' => $totalPerguruanTinggi,
+            'Program Studi' => $totalProgramStudi,
+            'Bentuk Perguruan Tinggi' => $totalBentukPerguruanTinggi,
+            'Wilayah' => $totalWilayah,
         ]);
     }
 
