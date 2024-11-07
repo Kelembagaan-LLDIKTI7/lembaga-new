@@ -319,25 +319,22 @@ class PerguruanTinggiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Find the existing Perguruan Tinggi record
-        $perguruanTinggi = Organisasi::findOrFail($id);
-
         // Validate the incoming request data
         $validated = $request->validate([
-            'organisasi_kode' => 'required|string|size:6|unique:organisasis',
+            'organisasi_kode' => 'required|string|max:6|unique:organisasis,organisasi_kode,' . $id,
             'organisasi_nama' => 'required|string|max:255',
             'organisasi_nama_singkat' => 'nullable|string|max:255',
-            'organisasi_email' => 'required|email|max:255',
+            'organisasi_email' => 'required|string|max:255',
             'organisasi_telp' => 'required|string|max:15',
             'organisasi_kota' => 'required|string|max:100',
             'organisasi_alamat' => 'required|string|max:255',
-            'organisasi_website' => 'nullable|url|max:255',
-            'organisasi_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'organisasi_website' => 'nullable|string|max:255',
+            'organisasi_logo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             'organisasi_bentuk_pt' => 'required|exists:bentuk_pts,id',
             'parent_id' => 'nullable|exists:organisasis,id',
         ], [
             'organisasi_kode.required' => 'Kode Perguruan Tinggi harus diisi.',
-            'organisasi_kode.size' => 'Kode Perguruan Tinggi harus terdiri dari 6 karakter.',
+            'organisasi_kode.max' => 'Kode Perguruan Tinggi harus terdiri dari 6 karakter.',
             'organisasi_kode.unique' => 'Kode Perguruan Tinggi sudah terdaftar.',
             'organisasi_nama.required' => 'Nama Perguruan Tinggi harus diisi.',
             'organisasi_alamat.required' => 'Alamat Perguruan Tinggi harus diisi.',
@@ -358,10 +355,39 @@ class PerguruanTinggiController extends Controller
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
             $validated['organisasi_logo'] = $logoPath; // Add the new logo path to the validated data
+            DB::table('organisasis')
+                ->where('id', $id)
+                ->update([
+                    'organisasi_kode' => $validated['organisasi_kode'],
+                    'organisasi_nama' => $validated['organisasi_nama'],
+                    'organisasi_nama_singkat' => $validated['organisasi_nama_singkat'],
+                    'organisasi_email' => $validated['organisasi_email'],
+                    'organisasi_telp' => $validated['organisasi_telp'],
+                    'organisasi_kota' => $validated['organisasi_kota'],
+                    'organisasi_alamat' => $validated['organisasi_alamat'],
+                    'organisasi_website' => $validated['organisasi_website'],
+                    'organisasi_logo' => $validated['organisasi_logo'],
+                    'organisasi_bentuk_pt' => $validated['organisasi_bentuk_pt'],
+                    'parent_id' => $validated['parent_id'],
+                    'updated_at' => now(),
+                ]);
+        } else {
+            DB::table('organisasis')
+                ->where('id', $id)
+                ->update([
+                    'organisasi_kode' => $validated['organisasi_kode'],
+                    'organisasi_nama' => $validated['organisasi_nama'],
+                    'organisasi_nama_singkat' => $validated['organisasi_nama_singkat'],
+                    'organisasi_email' => $validated['organisasi_email'],
+                    'organisasi_telp' => $validated['organisasi_telp'],
+                    'organisasi_kota' => $validated['organisasi_kota'],
+                    'organisasi_alamat' => $validated['organisasi_alamat'],
+                    'organisasi_website' => $validated['organisasi_website'],
+                    'organisasi_bentuk_pt' => $validated['organisasi_bentuk_pt'],
+                    'parent_id' => $validated['parent_id'],
+                    'updated_at' => now(),
+                ]);
         }
-
-        // Update the Perguruan Tinggi record with the validated data
-        $perguruanTinggi->update($validated);
 
         // Redirect to the show page with a success message
         return redirect()->route('perguruan-tinggi.show', ['id' => $id])
