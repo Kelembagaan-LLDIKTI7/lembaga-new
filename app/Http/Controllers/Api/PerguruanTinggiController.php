@@ -28,7 +28,6 @@ class PerguruanTinggiController extends Controller
             ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama', 'prodis:id,prodi_nama,prodi_kode,prodi_jenjang,id_organization'])
             ->orderBy('pt_nama', 'asc');
 
-        // Apply filters for the main query
         if ($request->has('kode_pt')) {
             $query->where('organisasi_kode', 'LIKE', '%' . $request->input('kode_pt') . '%');
         }
@@ -95,10 +94,9 @@ class PerguruanTinggiController extends Controller
 
         $prodiChartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
-            ->withCount('prodis') // Count the related prodis for each institution
-            ->with('bentukPT:id,bentuk_nama'); // Load bentukPT for labeling
+            ->withCount('prodis')
+            ->with('bentukPT:id,bentuk_nama');
 
-        // Apply filters for $prodiChart
         if ($request->has('kode_pt')) {
             $prodiChartQuery->where('organisasi_kode', 'LIKE', '%' . $request->input('kode_pt') . '%');
         }
@@ -140,7 +138,6 @@ class PerguruanTinggiController extends Controller
             ->select('prodi_jenjang', DB::raw('count(*) as total'))
             ->groupBy('prodi_jenjang');
 
-        // Apply filters for prodi_jenjang chart
         if ($request->has('kode_pt')) {
             $prodiJenjangChartQuery->whereHas('perguruanTinggi', function ($q) use ($request) {
                 $q->where('organisasi_kode', 'LIKE', '%' . $request->input('kode_pt') . '%');
