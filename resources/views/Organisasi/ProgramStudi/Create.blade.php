@@ -84,9 +84,9 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="prodi_jenjang" class="required-label">Jenjang</label>
+                                        <label for="prodi_jenjang" class="required-label">Program</label>
                                         <select name="prodi_jenjang" class="form-control select-search" required>
-                                            <option value="">-- Pilih Jenjang --</option>
+                                            <option value="">-- Pilih Program --</option>
                                             <option value="D1" @if (old('prodi_jenjang') == 'D1') selected @endif>D1
                                             </option>
                                             <option value="D2" @if (old('prodi_jenjang') == 'D2') selected @endif>D2
@@ -137,7 +137,8 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="id_jenis_surat_keputusan">Jenis Surat Keputusan</label>
+                                        <label for="id_jenis_surat_keputusan" class="required-label">Jenis Surat
+                                            Keputusan</label>
                                         <select name="id_jenis_surat_keputusan" class="form-control select-search">
                                             <option value="">-- Pilih Perguruan Tinggi --</option>
                                             @foreach ($jenis as $jenis)
@@ -153,8 +154,8 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="sk_dokumen" class="required-label">Dokumen SK</label>
-                                        <input type="file" name="sk_dokumen" class="form-control" required
+                                        <label for="sk_dokumen">Dokumen SK (Opsional)</label>
+                                        <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
                                             DOCX.</small>

@@ -61,7 +61,7 @@ class ProgramStudiController extends Controller
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
             'id_jenis_surat_keputusan' => 'required',
-            'sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
             'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
@@ -77,10 +77,6 @@ class ProgramStudiController extends Controller
             'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
         ]);
 
-        if ($request->hasFile('sk_dokumen')) {
-            $suratKeputusan = $request->file('sk_dokumen')->store('surat_keputusan', 'public');
-        }
-
         $prodi = ProgramStudi::create([
             'id' => Str::uuid(),
             'id_organization' => $validated['id_organization'],
@@ -91,27 +87,50 @@ class ProgramStudiController extends Controller
             'id_user' => Auth::user()->id
         ]);
 
-        SuratKeputusan::create([
-            'sk_nomor' => $validated['sk_nomor'],
-            'sk_tanggal' => $validated['sk_tanggal'],
-            'sk_dokumen' => $suratKeputusan,
-            'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
-            'id_prodi' => $prodi->id,
-        ]);
+        if ($request->hasFile('sk_dokumen')) {
+            $suratKeputusan = $request->file('sk_dokumen')->store('surat_keputusan', 'public');
+            SuratKeputusan::create([
+                'sk_nomor' => $validated['sk_nomor'],
+                'sk_tanggal' => $validated['sk_tanggal'],
+                'sk_dokumen' => $suratKeputusan,
+                'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
+                'id_prodi' => $prodi->id,
+            ]);
 
-        HistoryProgramStudi::create([
-            'id' => Str::uuid(),
-            'id_prodi' => $prodi->id,
-            'prodi_kode' => $request->prodi_kode,
-            'prodi_nama' => $validated['prodi_nama'],
-            'prodi_jenjang' => $validated['prodi_jenjang'],
-            'prodi_active_status' => $validated['prodi_active_status'],
-            'sk_nomor' => $validated['sk_nomor'],
-            'sk_tanggal' => $validated['sk_tanggal'],
-            'sk_dokumen' => $suratKeputusan,
-            'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
-            'id_user' => Auth::user()->id
-        ]);
+            HistoryProgramStudi::create([
+                'id' => Str::uuid(),
+                'id_prodi' => $prodi->id,
+                'prodi_kode' => $request->prodi_kode,
+                'prodi_nama' => $validated['prodi_nama'],
+                'prodi_jenjang' => $validated['prodi_jenjang'],
+                'prodi_active_status' => $validated['prodi_active_status'],
+                'sk_nomor' => $validated['sk_nomor'],
+                'sk_tanggal' => $validated['sk_tanggal'],
+                'sk_dokumen' => $suratKeputusan,
+                'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
+                'id_user' => Auth::user()->id
+            ]);
+        } else {
+            SuratKeputusan::create([
+                'sk_nomor' => $validated['sk_nomor'],
+                'sk_tanggal' => $validated['sk_tanggal'],
+                'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
+                'id_prodi' => $prodi->id,
+            ]);
+
+            HistoryProgramStudi::create([
+                'id' => Str::uuid(),
+                'id_prodi' => $prodi->id,
+                'prodi_kode' => $request->prodi_kode,
+                'prodi_nama' => $validated['prodi_nama'],
+                'prodi_jenjang' => $validated['prodi_jenjang'],
+                'prodi_active_status' => $validated['prodi_active_status'],
+                'sk_nomor' => $validated['sk_nomor'],
+                'sk_tanggal' => $validated['sk_tanggal'],
+                'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
+                'id_user' => Auth::user()->id
+            ]);
+        }
 
         return redirect()->route('perguruan-tinggi.show', $validated['id_organization'])->with('success', 'Program Studi berhasil ditambah.');
     }
