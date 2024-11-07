@@ -74,9 +74,9 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="prodi_jenjang" class="required-label">Jenjang Program</label>
+                                        <label for="prodi_jenjang" class="required-label">Program</label>
                                         <select name="prodi_jenjang" class="form-control select-search" required>
-                                            <option value="">-- Pilih Jenjang --</option>
+                                            <option value="">-- Pilih Program --</option>
                                             <option value="D1"
                                                 {{ old('prodi_jenjang', $prodi->prodi_jenjang) == 'D1' ? 'selected' : '' }}>
                                                 D1
