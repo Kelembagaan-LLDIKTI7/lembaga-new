@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show')->middleware('role.access:Detail Badan Penyelenggara');
         Route::post('/import', [BadanPenyelenggaraController::class, 'import'])->name('import')->middleware('role.access:Import Badan Penyelenggara');
+        Route::post('/validation-store-bp', [BadanPenyelenggaraController::class, 'validationStore'])->name('validationStore');
     });
 
     Route::prefix('program-studi')->name('program-studi.')->group(function () {
