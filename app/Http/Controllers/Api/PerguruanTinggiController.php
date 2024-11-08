@@ -26,6 +26,7 @@ class PerguruanTinggiController extends Controller
                 'parent_id'
             )
             ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama', 'prodis:id,prodi_nama,prodi_kode,prodi_jenjang,id_organization'])
+            ->withCount('prodis')
             ->orderBy('pt_nama', 'asc');
 
         if ($request->has('kode_pt')) {
