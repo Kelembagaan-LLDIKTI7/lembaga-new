@@ -30,7 +30,7 @@ class JabatanController extends Controller
      */
     public function create()
     {
-        //
+        return view('jabatan.create');
     }
 
     /**
@@ -38,7 +38,14 @@ class JabatanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'jabatan_nama' => 'required|string',
+            'bentuk_pt' => 'required|exists:bentuk_pts,id'
+        ]);
+
+        $dd = $request->all();
+        Jabatan::create($dd);
+        return redirect()->route('jabatan.index');
     }
 
     /**

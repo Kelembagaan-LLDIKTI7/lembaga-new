@@ -81,8 +81,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [OrganisasiTypeController::class, 'index'])->name('index')->middleware('role.access:View Jenis Organisasi');
     });
 
-    Route::prefix('jabatan')->name('jabatan.')->group(function () {
-        Route::get('/', [JabatanController::class, 'index'])->name('index');
+    // Routes for Jabatan
+    Route::prefix('jabatan')->name('Master.Jabatan.')->group(function () {
+        Route::get('/', [JabatanController::class, 'index'])->name('Index')->middleware('role.access:View Jabatan');
+        Route::get('/create', [JabatanController::class, 'create'])->name('create')->middleware('role.access:Create Jabatan');
+        Route::post('/', [JabatanController::class, 'store'])->name('store')->middleware('role.access:Create Jabatan');
+        Route::get('/{id}/edit', [JabatanController::class, 'edit'])->name('edit')->middleware('role.access:Edit Jabatan');
+        Route::put('/{id}', [JabatanController::class, 'update'])->name('update')->middleware('role.access:Edit Jabatan');
+        Route::delete('/{id}', [JabatanController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Jabatan');
     });
 
     Route::prefix('perguruan-tinggi')->name('perguruan-tinggi.')->group(function () {
