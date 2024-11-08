@@ -32,13 +32,6 @@
                                                     <input type="text" class="form-control" id="jabatan_nama" name="jabatan_nama" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="jabatan_active_status" class="form-label">Status Jabatan</label>
-                                                    <select class="form-select" id="jabatan_active_status" name="jabatan_active_status" required>
-                                                        <option value="Aktif">Aktif</option>
-                                                        <option value="Tidak Aktif">Tidak Aktif</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb-3">
                                                     <label for="bentuk_pt" class="form-label">Bentuk PT</label>
                                                     <select class="form-select" id="bentuk_pt" name="bentuk_pt" required>
                                                         @foreach($bentuk_pts as $id => $bentuk_nama)
@@ -61,7 +54,6 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Jabatan</th>
-                                            <th>Status</th>
                                             <th>Organisasi</th>
                                             <th>Bentuk PT</th>
                                         </tr>
@@ -71,7 +63,6 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $jabatan->jabatan_nama }}</td>
-                                                <td>{{ $jabatan->jabatan_status }}</td>
                                                 <td>{{ $jabatan->jabatan_organisasi }}</td>
                                                 <td>{{ $bentuk_pts[$jabatan->bentuk_pt] ?? 'Unknown' }}</td>
                                             </tr>

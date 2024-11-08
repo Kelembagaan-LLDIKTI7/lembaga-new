@@ -40,7 +40,6 @@ class JabatanController extends Controller
     {
         $request->validate([
             'jabatan_nama' => 'required|string',
-            'jabatan_active_status' => 'required|in:Aktif,Tidak Aktif',
             'bentuk_pt' => 'required|exists:bentuk_pts,id'
         ]);
 
