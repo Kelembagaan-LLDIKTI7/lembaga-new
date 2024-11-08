@@ -21,29 +21,33 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="organisasi_nama" class="required-label">Nama Badan Penyelenggara</label>
-                                        <input type="text" name="organisasi_nama" class="form-control" required>
+                                        <input type="text" name="organisasi_nama" class="form-control"
+                                            value="{{ old('organisasi_nama') }}" required>
                                         @error('organisasi_nama')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_nama_singkat" class="required-label">Nama Singkat</label>
-                                        <input type="text" name="organisasi_nama_singkat" class="form-control">
+                                        <label for="organisasi_nama">Nama Singkat Organisasi</label>
+                                        <input type="text" name="organisasi_nama_singkat" class="form-control"
+                                            value="{{ old('organisasi_nama_singkat') }}">
                                         @error('organisasi_nama_singkat')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_email" class="required-label">Email Badan
+                                        <label for="organisasi_email">Email Badan
                                             Penyelenggara</label>
-                                        <input type="email" name="organisasi_email" class="form-control" required>
+                                        <input type="email" name="organisasi_email" class="form-control"
+                                            value="{{ old('organisasi_email') }}">
                                         @error('organisasi_email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_telp" class="required-label">No Telepon</label>
-                                        <input type="text" name="organisasi_telp" class="form-control" required>
+                                        <label for="organisasi_telp">No Telepon</label>
+                                        <input type="text" name="organisasi_telp" class="form-control"
+                                            value="{{ old('organisasi_telp') }}">
                                         @error('organisasi_telp')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -51,7 +55,8 @@
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_alamat" class="required-label">Alamat</label>
-                                        <input type="text" name="organisasi_alamat" class="form-control" required>
+                                        <input type="text" name="organisasi_alamat" class="form-control"
+                                            value="{{ old('organisasi_alamat') }}" required>
                                         @error('organisasi_alamat')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -69,15 +74,18 @@
                                         <select name="selectedBP" id="selectedBP" class="form-control select-search">
                                             <option value="">-- Pilih Badan Penyelenggara --</option>
                                             @foreach ($badanPenyelenggaras as $badan)
-                                                <option value="{{ $badan->id }}">{{ $badan->organisasi_nama }}</option>
+                                                <option value="{{ $badan->id }}"
+                                                    @if (old('selectedBP') == $badan->id) selected @endif>
+                                                    {{ $badan->organisasi_nama }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_website">Website (Opsional)</label>
-                                        <input type="text" name="organisasi_website" class="form-control">
+                                        <label for="organisasi_website">Website</label>
+                                        <input type="text" name="organisasi_website" class="form-control"
+                                            value="{{ old('organisasi_website') }}">
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -85,14 +93,16 @@
                                         <select name="organisasi_kota" class="form-control select-search" required>
                                             <option value="">-- Pilih Kota --</option>
                                             @foreach ($kotas as $kota)
-                                                <option value="{{ $kota->nama }}">{{ $kota->nama }}</option>
+                                                <option value="{{ $kota->nama }}"
+                                                    @if (old('organisasi_kota') == $kota->nama) selected @endif>{{ $kota->nama }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_logo" class="required-label">Logo Badan Penyelenggara</label>
-                                        <input type="file" name="organisasi_logo" class="form-control" required
+                                        <label for="organisasi_logo">Logo Badan Penyelenggara</label>
+                                        <input type="file" name="organisasi_logo" class="form-control"
                                             accept="image/png, image/jpg, image/jpeg, image/gif"
                                             onchange="previewLogo(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
@@ -114,8 +124,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="validationCustom01" class="required-label">No Akta</label>
-                                        <input type="text" class="form-control" id="validationCustom01" name="akta_nomor"
-                                            required>
+                                        <input type="text" class="form-control" id="validationCustom01"
+                                            name="akta_nomor" value="{{ old('akta_nomor') }}" required>
                                         @error('akta_nomor')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -126,7 +136,7 @@
                                         <label for="validationCustom02" class="required-label">Tanggal Akta</label>
                                         <input type="date" class="form-control" id="validationCustom02"
                                             name="akta_tanggal" data-provider="flatpickr" data-date-format="d M, Y"
-                                            required>
+                                            value="{{ old('akta_tanggal') }}" required">
                                         @error('akta_tanggal')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -136,7 +146,7 @@
                                     <div class="form-group mb-3">
                                         <label for="validationCustom03" class="required-label">Nama Notaris</label>
                                         <input type="text" class="form-control" id="validationCustom03"
-                                            name="akta_nama_notaris" required>
+                                            name="akta_nama_notaris" value="{{ old('akta_nama_notaris') }}" required>
                                         @error('akta_nama_notaris')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -148,7 +158,9 @@
                                         <select name="kotaAkta" class="form-control select-search" required>
                                             <option value="">-- Pilih Kota --</option>
                                             @foreach ($kotas as $kota)
-                                                <option value="{{ $kota->nama }}">{{ $kota->nama }}</option>
+                                                <option value="{{ $kota->nama }}"
+                                                    @if (old('kotaAkta') == $kota->nama) selected @endif>{{ $kota->nama }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -159,8 +171,10 @@
                                         <select class="form-control select-search" id="validationCustom04"
                                             name="akta_jenis" required>
                                             <option value="">Jenis</option>
-                                            <option value="Pendirian">Pendirian</option>
-                                            <option value="Perubahan">Perubahan</option>
+                                            <option value="Pendirian" @if (old('akta_jenis') == 'Pendirian') selected @endif>
+                                                Pendirian</option>
+                                            <option value="Perubahan" @if (old('akta_jenis') == 'Perubahan') selected @endif>
+                                                Perubahan</option>
                                         </select>
                                         @error('akta_jenis')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -170,7 +184,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="akta_keterangan" class="required-label">Keterangan Akta</label>
-                                        <textarea class="form-control" id="akta_keterangan" name="akta_keterangan"></textarea>
+                                        <textarea class="form-control" id="akta_keterangan" name="akta_keterangan">{{ old('akta_keterangan') }}</textarea>
                                         @error('akta_keterangan')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -180,7 +194,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group mb-3">
-                                        <label for="aktaDokumen" class="required-label">Dokumen SK</label>
+                                        <label for="aktaDokumen" class="required-label">Dokumen Akta</label>
                                         <input type="file" name="aktaDokumen" class="form-control" required
                                             accept=".pdf,.doc,.docx" onchange="previewPdf(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
