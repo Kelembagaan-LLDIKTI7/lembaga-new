@@ -82,8 +82,8 @@ Route::middleware('auth')->group(function () {
     });
 
     // Routes for Jabatan
-    Route::prefix('jabatan')->name('Master.Jabatan.')->group(function () {
-        Route::get('/', [JabatanController::class, 'index'])->name('Index')->middleware('role.access:View Jabatan');
+    Route::prefix('jabatan')->name('jabatan.')->group(function () {
+        Route::get('/', [JabatanController::class, 'index'])->name('index')->middleware('role.access:View Jabatan');
         Route::get('/create', [JabatanController::class, 'create'])->name('create')->middleware('role.access:Create Jabatan');
         Route::post('/', [JabatanController::class, 'store'])->name('store')->middleware('role.access:Create Jabatan');
         Route::get('/{id}/edit', [JabatanController::class, 'edit'])->name('edit')->middleware('role.access:Edit Jabatan');
