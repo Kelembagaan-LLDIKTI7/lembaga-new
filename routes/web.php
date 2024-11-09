@@ -82,8 +82,8 @@ Route::middleware('auth')->group(function () {
     });
 
     // Routes for Jabatan
-    Route::prefix('jabatan')->name('Master.Jabatan.')->group(function () {
-        Route::get('/', [JabatanController::class, 'index'])->name('Index')->middleware('role.access:View Jabatan');
+    Route::prefix('jabatan')->name('jabatan.')->group(function () {
+        Route::get('/', [JabatanController::class, 'index'])->name('index')->middleware('role.access:View Jabatan');
         Route::get('/create', [JabatanController::class, 'create'])->name('create')->middleware('role.access:Create Jabatan');
         Route::post('/', [JabatanController::class, 'store'])->name('store')->middleware('role.access:Create Jabatan');
         Route::get('/{id}/edit', [JabatanController::class, 'edit'])->name('edit')->middleware('role.access:Edit Jabatan');
@@ -209,12 +209,15 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role.access:Create Akta Badan Penyelenggara')->group(function () {
             Route::get('/{id}/create', [AktaBpController::class, 'create'])->name('create');
             Route::post('/', [AktaBpController::class, 'store'])->name('store');
+            Route::post('/validation-store', [AktaBpController::class, 'validationStore'])->name('validationStore');
         });
 
         Route::middleware('role.access:Edit Akta Badan Penyelenggara')->group(function () {
             Route::get('/{id}/edit', [AktaBpController::class, 'edit'])->name('edit');
             Route::put('/{id}', [AktaBpController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-update-akta', [AktaBpController::class, 'validationUpdateAkta'])->name('validationUpdate');
         });
+
         Route::get('/{id}', [AktaBpController::class, 'show'])->name('show')->middleware('role.access:Detail Akta Badan Penyelenggara');
         Route::post('/view-pdf', [AktaBpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akta Badan Penyelenggara');
     });
