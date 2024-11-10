@@ -21,7 +21,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('skbp-badan-penyelenggara.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formSkbp" action="{{ route('skbp-badan-penyelenggara.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $id }}" class="form-control" required>
                     <div class="card">
@@ -38,6 +39,7 @@
                                         @error('nomor')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-nomor"></small>
                                     </div>
                                 </div>
 
@@ -51,6 +53,7 @@
                                         @error('tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-tanggal"></small>
                                     </div>
                                 </div>
 
@@ -69,12 +72,13 @@
                                         @error('jenis')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-jenis"></small>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="dokumen" class="required-label">Dokumen SK</label>
+                                        <label for="dokumen">Dokumen SK</label>
                                         <input type="file" name="dokumen" class="form-control" accept=".pdf,.doc,.docx"
                                             onchange="previewFile(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
@@ -82,6 +86,7 @@
                                         @error('dokumen')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-dokumen"></small>
                                     </div>
                                 </div>
                                 <div id="file-preview" class="mt-3"></div>
@@ -101,6 +106,68 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#formSkbp').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('skbp-badan-penyelenggara.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('skbp-badan-penyelenggara.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
     <script>
         function previewFile(event) {
             const file = event.target.files[0];

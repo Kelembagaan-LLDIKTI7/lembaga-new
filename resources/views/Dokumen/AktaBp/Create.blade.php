@@ -90,7 +90,7 @@
                                         <small class="text-danger error-message" id="error-kotaAkta"></small>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="akta_keterangan" class="required-label">Keterangan Akta</label>
+                                        <label for="akta_keterangan">Keterangan Akta</label>
                                         <textarea class="form-control" id="akta_keterangan" name="akta_keterangan">{{ old('akta_keterangan') }}</textarea>
                                         @error('akta_keterangan')
                                             <div class="invalid-feedback">
@@ -149,12 +149,11 @@
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        console.log(response);
-                        // if (response.success) {
-                        //     submitToStore(formData);
-                        // } else {
-                        //     displayErrors(response.errors);
-                        // }
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            displayErrors(response.errors);
+                        }
                     },
                     error: function(xhr) {
                         $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');

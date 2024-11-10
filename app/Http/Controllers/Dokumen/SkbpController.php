@@ -7,12 +7,45 @@ use App\Models\Skbp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class SkbpController extends Controller
 {
     public function create($id)
     {
         return view('Dokumen.Skbp.Create', compact('id'));
+    }
+
+    public function validationStore(Request $request)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'nomor' => 'required|string|max:35',
+            'tanggal' => 'required|date',
+            'jenis' => 'required|string|max:9',
+            'id_organization' => 'required',
+            'dokumen' => 'nullable|mimes:pdf|max:2048',
+        ], [
+            'nomor.required' => 'Nomor SKBP wajib diisi',
+            'nomor.max' => 'Nomor SKBP tidak boleh lebih dari 35 karakter',
+            'tanggal.required' => 'Tanggal SKBP wajib diisi',
+            'jenis.required' => 'Jenis SKBP wajib diisi',
+            'jenis.max' => 'Jenis SKBP tidak boleh lebih dari 9 karakter',
+            'id_organization.required' => 'Organisasi wajib diisi',
+            'dokumen.mimes' => 'File harus berupa PDF',
+            'dokumen.max' => 'File tidak boleh lebih dari 2 MB',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     public function store(Request $request)
@@ -37,6 +70,7 @@ class SkbpController extends Controller
         if ($request->hasFile('dokumen')) {
             $dokumen = $request->file('dokumen')->store('skbp', 'public');
             DB::table('skbps')->insert([
+                'id' => Str::uuid(),
                 'nomor' => $request->input('nomor'),
                 'tanggal' => $request->input('tanggal'),
                 'jenis' => $request->input('jenis'),
@@ -47,6 +81,7 @@ class SkbpController extends Controller
             ]);
         } else {
             DB::table('skbps')->insert([
+                'id' => Str::uuid(),
                 'nomor' => $request->input('nomor'),
                 'tanggal' => $request->input('tanggal'),
                 'jenis' => $request->input('jenis'),
@@ -56,13 +91,50 @@ class SkbpController extends Controller
             ]);
         }
 
-        return redirect()->route('badan-penyelenggara.show', ['id' => $request->input('id_organization')]);
+        session()->flash('success', 'SKBP berhasil ditambahkan');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('badan-penyelenggara.show', ['id' => $request->input('id_organization')]),
+        ]);
     }
 
     public function edit($id)
     {
         $skbp = DB::table('skbps')->where('id', $id)->first();
         return view('Dokumen.Skbp.Edit', compact('skbp'));
+    }
+
+    public function validationUpdate(Request $request, string $id)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'nomor' => 'required|string|max:45',
+            'tanggal' => 'required|date',
+            'jenis' => 'required|string|max:9',
+            'id_organization' => 'required',
+            'dokumen' => 'nullable|mimes:pdf|max:2048',
+        ], [
+            'nomor.required' => 'Nomor SKBP wajib diisi',
+            'nomor.max' => 'Nomor SKBP tidak boleh lebih dari 45 karakter',
+            'tanggal.required' => 'Tanggal SKBP wajib diisi',
+            'jenis.required' => 'Jenis SKBP wajib diisi',
+            'jenis.max' => 'Jenis SKBP tidak boleh lebih dari 9 karakter',
+            'id_organization.required' => 'Organisasi wajib diisi',
+            'dokumen.mimes' => 'File harus berupa PDF',
+            'dokumen.max' => 'File tidak boleh lebih dari 2 MB',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -106,7 +178,12 @@ class SkbpController extends Controller
             ]);
         }
 
-        return redirect()->route('badan-penyelenggara.show', ['id' => $request->input('id_organization')]);
+        session()->flash('success', 'SKBP berhasil diubah');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('badan-penyelenggara.show', ['id' => $request->input('id_organization')]),
+        ]);
     }
 
     public function viewPdf($id)

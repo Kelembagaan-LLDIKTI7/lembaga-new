@@ -41,7 +41,7 @@ class AktaBpController extends Controller
 
     public function validationStore(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         // Validasi data input
         $validator = \Validator::make($request->all(), [
             'id_organization' => 'required',

@@ -21,45 +21,50 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="organisasi_nama" class="required-label">Nama Badan Penyelenggara</label>
-                                        <input type="text" name="organisasi_nama" class="form-control"
-                                            value="{{ old('organisasi_nama') }}" required>
+                                        <input type="text" id="organisasi_nama" name="organisasi_nama"
+                                            class="form-control" value="{{ old('organisasi_nama') }}" required>
                                         @error('organisasi_nama')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_nama"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="organisasi_nama">Nama Singkat Organisasi</label>
-                                        <input type="text" name="organisasi_nama_singkat" class="form-control"
-                                            value="{{ old('organisasi_nama_singkat') }}">
+                                        <input type="text" id="organisasi_nama_singkat" name="organisasi_nama_singkat"
+                                            class="form-control" value="{{ old('organisasi_nama_singkat') }}">
                                         @error('organisasi_nama_singkat')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_nama_singkat"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="organisasi_email">Email Badan
                                             Penyelenggara</label>
-                                        <input type="email" name="organisasi_email" class="form-control"
-                                            value="{{ old('organisasi_email') }}">
+                                        <input type="email" id="organisasi_email" name="organisasi_email"
+                                            class="form-control" value="{{ old('organisasi_email') }}">
                                         @error('organisasi_email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_email"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="organisasi_telp">No Telepon</label>
-                                        <input type="text" name="organisasi_telp" class="form-control"
-                                            value="{{ old('organisasi_telp') }}">
+                                        <input type="text" id="organisasi_telp" name="organisasi_telp"
+                                            class="form-control" value="{{ old('organisasi_telp') }}">
                                         @error('organisasi_telp')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_telp"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_alamat" class="required-label">Alamat</label>
-                                        <input type="text" name="organisasi_alamat" class="form-control"
-                                            value="{{ old('organisasi_alamat') }}" required>
+                                        <input type="text" id="organisasi_alamat" name="organisasi_alamat"
+                                            class="form-control" value="{{ old('organisasi_alamat') }}" required>
                                         @error('organisasi_alamat')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_alamat"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -79,37 +84,49 @@
                                                     {{ $badan->organisasi_nama }}</option>
                                             @endforeach
                                         </select>
+                                        <small class="text-danger error-message" id="error-selectedBP"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="organisasi_website">Website</label>
-                                        <input type="text" name="organisasi_website" class="form-control"
-                                            value="{{ old('organisasi_website') }}">
+                                        <input type="text" id="organisasi_website" name="organisasi_website"
+                                            class="form-control" value="{{ old('organisasi_website') }}">
+                                        @error('organisasi_website')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_website"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_kota" class="required-label">Kota</label>
-                                        <select name="organisasi_kota" class="form-control select-search" required>
+                                        <select id="organisasi_kota" name="organisasi_kota"
+                                            class="form-control select-search" required>
                                             <option value="">-- Pilih Kota --</option>
                                             @foreach ($kotas as $kota)
                                                 <option value="{{ $kota->nama }}"
-                                                    @if (old('organisasi_kota') == $kota->nama) selected @endif>{{ $kota->nama }}
+                                                    @if (old('organisasi_kota') == $kota->nama) selected @endif>
+                                                    {{ $kota->nama }}
                                                 </option>
                                             @endforeach
                                         </select>
+                                        @error('organisasi_kota')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_kota"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_logo">Logo Badan Penyelenggara</label>
-                                        <input type="file" name="organisasi_logo" class="form-control"
-                                            accept="image/png, image/jpg, image/jpeg, image/gif"
+                                        <input type="file" id="organisasi_logo" name="organisasi_logo"
+                                            class="form-control" accept="image/png, image/jpg, image/jpeg, image/gif"
                                             onchange="previewLogo(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
                                             GIF.</small>
                                         @error('organisasi_logo')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_logo"></small>
                                         <img id="logo-preview" src="#" alt="Preview Logo" style="display: none;">
                                     </div>
                                 </div>
@@ -124,52 +141,61 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="validationCustom01" class="required-label">No Akta</label>
-                                        <input type="text" class="form-control" id="validationCustom01"
-                                            name="akta_nomor" value="{{ old('akta_nomor') }}" required>
+                                        <input type="text" class="form-control" id="akta_nomor" name="akta_nomor"
+                                            value="{{ old('akta_nomor') }}" required>
                                         @error('akta_nomor')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_nomor"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="validationCustom02" class="required-label">Tanggal Akta</label>
-                                        <input type="date" class="form-control" id="validationCustom02"
-                                            name="akta_tanggal" data-provider="flatpickr" data-date-format="d M, Y"
-                                            value="{{ old('akta_tanggal') }}" required">
+                                        <input type="date" class="form-control" id="akta_tanggal" name="akta_tanggal"
+                                            data-provider="flatpickr" data-date-format="d M, Y"
+                                            value="{{ old('akta_tanggal') }}" required>
                                         @error('akta_tanggal')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_tanggal"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="validationCustom03" class="required-label">Nama Notaris</label>
-                                        <input type="text" class="form-control" id="validationCustom03"
+                                        <input type="text" class="form-control" id="akta_nama_notaris"
                                             name="akta_nama_notaris" value="{{ old('akta_nama_notaris') }}" required>
                                         @error('akta_nama_notaris')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_nama_notaris"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="kotaAkta" class="required-label">Kota Notaris</label>
-                                        <select name="kotaAkta" class="form-control select-search" required>
+                                        <select id="kotaAkta" name="kotaAkta" class="form-control select-search"
+                                            required>
                                             <option value="">-- Pilih Kota --</option>
                                             @foreach ($kotas as $kota)
                                                 <option value="{{ $kota->nama }}"
-                                                    @if (old('kotaAkta') == $kota->nama) selected @endif>{{ $kota->nama }}
+                                                    @if (old('kotaAkta') == $kota->nama) selected @endif>
+                                                    {{ $kota->nama }}
                                                 </option>
                                             @endforeach
                                         </select>
+                                        @error('kotaAkta')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-kotaAkta"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="validationCustom04" class="required-label">Jenis Akta</label>
-                                        <select class="form-control select-search" id="validationCustom04"
-                                            name="akta_jenis" required>
+                                        <label for="akta_jenis" class="required-label">Jenis Akta</label>
+                                        <select class="form-control select-search" id="akta_jenis" name="akta_jenis"
+                                            required>
                                             <option value="">Jenis</option>
                                             <option value="Pendirian" @if (old('akta_jenis') == 'Pendirian') selected @endif>
                                                 Pendirian</option>
@@ -179,6 +205,7 @@
                                         @error('akta_jenis')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_jenis"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -190,18 +217,20 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_keterangan"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group mb-3">
                                         <label for="aktaDokumen" class="required-label">Dokumen Akta</label>
-                                        <input type="file" name="aktaDokumen" class="form-control" required
-                                            accept=".pdf,.doc,.docx" onchange="previewPdf(event)">
+                                        <input type="file" name="aktaDokumen" id="aktaDokumen" class="form-control"
+                                            required accept=".pdf,.doc,.docx" onchange="previewPdf(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
                                             DOCX.</small>
                                         @error('aktaDokumen')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-aktaDokumen"></small>
                                     </div>
                                 </div>
                             </div>
@@ -210,6 +239,7 @@
 
                     <button type="submit" class="btn btn-primary">Simpan</button>
                     <a href="{{ route('badan-penyelenggara.index') }}" class="btn btn-secondary">Keluar</a>
+                    <div id="error-messages" class="text-danger"></div>
                 </form>
             </div>
         </div>
@@ -217,6 +247,68 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#formBP').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('badan-penyelenggara.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('badan-penyelenggara.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
     <script>
         function previewLogo(event) {
             var reader = new FileReader();
