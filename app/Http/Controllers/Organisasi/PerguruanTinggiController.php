@@ -9,6 +9,7 @@ use App\Models\BentukPt;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
+use App\Models\Perkara;
 use App\Models\PimpinanOrganisasi;
 use App\Models\SuratKeputusan;
 use Illuminate\Http\Request;
@@ -269,6 +270,10 @@ class PerguruanTinggiController extends Controller
                 'aktif'
             )->with(['prodi:id,prodi_kode,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
 
+        $perkaras = Perkara::where('id_organization', $id)
+            ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->get();
+
         return view('Organisasi.PerguruanTinggi.Show', [
             'organisasi' => $organisasi,
             'berubahOrganisasi' => $berubahOrganisasi,
@@ -276,6 +281,7 @@ class PerguruanTinggiController extends Controller
             'sk' => $sk,
             'pimpinan' => $pimpinan,
             'akreditasisProdi' => $akreditasisProdi,
+            'perkaras' => $perkaras
         ]);
 
         // return response()->json([

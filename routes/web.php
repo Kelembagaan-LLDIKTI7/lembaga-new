@@ -15,6 +15,9 @@ use App\Http\Controllers\Master\PeringkatAkademiController;
 use App\Http\Controllers\Organisasi\BadanPenyelenggaraController;
 use App\Http\Controllers\Organisasi\PerguruanTinggiController;
 use App\Http\Controllers\Organisasi\ProgramStudiController;
+use App\Http\Controllers\Perkara\PerkaraOrganisasiController;
+use App\Http\Controllers\Perkara\PerkaraOrganisasiPTController;
+use App\Http\Controllers\Perkara\PerkaraProdiController;
 use App\Http\Controllers\User\PermissionController;
 use App\Http\Controllers\Pimpinan\PimpinanBadanPenyelenggaraController;
 use App\Http\Controllers\Pimpinan\PimpinanPerguruanTinggiController;
@@ -252,5 +255,26 @@ Route::middleware('auth')->group(function () {
             Route::put('/{id}/validation-update', [SkbpController::class, 'validationUpdate'])->name('validationUpdate');
         });
         Route::get('/{id}/view-pdf', [SkbpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Badan Penyelenggara');
+    });
+
+    Route::prefix('perkara-organisasi')->name('perkara-organisasi.')->group(function () {
+        Route::get('/{id}/create', [PerkaraOrganisasiController::class, 'create'])->name('create');
+        Route::post('/', [PerkaraOrganisasiController::class, 'store'])->name('store');
+        Route::get('/{id}', [PerkaraOrganisasiController::class, 'show'])->name('show');
+        Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update');
+    });
+    
+    Route::prefix('perkara-organisasipt')->name('perkara-organisasipt.')->group(function () {
+        Route::get('/{id}/create', [PerkaraOrganisasiPTController::class, 'create'])->name('create');
+        Route::post('/', [PerkaraOrganisasiPTController::class, 'store'])->name('store');
+        Route::get('/{id}', [PerkaraOrganisasiPTController::class, 'show'])->name('show');
+        Route::patch('/{id}/status-update', [PerkaraOrganisasiPTController::class, 'updateStatus'])->name('status-update');
+    });
+
+    Route::prefix('perkara-prodi')->name('perkara-prodi.')->group(function () {
+        Route::get('/{id}/create', [PerkaraProdiController::class, 'create'])->name('create');
+        Route::post('/', [PerkaraProdiController::class, 'store'])->name('store');
+        Route::get('/{id}', [PerkaraProdiController::class, 'show'])->name('show');
+        Route::patch('/{id}/status-update', [PerkaraProdiController::class, 'updateStatus'])->name('status-update');
     });
 });

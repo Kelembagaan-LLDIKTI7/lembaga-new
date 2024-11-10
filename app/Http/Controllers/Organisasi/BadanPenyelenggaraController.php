@@ -8,6 +8,7 @@ use App\Models\Akta;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
+use App\Models\Perkara;
 use App\Models\PimpinanOrganisasi;
 use App\Models\Skbp;
 use Illuminate\Http\Request;
@@ -340,10 +341,15 @@ class BadanPenyelenggaraController extends Controller
         $skbp = Skbp::where('id_organization', $id)
             ->get();
 
+        $perkaras = Perkara::where('id_organization', $id)
+            ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->get();
+
         // return response()->json([
         //     'badanPenyelenggaras' => $badanPenyelenggaras,
         //     'pimpinan' => $pimpinan,
-        //     'akta' => $akta
+        //     'akta' => $akta,
+        //     'perkara' => $perkara,
         // ]);
 
         return view('Organisasi.BadanPenyelenggara.Show', [
@@ -351,6 +357,7 @@ class BadanPenyelenggaraController extends Controller
             'pimpinan' => $pimpinan,
             'akta' => $akta,
             'skbp' => $skbp,
+            'perkaras' => $perkaras,
         ]);
     }
 

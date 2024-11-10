@@ -75,4 +75,9 @@ class Organisasi extends Model
     {
         return $this->hasMany(Organisasi::class, 'organisasi_berubah_status', 'id');
     }
+
+    public function perkaras()
+    {
+        return $this->hasMany(Perkara::class, 'id_organization', 'id');
+    }
 }
