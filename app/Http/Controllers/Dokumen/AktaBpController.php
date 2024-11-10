@@ -39,13 +39,11 @@ class AktaBpController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function validationStore(Request $request)
     {
         // dd($request->all());
-        $request->validate([
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
             'id_organization' => 'required',
             'akta_nomor' => 'required|string|max:255',
             'akta_tanggal' => 'required|date',
@@ -68,6 +66,24 @@ class AktaBpController extends Controller
             'aktaDokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('akta-badan-penyelenggara.store'),
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
         if ($request->hasFile('aktaDokumen')) {
             $akta = $request->file('aktaDokumen')->store('akta', 'public');
         }
@@ -84,7 +100,12 @@ class AktaBpController extends Controller
             'id_user' => Auth::user()->id,
         ]);
 
-        return redirect()->route('badan-penyelenggara.show', ['id' => $request->id_organization])->with('success', 'Data akta berhasil ditambahkan.');
+        session()->flash('success', 'Data Akta berhasil disimpan.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('badan-penyelenggara.show', ['id' => $request->id_organization]),
+        ]);
     }
 
     /**
@@ -122,6 +143,46 @@ class AktaBpController extends Controller
             'akta' => $akta,
             'aktas' => $aktas,
             'kota' => $kota,
+        ]);
+    }
+
+    public function validationUpdateAkta(Request $request, string $id)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'id_organization' => 'required',
+            'akta_nomor' => 'required|string|max:255',
+            'akta_tanggal' => 'required|date',
+            'akta_nama_notaris' => 'required|string|max:255',
+            'akta_jenis' => 'required',
+            'kotaAkta' => 'required|string',
+            'akta_keterangan' => 'nullable|string',
+            'aktaDokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'akta_nomor.required' => 'Nomor harus diisi.',
+            'akta_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
+            'akta_tanggal.required' => 'Tanggal harus diisi.',
+            'akta_tanggal.date' => 'Tanggal harus valid.',
+            'akta_nama_notaris.required' => 'Nama Notaris harus diisi.',
+            'akta_nama_notaris.max' => 'Nama Notaris tidak boleh lebih dari 255 karakter.',
+            'akta_jenis.required' => 'Jenis harus diisi.',
+            'kotaAkta.required' => 'Kota harus diisi.',
+            'akta_keterangan.string' => 'Keterangan harus berupa string.',
+            'akta_keterangan.max' => 'Keterangan tidak boleh lebih dari 5 karakter.',
+            'aktaDokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
+            'aktaDokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('akta-badan-penyelenggara.update', ['id' => $id]),
         ]);
     }
 
@@ -179,7 +240,12 @@ class AktaBpController extends Controller
             ]);
         }
 
-        return redirect()->route('badan-penyelenggara.show', ['id' => $request->id_organization])->with('success', 'Data akta berhasil ditambahkan.');
+        session()->flash('success', 'Data Akta berhasil diupdate.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('badan-penyelenggara.show', ['id' => $request->id_organization]),
+        ]);
     }
 
     /**

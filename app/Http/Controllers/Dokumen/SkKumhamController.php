@@ -50,6 +50,38 @@ class SkKumhamController extends Controller
         ]);
     }
 
+    public function validationStore(Request $request)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'id_akta' => 'required|exists:aktas,id',
+            'kumham_nomor' => 'required|string|max:255',
+            'kumham_tanggal' => 'required|date',
+            'kumham_perihal' => 'required|string|max:255',
+            'kumham_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'kumham_nomor.required' => 'Nomor harus diisi.',
+            'kumham_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
+            'kumham_tanggal.required' => 'Tanggal harus diisi.',
+            'kumham_tanggal.date' => 'Tanggal harus valid.',
+            'kumham_perihal.required' => 'Perihal harus diisi.',
+            'kumham_perihal.max' => 'Perihal tidak boleh lebih dari 255 karakter.',
+            'kumham_dokumen.required' => 'Dokumen harus diisi.',
+            'kumham_dokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
+            'kumham_dokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
 
     public function store(Request $request)
     {
@@ -85,7 +117,12 @@ class SkKumhamController extends Controller
 
         $akta =  Akta::select('id_organization')->where('id', $request->id_akta)->first();
 
-        return redirect()->route('badan-penyelenggara.show', ['id' => $akta->id_organization])->with('success', 'Data SK Kumham berhasil disimpan.');
+        session()->flash('success', 'Data SK Kumham berhasil disimpan.');
+
+        return response()->json([
+            'success' => true,
+            'redirect' => route('badan-penyelenggara.show', ['id' => $akta->id_organization]),
+        ]);
     }
 
     public function edit(string $id)
@@ -101,6 +138,38 @@ class SkKumhamController extends Controller
         // dd($skKumham);
 
         return view('Dokumen.SkKumham.Edit', compact('skKumham', 'akta'));
+    }
+
+    public function validationUpdate(Request $request, string $id)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'id_akta' => 'required|exists:aktas,id',
+            'kumham_nomor' => 'required|string|max:255',
+            'kumham_tanggal' => 'required|date',
+            'kumham_perihal' => 'required|string|max:255',
+            'kumham_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'kumham_nomor.required' => 'Nomor harus diisi.',
+            'kumham_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
+            'kumham_tanggal.required' => 'Tanggal harus diisi.',
+            'kumham_tanggal.date' => 'Tanggal harus valid.',
+            'kumham_perihal.required' => 'Perihal harus diisi.',
+            'kumham_perihal.max' => 'Perihal tidak boleh lebih dari 255 karakter.',
+            'kumham_dokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
+            'kumham_dokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     public function update(Request $request, string $id)
@@ -146,7 +215,12 @@ class SkKumhamController extends Controller
 
         $akta =  Akta::select('id_organization')->where('id', $request->id_akta)->first();
 
-        return redirect()->route('badan-penyelenggara.show', ['id' => $akta->id_organization])->with('success', 'Data SK Kumham berhasil diperbarui.');
+        session()->flash('success', 'Data SK Kumham berhasil diperbarui.');
+
+        return response()->json([
+            'success' => true,
+            'redirect' => route('badan-penyelenggara.show', ['id' => $akta->id_organization]),
+        ]);
     }
 
     public function createPdfSession(Request $request)

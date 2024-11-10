@@ -289,64 +289,6 @@
                         </div>
                     </div>
                 </section>
-                <section class="datatables">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="mb-2">
-                                <h5 class="mb-0">SKBP</h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table id="skbp" class="table-striped table-bordered display text-nowrap table border"
-                                    style="width: 100%">
-                                    @can('Create SK Badan Penyelenggara')
-                                        <a href="{{ route('skbp-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah SKBP
-                                        </a>
-                                    @endCan
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nomor SK</th>
-                                            <th>Tanggal SK</th>
-                                            <th>Jenis SK</th>
-                                            <th>Dokumen</th>
-                                            <th>Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($skbp as $sk)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $sk->nomor }}</td>
-                                                <td>{{ $sk->tanggal }}</td>
-                                                <td>{{ $sk->jenis }}</td>
-                                                <td>
-                                                    @can('View PDF SK Badan Penyelenggara')
-                                                        @if ($sk->dokumen)
-                                                            <a href="{{ route('skbp-badan-penyelenggara.viewPdf', $sk->id) }}"
-                                                                target="_blank">
-                                                                Dokumen
-                                                            </a>
-                                                        @endif
-                                                    @endCan
-                                                </td>
-                                                <td>
-                                                    @can('Edit SK Badan Penyelenggara')
-                                                        <a href="{{ route('skbp-badan-penyelenggara.edit', $sk->id) }}"
-                                                            class="btn btn-info btn-sm">
-                                                            Edit
-                                                        </a>
-                                                    @endCan
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             @endCan
 
             @can('View Perguruan Tinggi')

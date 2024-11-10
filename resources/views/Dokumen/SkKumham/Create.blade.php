@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('sk-kumham.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formKumham" action="{{ route('sk-kumham.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_akta" value="{{ $akta->id }}" class="form-control" required>
                     <div class="card">
@@ -27,6 +27,7 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-kumham_nomor"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="kumham_tanggal" class="required-label">Tanggal Kumham</label>
@@ -37,6 +38,7 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-kumham_tanggal"></small>
                                     </div>
                                 </div>
 
@@ -50,6 +52,7 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-kumham_perihal"></small>
                                     </div>
                                 </div>
 
@@ -62,10 +65,11 @@
                                             DOCX.</small>
                                         <div id="file-preview"></div>
                                     </div>
+                                    <small class="text-danger error-message" id="error-kumham_dokumen"></small>
                                 </div>
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('badan-penyelenggara.index') }}"
+                                    <a href="{{ route('badan-penyelenggara.show', ['id' => $akta->id_organization]) }}"
                                         class="btn btn-primary btn-sm-custom">Keluar</a>
                                     <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                 </div>
@@ -80,20 +84,68 @@
 
 @section('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const aktaJenisSelect = document.getElementById('aktaJenis');
-            const referensiAktaSelect = document.getElementById('referensiAkta');
+        $(document).ready(function() {
+            $('#formKumham').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
 
-            aktaJenisSelect.addEventListener('change', function() {
-                if (aktaJenisSelect.value === 'Perubahan') {
-                    referensiAktaSelect.disabled = false;
-                } else {
-                    referensiAktaSelect.disabled = true;
-                    referensiAktaSelect.value = '';
-                }
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('sk-kumham.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
             });
-        });
 
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('sk-kumham.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
+    <script>
         function previewFile(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('file-preview');

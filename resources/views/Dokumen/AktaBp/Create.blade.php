@@ -10,7 +10,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('akta-badan-penyelenggara.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formAkta" action="{{ route('akta-badan-penyelenggara.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $bp->id }}" class="form-control" required>
                     <div class="card">
@@ -27,6 +28,7 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_nomor"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="validationCustom02" class="required-label">Tanggal Akta</label>
@@ -37,6 +39,7 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_tanggal"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="validationCustom03" class="required-label">Nama Notaris</label>
@@ -47,6 +50,7 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_nama_notaris"></small>
                                     </div>
                                 </div>
 
@@ -66,6 +70,7 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_jenis"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="kotaAkta" class="required-label">Kota</label>
@@ -77,15 +82,22 @@
                                                     {{ $k->nama }}</option>
                                             @endforeach
                                         </select>
+                                        @error('kotaAkta')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-kotaAkta"></small>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="akta_keterangan" class="required-label">Keterangan Akta</label>
+                                        <label for="akta_keterangan">Keterangan Akta</label>
                                         <textarea class="form-control" id="akta_keterangan" name="akta_keterangan">{{ old('akta_keterangan') }}</textarea>
                                         @error('akta_keterangan')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akta_keterangan"></small>
                                     </div>
                                 </div>
 
@@ -96,6 +108,12 @@
                                             accept=".pdf,.doc,.docx" onchange="previewFile(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
                                             DOCX.</small>
+                                        @error('aktaDokumen')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-aktaDokumen"></small>
                                         <div id="file-preview"></div>
                                     </div>
                                 </div>
@@ -115,6 +133,68 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#formAkta').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('akta-badan-penyelenggara.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('akta-badan-penyelenggara.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
     <script>
         function previewFile(event) {
             const file = event.target.files[0];
