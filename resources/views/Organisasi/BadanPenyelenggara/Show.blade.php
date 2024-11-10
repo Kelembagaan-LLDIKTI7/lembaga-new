@@ -325,10 +325,6 @@
                                                             class="btn btn-sm btn-primary me-2">
                                                             <i class="ti ti-info-circle"></i>
                                                         </a>
-                                                        <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
-                                                            class="btn btn-sm btn-primary me-2">
-                                                            <i class="ti ti-info-circle"></i>
-                                                        </a>
                                                     @endcan
                                                 </td>
                                                 </td>
@@ -417,8 +413,60 @@
                     </div>
                 </section>
             @endCan
+
+            <section class="datatables">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <h5 class="mb-0">Perkara</h5>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
+                                style="width: 100%">
+                                <a href="{{ route('perkara-organisasi.create', $badanPenyelenggaras->id) }}"
+                                    class="btn btn-primary btn-sm mb-2">
+                                    Tambah Perkara
+                                </a>
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Title</th>
+                                        <th>Tanggal Kejadian</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($perkaras as $perkara)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $perkara->title }}</td>
+                                            <td>
+                                                {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
+                                            </td>
+                                            <td>{{ $perkara->status }}</td>
+                                            <td>
+                                                <a href="{{ route('perkara-organisasi.show', $perkara->id) }}"
+                                                    class="btn btn-sm btn-primary me-2">
+                                                    <i class="ti ti-info-circle"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
+                                                    data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
+                                                    data-status="{{ $perkara->status }}">
+                                                    Edit Status
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
+        @include('Modal.Bp.Edit')
         @include('Dokumen.AktaBp.Detail')
         @include('Pimpinan.BadanPenyelenggara.Detail')
     </div>
@@ -438,6 +486,24 @@
             $('#pemimpin_perguruan_tinggi').DataTable();
 
             $('#program_studi').DataTable();
+
+            $('#perkara').DataTable();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('edit-status')) {
+                const perkaraId = event.target.getAttribute('data-id');
+                const currentStatus = event.target.getAttribute('data-status');
+                document.getElementById('perkaraId').value = perkaraId;
+                const statusSelect = document.getElementById('status');
+                Array.from(statusSelect.options).forEach(option => {
+                    option.selected = option.value === currentStatus;
+                });
+
+                document.getElementById('editStatusForm').action = `/perkara-organisasi/${perkaraId}/status-update`;
+            }
         });
     </script>
 

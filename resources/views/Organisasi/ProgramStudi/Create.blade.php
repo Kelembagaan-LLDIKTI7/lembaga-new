@@ -9,7 +9,6 @@
             outline: none;
         }
     </style>
-
 @endsection
 
 @section('content')
