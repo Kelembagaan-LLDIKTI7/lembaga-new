@@ -8,6 +8,7 @@ use App\Models\Akta;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
+use App\Models\Perkara;
 use App\Models\PimpinanOrganisasi;
 use App\Models\Skbp;
 use Illuminate\Http\Request;
@@ -72,6 +73,66 @@ class BadanPenyelenggaraController extends Controller
             'badanPenyelenggaras' => $badanPenyelenggaras,
             'kotas' => $kotas,
             'jenis' => $jenis
+        ]);
+    }
+
+    public function validationStore(Request $request)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'organisasi_nama' => 'required|string|max:255',
+            'organisasi_nama_singkat' => 'nullable|string|max:255',
+            'organisasi_email' => 'nullable|string|max:255',
+            'organisasi_telp' => 'nullable|string|max:20',
+            'organisasi_alamat' => 'required|string',
+            'organisasi_kota' => 'required|string',
+            'organisasi_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'akta_nomor' => 'required|string|max:255',
+            'akta_tanggal' => 'required|date',
+            'akta_nama_notaris' => 'required|string|max:255',
+            'kotaAkta' => 'required|string',
+            'akta_jenis' => 'required|string|in:Pendirian,Perubahan',
+            'aktaDokumen' => 'required|mimes:pdf,doc,docx|max:2048',
+            'akta_keterangan' => 'nullable|string',
+            'selectedBP' => 'nullable',
+            'organisasi_website' => 'nullable',
+        ], [
+            'organisasi_nama.required' => 'Nama harus diisi.',
+            'organisasi_nama.max' => 'Nama tidak boleh lebih dari 255 karakter.',
+            'organisasi_email.required' => 'Email harus diisi.',
+            'organisasi_email.email' => 'Email harus valid.',
+            'organisasi_email.max' => 'Email tidak boleh lebih dari 255 karakter.',
+            'organisasi_telp.required' => 'Telepon harus diisi.',
+            'organisasi_telp.max' => 'Telepon tidak boleh lebih dari 20 karakter.',
+            'organisasi_alamat.required' => 'Alamat harus diisi.',
+            'organisasi_kota.required' => 'Kota harus diisi.',
+            'organisasi_logo.required' => 'Logo organisasi harus diunggah.',
+            'organisasi_logo.image' => 'File logo harus berupa gambar.',
+            'organisasi_logo.mimes' => 'File logo harus berformat jpeg, png, jpg, atau gif.',
+            'organisasi_logo.max' => 'Ukuran file logo tidak boleh lebih dari 2 MB.',
+            'akta_nomor.required' => 'Nomor akta harus diisi.',
+            'akta_nomor.max' => 'Nomor akta tidak boleh lebih dari 255 karakter.',
+            'akta_tanggal.required' => 'Tanggal akta harus diisi.',
+            'akta_nama_notaris.required' => 'Nama notaris harus diisi.',
+            'akta_nama_notaris.max' => 'Nama notaris tidak boleh lebih dari 255 karakter.',
+            'kotaAkta.required' => 'Kota akta harus diisi.',
+            'akta_jenis.required' => 'Jenis akta harus diisi.',
+            'akta_jenis.in' => 'Jenis akta harus dipilih.',
+            'aktaDokumen.required' => 'Dokumen akta harus diunggah.',
+            'aktaDokumen.mimes' => 'File dokumen akta harus berformat pdf, doc, atau docx.',
+            'aktaDokumen.max' => 'Ukuran file dokumen akta tidak boleh lebih dari 2 MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('badan-penyelenggara.store'),
         ]);
     }
 
@@ -201,7 +262,12 @@ class BadanPenyelenggaraController extends Controller
             'id_user' => Auth::user()->id,
         ]);
 
-        return redirect()->route('badan-penyelenggara.index')->with('success', 'Badan Penyelenggara berhasil ditambahkan.');
+        session()->flash('success', 'Badan Penyelenggara berhasil ditambahkan.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('badan-penyelenggara.store'),
+        ]);
     }
 
     /**
@@ -275,10 +341,15 @@ class BadanPenyelenggaraController extends Controller
         $skbp = Skbp::where('id_organization', $id)
             ->get();
 
+        $perkaras = Perkara::where('id_organization', $id)
+            ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->get();
+
         // return response()->json([
         //     'badanPenyelenggaras' => $badanPenyelenggaras,
         //     'pimpinan' => $pimpinan,
-        //     'akta' => $akta
+        //     'akta' => $akta,
+        //     'perkara' => $perkara,
         // ]);
 
         return view('Organisasi.BadanPenyelenggara.Show', [
@@ -286,6 +357,7 @@ class BadanPenyelenggaraController extends Controller
             'pimpinan' => $pimpinan,
             'akta' => $akta,
             'skbp' => $skbp,
+            'perkaras' => $perkaras,
         ]);
     }
 

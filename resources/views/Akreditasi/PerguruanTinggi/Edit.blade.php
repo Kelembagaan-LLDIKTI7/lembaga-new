@@ -21,12 +21,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('akreditasi-perguruan-tinggi.update', $akreditasi->id) }}" method="POST"
-                    enctype="multipart/form-data">
+                <form id="formAkreditasiPTedit" action="{{ route('akreditasi-perguruan-tinggi.update', $akreditasi->id) }}"
+                    method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT') <!-- Menggunakan metode PUT untuk update -->
-                    <input type="hidden" name="id_organization" value="{{ $akreditasi->id_organization }}" class="form-control"
-                        required>
+                    <input type="hidden" name="id_organization" value="{{ $akreditasi->id_organization }}"
+                        class="form-control" required>
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Form Edit Akreditasi</h5>
@@ -40,6 +40,7 @@
                                         @error('akreditasi_sk')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akreditasi_sk"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -51,6 +52,7 @@
                                         @error('akreditasi_tgl_awal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akreditasi_tgl_awal"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -68,6 +70,7 @@
                                         @error('id_peringkat_akreditasi')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-id_peringkat_akreditasi"></small>
                                     </div>
                                 </div>
 
@@ -89,6 +92,7 @@
                                         @error('akreditasi_status')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akreditasi_status"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -100,6 +104,7 @@
                                         @error('akreditasi_tgl_akhir')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akreditasi_tgl_akhir"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -116,6 +121,7 @@
                                         @error('id_lembaga_akreditasi')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-id_lembaga_akreditasi"></small>
                                     </div>
                                 </div>
 
@@ -128,13 +134,14 @@
                                     @error('sk_dokumen')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
+                                    <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                 </div>
 
                                 <div class="btn-center mt-3">
                                     @can('Detail Perguruan Tinggi')
-                                    <a href="{{ route('perguruan-tinggi.show', ['id' => $akreditasi->id_organization]) }}"
-                                        class="btn btn-primary btn-sm-custom">Keluar</a>
-                                        @endCan
+                                        <a href="{{ route('perguruan-tinggi.show', ['id' => $akreditasi->id_organization]) }}"
+                                            class="btn btn-primary btn-sm-custom">Keluar</a>
+                                    @endCan
                                     <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                 </div>
                             </div>
@@ -147,6 +154,68 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#formAkreditasiPTedit').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('akreditasi-perguruan-tinggi.validationUpdate', ['id' => $akreditasi->id]) }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('akreditasi-perguruan-tinggi.update', ['id' => $akreditasi->id]) }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
     <script>
         function previewFile(event) {
             const file = event.target.files[0];

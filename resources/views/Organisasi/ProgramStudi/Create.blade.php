@@ -4,26 +4,11 @@
 
 @section('css')
     <style>
-        .prodi-kode-input-group {
-            display: flex;
-            gap: 5px;
-        }
-
-        .prodi-kode {
-            width: 40px;
-            height: 40px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            padding: 0;
-        }
-
         input:focus {
             border-color: #66afe9;
             outline: none;
         }
     </style>
-
 @endsection
 
 @section('content')
@@ -179,36 +164,100 @@
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const kodeInputs = document.querySelectorAll('.prodi-kode');
-            const kodeHiddenInput = document.getElementById('prodi_kode');
+            const form = document.querySelector('form');
 
-            kodeInputs.forEach((input, index) => {
-                input.addEventListener('input', function() {
-                    // Move to the next input field if there's input and it's not the last field
-                    if (input.value.length === 1 && index < kodeInputs.length - 1) {
-                        kodeInputs[index + 1].focus();
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+
+                // Clear previous errors
+                document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
+
+                // Validasi Kode Program Studi
+                const prodiKode = document.querySelector('input[name="prodi_kode"]');
+                if (!prodiKode.value) {
+                    setError(prodiKode, 'Kode Program Studi harus diisi.');
+                    isValid = false;
+                } else if (prodiKode.value.length > 7) {
+                    setError(prodiKode, 'Kode Program Studi tidak boleh lebih dari 7 karakter.');
+                    isValid = false;
+                }
+
+                // Validasi Nama Program Studi
+                const prodiNama = document.querySelector('input[name="prodi_nama"]');
+                if (!prodiNama.value) {
+                    setError(prodiNama, 'Nama Program Studi harus diisi.');
+                    isValid = false;
+                }
+
+                // Validasi Jenjang Program Studi
+                const prodiJenjang = document.querySelector('select[name="prodi_jenjang"]');
+                if (!prodiJenjang.value) {
+                    setError(prodiJenjang, 'Jenjang Program Studi harus diisi.');
+                    isValid = false;
+                }
+
+                // Validasi Status Aktif Program Studi
+                const prodiStatus = document.querySelector('select[name="prodi_active_status"]');
+                if (!prodiStatus.value) {
+                    setError(prodiStatus, 'Status Aktif Program Studi harus diisi.');
+                    isValid = false;
+                }
+
+                // Validasi Nomor SK
+                const skNomor = document.querySelector('input[name="sk_nomor"]');
+                if (!skNomor.value) {
+                    setError(skNomor, 'Nomor SK harus diisi.');
+                    isValid = false;
+                }
+
+                // Validasi Tanggal SK
+                const skTanggal = document.querySelector('input[name="sk_tanggal"]');
+                if (!skTanggal.value) {
+                    setError(skTanggal, 'Tanggal SK harus diisi.');
+                    isValid = false;
+                }
+
+                // Validasi Jenis Surat Keputusan
+                const jenisSK = document.querySelector('select[name="id_jenis_surat_keputusan"]');
+                if (!jenisSK.value) {
+                    setError(jenisSK, 'Jenis Surat Keputusan harus diisi.');
+                    isValid = false;
+                }
+
+                // Validasi Dokumen SK (Opsional)
+                const skDokumen = document.querySelector('input[name="sk_dokumen"]');
+                if (skDokumen.files.length > 0) {
+                    const file = skDokumen.files[0];
+                    const validExtensions = ['pdf', 'doc', 'docx'];
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+                    if (!validExtensions.includes(fileExtension)) {
+                        setError(skDokumen, 'Dokumen SK harus berupa PDF, DOC, atau DOCX.');
+                        isValid = false;
                     }
-
-                    // Update the hidden input field
-                    let kodeValue = '';
-                    kodeInputs.forEach(kodeInput => {
-                        kodeValue += kodeInput.value;
-                    });
-                    kodeHiddenInput.value = kodeValue;
-
-                    // Ensure the value is 6 characters
-                    if (kodeValue.length === 6) {
-                        kodeHiddenInput.value = kodeValue;
+                    if (file.size > 2048 * 1024) {
+                        setError(skDokumen, 'Dokumen SK tidak boleh lebih dari 2MB.');
+                        isValid = false;
                     }
-                });
+                }
 
-                input.addEventListener('keydown', function(e) {
-                    // Handle backspace to move focus back to the previous input
-                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
-                        kodeInputs[index - 1].focus();
-                    }
-                });
+                if (!isValid) {
+                    event.preventDefault(); // Stop form submission
+                }
             });
+
+            function setError(element, message) {
+                let parent = element.parentElement;
+                parent.querySelectorAll('.text-danger').forEach(el => el.remove()); // Hapus error lama
+
+                const errorElement = document.createElement('span');
+                errorElement.className = 'text-danger';
+                errorElement.textContent = message;
+                parent.appendChild(errorElement);
+            }
+
+            console.log('Prodi Kode Length:', prodiKode.value.length);
+            console.log('Form Valid:', isValid);
+
         });
     </script>
 @endsection

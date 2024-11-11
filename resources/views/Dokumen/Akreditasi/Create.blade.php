@@ -42,6 +42,7 @@
                     {{ $message }}
                 </div>
             @enderror
+            <small class="text-danger error-message" id="error-akreditasi_sk"></small>
         </div>
         <div class="col-md-6">
             <label for="validationCustom01" class="form-label">Status Akreditasi</label>
@@ -56,6 +57,7 @@
                     {{ $message }}
                 </div>
             @enderror
+            <small class="text-danger error-message" id="error-akreditasi_status"></small>
         </div>
         <div class="col-md-6">
             <label for="validationCustom02" class="form-label">Tanggal Mulai Berlaku</label>
@@ -66,6 +68,7 @@
                     {{ $message }}
                 </div>
             @enderror
+            <small class="text-danger error-message" id="error-akreditasi_tgl_awal"></small>
         </div>
         <div class="col-md-6">
             <label for="validationCustom02" class="form-label">Tanggal Akhir Berlaku</label>
@@ -76,6 +79,7 @@
                     {{ $message }}
                 </div>
             @enderror
+            <small class="text-danger error-message" id="error-akreditasi_tgl_akhir"></small>
         </div>
         <div class="col-md-6">
             <label for="validationCustom03" class="form-label">Lembaga Akreditasi</label>
@@ -90,6 +94,7 @@
                     {{ $message }}
                 </div>
             @enderror
+            <small class="text-danger error-message" id="error-id_lembaga_akreditasi"></small>
         </div>
         <div class="col-md-6">
             <label for="kotaAktaLabel" class="form-label">Peringkat Akreditasi</label>
@@ -104,6 +109,7 @@
                     {{ $message }}
                 </div>
             @enderror
+            <small class="text-danger error-message" id="error-id_peringkat_akreditasi"></small>
         </div>
 
         <div class="col-md-12 mb-4">
@@ -128,6 +134,7 @@
                         {{ $message }}
                     </div>
                 @enderror
+                <small class="text-danger error-message" id="error-akta_dokumen"></small>
             </div>
         </div>
 
@@ -145,6 +152,68 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#formKumham').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('sk-kumham.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('sk-kumham.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
     <script>
         document.getElementById('akreditasiFileInp').addEventListener('change', function(e) {
             var fileName = e.target.files[0].name;

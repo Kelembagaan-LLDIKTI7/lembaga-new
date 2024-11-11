@@ -7,6 +7,7 @@ use App\Models\Akreditasi;
 use App\Models\HistoryProgramStudi;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Organisasi;
+use App\Models\Perkara;
 use App\Models\ProgramStudi;
 use App\Models\SuratKeputusan;
 use Illuminate\Http\Request;
@@ -166,9 +167,14 @@ class ProgramStudiController extends Controller
                 'aktif'
             )->with(['prodi:id,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
 
+        $perkaras = Perkara::where('id_prodi', $id)
+            ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->get();
+
         return view('Organisasi.ProgramStudi.Show', [
             'prodi' => $prodi,
-            'akreditasis' => $akreditasis
+            'akreditasis' => $akreditasis,
+            'perkaras' => $perkaras,
         ]);
         // return response()->json([
         //     'prodi' => $prodi,

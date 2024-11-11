@@ -34,4 +34,9 @@ class ProgramStudi extends Model
     {
         return $this->hasMany(SuratKeputusan::class, 'id_prodi', 'id');
     }
+
+    public function perkaras()
+    {
+        return $this->hasMany(Perkara::class, 'id_organization', 'id');
+    }
 }
