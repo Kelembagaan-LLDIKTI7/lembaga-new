@@ -118,6 +118,7 @@
                                                 <td>{{ $akreditasi->prodi->prodi_kode }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_nama }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
+                                                <td>{{ $akreditasi->akreditasi_sk }}</td>
                                                 <td>
                                                 @if ($akreditasi->peringkat_akreditasi->peringkat_logo)
                                                         <img src="{{ asset('storage/peringkat_akreditasi/' . $akreditasi->peringkat_akreditasi->peringkat_logo) }}"
@@ -126,7 +127,6 @@
                                                         <span>No Logo</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $akreditasi->akreditasi_sk }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
                                                 </td>

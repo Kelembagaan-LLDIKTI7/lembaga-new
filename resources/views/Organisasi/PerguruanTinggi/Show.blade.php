@@ -387,7 +387,7 @@
                                                 <td>{{ $prodi->prodi_jenjang }}</td>
                                                 <td>{{ $prodi->prodi_active_status }}</td>
                                                 @php
-                                                    $akreditasi = $prodi->akreditasis->first();
+                                                    $akreditasi = $prodi->akreditasis->last();
                                                 @endphp
                                                 <td>
                                                 @if ($akreditasi->peringkat_akreditasi->peringkat_logo)
