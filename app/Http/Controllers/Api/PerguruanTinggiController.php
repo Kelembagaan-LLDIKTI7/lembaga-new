@@ -55,6 +55,34 @@ class PerguruanTinggiController extends Controller
 
         $perguruanTinggi = $query->get();
 
+        $prodiQuery = ProgramStudi::query()
+            ->select('id', 'prodi_nama', 'prodi_kode', 'prodi_jenjang', 'id_organization');
+
+        if ($request->has('kode_pt') || $request->has('nama_pt') || $request->has('bentuk_pt') || $request->has('kota') || $request->has('program_studi')) {
+            $prodiQuery->whereHas('perguruanTinggi', function ($q) use ($request) {
+                if ($request->has('kode_pt')) {
+                    $q->where('organisasi_kode', 'LIKE', '%' . $request->input('kode_pt') . '%');
+                }
+                if ($request->has('nama_pt')) {
+                    $q->where('organisasi_nama', 'LIKE', '%' . $request->input('nama_pt') . '%');
+                }
+                if ($request->has('bentuk_pt')) {
+                    $q->whereHas('bentukPT', function ($q2) use ($request) {
+                        $q2->where('bentuk_nama', 'LIKE', '%' . $request->input('bentuk_pt') . '%');
+                    });
+                }
+                if ($request->has('kota')) {
+                    $q->where('organisasi_kota', 'LIKE', '%' . $request->input('kota') . '%');
+                }
+                if ($request->has('program_studi')) {
+                    $q->where('prodi_jenjang', 'LIKE', '%' . $request->input('program_studi') . '%');
+                }
+            });
+        }
+
+        // Dapatkan hasil query untuk prodi
+        $prodis = $prodiQuery->get();
+
         $chartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
             ->select('organisasi_bentuk_pt', DB::raw('count(*) as total'))
@@ -88,7 +116,7 @@ class PerguruanTinggiController extends Controller
         $chartData = $chartQuery->get()
             ->map(function ($item) {
                 return [
-                    'label' => $item->bentukPT->bentuk_nama,
+                    'label' => $item->bentukPT->bentuk_nama ?? 'Unknown',
                     'count' => $item->total,
                 ];
             });
@@ -219,7 +247,6 @@ class PerguruanTinggiController extends Controller
             ->select('organisasi_kota', DB::raw('count(*) as total'))
             ->groupBy('organisasi_kota');
 
-        // Apply filters to the city chart data
         if ($request->has('kode_pt')) {
             $cityChartQueryPersen->where('organisasi_kode', 'LIKE', '%' . $request->input('kode_pt') . '%');
         }
@@ -250,12 +277,13 @@ class PerguruanTinggiController extends Controller
                 return [
                     'label' => $item->organisasi_kota,
                     'count' => $item->total,
-                    'percentage' => round($percentage, 1) // Round to 1 decimal place
+                    'percentage' => round($percentage, 1)
                 ];
             });
 
         return response()->json([
             'perguruanTinggi' => $perguruanTinggi,
+            'prodis' => $prodis,
             'chartData' => $chartData,
             'prodiChart' => $prodiChart,
             'prodiJenjangChart' => $prodiJenjangChart,
@@ -264,7 +292,6 @@ class PerguruanTinggiController extends Controller
         ]);
     }
 
-    // Mendapatkan detail perguruan tinggi tertentu berdasarkan ID
     public function show($id): JsonResponse
     {
         $perguruanTinggi = Organisasi::with('bentukPT:id,bentuk_nama')->find($id);
