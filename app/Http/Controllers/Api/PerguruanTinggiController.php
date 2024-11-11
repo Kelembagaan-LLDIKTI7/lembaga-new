@@ -116,7 +116,7 @@ class PerguruanTinggiController extends Controller
         $chartData = $chartQuery->get()
             ->map(function ($item) {
                 return [
-                    'label' => $item->bentukPT->bentuk_nama,
+                    'label' => $item->bentukPT->bentuk_nama ?? 'Unknown',
                     'count' => $item->total,
                 ];
             });
