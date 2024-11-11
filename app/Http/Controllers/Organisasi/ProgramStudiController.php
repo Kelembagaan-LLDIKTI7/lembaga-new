@@ -172,10 +172,14 @@ class ProgramStudiController extends Controller
             ->select('id', 'title', 'tanggal_kejadian', 'status')
             ->get();
 
+        $sk = SuratKeputusan::where('id_prodi', $id)
+            ->first();
+
         return view('Organisasi.ProgramStudi.Show', [
             'prodi' => $prodi,
             'akreditasis' => $akreditasis,
             'perkaras' => $perkaras,
+            'sk' => $sk,
         ]);
         // return response()->json([
         //     'prodi' => $prodi,
