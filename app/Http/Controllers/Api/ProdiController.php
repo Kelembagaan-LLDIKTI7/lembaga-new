@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\ProgramStudi;
 use App\Models\Organisasi;
+use App\Models\SuratKeputusan;
 
 class ProdiController extends Controller
 {
@@ -78,7 +79,6 @@ class ProdiController extends Controller
         if (!$perguruanTinggi) {
             return response()->json(['message' => 'Prodi tidak ditemukan'], 404);
         }
-
         return response()->json($perguruanTinggi);
     }
 }

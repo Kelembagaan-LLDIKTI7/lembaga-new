@@ -24,6 +24,18 @@
                                     <th>Status</th>
                                     <td>{{ $prodi->prodi_active_status }}</td>
                                 </tr>
+                                <tr>
+                                    <th>Nomor SK Ijin Prodi</th>
+                                    <td>{{ $sk->sk_nomor }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tanggal SK Prodi</th>
+                                    <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Periode Awal Pelaporan Dikti</th>
+                                    <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}</td>
+                                </tr>
                             </table>
                         </div>
                         <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-warning">edit</a>
