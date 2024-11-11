@@ -69,9 +69,18 @@
                                 </div>
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('badan-penyelenggara.show', ['id' => $akta->id_organization]) }}"
-                                        class="btn btn-primary btn-sm-custom">Keluar</a>
-                                    <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                    <div id="buttons">
+                                        <a href="{{ route('badan-penyelenggara.show', ['id' => $akta->id_organization]) }}"
+                                            class="btn btn-primary btn-sm-custom">Keluar</a>
+                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                    </div>
+                                    <div id="loading">
+                                        <div class="d-flex align-items-center">
+                                            <strong>Loading...</strong>
+                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                                        </div>
+                                    </div>
+                                    <div id="error-messages"></div>
                                 </div>
                             </div>
                         </div>

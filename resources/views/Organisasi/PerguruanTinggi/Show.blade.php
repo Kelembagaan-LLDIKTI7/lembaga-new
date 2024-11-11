@@ -554,6 +554,8 @@
                         document.getElementById('pimpinan_nama').textContent = data.pimpinan_nama;
                         document.getElementById('pimpinan_email').textContent = data.pimpinan_email;
                         document.getElementById('pimpinan_tanggal').textContent = data.pimpinan_tanggal;
+                        document.getElementById('pimpinan_tanggal_berakhir').textContent = data
+                            .pimpinan_tanggal_berakhir;
                         document.getElementById('pimpinan_status').textContent = data.pimpinan_status;
                         document.getElementById('pimpinan_sk').textContent = data.pimpinan_sk;
                         document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
@@ -568,9 +570,13 @@
                     .then(data => {
                         document.getElementById('sk_nomor').textContent = data.sk_nomor;
                         document.getElementById('sk_tanggal').textContent = data.sk_tanggal;
-                        document.getElementById('sk_berakhir').textContent = data.sk_berakhir;
                         document.getElementById('jsk_nama').textContent = data.jsk_nama;
-                        document.getElementById('sk_dokumen').value = data.sk_dokumen;
+                        if (data.sk_dokumen) {
+                            document.getElementById('btn_pdf_sk').hidden = false;
+                            document.getElementById('sk_dokumen').value = data.sk_dokumen;
+                        } else {
+                            document.getElementById('btn_pdf_sk').hidden = true;
+                        }
                     })
             }
         });

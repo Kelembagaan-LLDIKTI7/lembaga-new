@@ -21,7 +21,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('pimpinan-badan-penyelenggara.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formPimpinanBP" action="{{ route('pimpinan-badan-penyelenggara.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $bp->id }}" class="form-control" required>
                     <div class="card">
@@ -37,6 +38,7 @@
                                         @error('pimpinan_nama')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_nama"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -47,6 +49,7 @@
                                         @error('pimpinan_email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_email"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -57,6 +60,7 @@
                                         @error('pimpinan_sk')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_sk"></small>
                                     </div>
                                 </div>
 
@@ -69,6 +73,7 @@
                                         @error('pimpinan_tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_tanggal"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -80,6 +85,8 @@
                                         @error('pimpinan_tanggal_berakhir')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message"
+                                            id="error-pimpinan_tanggal_berakhir"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -95,6 +102,7 @@
                                         @error('id_jabatan')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-id_jabatan"></small>
                                     </div>
                                 </div>
 
@@ -107,12 +115,22 @@
                                     @error('pimpinan_sk_dokumen')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
+                                    <small class="text-danger error-message" id="error-pimpinan_sk_dokumen"></small>
                                 </div>
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('badan-penyelenggara.show', ['id' => $bp->id]) }}"
-                                        class="btn btn-primary btn-sm-custom">Keluar</a>
-                                    <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                    <div id="buttons">
+                                        <a href="{{ route('badan-penyelenggara.show', ['id' => $bp->id]) }}"
+                                            class="btn btn-primary btn-sm-custom">Keluar</a>
+                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                    </div>
+                                    <div id="loading">
+                                        <div class="d-flex align-items-center">
+                                            <strong>Loading...</strong>
+                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                                        </div>
+                                    </div>
+                                    <div id="error-messages"></div>
                                 </div>
                             </div>
                         </div>
@@ -124,6 +142,78 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#loading').hide();
+            $('#formPimpinanBP').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
+
+                $('#buttons').hide();
+                $('#loading').show();
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('pimpinan-badan-penyelenggara.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            $('#loading').hide();
+                            $('#buttons').show();
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('pimpinan-badan-penyelenggara.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
     <script>
         function previewFile(event) {
             const file = event.target.files[0];

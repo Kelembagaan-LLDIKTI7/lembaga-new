@@ -111,13 +111,13 @@ class JabatanSeeder extends Seeder
             [
                 'id' => Str::uuid(),
                 'jabatan_nama' => 'Ketua Yayasan',
-                'jabatan_organisasi' => $organisasi_ids[2],
+                'jabatan_organisasi' => $organisasi_ids[1],
                 'created_at' => now(),
             ],
             [
                 'id' => Str::uuid(),
                 'jabatan_nama' => 'Wakil Ketua Yayasan',
-                'jabatan_organisasi' => $organisasi_ids[2],
+                'jabatan_organisasi' => $organisasi_ids[1],
                 'created_at' => now(),
             ],
         ];
