@@ -39,6 +39,14 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                <div class="mb-3">
+                                                    <label for="jabatan_organisasi" class="form-label">Organisasi</label>
+                                                    <select class="form-select" id="jabatan_organisasi" name="jabatan_organisasi" required>
+                                                        @foreach($organisasi_types as $id => $organisasi_nama)
+                                                            <option value="{{ $id }}">{{ $organisasi_nama }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                                 <button type="submit" class="btn btn-primary">Simpan</button>
                                             </form>
                                         </div>
@@ -56,6 +64,7 @@
                                             <th>Nama Jabatan</th>
                                             <th>Organisasi</th>
                                             <th>Bentuk PT</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -63,12 +72,61 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $jabatan->jabatan_nama }}</td>
-                                                <td>{{ $jabatan->jabatan_organisasi }}</td>
+                                                <td>{{ $organisasi_types[$jabatan->jabatan_organisasi] ?? 'Unknown' }}</td>
                                                 <td>{{ $bentuk_pts[$jabatan->bentuk_pt] ?? 'Unknown' }}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editJabatanModal"
+                                                        data-id="{{ $jabatan->id }}"
+                                                        data-nama="{{ $jabatan->jabatan_nama }}"
+                                                        data-bentuk="{{ $jabatan->bentuk_pt }}"
+                                                        data-organisasi="{{ $jabatan->jabatan_organisasi }}">
+                                                        Edit
+                                                    </button>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <!-- Modal untuk Edit Jabatan -->
+                            <div class="modal fade" id="editJabatanModal" tabindex="-1" aria-labelledby="editJabatanModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editJabatanModalLabel">Edit Jabatan</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="editJabatanForm" action="" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" id="edit_jabatan_id" name="id">
+                                                <div class="mb-3">
+                                                    <label for="edit_jabatan_nama" class="form-label">Nama Jabatan</label>
+                                                    <input type="text" class="form-control" id="edit_jabatan_nama" name="jabatan_nama" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit_bentuk_pt" class="form-label">Bentuk PT</label>
+                                                    <select class="form-select" id="edit_bentuk_pt" name="bentuk_pt" required>
+                                                        @foreach($bentuk_pts as $id => $bentuk_nama)
+                                                            <option value="{{ $id }}">{{ $bentuk_nama }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit_jabatan_organisasi" class="form-label">Organisasi</label>
+                                                    <select class="form-select" id="edit_jabatan_organisasi" name="jabatan_organisasi" required>
+                                                        @foreach($organisasi_types as $id => $organisasi_nama)
+                                                            <option value="{{ $id }}">{{ $organisasi_nama }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,4 +150,24 @@
             </div>
         </footer>
     </div>
+
+    <!-- Tambahkan skrip JavaScript di sini -->
+    <script>
+        const editJabatanModal = document.getElementById('editJabatanModal');
+        editJabatanModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Tombol yang memicu modal
+            const jabatanId = button.getAttribute('data-id');
+            const jabatanNama = button.getAttribute('data-nama');
+            const bentukPt = button.getAttribute('data-bentuk');
+            const jabatanOrganisasi = button.getAttribute('data-organisasi'); // Ambil data organisasi
+
+            // Mengisi data ke dalam modal
+            const form = document.getElementById('editJabatanForm');
+            form.action = `/jabatan/${jabatanId}`; // Mengatur action form ke rute update
+            document.getElementById('edit_jabatan_id').value = jabatanId;
+            document.getElementById('edit_jabatan_nama').value = jabatanNama;
+            document.getElementById('edit_bentuk_pt').value = bentukPt;
+            document.getElementById('edit_jabatan_organisasi').value = jabatanOrganisasi; // Mengisi organisasi
+        });
+    </script>
 @endsection
