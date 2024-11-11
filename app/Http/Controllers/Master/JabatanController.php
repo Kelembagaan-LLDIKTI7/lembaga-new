@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use App\Models\Jabatan;
 use App\Models\BentukPt;
+use App\Models\OrganisasiType;
 use Illuminate\Http\Request;
 
 class JabatanController extends Controller
@@ -20,9 +21,10 @@ class JabatanController extends Controller
             ->orderBy('jabatan_nama', 'asc')
             ->get();
 
+        $organisasi_types = OrganisasiType::pluck('organisasi_type_nama', 'id');
         $bentuk_pts = BentukPt::pluck('bentuk_nama', 'id');
 
-        return view('Master.Jabatan.Index', compact('jabatans', 'bentuk_pts'));
+        return view('Master.Jabatan.Index', compact('jabatans', 'organisasi_types', 'bentuk_pts'));
     }
 
     /**
@@ -30,7 +32,9 @@ class JabatanController extends Controller
      */
     public function create()
     {
-        return view('jabatan.create');
+        $organisasi_types = OrganisasiType::pluck('organisasi_type_nama', 'id');
+        $bentuk_pts = BentukPt::pluck('bentuk_nama', 'id');
+        return view('jabatan.create', compact('organisasi_types', 'bentuk_pts'));
     }
 
     /**
@@ -40,6 +44,7 @@ class JabatanController extends Controller
     {
         $request->validate([
             'jabatan_nama' => 'required|string',
+            'jabatan_organisasi' => 'required|exists:organisasi_types,id',
             'bentuk_pt' => 'required|exists:bentuk_pts,id'
         ]);
 
@@ -61,7 +66,10 @@ class JabatanController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $jabatan = Jabatan::findOrFail($id);
+        $organisasi_types = OrganisasiType::pluck('organisasi_type_nama', 'id');
+        $bentuk_pts = BentukPt::pluck('bentuk_nama', 'id');
+        return view('Master.Jabatan.Edit', compact('jabatan', 'organisasi_types', 'bentuk_pts'));
     }
 
     /**
@@ -69,7 +77,15 @@ class JabatanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'jabatan_nama' => 'required|string',
+            'jabatan_organisasi' => 'required|exists:organisasi_types,id',
+            'bentuk_pt' => 'required|exists:bentuk_pts,id'
+        ]);
+
+        $jabatan = Jabatan::findOrFail($id);
+        $jabatan->update($request->all());
+        return redirect()->route('jabatan.index');
     }
 
     /**
