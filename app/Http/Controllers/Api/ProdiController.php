@@ -23,8 +23,20 @@ class ProdiController extends Controller
                 'organisasi_bentuk_pt',
                 'parent_id'
             )
-            ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama', 'prodis' => function($q) {
-                $q->select('id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang');
+            ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama', 'prodis' => function ($q) {
+                $q->select('id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang')
+                  ->with([
+                      'akreditasis' => function ($akreditasiQuery) {
+                          $akreditasiQuery->select(
+                              'id',
+                              'id_prodi',
+                              'akreditasi_sk',
+                              'akreditasi_tgl_akhir',
+                              'id_peringkat_akreditasi'
+                          )
+                          ->with('peringkat_akreditasi:id,peringkat_logo');
+                      }
+                  ]);
             }])
             ->orderBy('nama_pt', 'asc');
 
@@ -52,7 +64,7 @@ class ProdiController extends Controller
     // Mendapatkan detail prodi tertentu berdasarkan ID
     public function show($id): JsonResponse
     {
-        $perguruanTinggi = Organisasi::with(['bentukPT:id,bentuk_nama', 'prodis' => function($q) {
+        $perguruanTinggi = Organisasi::with(['bentukPT:id,bentuk_nama', 'prodis' => function ($q) {
             $q->select('kode_prodi', 'program_jenjang', 'kota', 'id_organization'); // Pastikan 'id_organization' ada di tabel program_studis
         }])->find($id);
 
