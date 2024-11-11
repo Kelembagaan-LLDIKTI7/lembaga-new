@@ -14,7 +14,7 @@ class ProdiController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = Organisasi::query()
-            ->where('organisasi_type_id', 3) // Menambahkan filter untuk jenis organisasi
+            ->where('organisasi_type_id', 3)
             ->select(
                 'id',
                 'organisasi_kode as kode_pt',
@@ -23,43 +23,50 @@ class ProdiController extends Controller
                 'organisasi_bentuk_pt',
                 'parent_id'
             )
-            ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama', 'prodis' => function ($q) {
+            ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama'])
+            ->with(['prodis' => function ($q) {
                 $q->select('id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang')
-                  ->with([
-                      'akreditasis' => function ($akreditasiQuery) {
-                          $akreditasiQuery->select(
-                              'id',
-                              'id_prodi',
-                              'akreditasi_sk',
-                              'akreditasi_tgl_akhir',
-                              'id_peringkat_akreditasi'
-                          )
-                          ->with('peringkat_akreditasi:id,peringkat_logo');
-                      }
-                  ]);
+                    ->whereHas('akreditasis', function ($akreditasiQuery) {
+                        $akreditasiQuery->where('aktif', 'Ya');
+                    })
+                    ->with([
+                        'akreditasis' => function ($akreditasiQuery) {
+                            $akreditasiQuery->select(
+                                'id',
+                                'id_prodi',
+                                'akreditasi_sk',
+                                'akreditasi_tgl_akhir',
+                                'id_peringkat_akreditasi'
+                            )
+                                ->where('aktif', 'Ya')
+                                ->with('peringkat_akreditasi:id,peringkat_logo')
+                                ->limit(1);
+                        }
+                    ]);
             }])
             ->orderBy('nama_pt', 'asc');
 
-        // Filter berdasarkan nama prodi
+        // Apply filters for prodi name, jenjang, and region
         if ($request->has('name')) {
-            $query->where('name', 'LIKE', '%' . $request->input('name') . '%');
+            $query->where('organisasi_nama', 'LIKE', '%' . $request->input('name') . '%');
         }
 
-        // Filter berdasarkan jenjang
         if ($request->has('jenjang')) {
-            $query->where('jenjang', $request->input('jenjang'));
+            $query->whereHas('prodis', function ($prodiQuery) use ($request) {
+                $prodiQuery->where('prodi_jenjang', $request->input('jenjang'));
+            });
         }
 
-        // Filter berdasarkan wilayah (asumsikan 'region' adalah kolom terkait wilayah)
         if ($request->has('region')) {
-            $query->where('region', $request->input('region'));
+            $query->where('organisasi_kota', $request->input('region'));
         }
 
-        // Pagination dengan 10 data per halaman
+        // Paginate the result
         $perguruanTinggi = $query->paginate(10);
 
         return response()->json($perguruanTinggi);
     }
+
 
     // Mendapatkan detail prodi tertentu berdasarkan ID
     public function show($id): JsonResponse
