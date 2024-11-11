@@ -92,15 +92,16 @@
                                     <thead>
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>
-                                            <th colspan="2" class="text-center align-middle">Program Studi</th>
-                                            <th colspan="4" class="text-center align-middle">SK Pimpinan</th>
+                                            <th colspan="3" class="text-center align-middle">Program Studi</th>
+                                            <th colspan="4" class="text-center align-middle">Akreditasi Program Studi</th>
                                             <th rowspan="2" class="text-center align-middle">Status</th>
                                         </tr>
                                         <tr>
+                                            <th>Kode</th>
                                             <th>Nama Prodi</th>
                                             <th>Program</th>
                                             <th>No SK</th>
-                                            <th>Akreditasi Tanggal</th>
+                                            <th>Peringkat Akreditasi</th>
                                             <th>Akreditasi Kadaluarsa</th>
                                             <th>Status Akreditasi</th>
                                         </tr>
@@ -114,12 +115,18 @@
                                             @endphp
                                             <tr class="{{ $isExpired ? 'table-danger' : '' }}">
                                                 <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $akreditasi->prodi->prodi_kode }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_nama }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
-                                                <td>{{ $akreditasi->akreditasi_sk }}</td>
                                                 <td>
-                                                    {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_awal)->translatedFormat('d F Y') }}
+                                                @if ($akreditasi->peringkat_akreditasi->peringkat_logo)
+                                                        <img src="{{ asset('storage/peringkat_akreditasi/' . $akreditasi->peringkat_akreditasi->peringkat_logo) }}"
+                                                            alt="Logo" width="50" height="50">
+                                                    @else
+                                                        <span>No Logo</span>
+                                                    @endif
                                                 </td>
+                                                <td>{{ $akreditasi->akreditasi_sk }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
                                                 </td>
