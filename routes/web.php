@@ -70,7 +70,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/user/update-password', [UserController::class, 'updatePassword'])->middleware('auth')->name('user.updatePassword');
     });
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('index');
+        Route::get('/{id}', [DashboardController::class, 'show'])->name('show');
+    });
 
     Route::prefix('peringkat-akademik')->name('peringkat-akademik.')->group(function () {
         Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index')->middleware('role.access:View Peringkat Akreditasi');

@@ -66,7 +66,16 @@ class PerkaraProdiController extends Controller
     {
         $perkaras = Perkara::where('id', $id)
             ->select('id', 'title', 'tanggal_kejadian', 'status', 'deskripsi_kejadian', 'bukti_foto', 'id_prodi')
-            ->first();
+            ->with([
+                'prodi' => function ($query) {
+                    $query->select(
+                        'id',
+                        'prodi_nama',
+                        'prodi_jenjang',
+                        'prodi_active_status',
+                    );
+                }
+            ])->first();
         return view('Perkara.Prodi.Show', ['perkaras' => $perkaras]);
         // return response()->json(['perkaras' => $perkaras]);
     }

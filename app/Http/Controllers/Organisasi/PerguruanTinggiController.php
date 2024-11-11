@@ -333,6 +333,7 @@ class PerguruanTinggiController extends Controller
 
         $perkaras = Perkara::where('id_organization', $id)
             ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('Organisasi.PerguruanTinggi.Show', [

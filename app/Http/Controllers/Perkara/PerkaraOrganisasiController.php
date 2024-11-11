@@ -66,7 +66,16 @@ class PerkaraOrganisasiController extends Controller
     {
         $perkaras = Perkara::where('id', $id)
             ->select('id', 'title', 'tanggal_kejadian', 'status', 'deskripsi_kejadian', 'bukti_foto', 'id_organization')
-            ->first();
+            ->with([
+                'organisasi' => function ($query) {
+                    $query->select(
+                        'id',
+                        'organisasi_nama',
+                        'organisasi_status',
+                        'organisasi_type_id',
+                    );
+                }
+            ])->first();
         return view('Perkara.Organisasi.Show', ['perkaras' => $perkaras]);
         // return response()->json(['perkaras' => $perkaras]);
     }
