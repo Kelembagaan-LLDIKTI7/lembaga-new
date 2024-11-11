@@ -372,6 +372,9 @@
                                             <th>Nama Prodi</th>
                                             <th>Program</th>
                                             <th>Status</th>
+                                            <th>Peringkat Akreditasi</th>
+                                            <th>SK Akreditasi</th>
+                                            <th>Tanggal Kadaluarsa</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -383,6 +386,19 @@
                                                 <td>{{ $prodi->prodi_nama }}</td>
                                                 <td>{{ $prodi->prodi_jenjang }}</td>
                                                 <td>{{ $prodi->prodi_active_status }}</td>
+                                                @php
+                                                    $akreditasi = $prodi->akreditasis->first();
+                                                @endphp
+                                                <td>
+                                                @if ($akreditasi->peringkat_akreditasi->peringkat_logo)
+                                                        <img src="{{ asset('storage/peringkat_akreditasi/' . $akreditasi->peringkat_akreditasi->peringkat_logo) }}"
+                                                            alt="Logo" width="50" height="50">
+                                                    @else
+                                                        <span>No Logo</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $akreditasi->akreditasi_sk ?? 'Tidak Tersedia' }}</td>
+                                                <td>{{ $akreditasi->akreditasi_tgl_akhir ?? 'Tidak Tersedia' }}</td>
                                                 <td>
                                                     @can('Detail Program Studi')
                                                         <a href="{{ route('program-studi.show', $prodi->id) }}"
@@ -392,73 +408,6 @@
                                                     @endCan
                                                 </td>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            @endCan
-
-            @can('View Akreditasi Program Studi')
-                <section class="datatables">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="mb-2">
-                                <h5 class="mb-0">Akreditasi Program Studi</h5>
-                            </div>
-                            <div class="table-responsive">
-                                <table id="akreditasi_program_studi"
-                                    class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
-                                    <thead>
-                                        <tr>
-                                            <th rowspan="2" class="text-center align-middle">No</th>
-                                            <th colspan="2" class="text-center align-middle">Program Studi</th>
-                                            <th colspan="4" class="text-center align-middle">SK Pimpinan</th>
-                                            <th rowspan="2" class="text-center align-middle">Status</th>
-                                            <th rowspan="2" class="text-center align-middle">Aksi</th>
-                                        </tr>
-                                        <tr>
-                                            <th>Nama Prodi</th>
-                                            <th>Program</th>
-                                            <th>No SK</th>
-                                            <th>Akreditasi Tanggal</th>
-                                            <th>Akreditasi Kadaluarsa</th>
-                                            <th>Status Akreditasi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($akreditasisProdi as $akreditasi)
-                                            @php
-                                                $isExpired = \Carbon\Carbon::parse(
-                                                    $akreditasi->akreditasi_tgl_akhir,
-                                                )->isBefore(\Carbon\Carbon::today());
-                                            @endphp
-                                            @if ($akreditasi->prodi)
-                                                <tr class="{{ $isExpired ? 'table-danger' : '' }}">
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $akreditasi->prodi->prodi_nama }}</td>
-                                                    <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
-                                                    <td>{{ $akreditasi->akreditasi_sk }}</td>
-                                                    <td>
-                                                        {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_awal)->translatedFormat('d F Y') }}
-                                                    </td>
-                                                    <td>
-                                                        {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
-                                                    </td>
-                                                    <td>{{ $akreditasi->akreditasi_status }}</td>
-                                                    <td>{{ $akreditasi->aktif }}</td>
-                                                    <td>
-                                                        @can('Detail Program Studi')
-                                                            <a href="{{ route('program-studi.show', $akreditasi->prodi->id) }}"
-                                                                class="btn btn-sm btn-primary me-2">
-                                                                <i class="ti ti-info-circle"></i>
-                                                            </a>
-                                                        @endCan
-                                                    </td>
-                                                </tr>
-                                            @endif
                                         @endforeach
                                     </tbody>
                                 </table>
