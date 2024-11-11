@@ -8,9 +8,23 @@
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Detail Perkara</h5>
+                        <h5 class="mb-0">Detail Perkara
+                            {{ $perkaras->organisasi->organisasi_type_id == 2 ? 'Badan Penyelenggara' : 'Perguruan Tinggi' }}
+                        </h5>
                     </div>
                     <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6><strong>Nama Perguruan Tinggi:</strong></h6>
+                                <p>{{ $perkaras->organisasi->organisasi_nama }}</p>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6><strong>Status Perguruan Tinggi</strong></h6>
+                                <p>{{ $perkaras->organisasi->organisasi_status }}</p>
+                            </div>
+                        </div>
+
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h6><strong>Judul Perkara:</strong></h6>
@@ -24,7 +38,7 @@
 
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <h6><strong>Status:</strong></h6>
+                                <h6><strong>Status Perkara:</strong></h6>
                                 <p>{{ $perkaras->status }}</p>
                             </div>
                             <div class="col-md-6">

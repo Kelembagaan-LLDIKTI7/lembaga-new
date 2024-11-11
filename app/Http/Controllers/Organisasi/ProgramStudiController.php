@@ -170,6 +170,7 @@ class ProgramStudiController extends Controller
 
         $perkaras = Perkara::where('id_prodi', $id)
             ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $sk = SuratKeputusan::where('id_prodi', $id)

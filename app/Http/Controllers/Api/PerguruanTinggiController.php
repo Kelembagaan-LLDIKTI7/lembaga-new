@@ -80,7 +80,6 @@ class PerguruanTinggiController extends Controller
             });
         }
 
-        // Dapatkan hasil query untuk prodi
         $prodis = $prodiQuery->get();
 
         $chartQuery = Organisasi::query()

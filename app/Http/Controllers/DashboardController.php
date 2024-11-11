@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Perkara;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -11,7 +12,11 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('Dashboard.Index');
+        $perkaras = Perkara::where('status', 'Berjalan')
+            ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('Dashboard.Index', ['perkaras' => $perkaras]);
     }
 
     /**
@@ -35,7 +40,28 @@ class DashboardController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $perkaras = Perkara::where('id', $id)
+            ->select('id', 'title', 'tanggal_kejadian', 'status', 'deskripsi_kejadian', 'bukti_foto', 'id_organization', 'id_prodi')
+            ->with([
+                'organisasi' => function ($query) {
+                    $query->select('id', 'organisasi_nama', 'organisasi_status', 'organisasi_type_id');
+                },
+                'prodi' => function ($query) {
+                    $query->select('id', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status');
+                }
+            ])->first();
+
+        if ($perkaras && $perkaras->id_organization) {
+            return $perkaras->organisasi && $perkaras->organisasi->organisasi_type_id == 2
+                ? redirect()->route('perkara-organisasi.show', $perkaras->id)
+                : redirect()->route('perkara-organisasipt.show', $perkaras->id);
+        }
+
+        if ($perkaras && $perkaras->id_prodi) {
+            return redirect()->route('perkara-prodi.show', $perkaras->id);
+        }
+
+        abort(404);
     }
 
     /**

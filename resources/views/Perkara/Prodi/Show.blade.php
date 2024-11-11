@@ -8,14 +8,26 @@
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Detail Perkara</h5>
+                        <h5 class="mb-0">Detail Perkara Program Studi</h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <h6><strong>Judul Perkara:</strong></h6>
-                                <p>{{ $perkaras->title }}</p>
+                                <h6><strong>Nama Program Studi:</strong></h6>
+                                <p>{{ $perkaras->prodi->prodi_nama }}</p>
                             </div>
+                            <div class="col-md-6">
+                                <h6><strong>Program:</strong></h6>
+                                <p>{{ $perkaras->prodi->prodi_jenjang }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6><strong>Status Program Studi:</strong></h6>
+                                <p>{{ $perkaras->prodi->prodi_active_status }}</p>
+                            </div>
+                            
                             <div class="col-md-6">
                                 <h6><strong>Tanggal Kejadian:</strong></h6>
                                 <p>{{ \Carbon\Carbon::parse($perkaras->tanggal_kejadian)->translatedFormat('d F Y') }}</p>
@@ -24,8 +36,8 @@
 
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <h6><strong>Status:</strong></h6>
-                                <p>{{ $perkaras->status }}</p>
+                                <h6><strong>Judul Perkara:</strong></h6>
+                                <p>{{ $perkaras->title }}</p>
                             </div>
                             <div class="col-md-6">
                                 <h6><strong>Deskripsi Kejadian:</strong></h6>
@@ -34,6 +46,10 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-md-6">
+                                <h6><strong>Status Perkara:</strong></h6>
+                                <p>{{ $perkaras->status }}</p>
+                            </div>
                             <div class="col-12 mb-3">
                                 <h6><strong>Bukti Foto:</strong></h6>
                                 <div class="d-flex flex-wrap">
