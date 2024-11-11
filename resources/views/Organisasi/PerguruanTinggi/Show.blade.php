@@ -605,6 +605,8 @@
                         document.getElementById('pimpinan_nama').textContent = data.pimpinan_nama;
                         document.getElementById('pimpinan_email').textContent = data.pimpinan_email;
                         document.getElementById('pimpinan_tanggal').textContent = data.pimpinan_tanggal;
+                        document.getElementById('pimpinan_tanggal_berakhir').textContent = data
+                            .pimpinan_tanggal_berakhir;
                         document.getElementById('pimpinan_status').textContent = data.pimpinan_status;
                         document.getElementById('pimpinan_sk').textContent = data.pimpinan_sk;
                         document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;

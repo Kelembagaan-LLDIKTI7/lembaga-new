@@ -171,10 +171,12 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role.access:Create Pimpinan Perguruan Tinggi')->group(function () {
             Route::get('/{id}/create', [PimpinanPerguruanTinggiController::class, 'create'])->name('create');
             Route::post('/', [PimpinanPerguruanTinggiController::class, 'store'])->name('store');
+            Route::post('/validation-store', [PimpinanPerguruanTinggiController::class, 'validationStore'])->name('validationStore');
         });
         Route::middleware('role.access:Edit Pimpinan Perguruan Tinggi')->group(function () {
             Route::get('/{id}/edit', [PimpinanPerguruanTinggiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [PimpinanPerguruanTinggiController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-update', [PimpinanPerguruanTinggiController::class, 'validationUpdate'])->name('validationUpdate');
         });
         Route::get('/{id}', [PimpinanPerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail Pimpinan Perguruan Tinggi');
         Route::post('/view-pdf', [PimpinanPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Pimpinan Perguruan Tinggi');
@@ -199,11 +201,12 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role.access:Create Pimpinan Badan Penyelenggara')->group(function () {
             Route::get('/{id}/create', [PimpinanBadanPenyelenggaraController::class, 'create'])->name('create');
             Route::post('/', [PimpinanBadanPenyelenggaraController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [PimpinanBadanPenyelenggaraController::class, 'edit'])->name('edit');
+            Route::post('/validation-store', [PimpinanBadanPenyelenggaraController::class, 'validationStore'])->name('validationStore');
         });
         Route::middleware('role.access:Edit Pimpinan Badan Penyelenggara')->group(function () {
             Route::get('/{id}/edit', [PimpinanBadanPenyelenggaraController::class, 'edit'])->name('edit');
             Route::put('/{id}', [PimpinanBadanPenyelenggaraController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-update', [PimpinanBadanPenyelenggaraController::class, 'validationUpdate'])->name('validationUpdate');
         });
         Route::get('/{id}', [PimpinanBadanPenyelenggaraController::class, 'show'])->name('show')->middleware('role.access:Detail Pimpinan Badan Penyelenggara');;
         Route::post('/view-pdf', [PimpinanBadanPenyelenggaraController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Pimpinan Badan Penyelenggara');;
@@ -263,7 +266,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', [PerkaraOrganisasiController::class, 'show'])->name('show');
         Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update');
     });
-    
+
     Route::prefix('perkara-organisasipt')->name('perkara-organisasipt.')->group(function () {
         Route::get('/{id}/create', [PerkaraOrganisasiPTController::class, 'create'])->name('create');
         Route::post('/', [PerkaraOrganisasiPTController::class, 'store'])->name('store');

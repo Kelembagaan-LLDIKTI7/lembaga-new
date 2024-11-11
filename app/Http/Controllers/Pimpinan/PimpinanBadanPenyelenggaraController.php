@@ -37,6 +37,48 @@ class PimpinanBadanPenyelenggaraController extends Controller
         ]);
     }
 
+    public function validationStore(Request $request)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'pimpinan_nama' => 'required|string|max:255',
+            'pimpinan_email' => 'required|email|max:255',
+            'pimpinan_sk' => 'required|string|max:255',
+            'pimpinan_tanggal' => 'required|date',
+            'pimpinan_tanggal_berakhir' => 'required|date',
+            'id_jabatan' => 'required|exists:jabatans,id',
+            'pimpinan_sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'pimpinan_nama.required' => 'Nama Pimpinan wajib diisi',
+            'pimpinan_nama.max' => 'Nama Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_email.required' => 'Email Pimpinan wajib diisi',
+            'pimpinan_email.email' => 'Email Pimpinan harus valid',
+            'pimpinan_email.max' => 'Email Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_sk.required' => 'SK Pimpinan wajib diisi',
+            'pimpinan_sk.max' => 'SK Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_tanggal.required' => 'Tanggal SK Pimpinan wajib diisi',
+            'pimpinan_tanggal.date' => 'Tanggal SK Pimpinan harus berupa tanggal',
+            'pimpinan_tanggal_berakhir.required' => 'Tanggal Berakhir SK Pimpinan wajib diisi',
+            'pimpinan_tanggal_berakhir.date' => 'Tanggal Berakhir SK Pimpinan harus berupa tanggal',
+            'id_jabatan.required' => 'Jabatan Pimpinan wajib diisi',
+            'id_jabatan.exists' => 'Jabatan Pimpinan tidak ditemukan',
+            'pimpinan_sk_dokumen.required' => 'Dokumen SK Pimpinan wajib diisi',
+            'pimpinan_sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX',
+            'pimpinan_sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2 MB',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -50,6 +92,23 @@ class PimpinanBadanPenyelenggaraController extends Controller
             'pimpinan_tanggal_berakhir' => 'required|date',
             'id_jabatan' => 'required|exists:jabatans,id',
             'pimpinan_sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'pimpinan_nama.required' => 'Nama Pimpinan wajib diisi',
+            'pimpinan_nama.max' => 'Nama Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_email.required' => 'Email Pimpinan wajib diisi',
+            'pimpinan_email.email' => 'Email Pimpinan harus valid',
+            'pimpinan_email.max' => 'Email Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_sk.required' => 'SK Pimpinan wajib diisi',
+            'pimpinan_sk.max' => 'SK Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_tanggal.required' => 'Tanggal SK Pimpinan wajib diisi',
+            'pimpinan_tanggal.date' => 'Tanggal SK Pimpinan harus berupa tanggal',
+            'pimpinan_tanggal_berakhir.required' => 'Tanggal Berakhir SK Pimpinan wajib diisi',
+            'pimpinan_tanggal_berakhir.date' => 'Tanggal Berakhir SK Pimpinan harus berupa tanggal',
+            'id_jabatan.required' => 'Jabatan Pimpinan wajib diisi',
+            'id_jabatan.exists' => 'Jabatan Pimpinan tidak ditemukan',
+            'pimpinan_sk_dokumen.required' => 'Dokumen SK Pimpinan wajib diisi',
+            'pimpinan_sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX',
+            'pimpinan_sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2 MB',
         ]);
 
         $filePath = null;
@@ -69,7 +128,12 @@ class PimpinanBadanPenyelenggaraController extends Controller
             'pimpinan_status' => 'Berlaku',
         ]);
 
-        return redirect()->route('badan-penyelenggara.show', ['id' => $request->id_organization])->with('success', 'Data pimpinan berhasil ditambahkan.');
+        session()->flash('success', 'Data pimpinan berhasil ditambahkan.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('badan-penyelenggara.show', ['id' => $request->id_organization]),
+        ]);
     }
 
     /**
@@ -103,6 +167,48 @@ class PimpinanBadanPenyelenggaraController extends Controller
         ]);
     }
 
+    public function validationUpdate(Request $request, string $id)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'pimpinan_nama' => 'required|string|max:255',
+            'pimpinan_email' => 'required|email|max:255',
+            'pimpinan_sk' => 'required|string|max:255',
+            'pimpinan_tanggal' => 'required|date',
+            'pimpinan_tanggal_berakhir' => 'required|date',
+            'pimpinan_status' => 'required|string|max:255',
+            'id_jabatan' => 'required|exists:jabatans,id',
+            'pimpinan_sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'pimpinan_nama.required' => 'Nama Pimpinan wajib diisi',
+            'pimpinan_nama.max' => 'Nama Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_email.required' => 'Email Pimpinan wajib diisi',
+            'pimpinan_email.email' => 'Email Pimpinan harus valid',
+            'pimpinan_email.max' => 'Email Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_sk.required' => 'SK Pimpinan wajib diisi',
+            'pimpinan_sk.max' => 'SK Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_tanggal.required' => 'Tanggal SK Pimpinan wajib diisi',
+            'pimpinan_tanggal.date' => 'Tanggal SK Pimpinan harus berupa tanggal',
+            'pimpinan_tanggal_berakhir.required' => 'Tanggal Berakhir SK Pimpinan wajib diisi',
+            'pimpinan_tanggal_berakhir.date' => 'Tanggal Berakhir SK Pimpinan harus berupa tanggal',
+            'id_jabatan.required' => 'Jabatan Pimpinan wajib diisi',
+            'id_jabatan.exists' => 'Jabatan Pimpinan tidak ditemukan',
+            'pimpinan_sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX',
+            'pimpinan_sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2 MB',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -118,6 +224,22 @@ class PimpinanBadanPenyelenggaraController extends Controller
             'pimpinan_status' => 'required|string|max:255',
             'id_jabatan' => 'required|exists:jabatans,id',
             'pimpinan_sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'pimpinan_nama.required' => 'Nama Pimpinan wajib diisi',
+            'pimpinan_nama.max' => 'Nama Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_email.required' => 'Email Pimpinan wajib diisi',
+            'pimpinan_email.email' => 'Email Pimpinan harus valid',
+            'pimpinan_email.max' => 'Email Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_sk.required' => 'SK Pimpinan wajib diisi',
+            'pimpinan_sk.max' => 'SK Pimpinan tidak boleh lebih dari 255 karakter',
+            'pimpinan_tanggal.required' => 'Tanggal SK Pimpinan wajib diisi',
+            'pimpinan_tanggal.date' => 'Tanggal SK Pimpinan harus berupa tanggal',
+            'pimpinan_tanggal_berakhir.required' => 'Tanggal Berakhir SK Pimpinan wajib diisi',
+            'pimpinan_tanggal_berakhir.date' => 'Tanggal Berakhir SK Pimpinan harus berupa tanggal',
+            'id_jabatan.required' => 'Jabatan Pimpinan wajib diisi',
+            'id_jabatan.exists' => 'Jabatan Pimpinan tidak ditemukan',
+            'pimpinan_sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX',
+            'pimpinan_sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2 MB',
         ]);
 
         $filePath = null;
@@ -148,7 +270,12 @@ class PimpinanBadanPenyelenggaraController extends Controller
             ]);
         }
 
-        return redirect()->route('badan-penyelenggara.show', ['id' => $request->id_organization])->with('success', 'Data pimpinan berhasil ditambahkan.');
+        session()->flash('success', 'Data pimpinan berhasil diubah.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('badan-penyelenggara.show', ['id' => $request->id_organization]),
+        ]);
     }
 
     /**
