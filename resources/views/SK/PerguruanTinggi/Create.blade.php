@@ -21,7 +21,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('sk-perguruan-tinggi.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formSkPT" action="{{ route('sk-perguruan-tinggi.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $id_organization }}" class="form-control" required>
                     <div class="card">
@@ -37,6 +38,7 @@
                                         @error('sk_nomor')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-sk_nomor"></small>
                                     </div>
                                 </div>
 
@@ -49,6 +51,7 @@
                                         @error('sk_tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-sk_tanggal"></small>
                                     </div>
                                 </div>
 
@@ -66,12 +69,14 @@
                                         @error('id_jenis_surat_keputusan')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message"
+                                            id="error-id_jenis_surat_keputusan"></small>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="sk_dokumen" class="required-label">Dokumen SK</label>
+                                        <label for="sk_dokumen">Dokumen SK</label>
                                         <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx" onchange="previewFile(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
@@ -79,14 +84,24 @@
                                         @error('sk_dokumen')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                     </div>
                                 </div>
                                 <div id="file-preview" class="mt-3"></div>
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('perguruan-tinggi.show', ['id' => $id_organization]) }}"
-                                        class="btn btn-primary btn-sm-custom">Keluar</a>
-                                    <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                    <div id="buttons">
+                                        <a href="{{ route('perguruan-tinggi.show', ['id' => $id_organization]) }}"
+                                            class="btn btn-primary btn-sm-custom">Keluar</a>
+                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                    </div>
+                                    <div id="loading">
+                                        <div class="d-flex align-items-center">
+                                            <strong>Loading...</strong>
+                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                                        </div>
+                                    </div>
+                                    <div id="error-messages"></div>
                                 </div>
                             </div>
                         </div>
@@ -98,6 +113,78 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#loading').hide(); // Sembunyikan loading
+            $('#formSkPT').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
+
+                $('#buttons').hide(); // Sembunyikan tombol
+                $('#loading').show(); // Tampilkan loading
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('sk-perguruan-tinggi.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            $('#loading').hide(); // Sembunyikan loading
+                            $('#buttons').show(); // Tampilkan tombol
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide(); // Sembunyikan loading
+                        $('#buttons').show(); // Tampilkan tombol
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('sk-perguruan-tinggi.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide(); // Sembunyikan loading
+                        $('#buttons').show(); // Tampilkan tombol
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
     <script>
         function previewFile(event) {
             const file = event.target.files[0];

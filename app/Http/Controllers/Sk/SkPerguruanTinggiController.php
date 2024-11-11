@@ -31,6 +31,36 @@ class SkPerguruanTinggiController extends Controller
         ]);
     }
 
+    public function validationStore(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'sk_nomor' => 'required|string|max:255',
+            'sk_tanggal' => 'required|date',
+            'id_jenis_surat_keputusan' => 'required|exists:jenis_surat_keputusans,id',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Maksimal 2MB
+        ], [
+            'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
+            'sk_nomor.max' => 'Nomor Surat Keputusan maksimal 255 karakter.',
+            'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
+            'sk_tanggal.date' => 'Format tanggal tidak valid.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus dipilih.',
+            'id_jenis_surat_keputusan.exists' => 'Jenis Surat Keputusan tidak ditemukan.',
+            'sk_dokumen.mimes' => 'File Surat Keputusan harus berformat PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Ukuran File Surat Keputusan maksimal 2MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -42,22 +72,42 @@ class SkPerguruanTinggiController extends Controller
             'sk_tanggal' => 'required|date',
             'id_jenis_surat_keputusan' => 'required|exists:jenis_surat_keputusans,id',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Maksimal 2MB
+        ], [
+            'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
+            'sk_nomor.max' => 'Nomor Surat Keputusan maksimal 255 karakter.',
+            'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
+            'sk_tanggal.date' => 'Format tanggal tidak valid.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus dipilih.',
+            'id_jenis_surat_keputusan.exists' => 'Jenis Surat Keputusan tidak ditemukan.',
+            'sk_dokumen.mimes' => 'File Surat Keputusan harus berformat PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Ukuran File Surat Keputusan maksimal 2MB.',
         ]);
 
         // Menyimpan dokumen SK
         if ($request->hasFile('sk_dokumen')) {
             $filePath = $request->file('sk_dokumen')->store('surat_keputusan', 'public');
+            SuratKeputusan::create([
+                'sk_nomor' => $request->sk_nomor,
+                'sk_tanggal' => $request->sk_tanggal,
+                'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
+                'sk_dokumen' => $filePath,
+                'id_organization' => $request->id_organization,
+            ]);
+        } else {
+            SuratKeputusan::create([
+                'sk_nomor' => $request->sk_nomor,
+                'sk_tanggal' => $request->sk_tanggal,
+                'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
+                'id_organization' => $request->id_organization,
+            ]);
         }
 
-        SuratKeputusan::create([
-            'sk_nomor' => $request->sk_nomor,
-            'sk_tanggal' => $request->sk_tanggal,
-            'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
-            'sk_dokumen' => $filePath,
-            'id_organization' => $request->id_organization,
-        ]);
+        session()->flash('success', 'Pimpinan Perguruan Tinggi berhasil ditambahkan.');
 
-        return redirect()->route('perguruan-tinggi.show', ['id' => $request->id_organization])->with('success', 'Pimpinan Perguruan Tinggi berhasil ditambahkan.');
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('perguruan-tinggi.show', ['id' => $request->id_organization])
+        ]);
     }
 
     /**
@@ -92,6 +142,36 @@ class SkPerguruanTinggiController extends Controller
         ]);
     }
 
+    public function validationUpdate(Request $request, string $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'sk_nomor' => 'required|string|max:255',
+            'sk_tanggal' => 'required|date',
+            'id_jenis_surat_keputusan' => 'required|exists:jenis_surat_keputusans,id',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Maksimal 2MB
+        ], [
+            'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
+            'sk_nomor.max' => 'Nomor Surat Keputusan maksimal 255 karakter.',
+            'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
+            'sk_tanggal.date' => 'Format tanggal tidak valid.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus dipilih.',
+            'id_jenis_surat_keputusan.exists' => 'Jenis Surat Keputusan tidak ditemukan.',
+            'sk_dokumen.mimes' => 'File Surat Keputusan harus berformat PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Ukuran File Surat Keputusan maksimal 2MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -104,6 +184,15 @@ class SkPerguruanTinggiController extends Controller
             'sk_tanggal' => 'required|date',
             'id_jenis_surat_keputusan' => 'required|exists:jenis_surat_keputusans,id',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Maksimal 2MB
+        ], [
+            'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
+            'sk_nomor.max' => 'Nomor Surat Keputusan maksimal 255 karakter.',
+            'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
+            'sk_tanggal.date' => 'Format tanggal tidak valid.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus dipilih.',
+            'id_jenis_surat_keputusan.exists' => 'Jenis Surat Keputusan tidak ditemukan.',
+            'sk_dokumen.mimes' => 'File Surat Keputusan harus berformat PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Ukuran File Surat Keputusan maksimal 2MB.',
         ]);
 
         // Menyimpan dokumen SK
@@ -125,7 +214,12 @@ class SkPerguruanTinggiController extends Controller
             ]);
         }
 
-        return redirect()->route('perguruan-tinggi.show', ['id' => $sk->id_organization])->with('success', 'SK Perguruan Tinggi berhasil diupdate.');
+        session()->flash('success', 'SK Perguruan Tinggi berhasil diupdate.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('perguruan-tinggi.show', ['id' => $request->id_organization])
+        ]);
     }
 
     /**

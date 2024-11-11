@@ -13,17 +13,11 @@
                     <div class="mb-3">
                         <label for="status" class="form-label">Status</label>
                         <select class="form-select" id="status" name="status">
-                            <option value="Pending"
-                                {{ optional($perkaras->first())->status == 'Pending' ? 'selected' : '' }}>Pending
+                            <option value="Berjalan"
+                                {{ optional($perkaras->first())->status == 'Berjalan' ? 'selected' : '' }}>Berjalan
                             </option>
-                            <option value="In Progress"
-                                {{ optional($perkaras->first())->status == 'In Progress' ? 'selected' : '' }}>In
-                                Progress</option>
-                            <option value="Completed"
-                                {{ optional($perkaras->first())->status == 'Completed' ? 'selected' : '' }}>Completed
-                            </option>
-                            <option value="Diunggah"
-                                {{ optional($perkaras->first())->status == 'Diunggah' ? 'selected' : '' }}>Diunggah
+                            <option value="Selesai"
+                                {{ optional($perkaras->first())->status == 'Selesai' ? 'selected' : '' }}>Selesai
                             </option>
                         </select>
                     </div>

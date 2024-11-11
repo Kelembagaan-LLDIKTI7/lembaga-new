@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detailRecordModalLabel">Detail Akta</h5>
+                <h5 class="modal-title" id="detailRecordModalLabel">Detail SK</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -19,10 +19,6 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Tanggal Berakhir</th>
-                            <td id="sk_berakhir"></td>
-                        </tr>
-                        <tr>
                             <th>Jenis SK</th>
                             <td id="jsk_nama"></td>
                         </tr>
@@ -33,7 +29,8 @@
                                     enctype="multipart/form-data" target="_blank">
                                     @csrf
                                     <input type="hidden" name="sk_dokumen" id="sk_dokumen" value="">
-                                    <button type="submit" class="btn btn-link waves-effect">Dokumen</button>
+                                    <button type="submit" class="btn btn-link waves-effect"
+                                        id="btn_pdf_sk">Dokumen</button>
                                 </form>
                             </td>
                         </tr>
