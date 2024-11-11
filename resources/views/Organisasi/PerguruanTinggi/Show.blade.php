@@ -372,6 +372,9 @@
                                             <th>Nama Prodi</th>
                                             <th>Program</th>
                                             <th>Status</th>
+                                            <th>Peringkat Akreditasi</th>
+                                            <th>SK Akreditasi</th>
+                                            <th>Tanggal Kadaluarsa</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -383,6 +386,9 @@
                                                 <td>{{ $prodi->prodi_nama }}</td>
                                                 <td>{{ $prodi->prodi_jenjang }}</td>
                                                 <td>{{ $prodi->prodi_active_status }}</td>
+                                                <td>{{ $prodi->akreditasis->first()->peringkatAkreditasi->peringkat_logo ?? '-' }}</td>
+                                                <td>{{ optional($prodi->akreditasis->first())->akreditasi_sk }}</td>
+                                                <td>{{ optional($prodi->akreditasis->first())->akreditasi_tgl_akhir }}</td>
                                                 <td>
                                                     @can('Detail Program Studi')
                                                         <a href="{{ route('program-studi.show', $prodi->id) }}"
