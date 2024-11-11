@@ -29,7 +29,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('perguruan-tinggi.update', $perguruanTinggi->id) }}" method="POST"
+                <form id="formPTedit" action="{{ route('perguruan-tinggi.update', $perguruanTinggi->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -49,6 +49,7 @@
                                         @if ($errors->has('organisasi_kode'))
                                             <span class="text-danger">{{ $errors->first('organisasi_kode') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_kode"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="organisasi_nama" class="required-label">Nama Perguruan Tinggi</label>
@@ -57,6 +58,7 @@
                                         @if ($errors->has('organisasi_nama'))
                                             <span class="text-danger">{{ $errors->first('organisasi_nama') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_nama"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -66,6 +68,7 @@
                                         @if ($errors->has('organisasi_nama_singkat'))
                                             <span class="text-danger">{{ $errors->first('organisasi_nama_singkat') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_nama_singkat"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -75,6 +78,7 @@
                                         @if ($errors->has('organisasi_email'))
                                             <span class="text-danger">{{ $errors->first('organisasi_email') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_email"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -91,6 +95,7 @@
                                         @if ($errors->has('organisasi_kota'))
                                             <span class="text-danger">{{ $errors->first('organisasi_kota') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_kota"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -100,6 +105,7 @@
                                         @if ($errors->has('organisasi_alamat'))
                                             <span class="text-danger">{{ $errors->first('organisasi_alamat') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_alamat"></small>
                                     </div>
                                 </div>
 
@@ -118,6 +124,7 @@
                                         @if ($errors->has('parent_id'))
                                             <span class="text-danger">{{ $errors->first('parent_id') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-parent_id"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -134,6 +141,7 @@
                                         @if ($errors->has('organisasi_bentuk_pt'))
                                             <span class="text-danger">{{ $errors->first('organisasi_bentuk_pt') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_bentuk_pt"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -143,6 +151,7 @@
                                         @if ($errors->has('organisasi_telp'))
                                             <span class="text-danger">{{ $errors->first('organisasi_telp') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_telp"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -152,6 +161,7 @@
                                         @if ($errors->has('organisasi_website'))
                                             <span class="text-danger">{{ $errors->first('organisasi_website') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_website"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -164,6 +174,7 @@
                                         @if ($errors->has('organisasi_logo'))
                                             <span class="text-danger">{{ $errors->first('organisasi_logo') }}</span>
                                         @endif
+                                        <small class="text-danger error-message" id="error-organisasi_logo"></small>
                                     </div>
                                 </div>
                             </div>
@@ -174,9 +185,18 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary me-2">Simpan</button>
-                                    <a href="{{ route('perguruan-tinggi.show', ['id' => $perguruanTinggi->id]) }}"
-                                        class="btn btn-primary">Keluar</a>
+                                    <div id="buttons">
+                                        <button type="submit" class="btn btn-primary me-2">Simpan</button>
+                                        <a href="{{ route('perguruan-tinggi.show', ['id' => $perguruanTinggi->id]) }}"
+                                            class="btn btn-primary">Keluar</a>
+                                    </div>
+                                    <div id="loading">
+                                        <div class="d-flex align-items-center">
+                                            <strong>Loading...</strong>
+                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                                        </div>
+                                    </div>
+                                    <div id="error-messages"></div>
                                 </div>
                             </div>
                         </div>
@@ -187,35 +207,76 @@
     </div>
 @endsection
 
-@section('scripts')
+@section('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const kodeInputs = document.querySelectorAll('.organisasi-kode');
-            const kodeHiddenInput = document.getElementById('organisasi_kode');
+        $(document).ready(function() {
+            $('#loading').hide();
+            $('#formPTedit').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
 
-            kodeInputs.forEach((input, index) => {
-                input.addEventListener('input', function() {
-                    if (input.value.length === 1 && index < kodeInputs.length - 1) {
-                        kodeInputs[index + 1].focus();
-                    }
+                $('#buttons').hide();
+                $('#loading').show();
 
-                    let kodeValue = '';
-                    kodeInputs.forEach(kodeInput => {
-                        kodeValue += kodeInput.value;
-                    });
-                    kodeHiddenInput.value = kodeValue;
+                // Mengambil data form
+                const formData = new FormData(this);
 
-                    if (kodeValue.length === 6) {
-                        kodeHiddenInput.value = kodeValue;
-                    }
-                });
-
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
-                        kodeInputs[index - 1].focus();
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('perguruan-tinggi.validationUpdate', ['id' => $perguruanTinggi->id]) }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            $('#loading').hide();
+                            $('#buttons').show();
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
                     }
                 });
             });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('perguruan-tinggi.update', ['id' => $perguruanTinggi->id]) }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
         });
     </script>
 @endsection

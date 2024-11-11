@@ -99,10 +99,12 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role.access:Create Perguruan Tinggi')->group(function () {
             Route::get('/create', [PerguruanTinggiController::class, 'create'])->name('create');
             Route::post('/', [PerguruanTinggiController::class, 'store'])->name('store');
+            Route::post('/validation-store', [PerguruanTinggiController::class, 'validationStore'])->name('validationStore');
         });
         Route::middleware('role.access:Edit Perguruan Tinggi')->group(function () {
             Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-update', [PerguruanTinggiController::class, 'validationUpdate'])->name('validationUpdate');
         });
         Route::get('/{id}', [PerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail Perguruan Tinggi');
         Route::delete('/{id}', [PerguruanTinggiController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Perguruan Tinggi');
@@ -186,11 +188,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [SkPerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View SK Perguruan Tinggi');
         Route::middleware('role.access:Create SK Perguruan Tinggi')->group(function () {
             Route::get('/{id}/create', [SkPerguruanTinggiController::class, 'create'])->name('create');
-            Route::get('/{id}/edit', [SkPerguruanTinggiController::class, 'edit'])->name('edit');
+            Route::post('/', [SkPerguruanTinggiController::class, 'store'])->name('store');
+            Route::post('/validation-store', [SkPerguruanTinggiController::class, 'validationStore'])->name('validationStore');
         });
         Route::middleware('role.access:Edit SK Perguruan Tinggi')->group(function () {
-            Route::post('/', [SkPerguruanTinggiController::class, 'store'])->name('store');
+            Route::get('/{id}/edit', [SkPerguruanTinggiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [SkPerguruanTinggiController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-update', [SkPerguruanTinggiController::class, 'validationUpdate'])->name('validationUpdate');
         });
         Route::get('/{id}', [SkPerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail SK Perguruan Tinggi');
         Route::post('/view-pdf', [SkPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Perguruan Tinggi');
@@ -272,6 +276,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [PerkaraOrganisasiPTController::class, 'store'])->name('store');
         Route::get('/{id}', [PerkaraOrganisasiPTController::class, 'show'])->name('show');
         Route::patch('/{id}/status-update', [PerkaraOrganisasiPTController::class, 'updateStatus'])->name('status-update');
+        Route::post('/validation-store', [PerkaraOrganisasiPTController::class, 'validationStore'])->name('validationStore');
+        Route::put('/{id}/validation-update', [PerkaraOrganisasiPTController::class, 'validationUpdate'])->name('validationUpdate');
     });
 
     Route::prefix('perkara-prodi')->name('perkara-prodi.')->group(function () {

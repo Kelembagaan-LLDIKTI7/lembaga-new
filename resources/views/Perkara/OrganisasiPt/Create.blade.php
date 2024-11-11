@@ -49,7 +49,8 @@
         <div class="row">
             <div class="col-12">
                 <h3>Tambah Perkara Organisasi</h3>
-                <form action="{{ route('perkara-organisasipt.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formPerkaraPT" action="{{ route('perkara-organisasipt.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $organisasi->id }}" class="form-control" required>
 
@@ -62,6 +63,7 @@
                                 @error('title')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger error-message" id="error-title"></small>
                             </div>
 
                             <div class="mb-3">
@@ -71,6 +73,7 @@
                                 @error('tanggal_kejadian')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger error-message" id="error-tanggal_kejadian"></small>
                             </div>
 
                             <div class="mb-3">
@@ -79,6 +82,7 @@
                                 @error('deskripsi_kejadian')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger error-message" id="error-deskripsi_kejadian"></small>
                             </div>
                         </div>
 
@@ -90,19 +94,31 @@
                                 @error('bukti_foto.*')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger error-message" id="error-bukti_foto"></small>
                             </div>
                             <div id="preview" class="preview-container"></div>
                         </div>
                     </div>
 
                     <div class="row mt-3">
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-secondary"
-                                onclick="window.history.back();">Keluar</button>
+                        <div id="buttons">
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-secondary"
+                                        onclick="window.history.back();">Keluar</button>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6 text-right">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        <div id="loading">
+                            <div class="d-flex align-items-center">
+                                <strong>Loading...</strong>
+                                <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                            </div>
                         </div>
+                        <div id="error-messages"></div>
                     </div>
                 </form>
             </div>
@@ -111,6 +127,78 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#loading').hide(); // Sembunyikan loading
+            $('#formPerkaraPT').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
+
+                $('#buttons').hide(); // Sembunyikan tombol
+                $('#loading').show(); // Tampilkan loading
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('perkara-organisasipt.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            $('#loading').hide(); // Sembunyikan loading
+                            $('#buttons').show(); // Tampilkan tombol
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide(); // Sembunyikan loading
+                        $('#buttons').show(); // Tampilkan tombol
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('perkara-organisasipt.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide(); // Sembunyikan loading
+                        $('#buttons').show(); // Tampilkan tombol
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
     <script>
         let selectedFiles = [];
 

@@ -44,7 +44,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('perguruan-tinggi.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formPT" action="{{ route('perguruan-tinggi.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="card">
                         <div class="card-body">
@@ -55,23 +56,12 @@
                                     <div class="col-md-4">
                                         <label for="validationCustom01" class="form-label">Kode Perguruan Tinggi</label>
                                         <div class="organisasi-kode-input-group" id="organisasi-kode-input-group">
-                                            <input type="text" maxlength="1" class="form-control organisasi-kode"
-                                                id="organisasi_kode_1" required>
-                                            <input type="text" maxlength="1" class="form-control organisasi-kode"
-                                                id="organisasi_kode_2" required>
-                                            <input type="text" maxlength="1" class="form-control organisasi-kode"
-                                                id="organisasi_kode_3" required>
-                                            <input type="text" maxlength="1" class="form-control organisasi-kode"
-                                                id="organisasi_kode_4" required>
-                                            <input type="text" maxlength="1" class="form-control organisasi-kode"
-                                                id="organisasi_kode_5" required>
-                                            <input type="text" maxlength="1" class="form-control organisasi-kode"
-                                                id="organisasi_kode_6" required>
-                                            <input type="hidden" id="organisasi_kode" name="organisasi_kode"
-                                                value="">
+                                            <input type="text" class="form-control" id="organisasi_kode"
+                                                name="organisasi_kode" required>
                                             @error('organisasi_kode')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
+                                            <small class="text-danger error-message" id="error-organisasi_kode"></small>
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
@@ -80,11 +70,16 @@
                                         @error('organisasi_nama')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_nama"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_nama_singkat" class="required-label">Nama Singkat</label>
                                         <input type="text" name="organisasi_nama_singkat" class="form-control">
+                                        @error('organisasi_nama_singkat')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_nama_singkat"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -93,6 +88,7 @@
                                         @error('organisasi_email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_email"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -101,6 +97,7 @@
                                         @error('organisasi_telp')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_telp"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -112,6 +109,10 @@
                                                     {{ $kota->nama }}</option>
                                             @endforeach
                                         </select>
+                                        @error('organisasi_kota')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_kota"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -120,6 +121,7 @@
                                         @error('organisasi_alamat')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_alamat"></small>
                                     </div>
                                 </div>
 
@@ -127,6 +129,10 @@
                                     <div class="form-group mb-3">
                                         <label for="organisasi_website">Website (Opsional)</label>
                                         <input type="text" name="organisasi_website" class="form-control">
+                                        @error('organisasi_website')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_website"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -138,6 +144,10 @@
                                                     {{ $badanPenyelenggara->organisasi_nama }}</option>
                                             @endforeach
                                         </select>
+                                        @error('parent_id')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-parent_id"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -149,6 +159,10 @@
                                                     {{ $pt->bentuk_nama }}</option>
                                             @endforeach
                                         </select>
+                                        @error('organisasi_bentuk_pt')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_bentuk_pt"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -162,6 +176,7 @@
                                         @error('organisasi_logo')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_logo"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -173,6 +188,10 @@
                                             <option value="penyatuan">Penyatuan</option>
                                             <option value="penggabungan">Penggabungan</option>
                                         </select>
+                                        @error('berubah')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-berubah"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -185,6 +204,10 @@
                                                     {{ $perguruanTinggi->organisasi_nama }}</option>
                                             @endforeach
                                         </select>
+                                        @error('organisasi_berubah_id')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-organisasi_berubah_id"></small>
                                     </div>
                                 </div>
                             </div>
@@ -202,6 +225,7 @@
                                         @error('sk_nomor')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-sk_nomor"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -210,6 +234,7 @@
                                         @error('sk_tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-sk_tanggal"></small>
                                     </div>
                                 </div>
 
@@ -223,6 +248,11 @@
                                                     {{ $jenis->jsk_nama }}</option>
                                             @endforeach
                                         </select>
+                                        @error('id_jenis_surat_keputusan')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message"
+                                            id="error-id_jenis_surat_keputusan"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -234,10 +264,21 @@
                                         @error('sk_dokumen')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('perguruan-tinggi.index') }}" type="submit"
-                                        class="btn btn-primary">Keluar</a>
+                                    <div id="buttons">
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <a href="{{ route('perguruan-tinggi.index') }}" type="submit"
+                                            class="btn btn-primary">Keluar</a>
+                                    </div>
+                                    <div id="loading">
+                                        <button type="button" class="btn btn-primary" disabled>
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                aria-hidden="true"></span>
+                                            Loading...
+                                        </button>
+                                    </div>
+                                    <div id="error-messages"></div>
                                 </div>
                             </div>
                         </div>
@@ -250,40 +291,74 @@
 
 @section('js')
     <script>
-        function previewLogo(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('logo-preview');
-                output.src = reader.result;
-                output.style.display = 'block';
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            const kodeInputs = document.querySelectorAll('.organisasi-kode');
-            const kodeHiddenInput = document.getElementById('organisasi_kode');
+        $(document).ready(function() {
+            $('#loading').hide();
+            $('#formPT').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
 
-            kodeInputs.forEach((input, index) => {
-                input.addEventListener('input', function() {
-                    if (input.value.length === 1 && index < kodeInputs.length - 1) {
-                        kodeInputs[index + 1].focus();
-                    }
-                    let kodeValue = '';
-                    kodeInputs.forEach(kodeInput => {
-                        kodeValue += kodeInput.value;
-                    });
-                    kodeHiddenInput.value = kodeValue;
-                    if (kodeValue.length === 6) {
-                        kodeHiddenInput.value = kodeValue;
-                    }
-                });
+                $('#buttons').hide();
+                $('#loading').show();
 
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
-                        kodeInputs[index - 1].focus();
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('perguruan-tinggi.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            $('#loading').hide();
+                            $('#buttons').show();
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
                     }
                 });
             });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('perguruan-tinggi.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
         });
     </script>
 @endsection

@@ -101,6 +101,61 @@ class PerguruanTinggiController extends Controller
         // ]);
     }
 
+    public function validationStore(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'organisasi_kode' => 'required|string|size:6|unique:organisasis',
+            'organisasi_nama' => 'required|string|max:255',
+            'organisasi_nama_singkat' => 'nullable|string|max:255',
+            'organisasi_email' => 'required|email|max:255',
+            'organisasi_telp' => 'required|string|max:15',
+            'organisasi_kota' => 'required|string|max:100',
+            'organisasi_alamat' => 'required|string|max:255',
+            'organisasi_website' => 'nullable|url|max:255',
+            'organisasi_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'organisasi_bentuk_pt' => 'required|uuid|exists:bentuk_pts,id',
+            'parent_id' => 'nullable',
+            'sk_nomor' => 'required',
+            'sk_tanggal' => 'required',
+            'sk_dokumen' => 'required',
+            'id_jenis_surat_keputusan' => 'required',
+            'berubah' => 'required',
+            'organisasi_berubah_id' => 'nullable|array',
+        ], [
+            'organisasi_kode.required' => 'Kode Perguruan Tinggi harus diisi.',
+            'organisasi_kode.size' => 'Kode Perguruan Tinggi harus terdiri dari 6 karakter.',
+            'organisasi_kode.unique' => 'Kode Perguruan Tinggi sudah terdaftar.',
+            'organisasi_nama.required' => 'Nama Perguruan Tinggi harus diisi.',
+            'organisasi_email.required' => 'Email Perguruan Tinggi harus diisi.',
+            'organisasi_email.email' => 'Format email tidak valid.',
+            'organisasi_telp.required' => 'Nomor Telepon Perguruan Tinggi harus diisi.',
+            'organisasi_kota.required' => 'Kota Perguruan Tinggi harus diisi.',
+            'organisasi_alamat.required' => 'Alamat Perguruan Tinggi harus diisi.',
+            'organisasi_logo.required' => 'Logo Perguruan Tinggi harus diisi.',
+            'organisasi_logo.image' => 'Logo Perguruan Tinggi harus berupa gambar.',
+            'organisasi_logo.mimes' => 'Logo Perguruan Tinggi harus berformat jpeg, png, jpg, atau gif.',
+            'organisasi_logo.max' => 'Logo Perguruan Tinggi tidak boleh lebih dari 2MB.',
+            'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
+            'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
+            'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
+            'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
+            'sk_dokumen.required' => 'Dokumen Surat Keputusan harus diisi.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
+            'berubah.required' => 'Jenis Surat Keputusan harus diisi.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -116,7 +171,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_kota' => 'required|string|max:100',
             'organisasi_alamat' => 'required|string|max:255',
             'organisasi_website' => 'nullable|url|max:255',
-            'organisasi_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'organisasi_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'organisasi_bentuk_pt' => 'required|uuid|exists:bentuk_pts,id',
             'parent_id' => 'nullable',
             'sk_nomor' => 'required',
@@ -182,7 +237,13 @@ class PerguruanTinggiController extends Controller
             'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
             'id_organization' => $perguruanTinggi->id,
         ]);
-        return redirect()->route('perguruan-tinggi.index')->with('success', 'Perguruan Tinggi berhasil ditambahkan.');
+
+        session()->flash('success', 'Perguruan Tinggi berhasil ditambahkan.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('perguruan-tinggi.index')
+        ]);
     }
 
 
@@ -320,6 +381,51 @@ class PerguruanTinggiController extends Controller
         ]);
     }
 
+    public function validationUpdate(Request $request, string $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'organisasi_kode' => 'required|string|max:6|unique:organisasis,organisasi_kode,' . $id,
+            'organisasi_nama' => 'required|string|max:255',
+            'organisasi_nama_singkat' => 'nullable|string|max:255',
+            'organisasi_email' => 'required|string|max:255',
+            'organisasi_telp' => 'required|string|max:15',
+            'organisasi_kota' => 'required|string|max:100',
+            'organisasi_alamat' => 'required|string|max:255',
+            'organisasi_website' => 'nullable|string|max:255',
+            'organisasi_logo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'organisasi_bentuk_pt' => 'required|exists:bentuk_pts,id',
+            'parent_id' => 'nullable|exists:organisasis,id',
+        ], [
+            'organisasi_kode.required' => 'Kode Perguruan Tinggi harus diisi.',
+            'organisasi_kode.max' => 'Kode Perguruan Tinggi harus terdiri dari 6 karakter.',
+            'organisasi_kode.unique' => 'Kode Perguruan Tinggi sudah terdaftar.',
+            'organisasi_nama.required' => 'Nama Perguruan Tinggi harus diisi.',
+            'organisasi_alamat.required' => 'Alamat Perguruan Tinggi harus diisi.',
+            'organisasi_email.required' => 'Email Perguruan Tinggi harus diisi.',
+            'organisasi_email.email' => 'Format email tidak valid.',
+            'organisasi_telp.required' => 'Nomor Telepon Perguruan Tinggi harus diisi.',
+            'organisasi_kota.required' => 'Kota Perguruan Tinggi harus diisi.',
+            'organisasi_logo.image' => 'Logo Perguruan Tinggi harus berupa gambar.',
+            'organisasi_logo.mimes' => 'Logo Perguruan Tinggi harus berformat jpeg, png, jpg, atau gif.',
+            'organisasi_logo.max' => 'Logo Perguruan Tinggi tidak boleh lebih dari 2MB.',
+            'organisasi_website.url' => 'Format website tidak valid.',
+            'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
+            'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
+            'parent_id.exists' => 'Perguruan Tinggi induk tidak valid.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      */
@@ -395,9 +501,12 @@ class PerguruanTinggiController extends Controller
                 ]);
         }
 
-        // Redirect to the show page with a success message
-        return redirect()->route('perguruan-tinggi.show', ['id' => $id])
-            ->with('success', 'Perguruan Tinggi berhasil diperbarui.');
+        session()->flash('success', 'Perguruan Tinggi berhasil diperbarui.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('perguruan-tinggi.show', ['id' => $id])
+        ]);
     }
 
 
