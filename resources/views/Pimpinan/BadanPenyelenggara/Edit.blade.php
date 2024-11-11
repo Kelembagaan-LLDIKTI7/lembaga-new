@@ -149,9 +149,18 @@
                                 <div id="file-preview" class="mt-3"></div>
 
                                 <div class="btn-center mt-3">
-                                    <a href="{{ route('badan-penyelenggara.show', ['id' => $pimpinan->id_organization]) }}"
-                                        class="btn btn-primary btn-sm-custom">Keluar</a>
-                                    <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                    <div id="buttons">
+                                        <a href="{{ route('badan-penyelenggara.show', ['id' => $pimpinan->id_organization]) }}"
+                                            class="btn btn-primary btn-sm-custom">Keluar</a>
+                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                    </div>
+                                    <div id="loading">
+                                        <div class="d-flex align-items-center">
+                                            <strong>Loading...</strong>
+                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                                        </div>
+                                    </div>
+                                    <div id="error-messages"></div>
                                 </div>
                             </div>
                         </div>
@@ -165,8 +174,12 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            $('#loading').hide();
             $('#formPimpinanBPedit').on('submit', function(event) {
                 event.preventDefault(); // Menghentikan submit default form
+
+                $('#buttons').hide();
+                $('#loading').show();
 
                 // Mengambil data form
                 const formData = new FormData(this);
@@ -182,10 +195,14 @@
                         if (response.success) {
                             submitToStore(formData);
                         } else {
+                            $('#loading').hide();
+                            $('#buttons').show();
                             displayErrors(response.errors);
                         }
                     },
                     error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
                         $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
                     }
                 });
@@ -217,6 +234,8 @@
                         }
                     },
                     error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
                         $('#error-messages').html(
                             'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
                     }

@@ -203,6 +203,8 @@
                         }
                     },
                     error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
                         $('#error-messages').html(
                             'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
                     }
