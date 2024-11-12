@@ -29,6 +29,34 @@ class PerkaraProdiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function validationStore(Request $request)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'tanggal_kejadian' => 'required|date',
+            'deskripsi_kejadian' => 'required|string',
+            'bukti_foto.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'title.required' => 'Judul perkara wajib diisi',
+            'title.max' => 'Judul perkara tidak boleh lebih dari 255 karakter',
+            'tanggal_kejadian.required' => 'Tanggal perkara wajib diisi',
+            'deskripsi_kejadian.required' => 'Deskripsi perkara wajib diisi',
+            'bukti_foto.mimes' => 'File harus berupa gambar',
+            'bukti_foto.max' => 'File tidak boleh lebih dari 2 MB',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -90,10 +118,10 @@ class PerkaraProdiController extends Controller
 
         $perkara->status = $request->input('status');
         $perkara->save();
-        
+
         return redirect()->back()->with('success', 'Status perkara berhasil diperbarui.');
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      */

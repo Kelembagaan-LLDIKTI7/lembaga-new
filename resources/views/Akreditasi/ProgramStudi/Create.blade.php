@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('akreditasi-program-studi.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formAkreditasiProdi" action="{{ route('akreditasi-program-studi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
                     <input type="hidden" name="id_organization" value="{{ $prodi->perguruanTinggi->id }}"
@@ -38,6 +38,7 @@
                                         @error('akreditasi_sk')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akreditasi_sk"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -47,6 +48,7 @@
                                         @error('akreditasi_tgl_awal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akreditasi_tgl_awal"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -62,6 +64,7 @@
                                         @error('id_peringkat_akreditasi')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-id_peringkat_akreditasi"></small>
                                     </div>
                                 </div>
 
@@ -69,7 +72,7 @@
                                     <div class="form-group mb-3">
                                         <label for="akreditasi_status" class="required-label">Status Akreditasi</label>
                                         <select name="akreditasi_status" class="form-control select-search" required>
-                                            <option value="">-- Pilih Peringkat --</option>
+                                            <option value="">-- Pilih Status Akreditasi --</option>
                                             <option value="Berlaku">Berlaku</option>
                                             <option value="Dicabut">Dicabut</option>
                                             <option value="Tidak Berlaku">Tidak Berlaku</option>
@@ -77,6 +80,7 @@
                                         @error('akreditasi_status')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akreditasi_status"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -86,10 +90,11 @@
                                         @error('akreditasi_tgl_akhir')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-akreditasi_tgl_akhir"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="id_lembaga_akreditasi" class="required-label">Peringkat
+                                        <label for="id_lembaga_akreditasi" class="required-label">Lembaga
                                             Akreditasi</label>
                                         <select name="id_lembaga_akreditasi" class="form-control select-search">
                                             <option value="">-- Pilih Peringkat --</option>
@@ -100,6 +105,7 @@
                                         @error('id_lembaga_akreditasi')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        <small class="text-danger error-message" id="error-id_lembaga_akreditasi"></small>
                                     </div>
                                 </div>
 
@@ -112,6 +118,7 @@
                                     @error('sk_dokumen')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
+                                    <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                 </div>
 
                                 <div class="btn-center mt-3">
@@ -129,6 +136,78 @@
 @endsection
 
 @section('js')
+<script>
+    $(document).ready(function() {
+        $('#loading').hide();
+        $('#formAkreditasiProdi').on('submit', function(event) {
+            event.preventDefault(); // Menghentikan submit default form
+
+            $('#buttons').hide();
+            $('#loading').show();
+
+            // Mengambil data form
+            const formData = new FormData(this);
+
+            // AJAX request ke server untuk validasi
+            $.ajax({
+                url: '{{ route('akreditasi-program-studi.validationStore') }}',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        submitToStore(formData);
+                    } else {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        displayErrors(response.errors);
+                    }
+                },
+                error: function(xhr) {
+                    $('#loading').hide();
+                    $('#buttons').show();
+                    $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                }
+            });
+        });
+
+        function displayErrors(errors) {
+            // Bersihkan semua pesan error sebelumnya
+            $('.error-message').text('');
+
+            // Tampilkan pesan error baru
+            for (let field in errors) {
+                const errorMessages = errors[field].join(
+                    ', '); // Gabungkan pesan error jika ada lebih dari satu
+                $(`#error-${field}`).text(
+                    errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+            }
+        }
+
+        function submitToStore(formData) {
+            $.ajax({
+                url: '{{ route('akreditasi-program-studi.store') }}',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = response.redirect_url;
+                    }
+                },
+                error: function(xhr) {
+                    $('#loading').hide();
+                    $('#buttons').show();
+                    $('#error-messages').html(
+                        'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                }
+            });
+        }
+
+    });
+</script>
     <script>
         function previewFile(event) {
             const file = event.target.files[0];

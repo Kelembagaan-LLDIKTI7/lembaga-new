@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-12">
                 <h3>Tambah Perkara Prodi</h3>
-                <form action="{{ route('perkara-prodi.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formPerkaraProdi" action="{{ route('perkara-prodi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
 
@@ -62,6 +62,7 @@
                                 @error('title')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger error-message" id="error-nomor"></small>
                             </div>
 
                             <div class="mb-3">
@@ -71,6 +72,7 @@
                                 @error('tanggal_kejadian')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger error-message" id="error-tanggal_kejadian"></small>
                             </div>
 
                             <div class="mb-3">
@@ -79,6 +81,7 @@
                                 @error('deskripsi_kejadian')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger error-message" id="error-deskripsi_kejadian"></small>
                             </div>
                         </div>
 
@@ -90,6 +93,7 @@
                                 @error('bukti_foto.*')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
+                                <small class="text-danger error-message" id="error-bukti_foto"></small>
                             </div>
                             <div id="preview" class="preview-container"></div>
                         </div>
@@ -104,6 +108,7 @@
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </div>
+                    <div id="error-messages" class="text-danger"></div>
                 </form>
             </div>
         </div>
@@ -111,6 +116,78 @@
 @endsection
 
 @section('js')
+<script>
+    $(document).ready(function() {
+        $('#loading').hide();
+        $('#formPerkaraProdi').on('submit', function(event) {
+            event.preventDefault(); // Menghentikan submit default form
+
+            $('#buttons').hide();
+            $('#loading').show();
+
+            // Mengambil data form
+            const formData = new FormData(this);
+
+            // AJAX request ke server untuk validasi
+            $.ajax({
+                url: '{{ route('perkara-prodi.validationStore') }}',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        submitToStore(formData);
+                    } else {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        displayErrors(response.errors);
+                    }
+                },
+                error: function(xhr) {
+                    $('#loading').hide();
+                    $('#buttons').show();
+                    $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                }
+            });
+        });
+
+        function displayErrors(errors) {
+            // Bersihkan semua pesan error sebelumnya
+            $('.error-message').text('');
+
+            // Tampilkan pesan error baru
+            for (let field in errors) {
+                const errorMessages = errors[field].join(
+                    ', '); // Gabungkan pesan error jika ada lebih dari satu
+                $(`#error-${field}`).text(
+                    errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+            }
+        }
+
+        function submitToStore(formData) {
+            $.ajax({
+                url: '{{ route('perkara-prodi.store') }}',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = response.redirect_url;
+                    }
+                },
+                error: function(xhr) {
+                    $('#loading').hide();
+                    $('#buttons').show();
+                    $('#error-messages').html(
+                        'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                }
+            });
+        }
+
+    });
+</script>
     <script>
         let selectedFiles = [];
 
