@@ -28,11 +28,46 @@ class DashboardController extends Controller
         $bentukPt = BentukPt::count();
 
         $kota = Kota::count();
-        // return response()->json([
-        //     'perkaras' => $perkaras,
-        //     'perguruanTinggi' => $perguruanTinggi,
-        //     'programStudi' => $programStudi,
-        // ]);
+
+        $bentukPtCounts = BentukPt::select('id', 'bentuk_nama')
+            ->withCount(['organisasi' => function ($query) {
+                $query->where('organisasi_type_id', 3);
+            }])->get();
+
+        $programStudiCounts = BentukPt::select('id', 'bentuk_nama')
+            ->with(['organisasi' => function ($query) {
+                $query->select('id', 'organisasi_bentuk_pt', 'organisasi_type_id')
+                    ->where('organisasi_type_id', 3)
+                    ->whereHas('prodis', function ($query) {
+                        $query->where('prodi_active_status', 'Aktif');
+                    });
+            }])
+            ->withCount(['organisasi as program_studi_count' => function ($query) {
+                $query->where('organisasi_type_id', 3)
+                    ->whereHas('prodis', function ($query) {
+                        $query->where('prodi_active_status', 'Aktif');
+                    });
+            }])
+            ->get();
+
+        $jenjangList = ['D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'];
+
+        $programPendidikanCounts = ProgramStudi::select('prodi_jenjang')
+            ->where('prodi_active_status', 'Aktif')
+            ->groupBy('prodi_jenjang')
+            ->selectRaw('prodi_jenjang, COUNT(*) as count')
+            ->pluck('count', 'prodi_jenjang')
+            ->toArray();
+
+        foreach ($jenjangList as $jenjang) {
+            if (!isset($programPendidikanCounts[$jenjang])) {
+                $programPendidikanCounts[$jenjang] = 0;
+            }
+        }
+
+        $programPendidikanCounts = collect($programPendidikanCounts)
+            ->only($jenjangList)
+            ->toArray();
 
         return view('Dashboard.Index', [
             'perkaras' => $perkaras,
@@ -40,7 +75,21 @@ class DashboardController extends Controller
             'programStudi' => $programStudi,
             'bentukPt' => $bentukPt,
             'kota' => $kota,
+            'bentukPtCounts' => $bentukPtCounts,
+            'programStudiCounts' => $programStudiCounts,
+            'programPendidikanCounts' => $programPendidikanCounts,
         ]);
+
+        // return response()->json([
+        //     'perkaras' => $perkaras,
+        //     'perguruanTinggi' => $perguruanTinggi,
+        //     'programStudi' => $programStudi,
+        //     'bentukPt' => $bentukPt,
+        //     'kota' => $kota,
+        //     'bentukPtCounts' => $bentukPtCounts,
+        //     'programStudiCounts' => $programStudiCounts,
+        //     'programPendidikanCounts' => $programPendidikanCounts,
+        // ]);
     }
 
     /**
