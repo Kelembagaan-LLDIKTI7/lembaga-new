@@ -134,10 +134,12 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role.access:Create Program Studi')->group(function () {
             Route::get('/{id}/create', [ProgramStudiController::class, 'create'])->name('create');
             Route::post('/', [ProgramStudiController::class, 'store'])->name('store');
+            Route::post('/validation-store', [ProgramStudiController::class, 'validationStore'])->name('validationStore');
         });
         Route::middleware('role.access:Edit Program Studi')->group(function () {
             Route::get('/{id}/edit', [ProgramStudiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ProgramStudiController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-update', [ProgramStudiController::class, 'validationUpdate'])->name('validationUpdate');
         });
         Route::get('/{id}', [ProgramStudiController::class, 'show'])->name('show')->middleware('role.access:Detail Program Studi');
     });
@@ -147,6 +149,7 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role.access:Create Akreditasi Program Studi')->group(function () {
             Route::get('/{id}/create', [AkreditasiProdiController::class, 'create'])->name('create');
             Route::post('/', [AkreditasiProdiController::class, 'store'])->name('store');
+            Route::post('/validation-store', [AkreditasiProdiController::class, 'validationStore'])->name('validationStore');
         });
         Route::middleware('role.access:Edit Akreditasi Program Studi')->group(function () {
             Route::get('/{id}/edit', [AkreditasiProdiController::class, 'edit'])->name('edit');
@@ -288,5 +291,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [PerkaraProdiController::class, 'store'])->name('store');
         Route::get('/{id}', [PerkaraProdiController::class, 'show'])->name('show');
         Route::patch('/{id}/status-update', [PerkaraProdiController::class, 'updateStatus'])->name('status-update');
+        Route::post('/validation-store', [PerkaraProdiController::class, 'validationStore'])->name('validationStore');
+        Route::put('/{id}/validation-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdate');
     });
 });
