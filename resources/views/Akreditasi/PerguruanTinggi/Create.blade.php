@@ -109,9 +109,9 @@
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <label for="sk_dokumen" class="required-label">Dokumen SK</label>
-                                    <input type="file" name="sk_dokumen" class="form-control" required
-                                        accept=".pdf,.doc,.docx" onchange="previewFile(event)">
+                                    <label for="sk_dokumen">Dokumen SK</label>
+                                    <input type="file" name="sk_dokumen" class="form-control" accept=".pdf,.doc,.docx"
+                                        onchange="previewFile(event)">
                                     <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
                                     <div id="file-preview" class="mt-3"></div> <!-- Tempat untuk preview -->
                                     @error('sk_dokumen')

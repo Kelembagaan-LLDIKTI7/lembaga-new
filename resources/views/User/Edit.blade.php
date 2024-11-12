@@ -1,4 +1,4 @@
-@extends('layouts.Main')
+@extends('Layouts.Main')
 @section('title', 'Kelembagaan - Edit User')
 @section('content')
 <div class="main-content">

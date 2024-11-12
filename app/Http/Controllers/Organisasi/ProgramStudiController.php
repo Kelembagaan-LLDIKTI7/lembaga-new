@@ -47,6 +47,46 @@ class ProgramStudiController extends Controller
         // return response()->json(['organisasi' => $organisasi]);
     }
 
+    public function validationStore(Request $request)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
+            'id_organization' => 'required',
+            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
+            'prodi_nama' => 'required',
+            'prodi_jenjang' => 'required',
+            'prodi_active_status' => 'required',
+            'sk_nomor' => 'required',
+            'sk_tanggal' => 'required',
+            'id_jenis_surat_keputusan' => 'required',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'prodi_kode.required' => 'Kode Program Studi harus diisi.',
+            'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
+            'prodi_kode.unique' => 'Kode Program Studi sudah digunakan.',
+            'prodi_nama.required' => 'Nama Program Studi harus diisi.',
+            'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
+            'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
+            'sk_nomor.required' => 'Nomor SK harus diisi.',
+            'sk_tanggal.required' => 'Tanggal SK harus diisi.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
+            'sk_dokumen.required' => 'Dokumen SK harus diisi.',
+            'sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -216,6 +256,36 @@ class ProgramStudiController extends Controller
         // return response()->json(['prodi' => $prodi]);
     }
 
+    public function validationUpdate(Request $request, string $id)
+    {
+        // Validasi data input
+        $prodi = ProgramStudi::findOrFail($id);
+        $validator = \Validator::make($request->all(), [
+            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode,' . $prodi->id,
+            'prodi_nama' => 'required|string|max:255',
+            'prodi_active_status' => 'required|string',
+            'prodi_jenjang' => 'required|string',
+        ], [
+            'prodi_kode.required' => 'Kode Program Studi harus diisi.',
+            'prodi_kode.max' => 'Kode Program Studi harus terdiri dari 6 karakter.',
+            'prodi_kode.unique' => 'Kode Program Studi sudah terdaftar.',
+            'prodi_nama.required' => 'Nama Program Studi harus diisi.',
+            'prodi_nama.max' => 'Nama Program Studi tidak boleh lebih dari 255 karakter.',
+            'prodi_active_status.required' => 'Status Program Studi harus diisi.',
+            'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      */

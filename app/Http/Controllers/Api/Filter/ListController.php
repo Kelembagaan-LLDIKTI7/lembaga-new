@@ -15,7 +15,7 @@ class ListController extends Controller
 
         $pt = DB::table('organisasis')
             ->select('id', 'organisasi_nama')
-            ->where('organisasi_type_id', 2)
+            ->where('organisasi_type_id', 3)
             ->orderBy('organisasi_nama', 'asc')
             ->get();
 

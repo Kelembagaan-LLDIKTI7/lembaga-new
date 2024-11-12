@@ -390,11 +390,12 @@
                                                     $akreditasi = $prodi->akreditasis->last();
                                                 @endphp
                                                 <td>
-                                                @if (!empty($akreditasi->peringkat_akreditasi) && $akreditasi->peringkat_akreditasi->peringkat_logo)
-    <img src="{{ asset('storage/peringkat_akreditasi/' . $akreditasi->peringkat_akreditasi->peringkat_logo) }}" alt="Logo" width="50" height="50">
-@else
-    <span>No Logo</span>
-@endif
+                                                    @if (!empty($akreditasi->peringkat_akreditasi) && $akreditasi->peringkat_akreditasi->peringkat_logo)
+                                                        <img src="{{ asset('storage/peringkat_akreditasi/' . $akreditasi->peringkat_akreditasi->peringkat_logo) }}"
+                                                            alt="Logo" width="50" height="50">
+                                                    @else
+                                                        <span>No Logo</span>
+                                                    @endif
                                                 </td>
                                                 <td>{{ $akreditasi->akreditasi_sk ?? 'Tidak Tersedia' }}</td>
                                                 <td>{{ $akreditasi->akreditasi_tgl_akhir ?? 'Tidak Tersedia' }}</td>
@@ -557,7 +558,12 @@
                             .pimpinan_tanggal_berakhir;
                         document.getElementById('pimpinan_status').textContent = data.pimpinan_status;
                         document.getElementById('pimpinan_sk').textContent = data.pimpinan_sk;
-                        document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
+                        if (data.pimpinan_sk_dokumen) {
+                            document.getElementById('btn_pdf').hidden = false;
+                            document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
+                        } else {
+                            document.getElementById('btn_pdf').hidden = true;
+                        }
                     })
                     .catch(error => console.error('Error:', error));
             }
