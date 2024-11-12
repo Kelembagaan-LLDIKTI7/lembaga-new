@@ -15,7 +15,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('program-studi.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formProdi" action="{{ route('program-studi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card">
                         <div class="card-body">
@@ -42,6 +42,10 @@
                                                 {{ $errors->first('prodi_kode') }}
                                             </div>
                                         @endif
+                                        @error('prodi_kode')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-prodi_kode"></small>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="prodi_nama" class="required-label">Nama Program Studi</label>
@@ -50,6 +54,10 @@
                                         @if ($errors->has('prodi_nama'))
                                             <span class="text-danger">{{ $errors->first('prodi_nama') }}</span>
                                         @endif
+                                        @error('prodi_nama')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-prodi_nama"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -64,6 +72,10 @@
                                         @if ($errors->has('prodi_active_status'))
                                             <span class="text-danger">{{ $errors->first('prodi_active_status') }}</span>
                                         @endif
+                                        @error('prodi_active_status')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-prodi_active_status"></small>
                                     </div>
                                 </div>
 
@@ -90,6 +102,10 @@
                                         @if ($errors->has('prodi_jenjang'))
                                             <span class="text-danger">{{ $errors->first('prodi_jenjang') }}</span>
                                         @endif
+                                        @error('prodi_jenjang')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-prodi_jenjang"></small>
                                     </div>
                                 </div>
                             </div>
@@ -108,6 +124,10 @@
                                         @if ($errors->has('sk_nomor'))
                                             <span class="text-danger">{{ $errors->first('sk_nomor') }}</span>
                                         @endif
+                                        @error('sk_nomor')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-sk_nomor"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -117,6 +137,10 @@
                                         @if ($errors->has('sk_tanggal'))
                                             <span class="text-danger">{{ $errors->first('sk_tanggal') }}</span>
                                         @endif
+                                        @error('sk_tanggal')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-sk_tanggal"></small>
                                     </div>
                                 </div>
 
@@ -136,6 +160,10 @@
                                             <span
                                                 class="text-danger">{{ $errors->first('id_jenis_surat_keputusan') }}</span>
                                         @endif
+                                        @error('id_jenis_surat_keputusan')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-id_jenis_surat_keputusan"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -147,6 +175,10 @@
                                         @if ($errors->has('sk_dokumen'))
                                             <span class="text-danger">{{ $errors->first('sk_dokumen') }}</span>
                                         @endif
+                                        @error('sk_dokumen')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                     </div>
                                 </div>
                                 <div class="btn-center mt-6">
@@ -173,5 +205,99 @@
 @endsection
 
 @section('js')
+    <script>
+        $(document).ready(function() {
+            $('#loading').hide();
+            $('#formProdi').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
 
+                $('#buttons').hide();
+                $('#loading').show();
+
+                // Mengambil data form
+                const formData = new FormData(this);
+
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('program-studi.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            $('#loading').hide();
+                            $('#buttons').show();
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                    }
+                });
+            });
+
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
+
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
+            }
+
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('program-studi.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                    }
+                });
+            }
+
+        });
+    </script>
+    <script>
+        function previewFile(event) {
+            const file = event.target.files[0];
+            const previewContainer = document.getElementById('file-preview');
+            previewContainer.innerHTML = '';
+
+            if (file) {
+                const fileName = document.createElement('p');
+                fileName.textContent = `File terpilih: ${file.name}`;
+                previewContainer.appendChild(fileName);
+
+                if (file.type === 'application/pdf') {
+                    const fileURL = URL.createObjectURL(file);
+                    const iframe = document.createElement('iframe');
+                    iframe.src = fileURL;
+                    iframe.width = '100%';
+                    iframe.height = '400px';
+                    previewContainer.appendChild(iframe);
+                }
+            }
+        }
+    </script>
 @endsection
+
