@@ -56,7 +56,9 @@ class PerguruanTinggiController extends Controller
         $perguruanTinggi = $query->get();
 
         $prodiQuery = ProgramStudi::query()
-            ->select('id', 'prodi_nama', 'prodi_kode', 'prodi_jenjang', 'id_organization');
+            ->leftjoin('organisasis', 'program_studis.id_organization', '=', 'organisasis.id')
+            ->leftjoin('bentuk_pts', 'organisasis.organisasi_bentuk_pt', '=', 'bentuk_pts.id')
+            ->select('program_studis.id', 'organisasis.organisasi_kode', 'organisasis.organisasi_nama as nama_pt', 'bentuk_pts.bentuk_nama as bentuk_pt', 'organisasis.organisasi_kota as wilayah', 'prodi_nama', 'prodi_kode', 'prodi_jenjang', 'id_organization');
 
         if ($request->has('kode_pt') || $request->has('nama_pt') || $request->has('bentuk_pt') || $request->has('kota') || $request->has('program_studi')) {
             $prodiQuery->whereHas('perguruanTinggi', function ($q) use ($request) {
