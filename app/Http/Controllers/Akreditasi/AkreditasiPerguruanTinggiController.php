@@ -44,7 +44,7 @@ class AkreditasiPerguruanTinggiController extends Controller
             'id_peringkat_akreditasi' => 'required',
             'akreditasi_status' => 'required|string|in:Berlaku,Dicabut,Tidak Berlaku',
             'id_lembaga_akreditasi' => 'required',
-            'sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'akreditasi_sk.required' => 'Nomor harus diisi.',
             'akreditasi_sk.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
@@ -86,7 +86,7 @@ class AkreditasiPerguruanTinggiController extends Controller
             'id_peringkat_akreditasi' => 'required',
             'akreditasi_status' => 'required|string|in:Berlaku,Dicabut,Tidak Berlaku',
             'id_lembaga_akreditasi' => 'required',
-            'sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'akreditasi_sk.required' => 'Nomor harus diisi.',
             'akreditasi_sk.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
@@ -105,19 +105,29 @@ class AkreditasiPerguruanTinggiController extends Controller
 
         if ($request->hasFile('sk_dokumen')) {
             $suratKeputusan = $request->file('sk_dokumen')->store('surat_keputusan', 'public');
+            Akreditasi::create([
+                'akreditasi_sk' => $request->akreditasi_sk,
+                'akreditasi_tgl_awal' => $request->akreditasi_tgl_awal,
+                'akreditasi_tgl_akhir' => $request->akreditasi_tgl_akhir,
+                'id_peringkat_akreditasi' => $request->id_peringkat_akreditasi,
+                'akreditasi_status' => $request->akreditasi_status,
+                'id_lembaga_akreditasi' => $request->id_lembaga_akreditasi,
+                'akreditasi_dokumen' => $suratKeputusan ?? null,
+                'id_organization' => $request->id_organization,
+                'id_user' => Auth::user()->id,
+            ]);
+        } else {
+            Akreditasi::create([
+                'akreditasi_sk' => $request->akreditasi_sk,
+                'akreditasi_tgl_awal' => $request->akreditasi_tgl_awal,
+                'akreditasi_tgl_akhir' => $request->akreditasi_tgl_akhir,
+                'id_peringkat_akreditasi' => $request->id_peringkat_akreditasi,
+                'akreditasi_status' => $request->akreditasi_status,
+                'id_lembaga_akreditasi' => $request->id_lembaga_akreditasi,
+                'id_organization' => $request->id_organization,
+                'id_user' => Auth::user()->id,
+            ]);
         }
-
-        Akreditasi::create([
-            'akreditasi_sk' => $request->akreditasi_sk,
-            'akreditasi_tgl_awal' => $request->akreditasi_tgl_awal,
-            'akreditasi_tgl_akhir' => $request->akreditasi_tgl_akhir,
-            'id_peringkat_akreditasi' => $request->id_peringkat_akreditasi,
-            'akreditasi_status' => $request->akreditasi_status,
-            'id_lembaga_akreditasi' => $request->id_lembaga_akreditasi,
-            'akreditasi_dokumen' => $suratKeputusan ?? null,
-            'id_organization' => $request->id_organization,
-            'id_user' => Auth::user()->id,
-        ]);
 
         session()->flash('success', 'Akreditasi Program Studi berhasil ditambahkan');
 
