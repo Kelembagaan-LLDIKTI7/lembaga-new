@@ -82,6 +82,14 @@
                                                         data-organisasi="{{ $jabatan->jabatan_organisasi }}">
                                                         Edit
                                                     </button>
+                                                    <!-- Delete Button -->
+                                                    <form action="{{ route('jabatan.destroy', $jabatan->id) }}" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Jabatan?');">
+                                                            Delete
+                                                        </button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach
