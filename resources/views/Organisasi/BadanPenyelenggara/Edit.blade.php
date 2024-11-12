@@ -26,26 +26,20 @@
                                             value="{{ $bp->organisasi_nama }}" required>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_nama_singkat" class="required-label">Nama Singkat</label>
+                                        <label for="organisasi_nama_singkat" class="label">Nama Singkat</label>
                                         <input type="text" name="organisasi_nama_singkat" class="form-control"
                                             value="{{ $bp->organisasi_nama_singkat }}">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_email" class="required-label">Email Badan
+                                        <label for="organisasi_email" class="label">Email Badan
                                             Penyelenggara</label>
                                         <input type="email" name="organisasi_email" class="form-control"
-                                            value="{{ $bp->organisasi_email }}" required>
+                                            value="{{ $bp->organisasi_email }}">
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_telp" class="required-label">No Telepon</label>
-                                        <input type="text" name="organisasi_telp" class="form-control"
-                                            value="{{ $bp->organisasi_telp }}" required>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="organisasi_alamat" class="required-label">Alamat</label>
+                                        <label for="organisasi_alamat" class="label">Alamat</label>
                                         <input type="text" name="organisasi_alamat" class="form-control"
-                                            value="{{ $bp->organisasi_alamat }}" required>
+                                            value="{{ $bp->organisasi_alamat }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -54,10 +48,14 @@
                                         <input type="text" name="organisasi_website" class="form-control"
                                             value="{{ $bp->organisasi_website }}">
                                     </div>
-
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_kota" class="required-label">Kota</label>
-                                        <select name="organisasi_kota" class="form-control select-search" required>
+                                        <label for="organisasi_telp" class="label">No Telepon</label>
+                                        <input type="text" name="organisasi_telp" class="form-control"
+                                            value="{{ $bp->organisasi_telp }}">
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="organisasi_kota" class="label">Kota</label>
+                                        <select name="organisasi_kota" class="form-control select-search">
                                             <option value="">-- Pilih Kota --</option>
                                             @foreach ($kotas as $kota)
                                                 <option value="{{ $kota->nama }}"
@@ -65,16 +63,6 @@
                                                     {{ $kota->nama }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="organisasi_logo" class="required-label">Logo Perguruan Tinggi</label>
-                                        <input type="file" name="organisasi_logo" class="form-control"
-                                            accept="image/png, image/jpg, image/jpeg, image/gif"
-                                            onchange="previewLogo(event)">
-                                        <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
-                                            GIF.</small>
-                                        <img id="logo-preview" src="#" alt="Preview Logo" style="display: none;">
                                     </div>
                                 </div>
                             </div>
@@ -92,37 +80,5 @@
 
 @section('js')
     <script>
-        function previewLogo(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('logo-preview');
-                output.src = reader.result;
-                output.style.display = 'block';
-                output.style.maxWidth = '200px'; // Batas maksimum lebar pratinjau
-                output.style.maxHeight = '200px'; // Batas maksimum tinggi pratinjau
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        function previewPdf(event) {
-            var file = event.target.files[0];
-            if (file.type === "application/pdf") {
-                var existingPreview = document.getElementById('pdf-preview');
-                if (existingPreview) {
-                    existingPreview.remove();
-                }
-
-                var pdfPreview = document.createElement("embed");
-                pdfPreview.id = 'pdf-preview';
-                pdfPreview.src = URL.createObjectURL(file);
-                pdfPreview.type = "application/pdf";
-                pdfPreview.style.width = "100%";
-                pdfPreview.style.maxWidth = "600px"; // Batas lebar maksimum pratinjau
-                pdfPreview.style.height = "400px"; // Batas tinggi maksimum pratinjau
-
-                // Menambahkan pratinjau di bawah input file
-                event.target.parentElement.appendChild(pdfPreview);
-            }
-        }
     </script>
 @endsection

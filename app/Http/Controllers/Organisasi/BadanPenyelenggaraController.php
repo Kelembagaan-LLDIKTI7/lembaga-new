@@ -389,47 +389,26 @@ class BadanPenyelenggaraController extends Controller
         $validatedData = $request->validate([
             'organisasi_nama' => 'required|string|max:255',
             'organisasi_nama_singkat' => 'nullable|string|max:255',
-            'organisasi_email' => 'required|email|max:255',
-            'organisasi_telp' => 'required|string|max:20',
-            'organisasi_alamat' => 'required|string',
-            'organisasi_kota' => 'required|string',
-            'organisasi_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'organisasi_email' => 'nullable|email|max:255',
+            'organisasi_telp' => 'nullable|string|max:20',
+            'organisasi_alamat' => 'nullable|string',
+            'organisasi_kota' => 'nullable|string',
             'organisasi_website' => 'nullable',
         ]);
 
-        if ($request->hasFile('organisasi_logo')) {
-            $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
-            $validatedData['organisasi_logo'] = $logoPath;
-            DB::table('organisasis')
-                ->where('id', $id)
-                ->update([
-                    'organisasi_nama' => $validatedData['organisasi_nama'],
-                    'organisasi_nama_singkat' => $validatedData['organisasi_nama_singkat'] ?? null,
-                    'organisasi_email' => $validatedData['organisasi_email'],
-                    'organisasi_telp' => $validatedData['organisasi_telp'],
-                    'organisasi_website' => $validatedData['organisasi_website'],
-                    'organisasi_alamat' => $validatedData['organisasi_alamat'],
-                    'organisasi_kota' => $validatedData['organisasi_kota'],
-                    'organisasi_logo' => $validatedData['organisasi_logo'],
-                    'updated_at' => now(),
-                    'users_id' => Auth::user()->id,
-                ]);
-        } else {
-            DB::table('organisasis')
-                ->where('id', $id)
-                ->update([
-                    'organisasi_nama' => $validatedData['organisasi_nama'],
-                    'organisasi_nama_singkat' => $validatedData['organisasi_nama_singkat'] ?? null,
-                    'organisasi_email' => $validatedData['organisasi_email'],
-                    'organisasi_telp' => $validatedData['organisasi_telp'],
-                    'organisasi_website' => $validatedData['organisasi_website'],
-                    'organisasi_alamat' => $validatedData['organisasi_alamat'],
-                    'organisasi_kota' => $validatedData['organisasi_kota'],
-                    'updated_at' => now(),
-                    'users_id' => Auth::user()->id,
-                ]);
-        }
-
+        DB::table('organisasis')
+        ->where('id', $id)
+        ->update([
+            'organisasi_nama' => $validatedData['organisasi_nama'],
+            'organisasi_nama_singkat' => $validatedData['organisasi_nama_singkat'] ?? null,
+            'organisasi_email' => $validatedData['organisasi_email'] ?? null,
+            'organisasi_telp' => $validatedData['organisasi_telp'] ?? null,
+            'organisasi_website' => $validatedData['organisasi_website'] ?? null,
+            'organisasi_alamat' => $validatedData['organisasi_alamat'] ?? null,
+            'organisasi_kota' => $validatedData['organisasi_kota'] ?? null,
+            'updated_at' => now(),
+            'users_id' => Auth::user()->id,
+        ]);
 
         return redirect()->route('badan-penyelenggara.show', ['id' => $id])->with('success', 'Badan Penyelenggara berhasil ditambahkan.');
     }
