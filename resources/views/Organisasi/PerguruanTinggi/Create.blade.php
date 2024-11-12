@@ -166,8 +166,8 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_logo" class="required-label">Logo Perguruan Tinggi</label>
-                                        <input type="file" name="organisasi_logo" class="form-control" required
+                                        <label for="organisasi_logo">Logo Perguruan Tinggi</label>
+                                        <input type="file" name="organisasi_logo" class="form-control"
                                             accept="image/png, image/jpg, image/jpeg, image/gif"
                                             onchange="previewLogo(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,

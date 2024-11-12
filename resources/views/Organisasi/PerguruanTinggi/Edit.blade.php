@@ -165,7 +165,7 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_logo" class="required-label">Logo Perguruan
+                                        <label for="organisasi_logo">Logo Perguruan
                                             Tinggi</label>
                                         <input type="file" name="organisasi_logo" class="form-control"
                                             accept="image/png, image/jpg, image/jpeg, image/gif">
