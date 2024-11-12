@@ -50,7 +50,7 @@ class PimpinanPerguruanTinggiController extends Controller
             'pimpinan_tanggal' => 'required|date',
             'pimpinan_tanggal_berakhir' => 'required|date',
             'id_jabatan' => 'required|exists:jabatans,id',
-            'pimpinan_sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'pimpinan_sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'pimpinan_nama.required' => 'Nama Pimpinan wajib diisi',
             'pimpinan_nama.max' => 'Nama Pimpinan tidak boleh lebih dari 255 karakter',
@@ -65,7 +65,6 @@ class PimpinanPerguruanTinggiController extends Controller
             'pimpinan_tanggal_berakhir.date' => 'Tanggal Berakhir SK Pimpinan harus berupa tanggal',
             'id_jabatan.required' => 'Jabatan Pimpinan wajib diisi',
             'id_jabatan.exists' => 'Jabatan Pimpinan tidak ditemukan',
-            'pimpinan_sk_dokumen.required' => 'Dokumen SK Pimpinan wajib diisi',
             'pimpinan_sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX',
             'pimpinan_sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2 MB',
         ]);
@@ -94,7 +93,7 @@ class PimpinanPerguruanTinggiController extends Controller
             'pimpinan_tanggal' => 'required|date',
             'pimpinan_tanggal_berakhir' => 'required|date',
             'id_jabatan' => 'required|exists:jabatans,id',
-            'pimpinan_sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'pimpinan_sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'pimpinan_nama.required' => 'Nama Pimpinan wajib diisi',
             'pimpinan_nama.max' => 'Nama Pimpinan tidak boleh lebih dari 255 karakter',
@@ -109,7 +108,6 @@ class PimpinanPerguruanTinggiController extends Controller
             'pimpinan_tanggal_berakhir.date' => 'Tanggal Berakhir SK Pimpinan harus berupa tanggal',
             'id_jabatan.required' => 'Jabatan Pimpinan wajib diisi',
             'id_jabatan.exists' => 'Jabatan Pimpinan tidak ditemukan',
-            'pimpinan_sk_dokumen.required' => 'Dokumen SK Pimpinan wajib diisi',
             'pimpinan_sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX',
             'pimpinan_sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2 MB',
         ]);
@@ -127,7 +125,7 @@ class PimpinanPerguruanTinggiController extends Controller
             'pimpinan_tanggal' => $request->pimpinan_tanggal,
             'pimpinan_tanggal_berakhir' => $request->pimpinan_tanggal_berakhir,
             'id_jabatan' => $request->id_jabatan,
-            'pimpinan_sk_dokumen' => $filePath,
+            'pimpinan_sk_dokumen' => $filePath ?? null,
             'pimpinan_status' => 'Berlaku',
         ]);
 

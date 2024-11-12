@@ -133,7 +133,7 @@
                                         <small class="text-danger error-message" id="error-id_jabatan"></small>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_sk_dokumen" class="required-label">Dokumen SK</label>
+                                        <label for="pimpinan_sk_dokumen">Dokumen SK</label>
                                         <input type="file" name="pimpinan_sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx" onchange="previewFile(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
