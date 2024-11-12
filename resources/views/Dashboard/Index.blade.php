@@ -58,7 +58,7 @@
                 <div class="card h-100 shadow-sm">
                     <div class="card-body d-flex align-items-center">
                         <div class="me-3">
-                            <i class="fas fa-school fa-3x text-warning"></i>
+                            <i class="fas fa-building fa-3x text-warning"></i>
                         </div>
                         <div>
                             <h5>Bentuk Perguruan Tinggi</h5>
