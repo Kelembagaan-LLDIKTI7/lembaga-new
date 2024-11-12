@@ -232,15 +232,15 @@
         };
 
         const chartPerguruanTinggiCtx = document.getElementById('chartPerguruanTinggi').getContext('2d');
+        const bentukPtData = @json($bentukPtCounts);
+
         new Chart(chartPerguruanTinggiCtx, {
             type: 'bar',
             data: {
-                labels: ['Unknown', 'Politeknik', 'Institut', 'Akademi Komunitas', 'Universitas', 'Akademi',
-                    'Sekolah Tinggi'
-                ],
+                labels: bentukPtData.map(item => item.bentuk_nama),
                 datasets: [{
                     label: 'Jumlah',
-                    data: [290, 10, 5, 2, 1, 1, 1],
+                    data: bentukPtData.map(item => item.organisasi_count),
                     backgroundColor: 'rgba(54, 162, 235, 0.7)',
                     borderRadius: 5
                 }]
@@ -249,15 +249,16 @@
         });
 
         const chartProgramStudiCtx = document.getElementById('chartProgramStudi').getContext('2d');
+        const programStudiData = @json($programStudiCounts);
+
         new Chart(chartProgramStudiCtx, {
             type: 'bar',
             data: {
-                labels: ['Akademi', 'Akademi Komunitas', 'Universitas', 'Sekolah Tinggi', 'Institut', 'Politeknik',
-                    'Unknown'
-                ],
+                labels: programStudiData.map(item => item.bentuk_nama),
                 datasets: [{
-                    label: 'Jumlah',
-                    data: [0, 0, 6, 0, 0, 0, 1],
+                    label: 'Jumlah Program Studi Aktif',
+                    data: programStudiData.map(item => item
+                        .program_studi_count),
                     backgroundColor: 'rgba(75, 192, 192, 0.7)',
                     borderRadius: 5
                 }]
@@ -266,14 +267,24 @@
         });
 
         const chartProgramPendidikanCtx = document.getElementById('chartProgramPendidikan').getContext('2d');
+
+        const programPendidikanData = @json($programPendidikanCounts);
+        const orderedLabels = ['D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'];
+        const orderedData = orderedLabels.map(label => programPendidikanData[label] || 0);
+
         new Chart(chartProgramPendidikanCtx, {
             type: 'bar',
             data: {
-                labels: ['S1', 'S2'],
+                labels: orderedLabels,
                 datasets: [{
-                    label: 'Jumlah',
-                    data: [6, 1],
-                    backgroundColor: ['rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)'],
+                    label: 'Jumlah Program Studi Aktif',
+                    data: orderedData,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)', 'rgba(201, 203, 207, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
                     borderRadius: 5
                 }]
             },
