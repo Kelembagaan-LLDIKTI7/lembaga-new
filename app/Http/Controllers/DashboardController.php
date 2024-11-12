@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BentukPt;
+use App\Models\Kota;
+use App\Models\Organisasi;
 use App\Models\Perkara;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -16,7 +20,27 @@ class DashboardController extends Controller
             ->select('id', 'title', 'tanggal_kejadian', 'status')
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('Dashboard.Index', ['perkaras' => $perkaras]);
+
+        $perguruanTinggi = Organisasi::where('organisasi_type_id', 3)->count();
+
+        $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')->count();
+
+        $bentukPt = BentukPt::count();
+
+        $kota = Kota::count();
+        // return response()->json([
+        //     'perkaras' => $perkaras,
+        //     'perguruanTinggi' => $perguruanTinggi,
+        //     'programStudi' => $programStudi,
+        // ]);
+
+        return view('Dashboard.Index', [
+            'perkaras' => $perkaras,
+            'perguruanTinggi' => $perguruanTinggi,
+            'programStudi' => $programStudi,
+            'bentukPt' => $bentukPt,
+            'kota' => $kota,
+        ]);
     }
 
     /**

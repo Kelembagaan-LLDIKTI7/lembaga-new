@@ -32,7 +32,7 @@
                         </div>
                         <div>
                             <h5>Perguruan Tinggi</h5>
-                            <h3>309</h3>
+                            <h3>{{ $perguruanTinggi }}</h3>
                             <p class="text-muted">Jumlah perguruan tinggi di wilayah 7</p>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         </div>
                         <div>
                             <h5>Program Studi</h5>
-                            <h3>7</h3>
+                            <h3>{{ $programStudi }}</h3>
                             <p class="text-muted">Jumlah program studi di wilayah 7</p>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                         </div>
                         <div>
                             <h5>Bentuk Perguruan Tinggi</h5>
-                            <h3>6</h3>
+                            <h3>{{ $bentukPt }}</h3>
                             <p class="text-muted">Jumlah bentuk perguruan tinggi di wilayah 7</p>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                         </div>
                         <div>
                             <h5>Wilayah</h5>
-                            <h3>31</h3>
+                            <h3>{{ $kota }}</h3>
                             <p class="text-muted">Jumlah kota/kabupaten di wilayah 7</p>
                         </div>
                     </div>
