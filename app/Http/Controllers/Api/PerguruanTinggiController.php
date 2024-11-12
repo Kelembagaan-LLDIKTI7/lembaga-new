@@ -206,6 +206,7 @@ class PerguruanTinggiController extends Controller
 
         $cityChartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
+            ->whereNotNull('organisasi_kota')
             ->select('organisasi_kota', DB::raw('count(*) as total'))
             ->groupBy('organisasi_kota');
 
@@ -241,10 +242,13 @@ class PerguruanTinggiController extends Controller
                 ];
             });
 
-        $totalInstitutions = Organisasi::where('organisasi_type_id', 3)->count();
+        $totalInstitutions = Organisasi::where('organisasi_type_id', 3)
+            ->whereNotNull('organisasi_kota')
+            ->count();
 
         $cityChartQueryPersen = Organisasi::query()
             ->where('organisasi_type_id', 3)
+            ->whereNotNull('organisasi_kota')
             ->select('organisasi_kota', DB::raw('count(*) as total'))
             ->groupBy('organisasi_kota');
 
