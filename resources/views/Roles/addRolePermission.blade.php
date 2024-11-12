@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('Layouts.Main')
 @section('title', 'Kelembagaan - Tambah Permission pada Role')
 @section('content')
 <div class="main-content">
