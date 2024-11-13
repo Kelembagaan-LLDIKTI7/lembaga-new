@@ -77,38 +77,45 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('peringkat-akademik')->name('peringkat-akademik.')->group(function () {
         Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index')->middleware('role.access:View Peringkat Akreditasi');
-        Route::get('/create', [PeringkatAkademiController::class, 'create'])->name('create')->middleware('role.access:Create Peringkat Akreditasi');
         Route::post('/', [PeringkatAkademiController::class, 'store'])->name('store')->middleware('role.access:Create Peringkat Akreditasi');
-        Route::get('/{id}/edit', [PeringkatAkademiController::class, 'edit'])->name('edit')->middleware('role.access:Edit Peringkat Akreditasi');
-        Route::put('/{id}', [PeringkatAkademiController::class, 'update'])->name('update')->middleware('role.access:Edit Peringkat Akreditasi');
+        Route::middleware('role.access:Edit Peringkat Akreditasi')->group(function () {
+            Route::get('/{id}/edit', [PeringkatAkademiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PeringkatAkademiController::class, 'update'])->name('update');
+        });
         Route::delete('/{id}', [PeringkatAkademiController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Peringkat Akreditasi');
     });
 
     Route::prefix('lembaga-akademik')->name('lembaga-akademik.')->group(function () {
         Route::get('/', [LembagaAkreditasiController::class, 'index'])->name('index')->middleware('role.access:View Lembaga Akreditasi');
-        Route::get('/create', [LembagaAkreditasiController::class, 'create'])->name('create')->middleware('role.access:Create Lembaga Akreditasi');
         Route::post('/', [LembagaAkreditasiController::class, 'store'])->name('store')->middleware('role.access:Create Lembaga Akreditasi');
-        Route::get('/{id}/edit', [LembagaAkreditasiController::class, 'edit'])->name('edit')->middleware('role.access:Edit Lembaga Akreditasi');
-        Route::put('/{id}', [LembagaAkreditasiController::class, 'update'])->name('update')->middleware('role.access:Edit Lembaga Akreditasi');
+        Route::middleware('role.access:Edit Lembaga Akreditasi')->group(function () {
+            Route::get('/{id}/edit', [LembagaAkreditasiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [LembagaAkreditasiController::class, 'update'])->name('update');
+        });
         Route::delete('/{id}', [LembagaAkreditasiController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Lembaga Akreditasi');
     });
 
     Route::prefix('organisasi-type')->name('organisasi-type.')->group(function () {
         Route::get('/', [OrganisasiTypeController::class, 'index'])->name('index')->middleware('role.access:View Jenis Organisasi');
-        Route::get('/create', [OrganisasiTypeController::class, 'create'])->name('create')->middleware('role.access:Create Jenis Organisasi');
         Route::post('/', [OrganisasiTypeController::class, 'store'])->name('store')->middleware('role.access:Create Jenis Organisasi');
-        Route::get('/{id}/edit', [OrganisasiTypeController::class, 'edit'])->name('edit')->middleware('role.access:Edit Jenis Organisasi');
-        Route::put('/{id}', [OrganisasiTypeController::class, 'update'])->name('update')->middleware('role.access:Edit Jenis Organisasi');
+        Route::middleware('role.access:Edit Jenis Organisasi')->group(function () {
+            Route::get('/{id}/edit', [OrganisasiTypeController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [OrganisasiTypeController::class, 'update'])->name('update');
+        });
         Route::delete('/{id}', [OrganisasiTypeController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Jenis Organisasi');
     });
 
     // Routes for Jabatan
     Route::prefix('jabatan')->name('jabatan.')->group(function () {
         Route::get('/', [JabatanController::class, 'index'])->name('index')->middleware('role.access:View Jabatan');
-        Route::get('/create', [JabatanController::class, 'create'])->name('create')->middleware('role.access:Create Jabatan');
-        Route::post('/', [JabatanController::class, 'store'])->name('store')->middleware('role.access:Create Jabatan');
-        Route::get('/{id}/edit', [JabatanController::class, 'edit'])->name('edit')->middleware('role.access:Edit Jabatan');
-        Route::put('/{id}', [JabatanController::class, 'update'])->name('update')->middleware('role.access:Edit Jabatan');
+        Route::middleware('role.access:Create Jabatan')->group(function () {
+            Route::get('/create', [JabatanController::class, 'create'])->name('create');
+            Route::post('/', [JabatanController::class, 'store'])->name('store');
+        });
+        Route::middleware('role.access:Edit Jabatan')->group(function () {
+            Route::get('/{id}/edit', [JabatanController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [JabatanController::class, 'update'])->name('update');
+        });
         Route::delete('/{id}', [JabatanController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Jabatan');
     });
 
@@ -286,27 +293,37 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('perkara-organisasi')->name('perkara-organisasi.')->group(function () {
-        Route::get('/{id}/create', [PerkaraOrganisasiController::class, 'create'])->name('create');
-        Route::post('/', [PerkaraOrganisasiController::class, 'store'])->name('store');
-        Route::get('/{id}', [PerkaraOrganisasiController::class, 'show'])->name('show');
-        Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update');
+        Route::middleware('role.access:Create Perkara Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/create', [PerkaraOrganisasiController::class, 'create'])->name('create');
+            Route::post('/', [PerkaraOrganisasiController::class, 'store'])->name('store');
+        });
+        Route::get('/{id}', [PerkaraOrganisasiController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Badan Penyelenggara');
+        Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update')->middleware('role.access:Update Status Perkara Badan Penyelenggara');
     });
 
     Route::prefix('perkara-organisasipt')->name('perkara-organisasipt.')->group(function () {
-        Route::get('/{id}/create', [PerkaraOrganisasiPTController::class, 'create'])->name('create');
-        Route::post('/', [PerkaraOrganisasiPTController::class, 'store'])->name('store');
-        Route::get('/{id}', [PerkaraOrganisasiPTController::class, 'show'])->name('show');
-        Route::patch('/{id}/status-update', [PerkaraOrganisasiPTController::class, 'updateStatus'])->name('status-update');
-        Route::post('/validation-store', [PerkaraOrganisasiPTController::class, 'validationStore'])->name('validationStore');
-        Route::put('/{id}/validation-update', [PerkaraOrganisasiPTController::class, 'validationUpdate'])->name('validationUpdate');
+        Route::middleware('role.access:Create Perkara Perguruan Tinggi')->group(function () {
+            Route::get('/{id}/create', [PerkaraOrganisasiPTController::class, 'create'])->name('create');
+            Route::post('/', [PerkaraOrganisasiPTController::class, 'store'])->name('store');
+            Route::post('/validation-store', [PerkaraOrganisasiPTController::class, 'validationStore'])->name('validationStore');
+        });
+        Route::get('/{id}', [PerkaraOrganisasiPTController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Perguruan Tinggi');
+        Route::middleware('role.access:Update Status Perkara Perguruan Tinggi')->group(function () {
+            Route::patch('/{id}/status-update', [PerkaraOrganisasiPTController::class, 'updateStatus'])->name('status-update');
+            Route::put('/{id}/validation-update', [PerkaraOrganisasiPTController::class, 'validationUpdate'])->name('validationUpdate');
+        });
     });
 
     Route::prefix('perkara-prodi')->name('perkara-prodi.')->group(function () {
-        Route::get('/{id}/create', [PerkaraProdiController::class, 'create'])->name('create');
-        Route::post('/', [PerkaraProdiController::class, 'store'])->name('store');
-        Route::get('/{id}', [PerkaraProdiController::class, 'show'])->name('show');
-        Route::patch('/{id}/status-update', [PerkaraProdiController::class, 'updateStatus'])->name('status-update');
-        Route::post('/validation-store', [PerkaraProdiController::class, 'validationStore'])->name('validationStore');
-        Route::put('/{id}/validation-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdate');
+        Route::middleware('role.access:Create Perkara Program Studi')->group(function () {
+            Route::get('/{id}/create', [PerkaraProdiController::class, 'create'])->name('create');
+            Route::post('/', [PerkaraProdiController::class, 'store'])->name('store');
+            Route::post('/validation-store', [PerkaraProdiController::class, 'validationStore'])->name('validationStore');
+        });
+        Route::get('/{id}', [PerkaraProdiController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Program Studi');
+        Route::middleware('role.access:Update Status Perkara Program Studi')->group(function () {
+            Route::patch('/{id}/status-update', [PerkaraProdiController::class, 'updateStatus'])->name('status-update');
+            Route::put('/{id}/validation-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdate');
+        });
     });
 });

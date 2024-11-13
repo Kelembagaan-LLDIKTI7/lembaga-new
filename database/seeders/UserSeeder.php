@@ -120,8 +120,31 @@ class UserSeeder extends Seeder
             'View Jabatan',
 
             'View Peringkat Akreditasi',
+            'Create Peringkat Akreditasi',
+            'Edit Peringkat Akreditasi',
+            'Delete Peringkat Akreditasi',
+
             'View Lembaga Akreditasi',
+            'Create Lembaga Akreditasi',
+            'Edit Lembaga Akreditasi',
+            'Delete Lembaga Akreditasi',
+
             'View Jenis Organisasi',
+            'Create Jenis Organisasi',
+            'Edit Jenis Organisasi',
+            'Delete Jenis Organisasi',
+
+            'Create Perkara Badan Penyelenggara',
+            'View Detail Perkara Badan Penyelenggara',
+            'Update Status Perkara Badan Penyelenggara',
+
+            'Create Perkara Perguruan Tinggi',
+            'View Detail Perkara Perguruan Tinggi',
+            'Update Status Perkara Perguruan Tinggi',
+
+            'Create Perkara Program Studi',
+            'View Detail Perkara Program Studi',
+            'Update Status Perkara Program Studi',
         ];
 
         foreach ($permissions as $permissionName) {
