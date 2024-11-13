@@ -24,10 +24,10 @@ class AkreditasiProdiController extends Controller
      * Show the form for creating a new resource.
      */
 
-     public function validationStore(Request $request)
-     {
-         // Validasi data input
-         $validator = \Validator::make($request->all(), [
+    public function validationStore(Request $request)
+    {
+        // Validasi data input
+        $validator = \Validator::make($request->all(), [
             'akreditasi_sk' => 'required|string|max:255',
             'akreditasi_tgl_awal' => 'required|date',
             'akreditasi_tgl_akhir' => 'required|date',
@@ -36,7 +36,7 @@ class AkreditasiProdiController extends Controller
             'akreditasi_status' => 'required|string|in:Berlaku,Dicabut,Tidak Berlaku',
             'id_lembaga_akreditasi' => 'required',
             'sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
-         ], [
+        ], [
             'akreditasi_sk.required' => 'Nomor harus diisi.',
             'akreditasi_sk.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
             'akreditasi_tgl_awal.required' => 'Tanggal harus diisi.',
@@ -50,19 +50,19 @@ class AkreditasiProdiController extends Controller
             'sk_dokumen.required' => 'Dokumen harus diisi.',
             'sk_dokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
             'sk_dokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
-         ]);
+        ]);
 
-         if ($validator->fails()) {
-             return response()->json([
-                 'success' => false,
-                 'errors' => $validator->errors()->toArray()
-             ]);
-         }
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
 
-         return response()->json([
-             'success' => true,
-         ]);
-     }
+        return response()->json([
+            'success' => true,
+        ]);
+    }
     public function create($id)
     {
         $prodi = ProgramStudi::select('id', 'id_organization')
@@ -104,7 +104,7 @@ class AkreditasiProdiController extends Controller
 
         $updateAkreditasi = Akreditasi::where('id_prodi', $request->id_prodi)->where('aktif', 'Ya')->first();
         // dd($updateAkreditasi);
-        if($updateAkreditasi){
+        if ($updateAkreditasi) {
             $updateAkreditasi->update(['aktif' => 'Tidak']);
         }
 
@@ -126,7 +126,12 @@ class AkreditasiProdiController extends Controller
             'id_user' => Auth::user()->id,
         ]);
 
-        return redirect()->route('program-studi.show', $request->id_prodi)->with('success', 'Akreditasi Program Studi berhasil ditambahkan');
+        session()->flash('success', 'Akreditasi Program Studi berhasil ditambahkan');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('program-studi.show', $request->id_prodi)
+        ]);
     }
 
     /**
