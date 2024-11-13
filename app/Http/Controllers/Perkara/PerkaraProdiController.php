@@ -84,7 +84,12 @@ class PerkaraProdiController extends Controller
             'status' => 'Diunggah'
         ]);
 
-        return redirect()->route('program-studi.show', $request->id_prodi)->with('success', 'Perkara berhasil ditambahkan');
+        session()->flash('success', 'Perkara berhasil ditambahkan');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('program-studi.show', $request->id_prodi)
+        ]);
     }
 
     /**
