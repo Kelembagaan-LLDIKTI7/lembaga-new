@@ -98,6 +98,13 @@
                                             </option>
                                             <option value="S3" @if (old('prodi_jenjang') == 'S3') selected @endif>S3
                                             </option>
+                                            <option value="Profesi" @if (old('prodi_jenjang') == 'Profesi') selected @endif>
+                                                Profesi
+                                            </option>
+                                            <option value="Sp1" @if (old('prodi_jenjang') == 'Sp1') selected @endif>Sp1
+                                            </option>
+                                            <option value="Sp2" @if (old('prodi_jenjang') == 'Sp2') selected @endif>Sp2
+                                            </option>
                                         </select>
                                         @if ($errors->has('prodi_jenjang'))
                                             <span class="text-danger">{{ $errors->first('prodi_jenjang') }}</span>
@@ -163,7 +170,8 @@
                                         @error('id_jenis_surat_keputusan')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
-                                        <small class="text-danger error-message" id="error-id_jenis_surat_keputusan"></small>
+                                        <small class="text-danger error-message"
+                                            id="error-id_jenis_surat_keputusan"></small>
                                     </div>
 
                                     <div class="form-group mb-3">
@@ -300,4 +308,3 @@
         }
     </script>
 @endsection
-

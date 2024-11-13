@@ -15,7 +15,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form id="formProdiEdit" action="{{ route('program-studi.update', $prodi->id) }}" method="POST" enctype="multipart/form-data">
+                <form id="formProdiEdit" action="{{ route('program-studi.update', $prodi->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -116,6 +117,18 @@
                                             <option value="S3"
                                                 {{ old('prodi_jenjang', $prodi->prodi_jenjang) == 'S3' ? 'selected' : '' }}>
                                                 S3
+                                            </option>
+                                            <option value="Profesi"
+                                                {{ old('prodi_jenjang', $prodi->prodi_jenjang) == 'Profesi' ? 'selected' : '' }}>
+                                                Profesi
+                                            </option>
+                                            <option value="Sp1"
+                                                {{ old('prodi_jenjang', $prodi->prodi_jenjang) == 'Sp1' ? 'selected' : '' }}>
+                                                Sp1
+                                            </option>
+                                            <option value="Sp2"
+                                                {{ old('prodi_jenjang', $prodi->prodi_jenjang) == 'Sp2' ? 'selected' : '' }}>
+                                                Sp2
                                             </option>
                                         </select>
                                         @if ($errors->has('prodi_jenjang'))
