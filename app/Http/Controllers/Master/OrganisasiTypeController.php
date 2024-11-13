@@ -26,7 +26,7 @@ class OrganisasiTypeController extends Controller
      */
     public function create()
     {
-        //
+        // This method is not needed since we are using modals in the index view
     }
 
     /**
@@ -34,7 +34,12 @@ class OrganisasiTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'organisasi_type_nama' => 'required|string|max:255',
+        ]);
+
+        OrganisasiType::create($request->all());
+        return redirect()->route('organisasi-type.index')->with('success', 'Organisasi Type created successfully.');
     }
 
     /**
@@ -42,7 +47,7 @@ class OrganisasiTypeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // This method can be implemented if needed for viewing a single resource
     }
 
     /**
@@ -50,7 +55,7 @@ class OrganisasiTypeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // This method is not needed since we are using modals in the index view
     }
 
     /**
@@ -58,7 +63,13 @@ class OrganisasiTypeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'organisasi_type_nama' => 'required|string|max:255',
+        ]);
+
+        $organisasiType = OrganisasiType::findOrFail($id);
+        $organisasiType->update($request->all());
+        return redirect()->route('organisasi-type.index')->with('success', 'Organisasi Type updated successfully.');
     }
 
     /**
@@ -66,6 +77,8 @@ class OrganisasiTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $organisasiType = OrganisasiType::findOrFail($id);
+        $organisasiType->delete();
+        return redirect()->route('organisasi-type.index')->with('success', 'Organisasi Type deleted successfully.');
     }
 }
