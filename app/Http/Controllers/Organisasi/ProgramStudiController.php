@@ -173,7 +173,12 @@ class ProgramStudiController extends Controller
             ]);
         }
 
-        return redirect()->route('perguruan-tinggi.show', $validated['id_organization'])->with('success', 'Program Studi berhasil ditambah.');
+        session()->flash('success', 'Program Studi berhasil ditambah.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('perguruan-tinggi.show', $validated['id_organization'])
+        ]);
     }
 
     /**
@@ -325,7 +330,12 @@ class ProgramStudiController extends Controller
             'id_user' => Auth::user()->id,
         ]);
 
-        return redirect()->route('program-studi.show', ['id' => $prodi->id])->with('success', 'Data Sudah Terekam');
+        session()->flash('success', 'Program Studi berhasil diubah.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('program-studi.show', $prodi->id)
+        ]);
     }
 
     /**
