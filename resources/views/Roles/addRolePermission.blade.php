@@ -45,10 +45,15 @@
                     'Pimpinan Perguruan Tinggi' => ['Create Pimpinan Perguruan Tinggi', 'Edit Pimpinan Perguruan Tinggi', 'Delete Pimpinan Perguruan Tinggi', 'View Pimpinan Perguruan Tinggi', 'Detail Pimpinan Perguruan Tinggi', 'View PDF Pimpinan Perguruan Tinggi'],
                     'Surat Keputusan Perguruan Tinggi' => ['Create SK Perguruan Tinggi', 'Edit SK Perguruan Tinggi', 'Delete SK Perguruan Tinggi', 'View SK Perguruan Tinggi', 'Detail SK Perguruan Tinggi', 'View PDF SK Perguruan Tinggi'],
                     'Jabatan' => ['Create Jabatan', 'Edit Jabatan', 'Delete Jabatan', 'View Jabatan'],
-                    'Master' => ['View Peringkat Akreditasi', 'View Lembaga Akreditasi', 'View Jenis Organisasi'],
                     'General Permissions' => ['Create Permission', 'Edit Permission', 'Delete Permission', 'View Permission'],
                     'Role Management' => ['Create Roles', 'Edit Roles', 'Delete Roles', 'View Roles', 'View Role Permissions', 'Add Role Permissions'],
                     'User Management' => ['Create User', 'Edit User', 'Delete User', 'View User'],
+                    'Peringkat Akreditasi' => ['View Peringkat Akreditasi', 'Create Peringkat Akreditasi', 'Edit Peringkat Akreditasi', 'Delete Peringkat Akreditasi'],
+                    'Lembaga Akreditasi' => [ 'View Lembaga Akreditasi', 'Create Lembaga Akreditasi', 'Edit Lembaga Akreditasi', 'Delete Lembaga Akreditasi'],
+                    'Jenis Organisasi' => ['View Jenis Organisasi', 'Create Jenis Organisasi', 'Edit Jenis Organisasi', 'Delete Jenis Organisasi'],
+                    'Perkara Badan Penyelenggara' => ['Create Perkara Badan Penyelenggara', 'View Detail Perkara Badan Penyelenggara', 'Update Status Perkara Badan Penyelenggara'],
+                    'Perkara Perguruan Tinggi' => ['Create Perkara Perguruan Tinggi', 'View Detail Perkara Perguruan Tinggi', 'Update Status Perkara Perguruan Tinggi'],
+                    'Perkara Program Studi' => ['Create Perkara Program Studi', 'View Detail Perkara Program Studi', 'Update Status Perkara Program Studi'],
                     ];
                     @endphp
 

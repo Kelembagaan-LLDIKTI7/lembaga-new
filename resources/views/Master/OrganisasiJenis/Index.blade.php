@@ -11,9 +11,11 @@
                         <div class="card-body">
                             <div class="mb-2 d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Jenis Organisasi</h5>
+                                @can('Create Jenis Organisasi')
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createOrganisasiTypeModal">
                                     Tambah Jenis Organisasi
                                 </button>
+                                @endCan
                             </div>
 
                             <!-- Modal for Creating Organisasi Type -->
@@ -55,16 +57,20 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $organisasiType->organisasi_type_nama }}</td>
                                                 <td>
+                                                    @can('Edit Jenis Organisasi')
                                                     <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editOrganisasiTypeModal"
                                                         data-id="{{ $organisasiType->id }}"
                                                         data-nama="{{ $organisasiType->organisasi_type_nama }}">
                                                         Edit
                                                     </button>
+                                                    @endCan
+                                                    @can('Delete Jenis Organisasi')
                                                     <form action="{{ route('organisasi-type.destroy', $organisasiType->id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Organisasi Type?');">Delete</button>
                                                     </form>
+                                                    @endCan
                                                 </td>
                                             </tr>
                                         @endforeach
