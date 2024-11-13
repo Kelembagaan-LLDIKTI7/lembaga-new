@@ -11,9 +11,11 @@
                         <div class="card-body">
                             <div class="mb-2 d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Peringkat Akreditasi</h5>
+                                @can('Create Peringkat Akreditasi')
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPeringkatModal">
                                     Tambah Peringkat
                                 </button>
+                                @endCan
                             </div>
 
                             <!-- Modal for Create Peringkat -->
@@ -71,13 +73,16 @@
                                                 </td>
                                                 <td>{{ $peringkat->peringkat_status }}</td>
                                                 <td>
+                                                    @can('Edit Peringkat Akreditasi')
                                                     <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPeringkatModal"
                                                         data-id="{{ $peringkat->id }}"
                                                         data-nama="{{ $peringkat->peringkat_nama }}"
                                                         data-status="{{ $peringkat->peringkat_status }}">
                                                         Edit
                                                     </button>
+                                                    @endCan
                                                     <!-- Delete Button -->
+                                                     @can('Delete Peringkat Akreditasi')
                                                     <form action="{{ route('peringkat-akademik.destroy', $peringkat->id) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
@@ -85,6 +90,7 @@
                                                             Delete
                                                         </button>
                                                     </form>
+                                                    @endCan
                                                 </td>
                                             </tr>
                                         @endforeach
