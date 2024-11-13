@@ -117,7 +117,7 @@ class PerguruanTinggiController extends Controller
             'parent_id' => 'nullable',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
-            'sk_dokumen' => 'required',
+            'sk_dokumen' => 'nullable',
             'id_jenis_surat_keputusan' => 'required',
             'berubah' => 'required',
             'organisasi_berubah_id' => 'nullable|array',
@@ -138,7 +138,6 @@ class PerguruanTinggiController extends Controller
             'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
             'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
             'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
-            'sk_dokumen.required' => 'Dokumen Surat Keputusan harus diisi.',
             'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
             'berubah.required' => 'Jenis Surat Keputusan harus diisi.',
         ]);
@@ -175,7 +174,7 @@ class PerguruanTinggiController extends Controller
             'parent_id' => 'nullable',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
-            'sk_dokumen' => 'required',
+            'sk_dokumen' => 'nullable',
             'id_jenis_surat_keputusan' => 'required',
             'berubah' => 'required',
             'organisasi_berubah_id' => 'nullable|array',
@@ -196,7 +195,6 @@ class PerguruanTinggiController extends Controller
             'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
             'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
             'sk_tanggal.required' => 'Tanggal Surat Keputusan harus diisi.',
-            'sk_dokumen.required' => 'Dokumen Surat Keputusan harus diisi.',
             'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
             'berubah.required' => 'Jenis Surat Keputusan harus diisi.',
         ]);
