@@ -257,7 +257,7 @@
 
                                     <div class="form-group mb-3">
                                         <label for="sk_dokumen" class="required-label">Dokumen SK</label>
-                                        <input type="file" name="sk_dokumen" class="form-control" required
+                                        <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
                                             DOCX.</small>
