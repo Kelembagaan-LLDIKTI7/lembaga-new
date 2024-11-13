@@ -73,7 +73,7 @@
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_email" class="required-label">Email Perguruan Tinggi</label>
-                                        <input type="email" name="organisasi_email" class="form-control"
+                                        <input type="text" name="organisasi_email" class="form-control"
                                             value="{{ $perguruanTinggi->organisasi_email }}" required>
                                         @if ($errors->has('organisasi_email'))
                                             <span class="text-danger">{{ $errors->first('organisasi_email') }}</span>
