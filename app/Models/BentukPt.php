@@ -18,6 +18,6 @@ class BentukPt extends Model
 
     public function organisasi()
     {
-        return $this->hasOne(Organisasi::class, 'organisasi_bentuk_pt', 'id');
+        return $this->hasMany(Organisasi::class, 'organisasi_bentuk_pt', 'id');
     }
 }

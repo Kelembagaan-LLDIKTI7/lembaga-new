@@ -36,19 +36,18 @@ class DashboardController extends Controller
 
         $programStudiCounts = BentukPt::select('id', 'bentuk_nama')
             ->with(['organisasi' => function ($query) {
-                $query->select('id', 'organisasi_bentuk_pt', 'organisasi_type_id')
-                    ->where('organisasi_type_id', 3)
-                    ->whereHas('prodis', function ($query) {
-                        $query->where('prodi_active_status', 'Aktif');
-                    });
-            }])
-            ->withCount(['organisasi as program_studi_count' => function ($query) {
                 $query->where('organisasi_type_id', 3)
-                    ->whereHas('prodis', function ($query) {
-                        $query->where('prodi_active_status', 'Aktif');
-                    });
+                    ->select('id', 'organisasi_bentuk_pt')
+                    ->withCount(['prodis as active_program_studi_count' => function ($subQuery) {
+                        $subQuery->where('prodi_active_status', 'Aktif');
+                    }]);
             }])
             ->get();
+
+        $programStudiCounts = $programStudiCounts->map(function ($bentukPt) {
+            $bentukPt->total_program_studi = $bentukPt->organisasi->sum('active_program_studi_count');
+            return $bentukPt;
+        });
 
         $jenjangList = ['D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'];
 

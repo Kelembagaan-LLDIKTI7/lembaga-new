@@ -257,8 +257,7 @@
                 labels: programStudiData.map(item => item.bentuk_nama),
                 datasets: [{
                     label: 'Jumlah Program Studi Aktif',
-                    data: programStudiData.map(item => item
-                        .program_studi_count),
+                    data: programStudiData.map(item => item.total_program_studi),
                     backgroundColor: 'rgba(75, 192, 192, 0.7)',
                     borderRadius: 5
                 }]
