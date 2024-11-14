@@ -47,7 +47,7 @@ class PeringkatAkademiController extends Controller
         }
 
         PeringkatAkreditasi::create($data);
-        return redirect()->route('peringkat-akademi.index')->with('success', 'Peringkat Akademi created successfully.');
+        return redirect()->route('peringkat-akademik.index')->with('success', 'Peringkat Akademi created successfully.');
     }
 
     /**
@@ -90,7 +90,7 @@ class PeringkatAkademiController extends Controller
         }
 
         $peringkat->update($data);
-        return redirect()->route('peringkat-akademi.index')->with('success', 'Peringkat Akademi updated successfully.');
+        return redirect()->route('peringkat-akademik.index')->with('success', 'Peringkat Akademi updated successfully.');
     }
 
     /**
@@ -104,6 +104,6 @@ class PeringkatAkademiController extends Controller
             \Storage::delete($peringkat->peringkat_logo);
         }
         $peringkat->delete();
-        return redirect()->route('peringkat-akademi.index')->with('success', 'Peringkat Akademi deleted successfully.');
+        return redirect()->route('peringkat-akademik.index')->with('success', 'Peringkat Akademi deleted successfully.');
     }
 }
