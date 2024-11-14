@@ -136,7 +136,9 @@
                                             <th>Title</th>
                                             <th>Tanggal Kejadian</th>
                                             <th>Status</th>
+                                            @can('View Detail Perkara')
                                             <th>Aksi</th>
+                                            @endCan
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -148,13 +150,14 @@
                                                     {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
                                                 </td>
                                                 <td>{{ $perkara->status }}</td>
+                                                @can('View Detail Perkara')
                                                 <td>
                                                     <a href="{{ route('dashboard.show', $perkara->id) }}"
                                                         class="btn btn-sm btn-primary me-2">
                                                         <i class="ti ti-info-circle"></i>
                                                     </a>
-
                                                 </td>
+                                                @endCan
                                             </tr>
                                         @endforeach
                                 </table>

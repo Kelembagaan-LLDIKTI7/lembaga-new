@@ -36,6 +36,7 @@ class UserSeeder extends Seeder
 
             'View Role Permissions',
             'Add Role Permissions',
+            'View Detail Perkara',
 
             'Create User',
             'Edit User',
