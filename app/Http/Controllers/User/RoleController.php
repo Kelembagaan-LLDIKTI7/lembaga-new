@@ -20,20 +20,38 @@ class RoleController extends Controller
         return view('Roles.Index', compact('roles'));
     }
 
+    private function validateRoleData(Request $request, $roleId = null)
+    {
+        $rules = [
+            'name' => 'required|string|unique:roles,name' . ($roleId ? ',' . $roleId : ''),
+        ];
+
+        $messages = [
+            'name.required' => 'Nama Role harus diisi.',
+            'name.string' => 'Nama Role harus berupa string.',
+            'name.unique' => 'Nama Role sudah digunakan.',
+        ];
+
+        return $request->validate($rules, $messages);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'name' => 'string|required|unique:roles,name',
-        ]);
-        $validateData['guard_name'] = 'web';
+        $validatedData = $this->validateRoleData($request);
+        $validatedData['guard_name'] = 'web';
 
-        $role = Role::create($validateData);
+        $role = Role::create($validatedData);
 
-        return $role ? redirect()->route('roles.index')->with('success', 'Data Telah Ditambahkan')
-            : redirect()->route('roles.index')->with('failed', 'Data Gagal Ditambahkan');
+        if ($role) {
+            session()->flash('success', 'Data Telah Ditambahkan');
+        } else {
+            session()->flash('failed', 'Data Gagal Ditambahkan');
+        }
+
+        return redirect()->route('roles.index');
     }
 
     /**
@@ -41,16 +59,18 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|string|unique:roles,name,' . $role->id,
-        ]);
-
+        $validatedData = $this->validateRoleData($request, $role->id);
         $validatedData['guard_name'] = 'web';
+
         $updated = $role->update($validatedData);
 
-        return $updated
-            ? redirect()->route('roles.index')->with('success', 'Data Berhasil Diubah')
-            : redirect()->route('roles.index')->with('failed', 'Data Gagal Diubah');
+        if ($updated) {
+            session()->flash('success', 'Data Berhasil Diubah');
+        } else {
+            session()->flash('failed', 'Data Gagal Diubah');
+        }
+
+        return redirect()->route('roles.index');
     }
 
     /**

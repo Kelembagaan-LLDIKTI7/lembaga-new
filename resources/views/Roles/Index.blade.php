@@ -36,7 +36,7 @@
                                 @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
-                               <table id="dom_jq_event"
+                                <table id="dom_jq_event"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
                                     <thead>
@@ -94,13 +94,17 @@
                                                             @method('PUT')
                                                             <div class="mb-3">
                                                                 <label for="editRoleName-{{ $item->id }}" class="form-label">Nama Role</label>
-                                                                <input type="text" class="form-control" id="editRoleName-{{ $item->id }}" name="name" value="{{ $item->name }}" required>
+                                                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="editRoleName-{{ $item->id }}" name="name" value="{{ old('name', $item->name) }}" required>
+                                                                @error('name')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
                                                             </div>
                                                             <div class="text-end">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                                                                 <button type="submit" class="btn btn-primary">Submit</button>
                                                             </div>
                                                         </form>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -128,7 +132,10 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="addRoleName" class="form-label">Nama Role</label>
-                                <input type="text" class="form-control" id="addRoleName" name="name" placeholder="Ex: Admin" required>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="addRoleName" name="name" value="{{ old('name') }}" placeholder="Ex: Admin" required>
+                                @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="text-end">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
