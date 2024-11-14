@@ -8,6 +8,7 @@ use App\Models\Organisasi;
 use App\Models\Perkara;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -16,17 +17,16 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+
         $perkaras = Perkara::where('status', 'Berjalan')
             ->select('id', 'title', 'tanggal_kejadian', 'status')
             ->orderBy('created_at', 'desc')
             ->get();
 
         $perguruanTinggi = Organisasi::where('organisasi_type_id', 3)->count();
-
         $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')->count();
-
         $bentukPt = BentukPt::count();
-
         $kota = Kota::count();
 
         $bentukPtCounts = BentukPt::select('id', 'bentuk_nama')
@@ -53,6 +53,16 @@ class DashboardController extends Controller
 
         $programPendidikanCounts = ProgramStudi::select('prodi_jenjang')
             ->where('prodi_active_status', 'Aktif')
+            ->when($user->hasRole('Badan Penyelenggara'), function ($query) use ($user) {
+                $query->whereHas('perguruanTinggi', function ($query) use ($user) {
+                    $query->where('parent_id', $user->id_organization);
+                });
+            })
+            ->when($user->hasRole('Perguruan Tinggi'), function ($query) use ($user) {
+                $query->whereHas('perguruanTinggi', function ($query) use ($user) {
+                    $query->where('id', $user->id_organization); 
+                });
+            })
             ->groupBy('prodi_jenjang')
             ->selectRaw('prodi_jenjang, COUNT(*) as count')
             ->pluck('count', 'prodi_jenjang')
@@ -78,18 +88,8 @@ class DashboardController extends Controller
             'programStudiCounts' => $programStudiCounts,
             'programPendidikanCounts' => $programPendidikanCounts,
         ]);
-
-        // return response()->json([
-        //     'perkaras' => $perkaras,
-        //     'perguruanTinggi' => $perguruanTinggi,
-        //     'programStudi' => $programStudi,
-        //     'bentukPt' => $bentukPt,
-        //     'kota' => $kota,
-        //     'bentukPtCounts' => $bentukPtCounts,
-        //     'programStudiCounts' => $programStudiCounts,
-        //     'programPendidikanCounts' => $programPendidikanCounts,
-        // ]);
     }
+
 
     /**
      * Show the form for creating a new resource.

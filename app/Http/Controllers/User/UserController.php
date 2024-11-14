@@ -57,8 +57,8 @@ class UserController extends Controller
         $user->assignRole($request->input('roles'));
 
         return $user
-            ? to_route('User.Index')->with('success', 'User successfully added')
-            : to_route('User.Index')->with('failed', 'Failed to add user');
+            ? to_route('user.index')->with('success', 'User successfully added')
+            : to_route('user.index')->with('failed', 'Failed to add user');
     }
 
     /**
@@ -109,8 +109,8 @@ class UserController extends Controller
         $user->syncRoles($request->input('roles'));
 
         return $user
-            ? to_route('User.Index')->with('success', 'User successfully updated')
-            : to_route('User.Index')->with('failed', 'Failed to update user');
+            ? to_route('user.index')->with('success', 'User successfully updated')
+            : to_route('iser.index')->with('failed', 'Failed to update user');
     }
 
     /**
@@ -121,8 +121,8 @@ class UserController extends Controller
         $user->delete();
 
         return $user
-            ? to_route('User.Index')->with('success', 'User successfully deleted')
-            : to_route('User.Index')->with('failed', 'Failed to delete user');
+            ? to_route('user.index')->with('success', 'User successfully deleted')
+            : to_route('user.index')->with('failed', 'Failed to delete user');
     }
 
     public function updatePassword(Request $request)

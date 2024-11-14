@@ -192,15 +192,15 @@
                                 <div class="btn-center mt-6">
                                     <div id="buttons">
                                         <button type="submit" class="btn btn-primary">Simpan</button>
-                                        <a href="{{ route('perguruan-tinggi.index') }}" type="submit"
-                                            class="btn btn-primary">Keluar</a>
+                                        <a href="{{ route('perguruan-tinggi.show', ['id' => $organisasi->id]) }}"
+                                            type="submit" class="btn btn-primary">Keluar</a>
                                     </div>
-                                    {{-- <div id="loading">
+                                    <div id="loading">
                                         <div class="d-flex align-items-center">
                                             <strong>Loading...</strong>
                                             <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                     <div id="error-messages"></div>
                                 </div>
                             </div>

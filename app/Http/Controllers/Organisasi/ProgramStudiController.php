@@ -204,6 +204,7 @@ class ProgramStudiController extends Controller
 
         $akreditasis = Akreditasi::where('id_prodi', $id)
             ->select(
+                'id',
                 'id_prodi',
                 'akreditasi_sk',
                 'akreditasi_tgl_awal',
@@ -211,7 +212,7 @@ class ProgramStudiController extends Controller
                 'akreditasi_status',
                 'aktif',
                 'id_peringkat_akreditasi'
-            )->with(['prodi:id,prodi_kode,prodi_nama,prodi_jenjang', 'peringkat_akreditasi:id,peringkat_logo'])->orderBy('created_at', 'asc')->get();
+            )->with(['prodi:id,prodi_kode,prodi_nama,prodi_jenjang', 'peringkat_akreditasi:id,peringkat_nama'])->orderBy('created_at', 'asc')->get();
 
         $perkaras = Perkara::where('id_prodi', $id)
             ->select('id', 'title', 'tanggal_kejadian', 'status')
