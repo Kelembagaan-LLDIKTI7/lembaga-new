@@ -105,7 +105,8 @@
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>
                                             <th colspan="3" class="text-center align-middle">Program Studi</th>
-                                            <th colspan="4" class="text-center align-middle">Akreditasi Program Studi</th>
+                                            <th colspan="4" class="text-center align-middle">Akreditasi Program Studi
+                                            </th>
                                             <th rowspan="2" class="text-center align-middle">Status</th>
                                         </tr>
                                         <tr>
@@ -125,19 +126,15 @@
                                                     $akreditasi->akreditasi_tgl_akhir,
                                                 )->isBefore(\Carbon\Carbon::today());
                                             @endphp
-                                            <tr class="{{ $isExpired ? 'table-danger' : '' }}">
+                                            <tr class="{{ $isExpired ? 'table-danger' : '' }}"
+                                                data-id="{{ $akreditasi->id }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_kode }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_nama }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
                                                 <td>{{ $akreditasi->akreditasi_sk }}</td>
                                                 <td>
-                                                @if ($akreditasi->peringkat_akreditasi->peringkat_logo)
-                                                        <img src="{{ asset('storage/peringkat_akreditasi/' . $akreditasi->peringkat_akreditasi->peringkat_logo) }}"
-                                                            alt="Logo" width="50" height="50">
-                                                    @else
-                                                        <span>No Logo</span>
-                                                    @endif
+                                                    {{ $akreditasi->peringkat_akreditasi->peringkat_nama }}
                                                 </td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
@@ -163,10 +160,10 @@
                                 <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
                                     @can('Create Perkara Program Studi')
-                                    <a href="{{ route('perkara-prodi.create', $prodi->id) }}"
-                                        class="btn btn-primary btn-sm mb-2">
-                                        Tambah Perkara
-                                    </a>
+                                        <a href="{{ route('perkara-prodi.create', $prodi->id) }}"
+                                            class="btn btn-primary btn-sm mb-2">
+                                            Tambah Perkara
+                                        </a>
                                     @endCan
                                     <thead>
                                         <tr>
@@ -188,18 +185,18 @@
                                                 <td>{{ $perkara->status }}</td>
                                                 <td>
                                                     @can('View Detail Perkara Program Studi')
-                                                    <a href="{{ route('perkara-prodi.show', $perkara->id) }}"
-                                                        class="btn btn-sm btn-primary me-2">
-                                                        <i class="ti ti-info-circle"></i>
-                                                    </a>
+                                                        <a href="{{ route('perkara-prodi.show', $perkara->id) }}"
+                                                            class="btn btn-sm btn-primary me-2">
+                                                            <i class="ti ti-info-circle"></i>
+                                                        </a>
                                                     @endCan
                                                     @can('Update Status Perkara Program Studi')
-                                                    <button class="btn btn-sm btn-warning edit-status"
-                                                        data-bs-toggle="modal" data-bs-target="#editStatusModal"
-                                                        data-id="{{ $perkara->id }}"
-                                                        data-status="{{ $perkara->status }}">
-                                                        Edit Status
-                                                    </button>
+                                                        <button class="btn btn-sm btn-warning edit-status"
+                                                            data-bs-toggle="modal" data-bs-target="#editStatusModal"
+                                                            data-id="{{ $perkara->id }}"
+                                                            data-status="{{ $perkara->status }}">
+                                                            Edit Status
+                                                        </button>
                                                     @endCan
                                                 </td>
                                             </tr>
@@ -216,6 +213,7 @@
                     class="btn btn-primary">Keluar</a>
             </div>
             @include('Modal.Bp.Edit')
+            @include('Akreditasi.ProgramStudi.Detail')
         </div>
     </div>
 @endsection
@@ -229,6 +227,50 @@
             $('#pemimpin_perguruan_tinggi').DataTable();
 
             $('#perkara').DataTable();
+
+            var hasAkreditasiDokumenPermission = @json(auth()->user()->can('View PDF Akreditasi Perguruan Tinggi'));
+
+            $('#complex_header tbody').on('click', 'tr', function() {
+                const akreditasiId = $(this).data('id'); // Pastikan setiap <tr> memiliki data-id
+
+                // Fetch data menggunakan jQuery AJAX
+                $.ajax({
+                    url: '{{ route('akreditasi-program-studi.show', ':id') }}'
+                        .replace(':id', akreditasiId),
+                    method: 'GET',
+                    success: function(data) {
+                        // Mengisi data ke modal
+                        $('#org_nama').text(data.organisasi_nama);
+                        $('#prodi_nama').text(data.prodi_nama);
+                        $('#lembaga_nama').text(data.lembaga_nama);
+                        $('#peringkat_nama').text(data.peringkat_nama);
+                        $('#akreditasi_sk').text(data.akreditasi_sk);
+                        $('#akreditasi_status').text(data.akreditasi_status);
+                        $('#akreditasi_tgl_awal').text(data.akreditasi_tgl_awal);
+                        $('#akreditasi_tgl_akhir').text(data.akreditasi_tgl_akhir);
+
+                        if (data.akreditasi_dokumen) {
+                            if (hasAkreditasiDokumenPermission) {
+                                $('#akreditasi_dokumen').val(data.akreditasi_dokumen);
+                            } else {
+                                $('#akreditasi_dokumen').val('Access Denied');
+                            }
+                        } else {
+                            // Menghapus btn PDF jika tidak ada dokumen
+                            $('#btn_pdf').remove();
+                        }
+
+                        $('#editBtn').attr('href',
+                            `/akreditasi-program-studi/${akreditasiId}/edit`);
+
+                        // Tampilkan modal
+                        $('#detailRecordModalAkreditasi').modal('show');
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
         });
     </script>
 
