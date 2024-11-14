@@ -164,6 +164,7 @@
                                     'View Detail Perkara Program Studi',
                                     'Update Status Perkara Program Studi',
                                 ],
+                                'Dashboard' => [ 'View Detail Perkara'],
                             ];
                         @endphp
 

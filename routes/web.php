@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
-        Route::get('/{id}', [DashboardController::class, 'show'])->name('show');
+        Route::get('/{id}', [DashboardController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara');
     });
 
     Route::prefix('peringkat-akademik')->name('peringkat-akademik.')->group(function () {
