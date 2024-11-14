@@ -176,8 +176,10 @@ Route::middleware('auth')->group(function () {
         Route::middleware('role.access:Edit Akreditasi Program Studi')->group(function () {
             Route::get('/{id}/edit', [AkreditasiProdiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [AkreditasiProdiController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-update', [AkreditasiProdiController::class, 'validationUpdate'])->name('validationUpdate');
         });
         Route::get('/{id}', [AkreditasiProdiController::class, 'show'])->name('show')->middleware('role.access:Detail Akreditasi Program Studi');
+        Route::post('/view-pdf', [AkreditasiProdiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akreditasi Program Studi');
     });
 
     Route::prefix('akreditasi-perguruan-tinggi')->name('akreditasi-perguruan-tinggi.')->group(function () {
