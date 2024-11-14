@@ -36,7 +36,7 @@
                                 @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
-                               <table id="dom_jq_event"
+                                <table id="dom_jq_event"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%" id="PermissionTable">
                                     <thead>
@@ -89,7 +89,10 @@
                                                             @method('PUT')
                                                             <div class="mb-3">
                                                                 <label for="editPermissionName-{{ $item->id }}" class="form-label">Nama Permission</label>
-                                                                <input type="text" class="form-control" id="editPermissionName-{{ $item->id }}" name="name" value="{{ $item->name }}" required>
+                                                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="editPermissionName-{{ $item->id }}" name="name" value="{{ old('name', $item->name) }}" required>
+                                                                @error('name')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
                                                             </div>
                                                             <div class="text-end">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -123,7 +126,10 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="addPermissionName" class="form-label">Nama Role</label>
-                                <input type="text" class="form-control" id="addPermissionName" name="name" placeholder="Ex: Create User" required>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="addPermissionName" name="name" value="{{ old('name') }}" placeholder="Ex: Create User" required>
+                                @error('name')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="text-end">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>

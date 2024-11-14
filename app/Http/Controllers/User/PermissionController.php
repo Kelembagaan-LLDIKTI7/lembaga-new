@@ -20,23 +20,38 @@ class PermissionController extends Controller
         return view('Permission.Index', ['permission' => $permission]);
     }
 
+    private function validatePermissionData(Request $request, $permissionId = null)
+    {
+        $rules = [
+            'name' => 'required|string|unique:permissions,name' . ($permissionId ? ',' . $permissionId : ''),
+        ];
+
+        $messages = [
+            'name.required' => 'Nama Permission harus diisi.',
+            'name.string' => 'Nama Permission harus berupa string.',
+            'name.unique' => 'Nama Permission sudah digunakan.',
+        ];
+
+        return $request->validate($rules, $messages);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'name' => 'string|required|unique:permissions,name',
-        ]);
-        $validateData['guard_name'] = $validateData['guard_name'] ?? 'web';
+        $validatedData = $this->validatePermissionData($request);
+        $validatedData['guard_name'] = 'web';
 
-        $permission = Permission::create($validateData);
+        $permission = Permission::create($validatedData);
 
         if ($permission) {
-            return to_route('permission.index')->with('success', 'Data Telah Ditambahkan');
+            session()->flash('success', 'Data Telah Ditambahkan');
         } else {
-            return to_route('permission.index')->with('failed', 'Data Gagal Ditambahkan');
+            session()->flash('failed', 'Data Gagal Ditambahkan');
         }
+
+        return redirect()->route('permission.index');
     }
 
     /**
@@ -44,18 +59,18 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        $validateData = $request->validate([
-            'name' => 'string|required|unique:permissions,name,' . $permission->id,
-        ]);
+        $validatedData = $this->validatePermissionData($request, $permission->id);
+        $validatedData['guard_name'] = 'web';
 
-        $validateData['guard_name'] = $validateData['guard_name'] ?? 'web';
-        $permission->update($validateData);
+        $updated = $permission->update($validatedData);
 
-        if ($permission) {
-            return to_route('permission.index')->with('success', 'Data Berhasil Diubah');
+        if ($updated) {
+            session()->flash('success', 'Data Telah Ditambahkan');
         } else {
-            return to_route('permission.index')->with('failed', 'Data Gagal Diubah');
+            session()->flash('failed', 'Data Gagal Ditambahkan');
         }
+
+        return redirect()->route('permission.index');
     }
 
     /**

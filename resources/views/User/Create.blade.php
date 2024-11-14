@@ -29,56 +29,80 @@
                 @csrf
                 <div class="col-md-6">
                     <label for="validationCustom01" class="form-label">Nama</label>
-                    <input type="text" class="form-control" id="validationCustom01" name="name" value=""
-                        required>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="validationCustom01" name="name" value="{{ old('name') }}" required>
+                    @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-md-6">
                     <label for="validationCustom01" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="validationCustom01" name="email" value=""
-                        required>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="validationCustom01" name="email" value="{{ old('email') }}" required>
+                    @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-md-6">
                     <label for="validationCustom01" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="validationCustom01" name="password" value=""
-                        required>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" id="validationCustom01" name="password" required>
+                    @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-md-6">
                     <label for="validationCustom01" class="form-label">Nomor Induk Pegawai</label>
-                    <input type="text" class="form-control" id="validationCustom01" name="nip" value=""
-                        required>
+                    <input type="text" class="form-control @error('nip') is-invalid @enderror" id="validationCustom01" name="nip" value="{{ old('nip') }}" required>
+                    @error('nip')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-md-6">
                     <label for="is_active" class="form-label">Status Aktif</label>
-                    <select class="form-control" id="is_active" data-choices name="is_active" required>
+                    <select class="form-control @error('is_active') is-invalid @enderror" id="is_active" data-choices name="is_active" required>
                         <option value="">Pilih Status</option>
-                        <option value="1">Aktif</option>
-                        <option value="0">Tidak Aktif</option>
+                        <option value="1" {{ old('is_active') == '1' ? 'selected' : '' }}>Aktif</option>
+                        <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Tidak Aktif</option>
                     </select>
+                    @error('is_active')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-md-6">
                     <label for="RolesLabel" class="form-label">Role User</label>
-                    <select class="form-control" id="roles" data-choices data-choices-removeItem multiple name="roles[]" required>
-                        <option value="">Roles</option>
+                    <select class="form-control @error('roles') is-invalid @enderror" id="roles" name="roles[]" multiple required>
                         @foreach ($roles as $role)
-                        <option value="{{ $role }}">{{ $role }}</option>
+                        <option value="{{ $role }}" {{ (collect(old('roles'))->contains($role)) ? 'selected' : '' }}>{{ $role }}</option>
                         @endforeach
                     </select>
+                    @error('roles')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
 
                 <div class="col-md-6">
                     <label for="OrganizationLabel" class="form-label">Organisasi User</label>
-                    <select class="form-control" id="id_organizations" data-choices name="id_organization" required>
+                    <select class="form-control @error('id_organization') is-invalid @enderror" id="id_organizations" data-choices name="id_organization" required>
                         <option value="">Organisasi</option>
                         @foreach ($organization as $item)
-                        <option value="{{ $item->id }}">{{ $item->organisasi_nama }}</option>
+                        <option value="{{ $item->id }}" {{ old('id_organization') == $item->id ? 'selected' : '' }}>{{ $item->organisasi_nama }}</option>
                         @endforeach
                     </select>
+                    @error('id_organization')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <div class="col-12">
-                    <button class="btn btn-primary" type="submit">Submit form</button>
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="button" class="btn btn-danger me-1 mb-1" onclick="window.history.back();">Go Back</button>
+                    <button class="btn btn-primary me-1 mb-1" type="submit">Submit form</button>
                 </div>
             </form>
+
 
         </div>
         <!-- container-fluid -->
@@ -102,4 +126,18 @@
         </div>
     </footer> --}}
 </div>
+@endsection
+
+@section('js')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const element = document.getElementById('roles');
+        const choices = new Choices(element, {
+            removeItemButton: true, // Menampilkan tombol silang untuk membatalkan pilihan
+            placeholder: true,
+            placeholderValue: 'Pilih Role...',
+            maxItemCount: -1, // Tidak ada batas jumlah pilihan
+        });
+    });
+</script>
 @endsection

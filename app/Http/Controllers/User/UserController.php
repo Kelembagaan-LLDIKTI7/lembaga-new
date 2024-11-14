@@ -110,7 +110,7 @@ class UserController extends Controller
 
         return $user
             ? to_route('user.index')->with('success', 'User successfully updated')
-            : to_route('iser.index')->with('failed', 'Failed to update user');
+            : to_route('user.index')->with('failed', 'Failed to update user');
     }
 
     /**
