@@ -36,121 +36,18 @@ class DashboardController extends Controller
 
         $programStudiCounts = BentukPt::select('id', 'bentuk_nama')
             ->with(['organisasi' => function ($query) {
-                $query->select('id', 'organisasi_bentuk_pt', 'organisasi_type_id')
-                    ->where('organisasi_type_id', 3)
-                    ->whereHas('prodis', function ($query) {
-                        $query->where('prodi_active_status', 'Aktif');
-                    });
-            }])
-            ->withCount(['organisasi as program_studi_count' => function ($query) {
                 $query->where('organisasi_type_id', 3)
-                    ->whereHas('prodis', function ($query) {
-                        $query->where('prodi_active_status', 'Aktif');
-                    });
-            }])->get();
+                    ->select('id', 'organisasi_bentuk_pt')
+                    ->withCount(['prodis as active_program_studi_count' => function ($subQuery) {
+                        $subQuery->where('prodi_active_status', 'Aktif');
+                    }]);
+            }])
+            ->get();
 
-        if ($user->hasRole('Badan Penyelenggara')) {
-
-            $perguruanTinggi = Organisasi::where('organisasi_type_id', 3)
-                ->where('parent_id', $user->id_organization) 
-                ->count();
-
-            $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')
-                ->whereHas('perguruanTinggi', function ($query) use ($user) {
-                    $query->where('parent_id', $user->id_organization); 
-                })->count();
-
-            $bentukPtCounts = BentukPt::select('id', 'bentuk_nama')
-                ->withCount(['organisasi' => function ($query) use ($user) {
-                    $query->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization); 
-                }])->get();
-
-            $perkaras = Perkara::where('status', 'Berjalan')
-                ->where(function ($query) use ($user) {
-                    $query->where('id_organization', $user->id_organization)
-                        ->orWhereIn('id_organization', function ($subQuery) use ($user) {
-                            $subQuery->select('id')
-                                ->from('organisasis')
-                                ->where('parent_id', $user->id_organization)
-                                ->where('organisasi_type_id', 3);
-                        })
-                        ->orWhereIn('id_prodi', function ($subQuery) use ($user) {
-                            $subQuery->select('program_studis.id')
-                                ->from('program_studis')
-                                ->join('organisasis as pt', 'program_studis.id_organization', '=', 'pt.id')
-                                ->where('pt.parent_id', $user->id_organization)
-                                ->where('pt.organisasi_type_id', 3);
-                        });
-                })
-                ->select('id', 'title', 'tanggal_kejadian', 'status')
-                ->orderBy('created_at', 'desc')
-                ->get();
-
-            $programStudiCounts = BentukPt::select('id', 'bentuk_nama')
-                ->with(['organisasi' => function ($query) use ($user) {
-                    $query->select('id', 'organisasi_bentuk_pt', 'organisasi_type_id')
-                        ->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization) 
-                        ->whereHas('prodis', function ($query) {
-                            $query->where('prodi_active_status', 'Aktif');
-                        });
-                }])
-                ->withCount(['organisasi as program_studi_count' => function ($query) use ($user) {
-                    $query->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization) 
-                        ->whereHas('prodis', function ($query) {
-                            $query->where('prodi_active_status', 'Aktif');
-                        });
-                }])->get();
-        }
-
-        if ($user->hasRole('Perguruan Tinggi')) {
-            $perguruanTinggi = Organisasi::where('id', $user->id_organization)
-                ->where('organisasi_type_id', 3) 
-                ->count();
-
-            $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')
-                ->where('id_organization', $user->id_organization)
-                ->count();
-
-            $bentukPtCounts = BentukPt::select('id', 'bentuk_nama')
-                ->withCount(['organisasi' => function ($query) use ($user) {
-                    $query->where('organisasi_type_id', 3)
-                        ->where('id', $user->id_organization); 
-                }])->get();
-
-                $perkaras = Perkara::where('status', 'Berjalan')
-                ->where(function ($query) use ($user) {
-                    $query->where('id_organization', $user->id_organization)
-                        ->orWhereIn('id_prodi', function ($subQuery) use ($user) {
-                            $subQuery->select('id')
-                                ->from('program_studis')
-                                ->where('id_organization', $user->id_organization); 
-                        });
-                })
-                ->select('id', 'title', 'tanggal_kejadian', 'status')
-                ->orderBy('created_at', 'desc')
-                ->get();
-            
-
-            $programStudiCounts = BentukPt::select('id', 'bentuk_nama')
-                ->with(['organisasi' => function ($query) use ($user) {
-                    $query->select('id', 'organisasi_bentuk_pt', 'organisasi_type_id')
-                        ->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization) 
-                        ->whereHas('prodis', function ($query) {
-                            $query->where('prodi_active_status', 'Aktif');
-                        });
-                }])
-                ->withCount(['organisasi as program_studi_count' => function ($query) use ($user) {
-                    $query->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization) 
-                        ->whereHas('prodis', function ($query) {
-                            $query->where('prodi_active_status', 'Aktif');
-                        });
-                }])->get();
-        }
+        $programStudiCounts = $programStudiCounts->map(function ($bentukPt) {
+            $bentukPt->total_program_studi = $bentukPt->organisasi->sum('active_program_studi_count');
+            return $bentukPt;
+        });
 
         $jenjangList = ['D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'];
 
