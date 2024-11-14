@@ -35,7 +35,7 @@ class AkreditasiProdiController extends Controller
             'id_organization' => 'required',
             'akreditasi_status' => 'required|string|in:Berlaku,Dicabut,Tidak Berlaku',
             'id_lembaga_akreditasi' => 'required',
-            'sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'akreditasi_sk.required' => 'Nomor harus diisi.',
             'akreditasi_sk.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
@@ -47,7 +47,6 @@ class AkreditasiProdiController extends Controller
             'akreditasi_status.required' => 'Status harus dipilih.',
             'akreditasi_status.in' => 'Status harus dipilih.',
             'id_lembaga_akreditasi.required' => 'Lembaga harus dipilih.',
-            'sk_dokumen.required' => 'Dokumen harus diisi.',
             'sk_dokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
             'sk_dokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
         ]);
@@ -99,7 +98,7 @@ class AkreditasiProdiController extends Controller
             'id_organization' => 'required',
             'akreditasi_status' => 'required|string|in:Berlaku,Dicabut,Tidak Berlaku',
             'id_lembaga_akreditasi' => 'required',
-            'sk_dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ]);
 
         $updateAkreditasi = Akreditasi::where('id_prodi', $request->id_prodi)->where('aktif', 'Ya')->first();

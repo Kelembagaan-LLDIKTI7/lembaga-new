@@ -21,7 +21,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form id="formAkreditasiProdi" action="{{ route('akreditasi-program-studi.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formAkreditasiProdi" action="{{ route('akreditasi-program-studi.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
                     <input type="hidden" name="id_organization" value="{{ $prodi->perguruanTinggi->id }}"
@@ -110,9 +111,9 @@
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <label for="sk_dokumen" class="required-label">Dokumen SK</label>
-                                    <input type="file" name="sk_dokumen" class="form-control" required
-                                        accept=".pdf,.doc,.docx" onchange="previewFile(event)">
+                                    <label for="sk_dokumen">Dokumen SK</label>
+                                    <input type="file" name="sk_dokumen" class="form-control" accept=".pdf,.doc,.docx"
+                                        onchange="previewFile(event)">
                                     <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
                                     <div id="file-preview" class="mt-3"></div> <!-- Tempat untuk preview -->
                                     @error('sk_dokumen')
@@ -136,78 +137,78 @@
 @endsection
 
 @section('js')
-<script>
-    $(document).ready(function() {
-        $('#loading').hide();
-        $('#formAkreditasiProdi').on('submit', function(event) {
-            event.preventDefault(); // Menghentikan submit default form
+    <script>
+        $(document).ready(function() {
+            $('#loading').hide();
+            $('#formAkreditasiProdi').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
 
-            $('#buttons').hide();
-            $('#loading').show();
+                $('#buttons').hide();
+                $('#loading').show();
 
-            // Mengambil data form
-            const formData = new FormData(this);
+                // Mengambil data form
+                const formData = new FormData(this);
 
-            // AJAX request ke server untuk validasi
-            $.ajax({
-                url: '{{ route('akreditasi-program-studi.validationStore') }}',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    if (response.success) {
-                        submitToStore(formData);
-                    } else {
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('akreditasi-program-studi.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            $('#loading').hide();
+                            $('#buttons').show();
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
                         $('#loading').hide();
                         $('#buttons').show();
-                        displayErrors(response.errors);
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
                     }
-                },
-                error: function(xhr) {
-                    $('#loading').hide();
-                    $('#buttons').show();
-                    $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
-                }
+                });
             });
-        });
 
-        function displayErrors(errors) {
-            // Bersihkan semua pesan error sebelumnya
-            $('.error-message').text('');
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
 
-            // Tampilkan pesan error baru
-            for (let field in errors) {
-                const errorMessages = errors[field].join(
-                    ', '); // Gabungkan pesan error jika ada lebih dari satu
-                $(`#error-${field}`).text(
-                    errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
             }
-        }
 
-        function submitToStore(formData) {
-            $.ajax({
-                url: '{{ route('akreditasi-program-studi.store') }}',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    if (response.success) {
-                        window.location.href = response.redirect_url;
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('akreditasi-program-studi.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
                     }
-                },
-                error: function(xhr) {
-                    $('#loading').hide();
-                    $('#buttons').show();
-                    $('#error-messages').html(
-                        'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
-                }
-            });
-        }
+                });
+            }
 
-    });
-</script>
+        });
+    </script>
     <script>
         function previewFile(event) {
             const file = event.target.files[0];
