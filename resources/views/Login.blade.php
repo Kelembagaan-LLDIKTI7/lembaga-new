@@ -17,6 +17,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.11.2/toastify.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -54,10 +55,14 @@
                                         <input type="text" class="form-control" name="email"
                                             id="exampleInputEmail1" aria-describedby="emailHelp">
                                     </div>
-                                    <div class="mb-4">
+                                    <div class="position-relative mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Password</label>
                                         <input type="password" name="password" class="form-control"
                                             id="exampleInputPassword1">
+                                        <span id="togglePassword" class="position-absolute"
+                                            style="top: 50%; right: 10px; cursor: pointer; transform: translateY(10%);">
+                                            <i class="fas fa-eye" id="eyeIcon"></i>
+                                        </span>
                                     </div>
 
                                     <button class="btn btn-primary w-100 rounded-2 mb-4 py-8" type="submit">
@@ -124,6 +129,27 @@
             });
         </script>
     @endif
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const togglePassword = document.getElementById("togglePassword");
+            const passwordField = document.getElementById("exampleInputPassword1");
+            const eyeIcon = document.getElementById("eyeIcon");
+
+            togglePassword.addEventListener("click", function() {
+                const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+                passwordField.setAttribute("type", type);
+
+                if (type === "password") {
+                    eyeIcon.classList.remove("fa-eye-slash");
+                    eyeIcon.classList.add("fa-eye");
+                } else {
+                    eyeIcon.classList.remove("fa-eye");
+                    eyeIcon.classList.add("fa-eye-slash");
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>
