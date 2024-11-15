@@ -40,7 +40,7 @@ class PeringkatAkademiController extends Controller
         ]);
 
         $data = $request->all();
-        $data['peringkat_status'] = 'active';
+        $data['peringkat_status'] = 'Aktif';
 
         if ($request->hasFile('peringkat_logo')) {
             $data['peringkat_logo'] = $request->file('peringkat_logo')->store('peringkat_akademi');
@@ -75,7 +75,7 @@ class PeringkatAkademiController extends Controller
         $request->validate([
             'peringkat_nama' => 'required|string',
             'peringkat_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'peringkat_status' => 'required|string|in:active,inactive', // Validate status
+            'peringkat_status' => 'required|string|in:Aktif,Tidak Aktif', // Validate status
         ]);
 
         $peringkat = PeringkatAkreditasi::findOrFail($id);
