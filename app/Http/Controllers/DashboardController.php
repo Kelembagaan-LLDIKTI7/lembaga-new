@@ -72,14 +72,14 @@ class DashboardController extends Controller
                             $subQuery->selectRaw("CONVERT(`id` USING utf8mb4) COLLATE utf8mb4_unicode_ci")
                                 ->from('organisasis')
                                 ->whereRaw("CONVERT(`parent_id` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization])
-                                ->where('organisasi_type_id', 2);
+                                ->where('organisasi_type_id', 3);
                         })
                         ->orWhereIn('id_prodi', function ($subQuery) use ($user) {
                             $subQuery->selectRaw("CONVERT(`program_studis`.`id` USING utf8mb4) COLLATE utf8mb4_unicode_ci")
                                 ->from('program_studis')
                                 ->join('organisasis as pt', 'program_studis.id_organization', '=', 'pt.id')
                                 ->whereRaw("CONVERT(`pt`.`parent_id` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization])
-                                ->where('pt.organisasi_type_id', 2);
+                                ->where('pt.organisasi_type_id', 3);
                         });
                 })
                 ->select('id', 'title', 'tanggal_kejadian', 'status')
