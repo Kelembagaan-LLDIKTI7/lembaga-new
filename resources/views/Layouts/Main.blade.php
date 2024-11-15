@@ -22,7 +22,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />\
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         .select2-container--default .select2-selection--single {
             height: 40px;
@@ -126,7 +126,6 @@
 
             $('#dom_jq_event tbody').on('click', 'tr', function() {
                 var data = table.row(this).data();
-                // Perform your action here instead of an alert
                 console.log('Row clicked:', data);
             });
         });
@@ -161,23 +160,61 @@
             });
         });
     </script>
-   <script>
-    $(document).ready(function() {
-        $('#changePasswordForm').on('submit', function(e) {
-            const newPassword = $('#new_password').val();
-            const confirmPassword = $('#new_password_confirmation').val();
 
-            if (newPassword !== confirmPassword) {
-                e.preventDefault(); 
-                $('#passwordError').show(); 
-            } else {
-                $('#passwordError').hide(); 
-            }
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            @if ($errors->any())
+                var myModal = new bootstrap.Modal(document.getElementById('changePasswordModal'), {});
+                myModal.show();
+            @endif
         });
-    });
-</script>
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#changePasswordForm').on('submit', function(e) {
+                const newPassword = $('#new_password').val();
+                const confirmPassword = $('#new_password_confirmation').val();
+
+                if (newPassword !== confirmPassword) {
+                    e.preventDefault();
+                    $('#passwordError').show();
+                } else {
+                    $('#passwordError').hide();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleNewPassword = document.getElementById("toggleNewPassword");
+            const newPasswordField = document.getElementById("new_password");
+            const eyeIconNewPassword = document.getElementById("eyeIconNewPassword");
+
+            toggleNewPassword.addEventListener("click", function() {
+                const type = newPasswordField.getAttribute("type") === "password" ? "text" : "password";
+                newPasswordField.setAttribute("type", type);
+                eyeIconNewPassword.classList.toggle("fa-eye");
+                eyeIconNewPassword.classList.toggle("fa-eye-slash");
+            });
+
+            const toggleNewPasswordConfirmation = document.getElementById("toggleNewPasswordConfirmation");
+            const newPasswordConfirmationField = document.getElementById("new_password_confirmation");
+            const eyeIconNewPasswordConfirmation = document.getElementById("eyeIconNewPasswordConfirmation");
+
+            toggleNewPasswordConfirmation.addEventListener("click", function() {
+                const type = newPasswordConfirmationField.getAttribute("type") === "password" ? "text" :
+                    "password";
+                newPasswordConfirmationField.setAttribute("type", type);
+                eyeIconNewPasswordConfirmation.classList.toggle("fa-eye");
+                eyeIconNewPasswordConfirmation.classList.toggle("fa-eye-slash");
+            });
+        });
+    </script>
+
     @yield('js')
-    
+
 </body>
 
 </html>

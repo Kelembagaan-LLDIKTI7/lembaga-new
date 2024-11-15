@@ -127,14 +127,25 @@ class UserController extends Controller
 
     public function updatePassword(Request $request)
     {
+        // dd($request->all());
         $request->validate([
-            'new_password' => 'required|string|min:10|confirmed',
+            'new_password' => [
+                'required',
+                'string',
+                'min:10',
+                'confirmed'
+            ]
+        ], [
+            'new_password.required' => 'Password baru wajib diisi.',
+            'new_password.string' => 'Password baru harus berupa teks.',
+            'new_password.min' => 'Password baru minimal harus terdiri dari 10 karakter.',
+            'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.'
         ]);
 
-        $user = Auth::user();
-        $user->password = Hash::make($request->new_password);
-        $user->save();
-        
+        Auth::user()->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
         return redirect()->back()->with('success', 'Password berhasil diperbarui');
     }
 }
