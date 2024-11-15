@@ -51,16 +51,16 @@ class DashboardController extends Controller
 
         if ($user->hasRole('Badan Penyelenggara')) {
             $perguruanTinggi = Organisasi::where('organisasi_type_id', 3)
-                ->where('parent_id', $user->id_organization) 
+                ->where('parent_id', $user->id_organization)
                 ->count();
             $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')
                 ->whereHas('perguruanTinggi', function ($query) use ($user) {
-                    $query->where('parent_id', $user->id_organization); 
+                    $query->where('parent_id', $user->id_organization);
                 })->count();
             $bentukPtCounts = BentukPt::select('id', 'bentuk_nama')
                 ->withCount(['organisasi' => function ($query) use ($user) {
                     $query->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization); 
+                        ->where('parent_id', $user->id_organization);
                 }])->get();
             $perkaras = Perkara::where('status', 'Berjalan')
                 ->where(function ($query) use ($user) {
@@ -86,14 +86,14 @@ class DashboardController extends Controller
                 ->with(['organisasi' => function ($query) use ($user) {
                     $query->select('id', 'organisasi_bentuk_pt', 'organisasi_type_id')
                         ->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization) 
+                        ->where('parent_id', $user->id_organization)
                         ->whereHas('prodis', function ($query) {
                             $query->where('prodi_active_status', 'Aktif');
                         });
                 }])
                 ->withCount(['organisasi as program_studi_count' => function ($query) use ($user) {
                     $query->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization) 
+                        ->where('parent_id', $user->id_organization)
                         ->whereHas('prodis', function ($query) {
                             $query->where('prodi_active_status', 'Aktif');
                         });
@@ -101,7 +101,7 @@ class DashboardController extends Controller
         }
         if ($user->hasRole('Perguruan Tinggi')) {
             $perguruanTinggi = Organisasi::where('id', $user->id_organization)
-                ->where('organisasi_type_id', 3) 
+                ->where('organisasi_type_id', 3)
                 ->count();
             $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')
                 ->where('id_organization', $user->id_organization)
@@ -109,33 +109,33 @@ class DashboardController extends Controller
             $bentukPtCounts = BentukPt::select('id', 'bentuk_nama')
                 ->withCount(['organisasi' => function ($query) use ($user) {
                     $query->where('organisasi_type_id', 3)
-                        ->where('id', $user->id_organization); 
+                        ->where('id', $user->id_organization);
                 }])->get();
-                $perkaras = Perkara::where('status', 'Berjalan')
+            $perkaras = Perkara::where('status', 'Berjalan')
                 ->where(function ($query) use ($user) {
-                    $query->where('id_organization', $user->id_organization)
+                    $query->whereRaw("CONVERT(`id_organization` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization])
                         ->orWhereIn('id_prodi', function ($subQuery) use ($user) {
-                            $subQuery->select('id')
+                            $subQuery->selectRaw("CONVERT(`id` USING utf8mb4) COLLATE utf8mb4_unicode_ci")
                                 ->from('program_studis')
-                                ->where('id_organization', $user->id_organization); 
+                                ->whereRaw("CONVERT(`id_organization` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization]);
                         });
                 })
                 ->select('id', 'title', 'tanggal_kejadian', 'status')
                 ->orderBy('created_at', 'desc')
                 ->get();
-            
+
             $programStudiCounts = BentukPt::select('id', 'bentuk_nama')
                 ->with(['organisasi' => function ($query) use ($user) {
                     $query->select('id', 'organisasi_bentuk_pt', 'organisasi_type_id')
                         ->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization) 
+                        ->where('parent_id', $user->id_organization)
                         ->whereHas('prodis', function ($query) {
                             $query->where('prodi_active_status', 'Aktif');
                         });
                 }])
                 ->withCount(['organisasi as program_studi_count' => function ($query) use ($user) {
                     $query->where('organisasi_type_id', 3)
-                        ->where('parent_id', $user->id_organization) 
+                        ->where('parent_id', $user->id_organization)
                         ->whereHas('prodis', function ($query) {
                             $query->where('prodi_active_status', 'Aktif');
                         });
@@ -153,7 +153,7 @@ class DashboardController extends Controller
             })
             ->when($user->hasRole('Perguruan Tinggi'), function ($query) use ($user) {
                 $query->whereHas('perguruanTinggi', function ($query) use ($user) {
-                    $query->where('id', $user->id_organization); 
+                    $query->where('id', $user->id_organization);
                 });
             })
             ->groupBy('prodi_jenjang')
