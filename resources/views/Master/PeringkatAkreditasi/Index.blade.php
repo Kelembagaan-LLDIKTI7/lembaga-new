@@ -37,7 +37,7 @@
                                                     <label for="peringkat_logo" class="form-label">Logo</label>
                                                     <input type="file" class="form-control" id="peringkat_logo" name="peringkat_logo">
                                                 </div>
-                                                <input type="hidden" name="peringkat_status" value="active">
+                                                <input type="hidden" name="peringkat_status" value="Aktif">
                                                 <button type="submit" class="btn btn-primary">Simpan</button>
                                             </form>
                                         </div>
