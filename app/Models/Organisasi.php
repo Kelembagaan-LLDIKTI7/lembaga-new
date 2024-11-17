@@ -80,4 +80,11 @@ class Organisasi extends Model
     {
         return $this->hasMany(Perkara::class, 'id_organization', 'id');
     }
+
+    public function scopeWithDescendants($query)
+    {
+        return $query->with(['children' => function ($q) {
+            $q->with('children'); 
+        }]);
+    }
 }
