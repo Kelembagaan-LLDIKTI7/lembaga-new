@@ -18,8 +18,21 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
-        $organization = Organisasi::all();
+        if (Auth::user()->hasRole('Super Admin')) {
+            $user = User::all();
+            $organization = Organisasi::all();
+        } else {
+            $userOrganizationId = Auth::user()->id_organization;
+            $organizationIds = Organisasi::where('id', $userOrganizationId)
+                ->orWhere('parent_id', $userOrganizationId)
+                ->with('children')
+                ->get()
+                ->pluck('id')
+                ->toArray();
+            $user = User::whereIn('id_organization', $organizationIds)->get();
+
+            $organization = Organisasi::whereIn('id', $organizationIds)->get();
+        }
 
         return view('User.Index', ['user' => $user, 'organization' => $organization]);
     }
@@ -30,9 +43,21 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
-        $organization = Organisasi::all();
 
-        return view('User.Create', ['roles' => $roles, 'organization' => $organization]);
+        if (Auth::user()->hasRole('Super Admin')) {
+            $organization = Organisasi::withDescendants()->get();
+        } else {
+            $userOrganizationId = Auth::user()->id_organization;
+            $organization = Organisasi::where('id', $userOrganizationId)
+                ->orWhere('parent_id', $userOrganizationId)
+                ->withDescendants()
+                ->get();
+        }
+
+        return view('User.Create', [
+            'roles' => $roles,
+            'organization' => $organization,
+        ]);
     }
 
     /**
@@ -74,11 +99,29 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if ($user->hasRole('Super Admin')) {
+            abort(403, 'Unauthorized action.');
+        }
+    
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
-        $organization = Organisasi::all();
 
-        return view('User.Edit', ['user' => $user, 'roles' => $roles, 'userRoles' => $userRoles, 'organization' => $organization]);
+        if (Auth::user()->hasRole('Super Admin')) {
+            $organization = Organisasi::withDescendants()->get();
+        } else {
+            $userOrganizationId = Auth::user()->id_organization;
+            $organization = Organisasi::where('id', $userOrganizationId)
+                ->orWhere('parent_id', $userOrganizationId)
+                ->withDescendants()
+                ->get();
+        }
+
+        return view('User.Edit', [
+            'user' => $user,
+            'roles' => $roles,
+            'userRoles' => $userRoles,
+            'organization' => $organization,
+        ]);
     }
 
     /**
@@ -86,6 +129,10 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if ($user->hasRole('Super Admin')) {
+            abort(403, 'Unauthorized action.');
+        }
+            
         $validateData = $request->validate([
             'name' => 'string|required',
             'email' => 'string|required|unique:users,email,' . $user->id,

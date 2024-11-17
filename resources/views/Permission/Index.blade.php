@@ -1,8 +1,5 @@
 @extends('Layouts.Main')
 @section('title', 'Permission Role User')
-@section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-@endsection
 @section('content')
 <div class="main-content">
     <div class="page-content">

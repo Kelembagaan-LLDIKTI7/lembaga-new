@@ -86,8 +86,7 @@
 
                 <div class="col-md-6">
                     <label for="OrganizationLabel" class="form-label">Organisasi User</label>
-                    <select class="form-control @error('id_organization') is-invalid @enderror" id="id_organizations" data-choices name="id_organization" required>
-                        <option value="">Organisasi</option>
+                    <select class="form-control @error('id_organization') is-invalid @enderror" id="id_organizations" name="id_organization" required>
                         @foreach ($organization as $item)
                         <option value="{{ $item->id }}" {{ old('id_organization') == $item->id ? 'selected' : '' }}>{{ $item->organisasi_nama }}</option>
                         @endforeach
@@ -133,11 +132,26 @@
     document.addEventListener('DOMContentLoaded', function() {
         const element = document.getElementById('roles');
         const choices = new Choices(element, {
-            removeItemButton: true, // Menampilkan tombol silang untuk membatalkan pilihan
+            removeItemButton: true,
             placeholder: true,
             placeholderValue: 'Pilih Role...',
-            maxItemCount: -1, // Tidak ada batas jumlah pilihan
+            maxItemCount: -1,
         });
     });
+    document.addEventListener('DOMContentLoaded', function() {
+        const element = document.getElementById('id_organizations');
+        const choices = new Choices(element, {
+            removeItemButton: false,
+            placeholder: true,
+            placeholderValue: 'Organisasi',
+            maxItemCount: 1, 
+            searchResultLimit: 5,
+            searchFields: ['label'],
+            fuseOptions: {
+                threshold: 0.3,
+                minMatchCharLength: 2,
+            }
+        });
+    }); 
 </script>
 @endsection

@@ -1,8 +1,5 @@
 @extends('Layouts.Main')
 @section('title', 'Role User')
-@section('css')
-<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-@endsection
 @section('content')
 <div class="main-content">
     <div class="page-content">
@@ -36,8 +33,7 @@
                                 @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
-                                <table id="dom_jq_event"
-                                    class="table-striped table-bordered display text-nowrap table border"
+                                <table id="dom_jq_event" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
                                     <thead>
                                         <tr>
