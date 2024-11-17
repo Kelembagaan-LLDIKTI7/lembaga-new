@@ -54,12 +54,14 @@
                                 @canAny(['Edit User', 'Delete User'])
                                 <td>
                                     @can('Edit User')
+                                    @if(!$item->hasRole('Super Admin'))
                                     <a href="{{ route('user.edit', $item->id) }}" class="btn btn-sm btn-success">
                                         <i class="ri-edit-2-line"></i> Edit
                                     </a>
-                                    @endCan
-
+                                    @endif
+                                    @endcan
                                     @can('Delete User')
+                                    @if(!$item->hasRole('Super Admin'))
                                     <a href="#" class="btn btn-sm btn-danger" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                         <i class="ri-delete-bin-line"></i> Delete
                                     </a>
@@ -67,7 +69,8 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    @endCan
+                                    @endif
+                                    @endcan
                                 </td>
                                 @endCanAny
                             </tr>
