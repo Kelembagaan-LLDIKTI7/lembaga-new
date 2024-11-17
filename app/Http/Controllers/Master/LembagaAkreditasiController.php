@@ -34,27 +34,25 @@ class LembagaAkreditasiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'lembaga_nama' => 'required|string',
-            'lembaga_nama_singkat' => 'required|string',
+        // dd($request->all());
+        $validated = $request->validate([
+            'lembaga_nama' => 'required|string|max:255',
+            'lembaga_nama_singkat' => 'required|string|max:255',
             'lembaga_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'lembaga_status' => 'required|string',
         ]);
-
-        $data = $request->all();
-        if (!isset($data['lembaga_status'])) {
-            $data['lembaga_status'] = 'aktif';
-        }
 
         if ($request->hasFile('lembaga_logo')) {
             $file = $request->file('lembaga_logo');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('lembaga_akreditasi', $filename, 'public');
-            $data['lembaga_logo'] = $filename;
+            $validated['lembaga_logo'] = $filename;
         }
 
-        LembagaAkreditasi::create($data);
-        return redirect()->route('lembaga-akademik.index');
+        $validated['lembaga_status'] = 'Aktif';
+
+        LembagaAkreditasi::create($validated);
+
+        return redirect()->route('lembaga-akademik.index')->with('success', 'Lembaga Akreditasi berhasil ditambahkan!');
     }
 
     /**
