@@ -356,7 +356,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Program Studi</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="program_studi"
                                     class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
                                     @can('Create Program Studi')
@@ -524,7 +524,6 @@
 
     <script>
         var hasAkreditasiDokumenPermission = @json(auth()->user()->can('View PDF Akreditasi Perguruan Tinggi'));
-        // Event listener untuk tombol detail
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('akreditasi-detail')) {
                 var akreditasiId = event.target.getAttribute('data-id');

@@ -47,11 +47,14 @@ class LembagaAkreditasiController extends Controller
         }
 
         if ($request->hasFile('lembaga_logo')) {
-            $data['lembaga_logo'] = $request->file('lembaga_logo')->store('lembaga_akreditasi');
+            $file = $request->file('lembaga_logo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('lembaga_akreditasi', $filename, 'public');
+            $data['lembaga_logo'] = $filename;
         }
 
         LembagaAkreditasi::create($data);
-        return redirect()->route('lembaga.index');
+        return redirect()->route('lembaga-akademik.index');
     }
 
     /**
@@ -76,6 +79,7 @@ class LembagaAkreditasiController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $request->validate([
             'lembaga_nama' => 'required|string',
             'lembaga_nama_singkat' => 'required|string',
@@ -84,17 +88,23 @@ class LembagaAkreditasiController extends Controller
         ]);
 
         $lembaga = LembagaAkreditasi::findOrFail($id);
-        $data = $request->all();
+
+        $data = $request->only(['lembaga_nama', 'lembaga_nama_singkat', 'lembaga_status']);
+
         if ($request->hasFile('lembaga_logo')) {
-            // Delete old logo if exists
-            if ($lembaga->lembaga_logo) {
-                \Storage::delete($lembaga->lembaga_logo);
+            if ($lembaga->lembaga_logo && \Storage::disk('public')->exists('lembaga_akreditasi/' . $lembaga->lembaga_logo)) {
+                \Storage::disk('public')->delete('lembaga_akreditasi/' . $lembaga->lembaga_logo);
             }
-            $data['lembaga_logo'] = $request->file('lembaga_logo')->store('lembaga_akreditasi');
+
+            $file = $request->file('lembaga_logo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('lembaga_akreditasi', $filename, 'public');
+            $data['lembaga_logo'] = $filename;
         }
 
         $lembaga->update($data);
-        return redirect()->route('lembaga.index');
+
+        return redirect()->route('lembaga-akademik.index')->with('success', 'Lembaga berhasil diperbarui.');
     }
 
     /**
@@ -103,11 +113,10 @@ class LembagaAkreditasiController extends Controller
     public function destroy(string $id)
     {
         $lembaga = LembagaAkreditasi::findOrFail($id);
-        // Delete logo if exists
         if ($lembaga->lembaga_logo) {
             \Storage::delete($lembaga->lembaga_logo);
         }
         $lembaga->delete();
-        return redirect()->route('lembaga.index')->with('success', 'Lembaga deleted successfully.');
+        return redirect()->route('lembaga-akademik.index')->with('success', 'Lembaga deleted successfully.');
     }
 }
