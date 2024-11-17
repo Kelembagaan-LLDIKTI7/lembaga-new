@@ -24,6 +24,7 @@ use App\Http\Controllers\Pimpinan\PimpinanPerguruanTinggiController;
 use App\Http\Controllers\User\RoleController;
 use App\Http\Controllers\Sk\SkPerguruanTinggiController;
 use App\Http\Controllers\User\UserController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -105,7 +106,6 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OrganisasiTypeController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Jenis Organisasi');
     });
 
-    // Routes for Jabatan
     Route::prefix('jabatan')->name('jabatan.')->group(function () {
         Route::get('/', [JabatanController::class, 'index'])->name('index')->middleware('role.access:View Jabatan');
         Route::middleware('role.access:Create Jabatan')->group(function () {
@@ -327,5 +327,15 @@ Route::middleware('auth')->group(function () {
             Route::patch('/{id}/status-update', [PerkaraProdiController::class, 'updateStatus'])->name('status-update');
             Route::put('/{id}/validation-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdate');
         });
+    });
+
+    Route::get('/generate', function () {
+        Artisan::call('storage:link');
+        return 'Storage complete!';
+    });
+    
+    Route::get('/optimize', function () {
+        Artisan::call('optimize');
+        return 'Optimization complete!';
     });
 });

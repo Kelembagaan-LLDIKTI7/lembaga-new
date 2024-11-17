@@ -34,20 +34,24 @@ class PeringkatAkademiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        // dd($request->all());
+        $validated = $request->validate([
             'peringkat_nama' => 'required|string',
             'peringkat_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->all();
-        $data['peringkat_status'] = 'Aktif';
-
         if ($request->hasFile('peringkat_logo')) {
-            $data['peringkat_logo'] = $request->file('peringkat_logo')->store('peringkat_akademi');
+            $file = $request->file('peringkat_logo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('peringkat_akreditasi', $filename, 'public');
+            $validated['peringkat_logo'] = $filename;
         }
 
-        PeringkatAkreditasi::create($data);
-        return redirect()->route('peringkat-akademik.index')->with('success', 'Peringkat Akademi created successfully.');
+        $validated['peringkat_status'] = 'Aktif';
+
+        PeringkatAkreditasi::create($validated);
+
+        return redirect()->route('peringkat-akademik.index')->with('success', 'Peringkat Akreditasi berhasil ditambahkan!');
     }
 
     /**
@@ -75,21 +79,26 @@ class PeringkatAkademiController extends Controller
         $request->validate([
             'peringkat_nama' => 'required|string',
             'peringkat_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'peringkat_status' => 'required|string|in:Aktif,Tidak Aktif', // Validate status
+            'peringkat_status' => 'required|string|in:Aktif,Tidak Aktif',
         ]);
 
         $peringkat = PeringkatAkreditasi::findOrFail($id);
-        $data = $request->all();
+
+        $data = $request->only(['peringkat_nama', 'peringkat_status']);
 
         if ($request->hasFile('peringkat_logo')) {
-            // Delete old logo if exists
-            if ($peringkat->peringkat_logo) {
-                \Storage::delete($peringkat->peringkat_logo);
+            if ($peringkat->peringkat_logo && \Storage::disk('public')->exists('peringkat_akreditasi/' . $peringkat->peringkat_logo)) {
+                \Storage::disk('public')->delete('peringkat_akreditasi/' . $peringkat->peringkat_logo);
             }
-            $data['peringkat_logo'] = $request->file('peringkat_logo')->store('peringkat_akademi');
+
+            $file = $request->file('peringkat_logo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('peringkat_akreditasi', $filename, 'public');
+            $data['peringkat_logo'] = $filename;
         }
 
         $peringkat->update($data);
+
         return redirect()->route('peringkat-akademik.index')->with('success', 'Peringkat Akademi updated successfully.');
     }
 
