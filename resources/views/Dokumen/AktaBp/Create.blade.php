@@ -52,6 +52,18 @@
                                         @enderror
                                         <small class="text-danger error-message" id="error-akta_nama_notaris"></small>
                                     </div>
+                                    <div class="form-group mb-3">
+                                        <label for="aktaDokumen">Link Dokumen</label>
+                                        <input type="text" class="form-control" id="validationCustom03"
+                                            name="aktaDokumen" value="{{ old('aktaDokumen') }}">
+                                        @error('aktaDokumen')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-aktaDokumen"></small>
+                                        <div id="file-preview"></div>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-6">
@@ -102,20 +114,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <div class="form-group mb-3">
-                                        <label for="aktaDokumen" class="required-label">Dokumen SK</label>
-                                        <input type="file" name="aktaDokumen" class="form-control" required
-                                            accept=".pdf,.doc,.docx" onchange="previewFile(event)">
-                                        <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
-                                        @error('aktaDokumen')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                        <small class="text-danger error-message" id="error-aktaDokumen"></small>
-                                        <div id="file-preview"></div>
-                                    </div>
+
                                 </div>
 
                                 <div class="btn-center mt-3">
@@ -213,27 +212,5 @@
             }
 
         });
-    </script>
-    <script>
-        function previewFile(event) {
-            const file = event.target.files[0];
-            const previewContainer = document.getElementById('file-preview');
-            previewContainer.innerHTML = '';
-
-            if (file) {
-                const fileName = document.createElement('p');
-                fileName.textContent = `File terpilih: ${file.name}`;
-                previewContainer.appendChild(fileName);
-
-                if (file.type === 'application/pdf') {
-                    const fileURL = URL.createObjectURL(file);
-                    const iframe = document.createElement('iframe');
-                    iframe.src = fileURL;
-                    iframe.width = '100%';
-                    iframe.height = '400px';
-                    previewContainer.appendChild(iframe);
-                }
-            }
-        }
     </script>
 @endsection

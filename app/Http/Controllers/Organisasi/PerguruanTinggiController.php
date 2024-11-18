@@ -40,7 +40,13 @@ class PerguruanTinggiController extends Controller
                 'organisasi_status',
                 'parent_id'
             )
-            ->with('parent:id,organisasi_nama')
+            ->with([
+                'parent:id,organisasi_nama',
+                'akreditasis' => function ($query) {
+                    $query->where('akreditasi_status', 'Berlaku')
+                        ->with('peringkat_akreditasi:id,peringkat_nama');
+                }
+            ])
             ->orderBy('organisasi_kode', 'asc');
 
         if ($user->hasRole('Perguruan Tinggi')) {
@@ -221,11 +227,20 @@ class PerguruanTinggiController extends Controller
             'organisasi_alamat' => $validated['organisasi_alamat'],
             'organisasi_logo' => $logoPath ?? null,
             'organisasi_type_id' => 3,
-            'organisasi_status' => $validated['berubah'],
+            'organisasi_status' => 'Aktif',
             'organisasi_berubah_id' => !empty($organisasiBerubahId) ? json_encode($organisasiBerubahId) : null,
             'organisasi_bentuk_pt' => $validated['organisasi_bentuk_pt'],
             'parent_id' => $validated['parent_id'],
         ]);
+
+        if ($organisasiBerubahId) {
+            foreach ($organisasiBerubahId as $id) {
+                Organisasi::where('id', $id)->update([
+                    'organisasi_status' => 'Alih Bentuk',
+                ]);
+            }
+        }
+
         SuratKeputusan::create([
             'sk_nomor' => $validated['sk_nomor'],
             'sk_tanggal' => $validated['sk_tanggal'],

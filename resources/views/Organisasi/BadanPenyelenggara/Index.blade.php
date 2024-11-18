@@ -14,15 +14,15 @@
                             </div>
                             <div class="mb-2">
                                 @can('Import Badan Penyelenggara')
-                                <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
-                                    data-bs-target="#importExcel">
-                                    Import Excel
-                                </button>
+                                    <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
+                                        data-bs-target="#importExcel">
+                                        Import Excel
+                                    </button>
                                 @endCan
                                 @can('Create Badan Penyelenggara')
-                                <a href="{{ route('badan-penyelenggara.create') }}" class="btn btn-primary btn-sm">
-                                    Tambah Badan Penyelenggara
-                                </a>
+                                    <a href="{{ route('badan-penyelenggara.create') }}" class="btn btn-primary btn-sm">
+                                        Tambah Badan Penyelenggara
+                                    </a>
                                 @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
@@ -37,26 +37,19 @@
                                             <th>Telepon BP</th>
                                             <th>Kota BP</th>
                                             <th>Status BP</th>
-                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($badanPenyelenggaras as $badanPenyelenggara)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $badanPenyelenggara->organisasi_nama }}</td>
+                                                <td><a
+                                                        href="{{ route('badan-penyelenggara.show', $badanPenyelenggara->id) }}">{{ $badanPenyelenggara->organisasi_nama }}</a>
+                                                </td>
                                                 <td>{{ $badanPenyelenggara->organisasi_email }}</td>
                                                 <td>{{ $badanPenyelenggara->organisasi_telp }}</td>
                                                 <td>{{ $badanPenyelenggara->organisasi_kota }}</td>
                                                 <td>{{ $badanPenyelenggara->organisasi_status }}</td>
-                                                <td>
-                                                    @can('Detail Badan Penyelenggara')
-                                                    <a href="{{ route('badan-penyelenggara.show', $badanPenyelenggara->id) }}"
-                                                        class="btn btn-sm btn-primary me-2">
-                                                        <i class="ti ti-info-circle"></i>
-                                                    </a>
-                                                    @endcan
-                                                </td>
                                             </tr>
                                         @endforeach
                                 </table>

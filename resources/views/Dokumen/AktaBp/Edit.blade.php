@@ -110,11 +110,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group mb-3">
                                         <label for="aktaDokumen" class="required-label">Dokumen SK</label>
-                                        <input type="file" name="aktaDokumen" class="form-control"
-                                            accept=".pdf,.doc,.docx" onchange="previewFile(event)">
-                                        <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
-                                        <div id="file-preview"></div>
+                                        <input type="text" class="form-control" id="validationCustom03"
+                                            name="aktaDokumen" value="{{ old('aktaDokumen', $akta->akta_dokumen) }}">
                                         @error('aktaDokumen')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
