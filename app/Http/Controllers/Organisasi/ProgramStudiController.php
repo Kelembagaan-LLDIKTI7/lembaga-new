@@ -21,7 +21,19 @@ class ProgramStudiController extends Controller
      */
     public function index()
     {
-        //
+        $prodis = ProgramStudi::select('id', 'id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status')
+            ->with(['akreditasis' => function ($query) {
+                $query->select('id', 'akreditasi_sk', 'id_prodi', 'id_peringkat_akreditasi', 'akreditasi_tgl_akhir')
+                    ->orderBy('created_at', 'desc')
+                    ->limit(1);
+            }, 'akreditasis.peringkat_akreditasi' => function ($query) {
+                $query->select('id', 'peringkat_nama', 'peringkat_logo');
+            }])
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        // return response()->json(['prodis' => $prodis]);
+        return view('Organisasi.ProgramStudi.IndexAdmin', ['prodis' => $prodis]);
     }
 
     /**
