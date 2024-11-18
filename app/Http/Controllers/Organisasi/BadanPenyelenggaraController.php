@@ -92,7 +92,7 @@ class BadanPenyelenggaraController extends Controller
             'akta_nama_notaris' => 'required|string|max:255',
             'kotaAkta' => 'required|string',
             'akta_jenis' => 'required|string|in:Pendirian,Perubahan',
-            'aktaDokumen' => 'required|mimes:pdf,doc,docx|max:2048',
+            'aktaDokumen' => 'nullable|string',
             'akta_keterangan' => 'nullable|string',
             'selectedBP' => 'nullable',
             'organisasi_website' => 'nullable',
@@ -118,9 +118,6 @@ class BadanPenyelenggaraController extends Controller
             'kotaAkta.required' => 'Kota akta harus diisi.',
             'akta_jenis.required' => 'Jenis akta harus diisi.',
             'akta_jenis.in' => 'Jenis akta harus dipilih.',
-            'aktaDokumen.required' => 'Dokumen akta harus diunggah.',
-            'aktaDokumen.mimes' => 'File dokumen akta harus berformat pdf, doc, atau docx.',
-            'aktaDokumen.max' => 'Ukuran file dokumen akta tidak boleh lebih dari 2 MB.',
         ]);
 
         if ($validator->fails()) {
@@ -155,7 +152,7 @@ class BadanPenyelenggaraController extends Controller
             'akta_nama_notaris' => 'required|string|max:255',
             'kotaAkta' => 'required|string',
             'akta_jenis' => 'required|string|in:Pendirian,Perubahan',
-            'aktaDokumen' => 'required|mimes:pdf,doc,docx|max:2048',
+            'aktaDokumen' => 'nullable|string',
             'akta_keterangan' => 'nullable|string',
             'selectedBP' => 'nullable',
             'organisasi_website' => 'nullable',
@@ -181,9 +178,6 @@ class BadanPenyelenggaraController extends Controller
             'kotaAkta.required' => 'Kota akta harus diisi.',
             'akta_jenis.required' => 'Jenis akta harus diisi.',
             'akta_jenis.in' => 'Jenis akta harus dipilih.',
-            'aktaDokumen.required' => 'Dokumen akta harus diunggah.',
-            'aktaDokumen.mimes' => 'File dokumen akta harus berformat pdf, doc, atau docx.',
-            'aktaDokumen.max' => 'Ukuran file dokumen akta tidak boleh lebih dari 2 MB.',
         ]);
 
         $bpLama = Organisasi::where('id', $validatedData['selectedBP'])
@@ -232,11 +226,6 @@ class BadanPenyelenggaraController extends Controller
             ]);
         }
 
-        if ($request->hasFile('aktaDokumen')) {
-            $aktaPath = $request->file('aktaDokumen')->store('akta', 'public');
-            $validatedData['aktaDokumen'] = $aktaPath;
-        }
-
         if ($bpLama) {
             $bpLama->update([
                 'organisasi_status' => 'Tidak',
@@ -256,7 +245,7 @@ class BadanPenyelenggaraController extends Controller
             'akta_kota_notaris' => $validatedData['kotaAkta'],
             'akta_jenis' => $validatedData['akta_jenis'],
             'akta_status' => 'Aktif',
-            'akta_dokumen' => $validatedData['aktaDokumen'],
+            'akta_dokumen' => $validatedData['aktaDokumen'] ?? null,
             'akta_keterangan' => $validatedData['akta_keterangan'],
             'id_organization' => $bp->id,
             'id_user' => Auth::user()->id,
@@ -397,18 +386,18 @@ class BadanPenyelenggaraController extends Controller
         ]);
 
         DB::table('organisasis')
-        ->where('id', $id)
-        ->update([
-            'organisasi_nama' => $validatedData['organisasi_nama'],
-            'organisasi_nama_singkat' => $validatedData['organisasi_nama_singkat'] ?? null,
-            'organisasi_email' => $validatedData['organisasi_email'] ?? null,
-            'organisasi_telp' => $validatedData['organisasi_telp'] ?? null,
-            'organisasi_website' => $validatedData['organisasi_website'] ?? null,
-            'organisasi_alamat' => $validatedData['organisasi_alamat'] ?? null,
-            'organisasi_kota' => $validatedData['organisasi_kota'] ?? null,
-            'updated_at' => now(),
-            'users_id' => Auth::user()->id,
-        ]);
+            ->where('id', $id)
+            ->update([
+                'organisasi_nama' => $validatedData['organisasi_nama'],
+                'organisasi_nama_singkat' => $validatedData['organisasi_nama_singkat'] ?? null,
+                'organisasi_email' => $validatedData['organisasi_email'] ?? null,
+                'organisasi_telp' => $validatedData['organisasi_telp'] ?? null,
+                'organisasi_website' => $validatedData['organisasi_website'] ?? null,
+                'organisasi_alamat' => $validatedData['organisasi_alamat'] ?? null,
+                'organisasi_kota' => $validatedData['organisasi_kota'] ?? null,
+                'updated_at' => now(),
+                'users_id' => Auth::user()->id,
+            ]);
 
         return redirect()->route('badan-penyelenggara.show', ['id' => $id])->with('success', 'Badan Penyelenggara berhasil ditambahkan.');
     }

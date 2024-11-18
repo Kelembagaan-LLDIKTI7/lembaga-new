@@ -51,7 +51,7 @@ class AktaBpController extends Controller
             'akta_jenis' => 'required',
             'kotaAkta' => 'required|string',
             'akta_keterangan' => 'nullable|string',
-            'aktaDokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
+            'aktaDokumen' => 'nullable|string',
         ], [
             'akta_nomor.required' => 'Nomor harus diisi.',
             'akta_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
@@ -61,9 +61,8 @@ class AktaBpController extends Controller
             'akta_nama_notaris.max' => 'Nama Notaris tidak boleh lebih dari 255 karakter.',
             'akta_jenis.required' => 'Jenis harus diisi.',
             'kotaAkta.required' => 'Kota harus diisi.',
-            'aktaDokumen.required' => 'Dokumen harus diisi.',
-            'aktaDokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
-            'aktaDokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
+            'akta_keterangan.string' => 'Keterangan harus berupa string.',
+            'aktaDokumen.string' => 'Dokumen harus berupa string.',
         ]);
 
         if ($validator->fails()) {
@@ -84,10 +83,6 @@ class AktaBpController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->hasFile('aktaDokumen')) {
-            $akta = $request->file('aktaDokumen')->store('akta', 'public');
-        }
-
         Akta::create([
             'akta_nomor' => $request->akta_nomor,
             'akta_tanggal' => $request->akta_tanggal,
@@ -95,7 +90,7 @@ class AktaBpController extends Controller
             'akta_kota_notaris' => $request->kotaAkta,
             'id_organization' => $request->id_organization,
             'akta_jenis' => $request->akta_jenis,
-            'akta_dokumen' => $akta,
+            'akta_dokumen' => $request->aktaDokumen ?? null,
             'akta_keterangan' => $request->akta_keterangan,
             'id_user' => Auth::user()->id,
         ]);
@@ -157,7 +152,7 @@ class AktaBpController extends Controller
             'akta_jenis' => 'required',
             'kotaAkta' => 'required|string',
             'akta_keterangan' => 'nullable|string',
-            'aktaDokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'aktaDokumen' => 'nullable|string',
         ], [
             'akta_nomor.required' => 'Nomor harus diisi.',
             'akta_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
@@ -168,9 +163,7 @@ class AktaBpController extends Controller
             'akta_jenis.required' => 'Jenis harus diisi.',
             'kotaAkta.required' => 'Kota harus diisi.',
             'akta_keterangan.string' => 'Keterangan harus berupa string.',
-            'akta_keterangan.max' => 'Keterangan tidak boleh lebih dari 5 karakter.',
-            'aktaDokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
-            'aktaDokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
+            'aktaDokumen.string' => 'Dokumen harus berupa string.',
         ]);
 
         if ($validator->fails()) {
@@ -199,7 +192,7 @@ class AktaBpController extends Controller
             'akta_jenis' => 'required',
             'kotaAkta' => 'required|string',
             'akta_keterangan' => 'nullable|string',
-            'aktaDokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'aktaDokumen' => 'nullable|string',
         ], [
             'akta_nomor.required' => 'Nomor harus diisi.',
             'akta_nomor.max' => 'Nomor tidak boleh lebih dari 255 karakter.',
@@ -209,36 +202,21 @@ class AktaBpController extends Controller
             'akta_nama_notaris.max' => 'Nama Notaris tidak boleh lebih dari 255 karakter.',
             'akta_jenis.required' => 'Jenis harus diisi.',
             'kotaAkta.required' => 'Kota harus diisi.',
-            'aktaDokumen.mimes' => 'Dokumen harus berformat PDF, DOC, atau DOCX.',
-            'aktaDokumen.max' => 'Dokumen tidak boleh lebih dari 2MB.',
+            'akta_keterangan.string' => 'Keterangan harus berupa string.',
+            'aktaDokumen.string' => 'Dokumen harus berupa string.',
         ]);
 
-        if ($request->hasFile('aktaDokumen')) {
-            $akta = $request->file('aktaDokumen')->store('akta', 'public');
-
-            Akta::where('id', $id)->update([
-                'akta_nomor' => $request->akta_nomor,
-                'akta_tanggal' => $request->akta_tanggal,
-                'akta_nama_notaris' => $request->akta_nama_notaris,
-                'akta_kota_notaris' => $request->kotaAkta,
-                'id_organization' => $request->id_organization,
-                'akta_jenis' => $request->akta_jenis,
-                'akta_keterangan' => $request->akta_keterangan,
-                'akta_dokumen' => $akta,
-                'id_user' => Auth::user()->id,
-            ]);
-        } else {
-            Akta::where('id', $id)->update([
-                'akta_nomor' => $request->akta_nomor,
-                'akta_tanggal' => $request->akta_tanggal,
-                'akta_nama_notaris' => $request->akta_nama_notaris,
-                'akta_kota_notaris' => $request->kotaAkta,
-                'id_organization' => $request->id_organization,
-                'akta_jenis' => $request->akta_jenis,
-                'akta_keterangan' => $request->akta_keterangan,
-                'id_user' => Auth::user()->id,
-            ]);
-        }
+        Akta::where('id', $id)->update([
+            'akta_nomor' => $request->akta_nomor,
+            'akta_tanggal' => $request->akta_tanggal,
+            'akta_nama_notaris' => $request->akta_nama_notaris,
+            'akta_kota_notaris' => $request->kotaAkta,
+            'id_organization' => $request->id_organization,
+            'akta_jenis' => $request->akta_jenis,
+            'akta_keterangan' => $request->akta_keterangan,
+            'akta_dokumen' => $request->aktaDokumen ?? null,
+            'id_user' => Auth::user()->id,
+        ]);
 
         session()->flash('success', 'Data Akta berhasil diupdate.');
 
@@ -261,6 +239,9 @@ class AktaBpController extends Controller
         if (!$request->akta_dokumen) {
             return abort(404);
         }
-        return response()->file(storage_path('app/public/' . $request->akta_dokumen));
+        // redirect ke url external yg ada pada data
+        if (filter_var($request->akta_dokumen, FILTER_VALIDATE_URL)) {
+            return redirect($request->akta_dokumen);
+        }
     }
 }
