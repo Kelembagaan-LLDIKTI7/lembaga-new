@@ -36,7 +36,6 @@
                                     <th>Kota</th>
                                     <th>Peringkat Akreditasi</th>
                                     <th>Status</th>
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,19 +43,12 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $perguruanTinggi->organisasi_kode }}</td>
-                                        <td>{{ $perguruanTinggi->pt_nama }}</td>
+                                        <td><a href="{{ route('perguruan-tinggi.show', $perguruanTinggi->id) }}">{{ $perguruanTinggi->pt_nama }}
+                                            </a></td>
                                         <td>{{ $perguruanTinggi->organisasi_kota }}</td>
                                         <td>{{ $perguruanTinggi->akreditasis->first()?->peringkat_akreditasi->peringkat_nama ?? '' }}
                                         </td>
                                         <td>{{ $perguruanTinggi->organisasi_status }}</td>
-                                        <td>
-                                            @can('Detail Perguruan Tinggi')
-                                                <a href="{{ route('perguruan-tinggi.show', $perguruanTinggi->id) }}"
-                                                    class="btn btn-sm btn-primary me-2">
-                                                    <i class="ti ti-info-circle"></i>
-                                                </a>
-                                            @endCan
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
