@@ -28,7 +28,7 @@
             <form action="{{ route('user.store') }}" method="POST" class="row g-3" enctype="multipart/form-data">
                 @csrf
                 <div class="col-md-6">
-                    <label for="validationCustom01" class="form-label">Nama</label>
+                    <label for="validationCustom01" class="required-label">Nama</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="validationCustom01" name="name" value="{{ old('name') }}" required>
                     @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="validationCustom01" class="form-label">Email</label>
+                    <label for="validationCustom01" class="required-label">Email</label>
                     <input type="email" class="form-control @error('email') is-invalid @enderror" id="validationCustom01" name="email" value="{{ old('email') }}" required>
                     @error('email')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="validationCustom01" class="form-label">Password</label>
+                    <label for="validationCustom01" class="required-label">Password</label>
                     <input type="password" class="form-control @error('password') is-invalid @enderror" id="validationCustom01" name="password" required>
                     @error('password')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="validationCustom01" class="form-label">Nomor Induk Pegawai</label>
+                    <label for="validationCustom01" class="required-label">Nomor Induk Pegawai</label>
                     <input type="text" class="form-control @error('nip') is-invalid @enderror" id="validationCustom01" name="nip" value="{{ old('nip') }}" required>
                     @error('nip')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="is_active" class="form-label">Status Aktif</label>
+                    <label for="is_active" class="required-label">Status Aktif</label>
                     <select class="form-control @error('is_active') is-invalid @enderror" id="is_active" data-choices name="is_active" required>
                         <option value="">Pilih Status</option>
                         <option value="1" {{ old('is_active') == '1' ? 'selected' : '' }}>Aktif</option>
@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="RolesLabel" class="form-label">Role User</label>
+                    <label for="RolesLabel" class="required-label">Role User</label>
                     <select class="form-control @error('roles') is-invalid @enderror" id="roles" name="roles[]" multiple required>
                         @foreach ($roles as $role)
                         <option value="{{ $role }}" {{ (collect(old('roles'))->contains($role)) ? 'selected' : '' }}>{{ $role }}</option>
@@ -85,7 +85,7 @@
 
 
                 <div class="col-md-6">
-                    <label for="OrganizationLabel" class="form-label">Organisasi User</label>
+                    <label for="OrganizationLabel" class="required-label">Organisasi User</label>
                     <select class="form-control @error('id_organization') is-invalid @enderror" id="id_organizations" name="id_organization" required>
                         @foreach ($organization as $item)
                         <option value="{{ $item->id }}" {{ old('id_organization') == $item->id ? 'selected' : '' }}>{{ $item->organisasi_nama }}</option>

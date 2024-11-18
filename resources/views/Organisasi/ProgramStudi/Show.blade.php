@@ -48,7 +48,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Histori Program Studi</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="pemimpin_perguruan_tinggi"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
@@ -93,7 +93,7 @@
                                 </h5>
                             </div>
 
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="complex_header"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
@@ -156,7 +156,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Perkara</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
                                     @can('Create Perkara Program Studi')

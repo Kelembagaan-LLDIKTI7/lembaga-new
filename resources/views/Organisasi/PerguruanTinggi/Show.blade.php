@@ -154,7 +154,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Akreditasi Yang dimiliki</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="akreditasi_table"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="overflow-x: auto; overflow-y: hidden;">
@@ -223,7 +223,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Sk Institusi</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="sk_table" class="table-striped table-bordered display text-nowrap table border"
                                     style="overflow-x: auto; overflow-y: hidden;">
                                     @can('Create SK Perguruan Tinggi')
@@ -284,7 +284,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Pemimpin Perguruan Tinggi</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="pemimpin_perguruan_tinggi"
                                     class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
                                     @can('Create Pimpinan Perguruan Tinggi')
@@ -423,14 +423,14 @@
                         <div class="mb-2">
                             <h5 class="mb-0">Perkara</h5>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                             <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
                                 @can('Create Perkara Perguruan Tinggi')
-                                <a href="{{ route('perkara-organisasipt.create', $organisasi->id) }}"
-                                    class="btn btn-primary btn-sm mb-2">
-                                    Tambah Perkara
-                                </a>
+                                    <a href="{{ route('perkara-organisasipt.create', $organisasi->id) }}"
+                                        class="btn btn-primary btn-sm mb-2">
+                                        Tambah Perkara
+                                    </a>
                                 @endCan
                                 <thead>
                                     <tr>
@@ -452,17 +452,17 @@
                                             <td>{{ $perkara->status }}</td>
                                             <td>
                                                 @can('View Detail Perkara Perguruan Tinggi')
-                                                <a href="{{ route('perkara-organisasipt.show', $perkara->id) }}"
-                                                    class="btn btn-sm btn-primary me-2">
-                                                    <i class="ti ti-info-circle"></i>
-                                                </a>
+                                                    <a href="{{ route('perkara-organisasipt.show', $perkara->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        <i class="ti ti-info-circle"></i>
+                                                    </a>
                                                 @endCan
                                                 @can('Update Status Perkara Perguruan Tinggi')
-                                                <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
-                                                    data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
-                                                    data-status="{{ $perkara->status }}">
-                                                    Edit Status
-                                                </button>
+                                                    <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
+                                                        data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
+                                                        data-status="{{ $perkara->status }}">
+                                                        Edit Status
+                                                    </button>
                                                 @endCan
                                             </td>
                                         </tr>
@@ -482,8 +482,6 @@
         @include('Akreditasi.PerguruanTinggi.Detail')
         @include('Pimpinan.PerguruanTinggi.Detail')
         @include('SK.PerguruanTinggi.Detail')
-    </div>
-
     </div>
 @endsection
 @section('js')
