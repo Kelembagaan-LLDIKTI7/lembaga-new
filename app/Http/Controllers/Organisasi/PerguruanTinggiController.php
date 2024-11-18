@@ -40,7 +40,13 @@ class PerguruanTinggiController extends Controller
                 'organisasi_status',
                 'parent_id'
             )
-            ->with('parent:id,organisasi_nama')
+            ->with([
+                'parent:id,organisasi_nama',
+                'akreditasis' => function ($query) {
+                    $query->where('akreditasi_status', 'Berlaku')
+                        ->with('peringkat_akreditasi:id,peringkat_nama');
+                }
+            ])
             ->orderBy('organisasi_kode', 'asc');
 
         if ($user->hasRole('Perguruan Tinggi')) {
