@@ -354,10 +354,10 @@
                             <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
                                 @can('Create Perkara Badan Penyelenggara')
-                                <a href="{{ route('perkara-organisasi.create', $badanPenyelenggaras->id) }}"
-                                    class="btn btn-primary btn-sm mb-2">
-                                    Tambah Perkara
-                                </a>
+                                    <a href="{{ route('perkara-organisasi.create', $badanPenyelenggaras->id) }}"
+                                        class="btn btn-primary btn-sm mb-2">
+                                        Tambah Perkara
+                                    </a>
                                 @endCan
                                 <thead>
                                     <tr>
@@ -379,17 +379,17 @@
                                             <td>{{ $perkara->status }}</td>
                                             <td>
                                                 @can('View Detail Perkara Badan Penyelenggara')
-                                                <a href="{{ route('perkara-organisasi.show', $perkara->id) }}"
-                                                    class="btn btn-sm btn-primary me-2">
-                                                    <i class="ti ti-info-circle"></i>
-                                                </a>
+                                                    <a href="{{ route('perkara-organisasi.show', $perkara->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        <i class="ti ti-info-circle"></i>
+                                                    </a>
                                                 @endCan
                                                 @can('Update Status Perkara Badan Penyelenggara')
-                                                <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
-                                                    data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
-                                                    data-status="{{ $perkara->status }}">
-                                                    Edit Status
-                                                </button>
+                                                    <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
+                                                        data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
+                                                        data-status="{{ $perkara->status }}">
+                                                        Edit Status
+                                                    </button>
                                                 @endCan
                                             </td>
                                         </tr>
@@ -399,6 +399,9 @@
                         </div>
                     </div>
                 </div>
+                <a href="{{ route('badan-penyelenggara.index') }}" class="btn btn-sm btn-primary float-end me-2 mt-3">
+                    Kembali
+                </a>
             </section>
         </div>
 

@@ -36,6 +36,14 @@
                                     <th>Periode Awal Pelaporan Dikti</th>
                                     <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}</td>
                                 </tr>
+                                <tr>
+                                    <th>Dokumen SK</th>
+                                    @if ($sk->sk_dokumen)
+                                        <td><a href="{{ $sk->sk_dokumen }}" target="_blank">Dokumen</a></td>
+                                    @else
+                                        <td>-</td>
+                                    @endif
+                                </tr>
                             </table>
                         </div>
                         <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-warning">edit</a>

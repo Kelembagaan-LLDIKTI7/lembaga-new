@@ -31,15 +31,11 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Kode Perguruan Tinggi</th>
-                                    <th>Nama Perguruan Tinggi</th>
-                                    <th>Akronim PT</th>
-                                    <th>Alamat Email</th>
-                                    <th>No Telepon</th>
-                                    <th>Kota PT</th>
-                                    <th>Status PT</th>
-                                    <th>Nama Badan Penyelenggara</th>
-                                    <th>Aksi</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>Kota</th>
+                                    <th>Peringkat Akreditasi</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,21 +43,12 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $perguruanTinggi->organisasi_kode }}</td>
-                                        <td>{{ $perguruanTinggi->pt_nama }}</td>
-                                        <td>{{ $perguruanTinggi->organisasi_nama_singkat }}</td>
-                                        <td>{{ $perguruanTinggi->organisasi_email }}</td>
-                                        <td>{{ $perguruanTinggi->organisasi_telp }}</td>
+                                        <td><a href="{{ route('perguruan-tinggi.show', $perguruanTinggi->id) }}">{{ $perguruanTinggi->pt_nama }}
+                                            </a></td>
                                         <td>{{ $perguruanTinggi->organisasi_kota }}</td>
-                                        <td>{{ $perguruanTinggi->organisasi_status }}</td>
-                                        <td>{{ $perguruanTinggi->parent->organisasi_nama ?? '-' }}</td>
-                                        <td>
-                                            @can('Detail Perguruan Tinggi')
-                                                <a href="{{ route('perguruan-tinggi.show', $perguruanTinggi->id) }}"
-                                                    class="btn btn-sm btn-primary me-2">
-                                                    <i class="ti ti-info-circle"></i>
-                                                </a>
-                                            @endCan
+                                        <td>{{ $perguruanTinggi->akreditasis->first()?->peringkat_akreditasi->peringkat_nama ?? '' }}
                                         </td>
+                                        <td>{{ $perguruanTinggi->organisasi_status }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
