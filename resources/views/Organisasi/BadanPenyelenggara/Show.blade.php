@@ -96,7 +96,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Pimpinan Badan Penyelenggara Yang dimiliki</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="pimpinan_table" class="table-striped table-bordered display text-nowrap table border"
                                     style="overflow-x: auto; overflow-y: hidden;">
                                     @can('Create Pimpinan Badan Penyelenggara')
@@ -168,7 +168,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">SKBP</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="skbp" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
                                     @can('Create SK Badan Penyelenggara')
@@ -229,7 +229,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Perguruan Tinggi Yang Dimiliki</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="perguruan_tinggi"
                                     class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
                                     <thead>
@@ -276,7 +276,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Akta Yang Dimiliki</h5>
                             </div>
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
                                     @can('Create Akta Badan Penyelenggara')
@@ -350,7 +350,7 @@
                         <div class="mb-2">
                             <h5 class="mb-0">Perkara</h5>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                             <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
                                 @can('Create Perkara Badan Penyelenggara')
