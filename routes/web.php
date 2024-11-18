@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->to('https://kelembagaan.kopertis7.go.id/statistic/');
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
