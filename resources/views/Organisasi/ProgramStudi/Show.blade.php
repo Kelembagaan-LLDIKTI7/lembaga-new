@@ -107,7 +107,6 @@
                                             <th colspan="3" class="text-center align-middle">Program Studi</th>
                                             <th colspan="4" class="text-center align-middle">Akreditasi Program Studi
                                             </th>
-                                            <th rowspan="2" class="text-center align-middle">Status</th>
                                         </tr>
                                         <tr>
                                             <th>Kode</th>
@@ -140,7 +139,6 @@
                                                     {{ \Carbon\Carbon::parse($akreditasi->akreditasi_tgl_akhir)->translatedFormat('d F Y') }}
                                                 </td>
                                                 <td>{{ $akreditasi->akreditasi_status }}</td>
-                                                <td>{{ $akreditasi->aktif }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
