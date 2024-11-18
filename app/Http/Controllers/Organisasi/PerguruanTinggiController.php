@@ -282,7 +282,7 @@ class PerguruanTinggiController extends Controller
             'parent:id,organisasi_kode,organisasi_nama,organisasi_email,organisasi_telp,organisasi_status,organisasi_alamat,organisasi_kota'
         )->with([
             'prodis' => function ($query) {
-                $query->select('id', 'id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status')
+                $query->select('id', 'id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_periode', 'prodi_active_status')
                     ->orderBy('created_at', 'asc');
             },
             'bentukPt' => function ($query) {
@@ -340,7 +340,7 @@ class PerguruanTinggiController extends Controller
                 'akreditasi_tgl_akhir',
                 'akreditasi_status',
                 'aktif'
-            )->with(['prodi:id,prodi_kode,prodi_nama,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
+            )->with(['prodi:id,prodi_kode,prodi_nama,prodi_periode,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
 
         $perkaras = Perkara::where('id_organization', $id)
             ->select('id', 'title', 'tanggal_kejadian', 'status')

@@ -26,7 +26,7 @@ class ProdiController extends Controller
             )
             ->with(['parent:id,organisasi_nama', 'bentukPT:id,bentuk_nama'])
             ->with(['prodis' => function ($q) {
-                $q->select('id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang')
+                $q->select('id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_periode')
                     ->whereHas('akreditasis', function ($akreditasiQuery) {
                         $akreditasiQuery->where('aktif', 'Ya');
                     })

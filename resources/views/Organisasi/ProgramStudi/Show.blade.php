@@ -21,6 +21,10 @@
                                     <td>{{ $prodi->prodi_jenjang ?? '-' }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Periode</th>
+                                    <td>{{ $prodi->prodi_periode }}</td>
+                                </tr>
+                                <tr>
                                     <th>Status</th>
                                     <td>{{ $prodi->prodi_active_status }}</td>
                                 </tr>
@@ -66,6 +70,7 @@
                                             <th>Kode</th>
                                             <th>Nama Prodi</th>
                                             <th>Program</th>
+                                            <th>Periode</th>
                                             <th>Status</th>
                                             <th>SK Nomor</th>
                                             <th>SK Tanggal</th>
@@ -78,6 +83,7 @@
                                                 <td>{{ $histori->prodi_kode }}</td>
                                                 <td>{{ $histori->prodi_nama }}</td>
                                                 <td>{{ $histori->prodi_jenjang }}</td>
+                                                <td>{{ $histori->prodi_periode }}</td>
                                                 <td>{{ $histori->prodi_active_status }}</td>
                                                 <td>{{ $histori->sk_nomor }}</td>
                                                 <td>

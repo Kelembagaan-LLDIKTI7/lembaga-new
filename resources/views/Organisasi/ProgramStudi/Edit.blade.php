@@ -140,6 +140,19 @@
                                         <small class="text-danger error-message" id="error-prodi_jenjang"></small>
                                     </div>
                                 </div>
+                                <div class="form-group mb-3">
+    <label for="prodi_periode" class="required-label">Periode Pelaporan</label>
+    <input type="number" name="prodi_periode" class="form-control"
+           value="{{ old('prodi_periode', $prodi->prodi_periode) }}" required
+           min="1900" max="{{ date('Y') }}" step="1" placeholder="Enter year">
+    @if ($errors->has('prodi_periode'))
+        <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
+    @endif
+    @error('prodi_periode')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+    <small class="text-danger error-message" id="error-prodi_periode"></small>
+</div>
                             </div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                             <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"
