@@ -390,12 +390,7 @@
                                                     $akreditasi = $prodi->akreditasis->last();
                                                 @endphp
                                                 <td>
-                                                    @if (!empty($akreditasi->peringkat_akreditasi) && $akreditasi->peringkat_akreditasi->peringkat_logo)
-                                                        <img src="{{ asset('storage/peringkat_akreditasi/' . $akreditasi->peringkat_akreditasi->peringkat_logo) }}"
-                                                            alt="Logo" width="50" height="50">
-                                                    @else
-                                                        <span>No Logo</span>
-                                                    @endif
+                                                    {{ $akreditasi->peringkat_akreditasi->peringkat_nama ?? 'Tidak Tersedia' }}
                                                 </td>
                                                 <td>{{ $akreditasi->akreditasi_sk ?? 'Tidak Tersedia' }}</td>
                                                 <td>{{ $akreditasi->akreditasi_tgl_akhir ?? 'Tidak Tersedia' }}</td>
