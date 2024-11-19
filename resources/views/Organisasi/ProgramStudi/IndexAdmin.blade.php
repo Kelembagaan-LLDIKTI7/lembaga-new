@@ -18,6 +18,7 @@
                                 <th>Kode</th>
                                 <th>Nama Prodi</th>
                                 <th>Program</th>
+                                <th>Periode</th>
                                 <th>Status</th>
                                 <th>Peringkat Akreditasi</th>
                                 <th>SK Akreditasi</th>
@@ -32,6 +33,7 @@
                                     <td>{{ $prodi->prodi_kode }}</td>
                                     <td>{{ $prodi->prodi_nama }}</td>
                                     <td>{{ $prodi->prodi_jenjang }}</td>
+                                    <td>{{ $prodi->prodi_periode }}</td>
                                     <td>{{ $prodi->prodi_active_status }}</td>
                                     <td>
                                         @if (

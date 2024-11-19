@@ -218,7 +218,7 @@ class DashboardController extends Controller
                     $query->select('id', 'organisasi_nama', 'organisasi_status', 'organisasi_type_id');
                 },
                 'prodi' => function ($query) {
-                    $query->select('id', 'prodi_nama', 'prodi_jenjang', 'prodi_active_status');
+                    $query->select('id', 'prodi_nama', 'prodi_jenjang', 'prodi_periode', 'prodi_active_status');
                 }
             ])->first();
 
