@@ -131,7 +131,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
             Route::get('/{id}/edit-penyatuan', [PerguruanTinggiController::class, 'editPenyatuan'])->name('editPenyatuan');
             Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
-            Route::put('/{id}', [PerguruanTinggiController::class, 'updatePenyatuan'])->name('updatePenyatuan');
+            Route::put('/{id}/updatePenyatuan', [PerguruanTinggiController::class, 'updatePenyatuan'])->name('updatePenyatuan');
             Route::put('/{id}/validation-update', [PerguruanTinggiController::class, 'validationUpdate'])->name('validationUpdate');
             Route::put('/{id}/validation-updatePenyatuan', [PerguruanTinggiController::class, 'validationUpdatePenyatuan'])->name('validationUpdatePenyatuan');
         });
