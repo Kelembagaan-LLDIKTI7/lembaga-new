@@ -89,6 +89,13 @@ class UserSeeder extends Seeder
             'Detail SK Perguruan Tinggi',
             'View PDF SK Perguruan Tinggi',
 
+            'Create SK Program Studi',
+            'Edit SK Program Studi',
+            'Delete SK Program Studi',
+            'View SK Program Studi',
+            'Detail SK Program Studi',
+            'View PDF SK Program Studi',
+
             'Create Pimpinan Badan Penyelenggara',
             'Edit Pimpinan Badan Penyelenggara',
             'Delete Pimpinan Badan Penyelenggara',
@@ -198,6 +205,12 @@ class UserSeeder extends Seeder
             'View SK Perguruan Tinggi',
             'Detail SK Perguruan Tinggi',
             'View PDF SK Perguruan Tinggi',
+            'Create SK Program Studi',
+            'Edit SK Program Studi',
+            'Delete SK Program Studi',
+            'View SK Program Studi',
+            'Detail SK Program Studi',
+            'View PDF SK Program Studi',
         ];
 
         foreach ($perguruanTinggiPermissions as $permissionName) {
