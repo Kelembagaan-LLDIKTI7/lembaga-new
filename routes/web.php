@@ -128,8 +128,11 @@ Route::middleware('auth')->group(function () {
         });
         Route::middleware('role.access:Edit Perguruan Tinggi')->group(function () {
             Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
+            Route::get('/{id}/edit-penyatuan', [PerguruanTinggiController::class, 'editPenyatuan'])->name('editPenyatuan');
             Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
+            Route::put('/{id}', [PerguruanTinggiController::class, 'updatePenyatuan'])->name('updatePenyatuan');
             Route::put('/{id}/validation-update', [PerguruanTinggiController::class, 'validationUpdate'])->name('validationUpdate');
+            Route::put('/{id}/validation-updatePenyatuan', [PerguruanTinggiController::class, 'validationUpdatePenyatuan'])->name('validationUpdatePenyatuan');
         });
         Route::get('/{id}', [PerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail Perguruan Tinggi');
         Route::delete('/{id}', [PerguruanTinggiController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Perguruan Tinggi');

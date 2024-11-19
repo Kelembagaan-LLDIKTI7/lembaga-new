@@ -52,11 +52,15 @@
 
                         <div class="d-flex justify-content-end">
                             @can('Edit Perguruan Tinggi')
-                                <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning">
+                                <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning me-2">
                                     Edit
+                                </a>
+                                <a href="{{ route('perguruan-tinggi.editPenyatuan', $organisasi->id) }}" class="btn btn-warning">
+                                    Edit Penyatuan
                                 </a>
                             @endCan
                         </div>
+
                     </div>
                 </div>
             </div>
