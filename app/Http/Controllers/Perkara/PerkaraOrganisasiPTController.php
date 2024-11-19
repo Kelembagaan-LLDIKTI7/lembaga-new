@@ -169,20 +169,97 @@ class PerkaraOrganisasiPTController extends Controller
     }
 
     /**
+     * Validate the request data for editing Perkara.
+     */
+    public function validationEdit(Request $request, string $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'tanggal_kejadian' => 'required|date',
+            'deskripsi_kejadian' => 'required|string',
+            'bukti_foto.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'title.required' => 'Judul perkara harus diisi.',
+            'title.max' => 'Judul perkara maksimal 255 karakter.',
+            'tanggal_kejadian.required' => 'Tanggal kejadian harus diisi.',
+            'tanggal_kejadian.date' => 'Tanggal kejadian harus berupa tanggal.',
+            'deskripsi_kejadian.required' => 'Deskripsi kejadian harus diisi.',
+            'bukti_foto.image' => 'Bukti foto harus berupa gambar.',
+            'bukti_foto.mimes' => 'Bukti foto harus berformat JPEG, PNG, JPG, atau GIF.',
+            'bukti_foto.max' => 'Bukti foto maksimal 2048 KB.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray()
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
+
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $perkara = Perkara::findOrFail($id);
+
+        return view('Perkara.OrganisasiPt.Edit', [
+            'perkara' => $perkara,
+            'organisasi' => $organisasi,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'tanggal_kejadian' => 'required|date',
+            'deskripsi_kejadian' => 'required|string',
+            'bukti_foto.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'title.required' => 'Judul perkara harus diisi.',
+            'title.max' => 'Judul perkara maksimal 255 karakter.',
+            'tanggal_kejadian.required' => 'Tanggal kejadian harus diisi.',
+            'tanggal_kejadian.date' => 'Tanggal kejadian harus berupa tanggal.',
+            'deskripsi_kejadian.required' => 'Deskripsi kejadian harus diisi.',
+            'bukti_foto.image' => 'Bukti foto harus berupa gambar.',
+            'bukti_foto.mimes' => 'Bukti foto harus berformat JPEG, PNG, JPG, atau GIF.',
+            'bukti_foto.max' => 'Bukti foto maksimal 2048 KB.',
+        ]);
+
+        $perkara = Perkara::findOrFail($id);
+
+        $fileNames = json_decode($perkara->bukti_foto, true) ?? [];
+        if ($request->hasFile('bukti_foto')) {
+            foreach ($request->file('bukti_foto') as $file) {
+                $fileName = $file->store('bukti_foto', 'public');
+                $fileNames[] = basename($fileName);
+            }
+        }
+
+        $perkara->update([
+            'title' => $request->input('title'),
+            'tanggal_kejadian' => $request->input('tanggal_kejadian'),
+            'deskripsi_kejadian' => $request->input('deskripsi_kejadian'),
+            'bukti_foto' => json_encode($fileNames),
+        ]);
+
+        return redirect()->route('perguruan-tinggi.show', ['id' => $perkara->id_organization])
+            ->with('success', 'Perkara berhasil diperbarui.');
     }
+
 
     /**
      * Remove the specified resource from storage.

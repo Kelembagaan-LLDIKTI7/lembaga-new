@@ -185,7 +185,6 @@
                                             required>
                                             <option value="Aktif">Pendirian</option>
                                             <option value="Alih Bentuk">Alih Bentuk</option>
-                                            <option value="penyatuan">Penyatuan</option>
                                             <option value="penggabungan">Penggabungan</option>
                                         </select>
                                         @error('berubah')
