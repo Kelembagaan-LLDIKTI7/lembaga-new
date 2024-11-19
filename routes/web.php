@@ -15,6 +15,7 @@ use App\Http\Controllers\Master\PeringkatAkademiController;
 use App\Http\Controllers\Organisasi\BadanPenyelenggaraController;
 use App\Http\Controllers\Organisasi\PerguruanTinggiController;
 use App\Http\Controllers\Organisasi\ProgramStudiController;
+use App\Http\Controllers\Perkara\PerkaraController;
 use App\Http\Controllers\Perkara\PerkaraOrganisasiController;
 use App\Http\Controllers\Perkara\PerkaraOrganisasiPTController;
 use App\Http\Controllers\Perkara\PerkaraProdiController;
@@ -128,8 +129,11 @@ Route::middleware('auth')->group(function () {
         });
         Route::middleware('role.access:Edit Perguruan Tinggi')->group(function () {
             Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
+            Route::get('/{id}/edit-penyatuan', [PerguruanTinggiController::class, 'editPenyatuan'])->name('editPenyatuan');
             Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
+            Route::put('/{id}', [PerguruanTinggiController::class, 'updatePenyatuan'])->name('updatePenyatuan');
             Route::put('/{id}/validation-update', [PerguruanTinggiController::class, 'validationUpdate'])->name('validationUpdate');
+            Route::put('/{id}/validation-updatePenyatuan', [PerguruanTinggiController::class, 'validationUpdatePenyatuan'])->name('validationUpdatePenyatuan');
         });
         Route::get('/{id}', [PerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail Perguruan Tinggi');
         Route::delete('/{id}', [PerguruanTinggiController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Perguruan Tinggi');
@@ -295,6 +299,18 @@ Route::middleware('auth')->group(function () {
             Route::put('/{id}/validation-update', [SkbpController::class, 'validationUpdate'])->name('validationUpdate');
         });
         Route::get('/{id}/view-pdf', [SkbpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Badan Penyelenggara');
+    });
+
+    Route::prefix('perkara')->name('perkara.')->group(function () {
+        Route::get('/', [PerkaraController::class, 'index'])->name('index');
+        //Route::middleware('role.access:Edit Perkara')->group(function () {
+            Route::get('/{id}/edit', [PerkaraController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PerkaraController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-perkara-update', [PerkaraController::class, 'validationUpdate'])->name('validationUpdatePerkara');
+       // });
+        Route::get('/{id}', [PerkaraController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara');
+        Route::get('/{id}/showprodi', [PerkaraController::class, 'showProdi'])->name('showprodi')->middleware('role.access:View Detail Perkara');
+        //Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update')->middleware('role.access:Update Status Perkara Badan Penyelenggara');
     });
 
     Route::prefix('perkara-organisasi')->name('perkara-organisasi.')->group(function () {

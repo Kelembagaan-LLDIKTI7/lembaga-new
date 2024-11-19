@@ -370,6 +370,44 @@ class PerguruanTinggiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    public function editPenyatuan(string $id)
+    {
+        $perguruanTinggi = Organisasi::findOrFail($id);
+
+        $user = Auth::user();
+        $jenis = JenisSuratKeputusan::select(
+            'id',
+            'jsk_nama'
+        )->get();
+
+        $kotas =  Kota::select(
+            'id',
+            'nama'
+        )->get();
+
+        $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
+            // ->where('id', $user->id_organization)
+            ->select('id', 'organisasi_nama')
+            ->get();
+
+        $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)
+            ->select(
+                'id',
+                'organisasi_nama'
+            )->get();
+
+        $bentukPt = BentukPt::all();
+
+        return view('Organisasi.PerguruanTinggi.EditPenyatuan', [
+            'perguruanTinggi' => $perguruanTinggi,
+            'badanPenyelenggaras' => $badanPenyelenggaras,
+            'perguruanTinggis' => $perguruanTinggis,
+            'kotas' => $kotas,
+            'jenis' => $jenis,
+            'bentukPt' => $bentukPt
+        ]);
+    }
+
     public function edit(string $id)
     {
         $perguruanTinggi = Organisasi::findOrFail($id);
@@ -391,6 +429,28 @@ class PerguruanTinggiController extends Controller
             'badanPenyelenggaras' => $badanPenyelenggaras,
             'jenis' => $jenis,
             'bentukPt' => $bentukPt
+        ]);
+    }
+
+    public function validationUpdatePenyatuan(Request $request, string $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'organisasi_berubah_id' => 'required|array',
+            'sk_nomor' => 'required|string|max:255',
+            'sk_tanggal' => 'required|date',
+            'id_jenis_surat_keputusan' => 'required',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray(),
+            ]);
+        }        
+
+        return response()->json([
+            'success' => true,
         ]);
     }
 
@@ -442,6 +502,44 @@ class PerguruanTinggiController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    public function updatePenyatuan(Request $request, string $id)
+    {
+        // dd($request->all());
+        $request->validate([
+            'organisasi_berubah_id' => 'array',
+        ]);
+
+        $organisasiBerubah = Organisasi::where('id', $request->organisasi_berubah_id)->first();
+        $organisasi = Organisasi::where('id', $request->organisasi_pt)->first();
+
+        $organisasiBerubah->update([
+            'organisasi_status' => 'Alih Bentuk',
+        ]);
+
+        $organisasi->update([
+            'organisasi_berubah_id' => !empty($request->organisasi_berubah_id) ? json_encode($request->organisasi_berubah_id) : null,
+        ]);
+
+        if ($request->hasFile('sk_dokumen')) {
+            $suratKeputusan = $request->file('sk_dokumen')->store('surat_keputusan', 'public');
+        }
+
+        SuratKeputusan::create([
+            'sk_nomor' => $request->sk_nomor,
+            'sk_tanggal' => $request->sk_tanggal,
+            'sk_dokumen' => $suratKeputusan ?? null,
+            'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
+            'id_organization' => $organisasi->id,
+        ]);
+
+        session()->flash('success', 'Perguruan Tinggi berhasil diperbarui.');
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => route('perguruan-tinggi.show', ['id' => $id])
+        ]);
+    }
+
     public function update(Request $request, string $id)
     {
         // Validate the incoming request data
