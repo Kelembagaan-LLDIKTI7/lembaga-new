@@ -178,7 +178,7 @@
                                     <table id="sk_table" class="table-striped table-bordered display text-nowrap table border"
                                         style="overflow-x: auto; overflow-y: hidden;">
                                         @can('Create SK Program Studi')
-                                            <a href="{{ route('sk-perguruan-tinggi.create', $prodi->id) }}"
+                                            <a href="{{ route('sk-program-studi.create', $prodi->id) }}"
                                                 class="btn btn-primary btn-sm mb-2">
                                                 Tambah SK
                                             </a>
