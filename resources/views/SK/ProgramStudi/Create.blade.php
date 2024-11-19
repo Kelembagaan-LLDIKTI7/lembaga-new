@@ -21,10 +21,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form id="formSkPT" action="{{ route('sk-perguruan-tinggi.store') }}" method="POST"
+                <form id="formSkPT" action="{{ route('sk-program-studi.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="id_organization" value="{{ $id_organization }}" class="form-control" required>
+                    <input type="hidden" name="id_prodi" value="{{ $id_prodi }}" class="form-control" required>
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Form Tambah SK</h5>
@@ -91,7 +91,7 @@
 
                                 <div class="btn-center mt-3">
                                     <div id="buttons">
-                                        <a href="{{ route('perguruan-tinggi.show', ['id' => $id_organization]) }}"
+                                        <a href="{{ route('program-studi.show', ['id' => $id_prodi]) }}"
                                             class="btn btn-primary btn-sm-custom">Keluar</a>
                                         <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                     </div>
@@ -127,7 +127,7 @@
 
                 // AJAX request ke server untuk validasi
                 $.ajax({
-                    url: '{{ route('sk-perguruan-tinggi.validationStore') }}',
+                    url: '{{ route('sk-program-studi.validationStore') }}',
                     type: 'POST',
                     data: formData,
                     contentType: false,
@@ -164,7 +164,7 @@
 
             function submitToStore(formData) {
                 $.ajax({
-                    url: '{{ route('sk-perguruan-tinggi.store') }}',
+                    url: '{{ route('sk-program-studi.store') }}',
                     type: 'POST',
                     data: formData,
                     contentType: false,

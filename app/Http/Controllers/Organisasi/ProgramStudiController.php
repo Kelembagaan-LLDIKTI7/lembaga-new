@@ -249,6 +249,7 @@ class ProgramStudiController extends Controller
         $sk = SuratKeputusan::where('id_prodi', $id)
             ->with('jenisSuratKeputusan:id,jsk_nama')
             ->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
+            ->latest('created_at')
             ->get();
 
         return view('Organisasi.ProgramStudi.Show', [

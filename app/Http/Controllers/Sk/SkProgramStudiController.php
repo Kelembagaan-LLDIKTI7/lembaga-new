@@ -23,11 +23,11 @@ class SkProgramStudiController extends Controller
     public function create($id)
     {
         $jenis = DB::table('jenis_surat_keputusans')->get();
-        $id_organization = $id;
+        $id_prodi = $id;
 
         return view('SK.ProgramStudi.Create', [
             'jenis' => $jenis,
-            'id_organization' => $id_organization
+            'id_prodi' => $id_prodi
         ]);
     }
 
@@ -91,14 +91,14 @@ class SkProgramStudiController extends Controller
                 'sk_tanggal' => $request->sk_tanggal,
                 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
                 'sk_dokumen' => $filePath,
-                'id_organization' => $request->id_organization,
+                'id_prodi' => $request->id_prodi,
             ]);
         } else {
             SuratKeputusan::create([
                 'sk_nomor' => $request->sk_nomor,
                 'sk_tanggal' => $request->sk_tanggal,
                 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
-                'id_organization' => $request->id_organization,
+                'id_prodi' => $request->id_prodi,
             ]);
         }
 
@@ -106,7 +106,7 @@ class SkProgramStudiController extends Controller
 
         return response()->json([
             'success' => true,
-            'redirect_url' => route('perguruan-tinggi.show', ['id' => $request->id_organization])
+            'redirect_url' => route('program-studi.show', ['id' => $request->id_prodi])
         ]);
     }
 
@@ -218,7 +218,7 @@ class SkProgramStudiController extends Controller
 
         return response()->json([
             'success' => true,
-            'redirect_url' => route('perguruan-tinggi.show', ['id' => $request->id_organization])
+            'redirect_url' => route('program-studi.show', ['id' => $request->id_organization])
         ]);
     }
 
