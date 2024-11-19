@@ -30,20 +30,25 @@
                                 </tr>
                                 <tr>
                                     <th>Nomor SK Ijin Prodi</th>
-                                    <td>{{ $sk->sk_nomor ?? '-' }}</td>
+                                    <td>{{ $prodi->suratKeputusan->sk_nomor ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tanggal SK Prodi</th>
-                                    <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Periode Awal Pelaporan Dikti</th>
-                                    <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Dokumen SK</th>
-                                    @if ($sk->sk_dokumen)
-                                        <td><a href="{{ $sk->sk_dokumen }}" target="_blank">Dokumen</a></td>
+                                    @if ($prodi->suratKeputusan->sk_dokumen)
+                                        <td>
+                                            <a href="{{ asset('storage/' . $prodi->suratKeputusan->sk_dokumen) }}"
+                                                target="_blank">Dokumen</a>
+                                        </td>
                                     @else
                                         <td>-</td>
                                     @endif
@@ -162,6 +167,67 @@
                     </div>
                 </section>
 
+                @can('View SK Program Studi')
+                    <section class="datatables">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <h5 class="mb-0">Sk Program Studi</h5>
+                                </div>
+                                <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
+                                    <table id="sk_table" class="table-striped table-bordered display text-nowrap table border"
+                                        style="overflow-x: auto; overflow-y: hidden;">
+                                        @can('Create SK Program Studi')
+                                            <a href="{{ route('sk-perguruan-tinggi.create', $prodi->id) }}"
+                                                class="btn btn-primary btn-sm mb-2">
+                                                Tambah SK
+                                            </a>
+                                        @endCan
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nomor SK</th>
+                                                <th>Tanggal Terbit</th>
+                                                <th>Jenis Sk</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($sk as $sk)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $sk->sk_nomor }}</td>
+                                                    <td>
+                                                        {{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}
+                                                    </td>
+                                                    <td>{{ $sk->jenisSuratKeputusan->jsk_nama }}</td>
+                                                    <td>
+                                                        <div class="d-flex gap-2">
+                                                            @can('Edit SK Program Studi')
+                                                                <div class="edit">
+                                                                    <a href="{{ route('sk-perguruan-tinggi.edit', $sk->id) }}"
+                                                                        class="btn btn-sm btn-success">Edit</a>
+                                                                </div>
+                                                            @endCan
+                                                            @can('Detail SK Program Studi')
+                                                                <div class="detail">
+                                                                    <button class="btn btn-sm btn-info detail-item-btn sk-detail"
+                                                                        data-bs-toggle="modal" data-bs-target="#detailRecordModalSK"
+                                                                        data-id="{{ $sk->id }}">Detail</button>
+                                                                </div>
+                                                            @endCan
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                @endCan
+
                 <section class="datatables">
                     <div class="card">
                         <div class="card-body">
@@ -226,6 +292,7 @@
             </div>
             @include('Modal.Bp.Edit')
             @include('Akreditasi.ProgramStudi.Detail')
+            @include('SK.ProgramStudi.Detail')
         </div>
     </div>
 @endsection
@@ -237,6 +304,8 @@
             $('#akreditasi_table').DataTable();
 
             $('#pemimpin_perguruan_tinggi').DataTable();
+
+            $('#sk_table').DataTable();
 
             $('#perkara').DataTable();
 
@@ -298,6 +367,27 @@
                 });
 
                 document.getElementById('editStatusForm').action = `/perkara-organisasi/${perkaraId}/status-update`;
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('sk-detail')) {
+                var skId = event.target.getAttribute('data-id');
+                fetch('{{ route('sk-program-studi.show', ':id') }}'.replace(":id", skId))
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('sk_nomor').textContent = data.sk_nomor;
+                        document.getElementById('sk_tanggal').textContent = data.sk_tanggal;
+                        document.getElementById('jsk_nama').textContent = data.jsk_nama;
+                        if (data.sk_dokumen) {
+                            document.getElementById('btn_pdf_sk').hidden = false;
+                            document.getElementById('sk_dokumen').value = data.sk_dokumen;
+                        } else {
+                            document.getElementById('btn_pdf_sk').hidden = true;
+                        }
+                    })
             }
         });
     </script>
