@@ -8,6 +8,7 @@
     <meta name="handheldfriendly" content="true" />
     <meta name="MobileOptimized" content="width" />
     <meta name="description" content="Mordenize" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="" />
     <meta name="keywords" content="Mordenize" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
