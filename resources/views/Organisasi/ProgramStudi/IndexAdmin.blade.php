@@ -9,6 +9,9 @@
                 <div class="mb-2">
                     <h5 class="mb-0">Program Studi</h5>
                 </div>
+                <a href="{{ route('prodi.export') }}" class="btn btn-success btn-sm me-2">
+                    Export Excel
+                </a>
                 <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                     <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
                         style="width: 100%">

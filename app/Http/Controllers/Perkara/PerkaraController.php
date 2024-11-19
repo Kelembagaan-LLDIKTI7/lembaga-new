@@ -79,50 +79,62 @@ class PerkaraController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'tanggal_kejadian' => 'required|date',
-            'deskripsi_kejadian' => 'required|string',
-            'bukti_foto.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-    
-        $perkara = Perkara::findOrFail($id);
-    
-        $fileNames = json_decode($perkara->bukti_foto, true) ?? [];
-    
-        if ($request->hasFile('bukti_foto')) {
-            foreach ($request->file('bukti_foto') as $file) {
-                $fileName = $file->store('bukti_foto', 'public');
-                $fileNames[] = basename($fileName);
-            }
-        }
-    
-        if ($request->has('existing_images')) {
-            $existingImages = $request->input('existing_images');
-            $imagesToDelete = array_diff($fileNames, $existingImages);
-    
-            foreach ($imagesToDelete as $image) {
-                $filePath = storage_path('app/public/bukti_foto/' . $image);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
-            }
-                $fileNames = $existingImages;
-        }
-    
-        $perkara->update([
-            'title' => $request->title,
-            'tanggal_kejadian' => $request->tanggal_kejadian,
-            'deskripsi_kejadian' => $request->deskripsi_kejadian,
-            'bukti_foto' => json_encode($fileNames),
-        ]);
-    
+{
+    $validator = \Validator::make($request->all(), [
+        'title' => 'required|string|max:255',
+        'tanggal_kejadian' => 'required|date',
+        'deskripsi_kejadian' => 'required|string',
+        'bukti_foto.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    if ($validator->fails()) {
         return response()->json([
-            'success' => true,
-            'redirect_url' => route('perkara.index')
+            'success' => false,
+            'errors' => $validator->errors()->toArray(),
         ]);
     }
+
+    $perkara = Perkara::findOrFail($id);
+
+    // Get the existing images from the database
+    $currentImages = json_decode($perkara->bukti_foto, true) ?? [];
+
+    // Get the images that were not removed (sent as hidden inputs in the form)
+    $existingImages = $request->input('existing_images', []);
+    $fileNames = array_values($existingImages); // Reset array indices
+
+    // Add new images to the list
+    if ($request->hasFile('bukti_foto')) {
+        foreach ($request->file('bukti_foto') as $file) {
+            $fileName = $file->store('bukti_foto', 'public');
+            $fileNames[] = basename($fileName);
+        }
+    }
+
+    // Handle deleted images (images in DB but not in `existing_images`)
+    $imagesToDelete = array_diff($currentImages, $existingImages);
+
+    foreach ($imagesToDelete as $image) {
+        $filePath = storage_path('app/public/bukti_foto/' . $image);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+    }
+
+    // Update the record
+    $perkara->update([
+        'title' => $request->title,
+        'tanggal_kejadian' => $request->tanggal_kejadian,
+        'deskripsi_kejadian' => $request->deskripsi_kejadian,
+        'bukti_foto' => json_encode($fileNames), // Save updated list of images
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'redirect_url' => route('perkara.index'),
+    ]);
+}
+
     
 
     /**

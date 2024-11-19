@@ -157,6 +157,10 @@
         // Gather form data
         const formData = new FormData(this);
 
+        // $('input[name="existing_images[]"]').each(function () {
+        //     formData.append('existing_images[]', $(this).val());
+        // });
+
         // Step 1: Validate the data
         $.ajax({
             url: '{{ route('perkara.validationUpdatePerkara', ['id' => $perkara->id]) }}',

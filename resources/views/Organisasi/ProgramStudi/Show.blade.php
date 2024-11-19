@@ -30,15 +30,15 @@
                                 </tr>
                                 <tr>
                                     <th>Nomor SK Ijin Prodi</th>
-                                    <td>{{ $sk->sk_nomor }}</td>
+                                    <td>{{ $sk->sk_nomor ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tanggal SK Prodi</th>
-                                    <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Periode Awal Pelaporan Dikti</th>
-                                    <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Dokumen SK</th>
