@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Organisasi;
 
+use App\Exports\ProdiExport;
 use App\Http\Controllers\Controller;
 use App\Models\Akreditasi;
 use App\Models\HistoryProgramStudi;
@@ -13,6 +14,7 @@ use App\Models\SuratKeputusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramStudiController extends Controller
 {
@@ -378,5 +380,11 @@ class ProgramStudiController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function export()
+    {
+        $filename = 'program_studi_' . date('Y-m-d_H-i-s') . '.xlsx';
+        return Excel::download(new ProdiExport, $filename);
     }
 }

@@ -140,6 +140,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/import', [PerguruanTinggiController::class, 'import'])->name('import')->middleware('role.access:Import Perguruan Tinggi');
     });
 
+    Route::get('/pt/export-excel', [PerguruanTinggiController::class, 'exportExcel'])->name('pt.export');
+    Route::get('/prodi/export-excel', [ProgramStudiController::class, 'export'])->name('prodi.export');
+
     Route::prefix('badan-penyelenggara')->name('badan-penyelenggara.')->group(function () {
         Route::get('/', [BadanPenyelenggaraController::class, 'index'])->name('index')->middleware('role.access:View Badan Penyelenggara');
         Route::middleware('role.access:Create Badan Penyelenggara')->group(function () {
@@ -349,7 +352,7 @@ Route::middleware('auth')->group(function () {
         Artisan::call('storage:link');
         return 'Storage complete!';
     });
-    
+
     Route::get('/optimize', function () {
         Artisan::call('optimize');
         return 'Optimization complete!';

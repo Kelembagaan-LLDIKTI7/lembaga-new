@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Organisasi;
 
+use App\Exports\PtExport;
 use App\Http\Controllers\Controller;
 use App\Imports\PtImport;
 use App\Models\Akreditasi;
@@ -636,5 +637,11 @@ class PerguruanTinggiController extends Controller
         $file = $request->file('file');
         Excel::import(new PtImport, $file);
         return redirect()->route('perguruan-tinggi.index')->with('success', 'Perguruan Tinggi berhasil disimpan.');
+    }
+
+    public function exportExcel()
+    {
+        $fileName = 'Perguruan Tinggi_' . date('Y-m-d_H-i-s') . '.xlsx';
+        return Excel::download(new PtExport, $fileName);
     }
 }
