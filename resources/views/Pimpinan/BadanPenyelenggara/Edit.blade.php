@@ -69,7 +69,7 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_status" class="required-label">Status Akreditasi</label>
+                                        <label for="pimpinan_status" class="required-label">Status SK Pimpinan</label>
                                         <select name="pimpinan_status" class=" form-control select-search">
                                             <option value="">-- Pilih Status --</option>
                                             <option value="Berlaku"

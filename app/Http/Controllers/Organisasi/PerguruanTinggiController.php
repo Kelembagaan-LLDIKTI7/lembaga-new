@@ -421,6 +421,13 @@ class PerguruanTinggiController extends Controller
         )->get();
         $bentukPt = BentukPt::all();
 
+        $user = Auth::user();
+        $changeStatus = true;
+
+        if ($user->hasRole('Badan Penyelenggara') || $user->hasRole('Perguruan Tinggi')) {
+            $changeStatus = false;
+        }
+
         return view('Organisasi.PerguruanTinggi.Edit', [
             'perguruanTinggi' => $perguruanTinggi,
             'kotas' => $kotas,
@@ -428,7 +435,8 @@ class PerguruanTinggiController extends Controller
             'skTypes' => $skTypes,
             'badanPenyelenggaras' => $badanPenyelenggaras,
             'jenis' => $jenis,
-            'bentukPt' => $bentukPt
+            'bentukPt' => $bentukPt,
+            'changeStatus' => $changeStatus
         ]);
     }
 
@@ -465,6 +473,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_kota' => 'required|string|max:100',
             'organisasi_alamat' => 'required|string|max:255',
             'organisasi_website' => 'nullable|string|max:255',
+            'organisasi_status' => 'nullable|string|max:20',
             'organisasi_logo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             'organisasi_bentuk_pt' => 'required|exists:bentuk_pts,id',
             'parent_id' => 'nullable|exists:organisasis,id',
@@ -481,6 +490,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_logo.image' => 'Logo Perguruan Tinggi harus berupa gambar.',
             'organisasi_logo.mimes' => 'Logo Perguruan Tinggi harus berformat jpeg, png, jpg, atau gif.',
             'organisasi_logo.max' => 'Logo Perguruan Tinggi tidak boleh lebih dari 2MB.',
+            'organisasi_status.max' => 'Status Perguruan Tinggi tidak valid.',
             'organisasi_website.url' => 'Format website tidak valid.',
             'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
             'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
@@ -552,6 +562,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_kota' => 'required|string|max:100',
             'organisasi_alamat' => 'required|string|max:255',
             'organisasi_website' => 'nullable|string|max:255',
+            'organisasi_status' => 'required|string',
             'organisasi_logo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             'organisasi_bentuk_pt' => 'required|exists:bentuk_pts,id',
             'parent_id' => 'nullable|exists:organisasis,id',
@@ -574,6 +585,8 @@ class PerguruanTinggiController extends Controller
             'parent_id.exists' => 'Perguruan Tinggi induk tidak valid.',
         ]);
 
+        $pt = Organisasi::find($id);
+
         // Handle file upload for the logo if present
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
@@ -589,6 +602,7 @@ class PerguruanTinggiController extends Controller
                     'organisasi_kota' => $validated['organisasi_kota'],
                     'organisasi_alamat' => $validated['organisasi_alamat'],
                     'organisasi_website' => $validated['organisasi_website'],
+                    'organisasi_status' => $validated['organisasi_status'] ?? $pt->organisasi_status,
                     'organisasi_logo' => $validated['organisasi_logo'],
                     'organisasi_bentuk_pt' => $validated['organisasi_bentuk_pt'],
                     'parent_id' => $validated['parent_id'],
@@ -606,6 +620,7 @@ class PerguruanTinggiController extends Controller
                     'organisasi_kota' => $validated['organisasi_kota'],
                     'organisasi_alamat' => $validated['organisasi_alamat'],
                     'organisasi_website' => $validated['organisasi_website'],
+                    'organisasi_status' => $validated['organisasi_status'] ?? $pt->organisasi_status,
                     'organisasi_bentuk_pt' => $validated['organisasi_bentuk_pt'],
                     'parent_id' => $validated['parent_id'],
                     'updated_at' => now(),
