@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah Perkara Prodi')
+@section('title', 'Tambah Evaluasi Prodi')
 
 @section('css')
     <style>
@@ -48,7 +48,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <h3>Tambah Perkara Prodi</h3>
+                <h3>Tambah Evaluasi Prodi</h3>
                 <form id="formPerkaraProdi" action="{{ route('perkara-prodi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
@@ -56,7 +56,7 @@
                     <div class="form-container">
                         <div class="form-left">
                             <div class="mb-3">
-                                <label for="title">Judul Perkara</label>
+                                <label for="title">Judul Evaluasi</label>
                                 <input type="text" name="title" id="title" class="form-control" required
                                     value="{{ old('title') }}">
                                 @error('title')

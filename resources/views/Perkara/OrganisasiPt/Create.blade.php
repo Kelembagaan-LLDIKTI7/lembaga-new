@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah Perkara Organisasi')
+@section('title', 'Tambah Evaluasi Perguruan Tinggi')
 
 @section('css')
     <style>
@@ -48,7 +48,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <h3>Tambah Perkara Organisasi</h3>
+                <h3>Tambah Evaluasi Perguruan Tinggi</h3>
                 <form id="formPerkaraPT" action="{{ route('perkara-organisasipt.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
