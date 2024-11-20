@@ -27,7 +27,7 @@
                         <tbody>
                             @foreach ($perkarasOrg as $perkara)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td></td>
                                 <td>{{ $perkara->title }}</td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
@@ -72,7 +72,7 @@
                         <tbody>
                             @foreach ($perkarasProdi as $perkara)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td></td>
                                 <td>{{ $perkara->title }}</td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
@@ -118,6 +118,50 @@
     $(document).ready(function() {
         $('#dom_jq_event_org').DataTable();
         $('#dom_jq_event_prodi').DataTable();
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        if ($.fn.DataTable.isDataTable('#dom_jq_event_org')) {
+            $('#dom_jq_event_org').DataTable().destroy();
+        }
+
+        $('#dom_jq_event_org').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#dom_jq_event_prodi')) {
+            $('#dom_jq_event_prodi').DataTable().destroy();
+        }
+
+        $('#dom_jq_event_prodi').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
     });
 </script>
 @endsection

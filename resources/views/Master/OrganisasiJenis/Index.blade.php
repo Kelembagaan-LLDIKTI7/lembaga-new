@@ -54,7 +54,7 @@
                                     <tbody>
                                         @foreach ($organisasiTypes as $organisasiType)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $organisasiType->organisasi_type_nama }}</td>
                                                 <td>
                                                     @can('Edit Jenis Organisasi')
@@ -137,6 +137,32 @@
             form.action = `/organisasi-type/${organisasiTypeId}`; // Set form action to the update route
             document.getElementById('edit_organisasi_type_id').value = organisasiTypeId;
             document.getElementById('edit_organisasi_type_nama').value = organisasiTypeNama;
+        });
+    </script>
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
+                $('#dom_jq_event').DataTable().destroy();
+            }
+
+            $('#dom_jq_event').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
         });
     </script>
 @endsection
