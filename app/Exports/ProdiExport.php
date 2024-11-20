@@ -40,6 +40,7 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                 'program_studis.prodi_nama as prodi_nama',
                 'program_studis.prodi_jenjang as prodi_jenjang',
                 'akreditasis.akreditasi_sk as no_sk_akreditasi',
+                'program_studis.prodi_periode as periode',
                 'akreditasis.akreditasi_tgl_awal as tgl_terbit_sk_akreditasi',
                 'peringkat_akreditasis.peringkat_nama as akreditasi',
                 'akreditasis.akreditasi_tgl_akhir as tgl_akhir_sk_akreditasi',
@@ -72,6 +73,7 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     'Prodi' => $value->prodi_nama,
                     'Program' => $value->prodi_jenjang,
                     'Nomor SK' => $value->no_sk_akreditasi,
+                    'Periode' => $value->periode,
                     'Tahun' => $tahun,
                     'Akreditasi BAN-PT' => $value->akreditasi,
                     'Tanggal Kedaluarsa' => $value->tgl_akhir_sk_akreditasi,
@@ -86,6 +88,7 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     'Prodi' => $value->prodi_nama,
                     'Program' => $value->prodi_jenjang,
                     'Nomor SK' => $value->no_sk_akreditasi,
+                    'Periode' => $value->periode,
                     'Tahun' => $tahun,
                     'Akreditasi BAN-PT' => $value->akreditasi,
                     'Tanggal Kedaluarsa' => $value->tgl_akhir_sk_akreditasi,
@@ -112,6 +115,7 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
             'Prodi',
             'Program',
             'Nomor SK',
+            'Periode',
             'Tahun',
             'Akreditasi BAN-PT',
             'Tanggal Kedaluarsa',
@@ -128,7 +132,7 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                 $sheet->getDelegate()->getRowDimension(1)->setRowHeight(45);
 
                 // Apply header styles
-                $sheet->getDelegate()->getStyle('A1:K1')->applyFromArray([
+                $sheet->getDelegate()->getStyle('A1:L1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                         'size' => 11,
@@ -145,7 +149,7 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                 ]);
 
                 // Apply data row styles
-                $sheet->getDelegate()->getStyle('A2:K' . $sheet->getHighestRow())->applyFromArray([
+                $sheet->getDelegate()->getStyle('A2:L' . $sheet->getHighestRow())->applyFromArray([
                     'alignment' => [
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
                         'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
@@ -164,13 +168,13 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                 // Loop through the data rows
                 foreach ($sheet->getDelegate()->getRowIterator(2) as $row) {
                     $rowIndex = $row->getRowIndex();
-                    $cellValue = $sheet->getDelegate()->getCell('K' . $rowIndex)->getValue();
+                    $cellValue = $sheet->getDelegate()->getCell('L' . $rowIndex)->getValue();
 
                     // dd($cellValue);
 
                     if ($cellValue && $cellValue < $currentDate) {
                         // Apply red background if the date is past the current date
-                        $sheet->getDelegate()->getStyle('K' . $rowIndex)->applyFromArray([
+                        $sheet->getDelegate()->getStyle('L' . $rowIndex)->applyFromArray([
                             'fill' => [
                                 'fillType' => Fill::FILL_SOLID,
                                 'startColor' => ['argb' => 'FFFF0000'], // Red color

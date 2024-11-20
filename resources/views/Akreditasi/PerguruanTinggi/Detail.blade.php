@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detailRecordModalLabel">Detail Akreditasi</h5>
+                <h5 class="modal-title" id="detailRecordModalLabel">Detail Akreditasi Institusi</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -13,10 +13,6 @@
                         <tr>
                             <th>Nama Perguruan Tinggi</th>
                             <td id="org_nama"></td>
-                        </tr>
-                        <tr id="prodi">
-                            <th>Nama Prodi</th>
-                            <td id="prodi_nama"></td>
                         </tr>
                         <tr>
                             <th>Lembaga Akreditasi</th>
@@ -50,7 +46,8 @@
                                     @csrf
                                     <input type="hidden" name="akreditasi_dokumen" id="akreditasi_dokumen"
                                         value="">
-                                    <button type="submit" class="btn btn-link waves-effect">Dokumen</button>
+                                    <button type="submit" class="btn btn-link waves-effect"
+                                        id="btn_pdf">Dokumen</button>
                                 </form>
                             </td>
                         </tr>

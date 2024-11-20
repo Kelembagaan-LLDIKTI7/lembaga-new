@@ -317,7 +317,7 @@ class PerguruanTinggiController extends Controller
             ->leftJoin('peringkat_akreditasis', 'peringkat_akreditasis.id', '=', 'akreditasis.id_peringkat_akreditasi')
             ->leftJoin('lembaga_akreditasis', 'lembaga_akreditasis.id', '=', 'akreditasis.id_lembaga_akreditasi')
             ->select('akreditasis.id', 'akreditasis.akreditasi_sk', 'akreditasis.akreditasi_tgl_akhir', 'akreditasis.akreditasi_status', 'lembaga_akreditasis.lembaga_nama_singkat', 'peringkat_akreditasis.peringkat_nama')
-            ->orderBy('akreditasis.created_at')
+            ->orderBy('akreditasis.akreditasi_tgl_akhir')
             ->get();
 
         $sk = DB::table('surat_keputusans')
@@ -447,7 +447,7 @@ class PerguruanTinggiController extends Controller
                 'success' => false,
                 'errors' => $validator->errors()->toArray(),
             ]);
-        }        
+        }
 
         return response()->json([
             'success' => true,

@@ -55,7 +55,8 @@
                                 <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning me-2">
                                     Edit
                                 </a>
-                                <a href="{{ route('perguruan-tinggi.editPenyatuan', $organisasi->id) }}" class="btn btn-warning">
+                                <a href="{{ route('perguruan-tinggi.editPenyatuan', $organisasi->id) }}"
+                                    class="btn btn-warning">
                                     Edit Penyatuan
                                 </a>
                             @endCan
@@ -156,7 +157,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-2">
-                                <h5 class="mb-0">Akreditasi Yang dimiliki</h5>
+                                <h5 class="mb-0">Akreditasi Institusi</h5>
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="akreditasi_table"
@@ -172,9 +173,10 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nomor SK</th>
-                                            <th>Berlaku</th>
+                                            <th>Tanggal Berlaku</th>
                                             <th>Lembaga Akreditasi</th>
                                             <th>Peringkat Akreditasi</th>
+                                            <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -191,6 +193,7 @@
                                                 <td>{{ $akre->akreditasi_tgl_akhir }}</td>
                                                 <td>{{ $akre->lembaga_nama_singkat }}</td>
                                                 <td>{{ $akre->peringkat_nama }}</td>
+                                                <td>{{ $akre->akreditasi_status }}</td>
                                                 <td>
                                                     <div class="d-flex gap-2">
                                                         @can('Edit Akreditasi Perguruan Tinggi')
@@ -531,7 +534,6 @@
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('org_nama').textContent = data.organisasi_nama;
-                        document.getElementById('prodi_nama').textContent = data.prodi_nama;
                         document.getElementById('lembaga_nama').textContent = data
                             .lembaga_nama;
                         document.getElementById('peringkat_nama').textContent = data
@@ -541,8 +543,19 @@
                         document.getElementById('akreditasi_tgl_awal').textContent = data.akreditasi_tgl_awal;
                         document.getElementById('akreditasi_tgl_akhir').textContent = data.akreditasi_tgl_akhir;
                         if (hasAkreditasiDokumenPermission) {
-                            document.getElementById('akreditasi_dokumen').value = data.akreditasi_dokumen;
+                            if (data.akreditasi_dokumen) {
+                                document.getElementById('btn_pdf').hidden = false;
+                                document.getElementById('akreditasi_dokumen').value = data.akreditasi_dokumen;
+                            } else {
+                                document.getElementById('btn_pdf').hidden = true;
+                            }
                         } else {
+                            if (data.akreditasi_dokumen) {
+                                document.getElementById('btn_pdf').hidden = false;
+                                document.getElementById('akreditasi_dokumen').value = data.akreditasi_dokumen;
+                            } else {
+                                document.getElementById('btn_pdf').hidden = true;
+                            }
                             document.getElementById('akreditasi_dokumen').value = 'Access Denied';
                         }
                     })
