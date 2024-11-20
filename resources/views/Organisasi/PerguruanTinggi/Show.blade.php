@@ -55,10 +55,10 @@
                                 <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning me-2">
                                     Edit
                                 </a>
-                                <a href="{{ route('perguruan-tinggi.editPenyatuan', $organisasi->id) }}"
+                                {{-- <a href="{{ route('perguruan-tinggi.editPenyatuan', $organisasi->id) }}"
                                     class="btn btn-warning">
                                     Edit Penyatuan
-                                </a>
+                                </a> --}}
                             @endCan
                         </div>
 
@@ -311,8 +311,8 @@
                                             <th>Nama</th>
                                             <th>Jabatan</th>
                                             <th>No SK</th>
-                                            <th>Tanggal Terbit</th>
-                                            <th>Tanggal Berakhir</th>
+                                            <th>Tgl. Mulai Penugasan</th>
+                                            <th>Tgl. Selesai Penugasan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
