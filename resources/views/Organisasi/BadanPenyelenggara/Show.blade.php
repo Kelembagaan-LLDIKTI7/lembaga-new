@@ -128,7 +128,7 @@
                                                 )->isBefore(\Carbon\Carbon::today());
                                             @endphp
                                             <tr class="{{ $isExpired ? 'table-danger' : '' }}">
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $pimpinan->pimpinan_nama }}</td>
                                                 <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
                                                 <td>{{ $pimpinan->pimpinan_sk }}</td>
@@ -190,7 +190,7 @@
                                     <tbody>
                                         @foreach ($skbp as $sk)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $sk->nomor }}</td>
                                                 <td>{{ $sk->tanggal }}</td>
                                                 <td>{{ $sk->jenis }}</td>
@@ -245,7 +245,7 @@
                                     <tbody>
                                         @foreach ($badanPenyelenggaras->children as $bp)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $bp->organisasi_nama }}</td>
                                                 <td>{{ $bp->organisasi_nama_singkat }}</td>
                                                 <td>{{ $bp->organisasi_kota }}</td>
@@ -298,7 +298,7 @@
                                     <tbody>
                                         @foreach ($akta as $akta)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $akta->akta_nomor }}</td>
                                                 <td>{{ $akta->akta_tanggal }}</td>
                                                 <td>{{ optional($akta->skKumham)->kumham_nomor ?? 'N/A' }}</td>
@@ -371,7 +371,7 @@
                                 <tbody>
                                     @foreach ($perkaras as $perkara)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
+                                            <td></td>
                                             <td>{{ $perkara->title }}</td>
                                             <td>
                                                 {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
@@ -507,5 +507,128 @@
             }
         });
     </script>
+<script>
+    $(document).ready(function() {
+        if ($.fn.DataTable.isDataTable('#pimpinan_table')) {
+            $('#pimpinan_table').DataTable().destroy();
+        }
 
+        $('#pimpinan_table').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#perguruan_tinggi')) {
+            $('#perguruan_tinggi').DataTable().destroy();
+        }
+
+        $('#perguruan_tinggi').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#skbp')) {
+            $('#skbp').DataTable().destroy();
+        }
+
+        $('#skbp').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#pemimpin_perguruan_tinggi')) {
+            $('#pemimpin_perguruan_tinggi').DataTable().destroy();
+        }
+
+        $('#pemimpin_perguruan_tinggi').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#program_studi')) {
+            $('#program_studi').DataTable().destroy();
+        }
+
+        $('#program_studi').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#perkara')) {
+            $('#perkara').DataTable().destroy();
+        }
+
+        $('#perkara').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+    });
+</script>
 @endsection
