@@ -18,7 +18,9 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Kode</th>
+                                <th>Kode PT</th>
+                                <th>Nama PT</th>
+                                <th>Kode Prodi</th>
                                 <th>Nama Prodi</th>
                                 <th>Program</th>
                                 <th>Periode</th>
@@ -33,25 +35,18 @@
                             @foreach ($prodis as $prodi)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $prodi->kode_pt }}</td>
+                                    <td>{{ $prodi->nama_pt }}</td>
                                     <td>{{ $prodi->prodi_kode }}</td>
                                     <td>{{ $prodi->prodi_nama }}</td>
                                     <td>{{ $prodi->prodi_jenjang }}</td>
-                                    <td>{{ $prodi->prodi_periode }}</td>
-                                    <td>{{ $prodi->prodi_active_status }}</td>
+                                    <td>{{ $prodi->periode }}</td>
+                                    <td>{{ $prodi->status }}</td>
                                     <td>
-                                        @if (
-                                            !empty($prodi->akreditasis) &&
-                                                $prodi->akreditasis->first() &&
-                                                $prodi->akreditasis->first()->peringkat_akreditasi &&
-                                                $prodi->akreditasis->first()->peringkat_akreditasi->peringkat_logo)
-                                            <img src="{{ asset('storage/peringkat_akreditasi/' . $prodi->akreditasis->first()->peringkat_akreditasi->peringkat_logo) }}"
-                                                alt="Logo" width="50" height="50">
-                                        @else
-                                            <span>No Logo</span>
-                                        @endif
+                                        {{ $prodi->akreditasi ?? '' }}
                                     </td>
-                                    <td>{{ $prodi->akreditasis->first()->akreditasi_sk ?? 'Tidak Tersedia' }}</td>
-                                    <td>{{ $prodi->akreditasis->first()->akreditasi_tgl_akhir ?? 'Tidak Tersedia' }}</td>
+                                    <td>{{ $prodi->no_sk_akreditasi ?? '' }}</td>
+                                    <td>{{ $prodi->tgl_akhir_sk_akreditasi ?? '' }}</td>
                                     <td>
                                         @can('Detail Program Studi')
                                             <a href="{{ route('program-studi.show', $prodi->id) }}"
