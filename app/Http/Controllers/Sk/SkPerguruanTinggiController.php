@@ -37,6 +37,7 @@ class SkPerguruanTinggiController extends Controller
             'sk_nomor' => 'required|string|max:255',
             'sk_tanggal' => 'required|date',
             'id_jenis_surat_keputusan' => 'required|exists:jenis_surat_keputusans,id',
+            'sk_deskripsi' => 'nullable|string',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Maksimal 2MB
         ], [
             'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
@@ -71,6 +72,7 @@ class SkPerguruanTinggiController extends Controller
             'sk_nomor' => 'required|string|max:255',
             'sk_tanggal' => 'required|date',
             'id_jenis_surat_keputusan' => 'required|exists:jenis_surat_keputusans,id',
+            'sk_deskripsi' => 'nullable|string',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Maksimal 2MB
         ], [
             'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
@@ -90,6 +92,7 @@ class SkPerguruanTinggiController extends Controller
                 'sk_nomor' => $request->sk_nomor,
                 'sk_tanggal' => $request->sk_tanggal,
                 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
+                'sk_deskripsi' => $request->sk_deskripsi,
                 'sk_dokumen' => $filePath,
                 'id_organization' => $request->id_organization,
             ]);
@@ -98,6 +101,7 @@ class SkPerguruanTinggiController extends Controller
                 'sk_nomor' => $request->sk_nomor,
                 'sk_tanggal' => $request->sk_tanggal,
                 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
+                'sk_deskripsi' => $request->sk_deskripsi,
                 'id_organization' => $request->id_organization,
             ]);
         }
@@ -148,6 +152,7 @@ class SkPerguruanTinggiController extends Controller
             'sk_nomor' => 'required|string|max:255',
             'sk_tanggal' => 'required|date',
             'id_jenis_surat_keputusan' => 'required|exists:jenis_surat_keputusans,id',
+            'sk_deskripsi' => 'required|string',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Maksimal 2MB
         ], [
             'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
@@ -183,6 +188,7 @@ class SkPerguruanTinggiController extends Controller
             'sk_nomor' => 'required|string|max:255',
             'sk_tanggal' => 'required|date',
             'id_jenis_surat_keputusan' => 'required|exists:jenis_surat_keputusans,id',
+            'sk_deskripsi' => 'required|string',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048', // Maksimal 2MB
         ], [
             'sk_nomor.required' => 'Nomor Surat Keputusan harus diisi.',
@@ -203,6 +209,7 @@ class SkPerguruanTinggiController extends Controller
                 'sk_tanggal' => $request->sk_tanggal,
                 'sk_dokumen' => $filePath,
                 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
+                'sk_deskripsi' => $request->sk_deskripsi,
                 'id_organization' => $request->id_organization,
             ]);
         } else {
@@ -210,6 +217,7 @@ class SkPerguruanTinggiController extends Controller
                 'sk_nomor' => $request->sk_nomor,
                 'sk_tanggal' => $request->sk_tanggal,
                 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
+                'sk_deskripsi' => $request->sk_deskripsi,
                 'id_organization' => $request->id_organization,
             ]);
         }
