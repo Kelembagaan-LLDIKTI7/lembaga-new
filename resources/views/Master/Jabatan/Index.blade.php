@@ -184,30 +184,28 @@
             document.getElementById('edit_jabatan_organisasi').value = jabatanOrganisasi; // Mengisi organisasi
         });
     </script>
-@endsection
-@section('js')
-    <script>
-        $(document).ready(function() {
-            if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
-                $('#dom_jq_event').DataTable().destroy();
-            }
-
-            $('#dom_jq_event').DataTable({
-                "columnDefs": [{
-                    "targets": 0,
-                    "orderable": false,
-                    "searchable": false,
-                }],
-                "drawCallback": function(settings) {
-                    var api = this.api();
-                    api.column(0, {
-                        search: 'applied',
-                        order: 'applied'
-                    }).nodes().each(function(cell, i) {
-                        cell.innerHTML = i + 1;
-                    });
+        <script>
+            $(document).ready(function() {
+                if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
+                    $('#dom_jq_event').DataTable().destroy();
                 }
+
+                $('#dom_jq_event').DataTable({
+                    "columnDefs": [{
+                        "targets": 0,
+                        "orderable": false,
+                        "searchable": false,
+                    }],
+                    "drawCallback": function(settings) {
+                        var api = this.api();
+                        api.column(0, {
+                            search: 'applied',
+                            order: 'applied'
+                        }).nodes().each(function(cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }
+                });
             });
-        });
-    </script>
+        </script>
 @endsection
