@@ -81,13 +81,13 @@
         </footer>
     </section>
 @endsection
-@section('js')
+{{-- @section('js')
     <script>
         $(document).ready(function() {
             $('#program_studi').DataTable();
         });
     </script>
-@endsection
+@endsection --}}
 @section('js')
     <script>
         $(document).ready(function() {
