@@ -24,6 +24,7 @@ use App\Http\Controllers\Pimpinan\PimpinanBadanPenyelenggaraController;
 use App\Http\Controllers\Pimpinan\PimpinanPerguruanTinggiController;
 use App\Http\Controllers\User\RoleController;
 use App\Http\Controllers\Sk\SkPerguruanTinggiController;
+use App\Http\Controllers\Sk\SkProgramStudiController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -131,7 +132,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/edit', [PerguruanTinggiController::class, 'edit'])->name('edit');
             Route::get('/{id}/edit-penyatuan', [PerguruanTinggiController::class, 'editPenyatuan'])->name('editPenyatuan');
             Route::put('/{id}', [PerguruanTinggiController::class, 'update'])->name('update');
-            Route::put('/{id}', [PerguruanTinggiController::class, 'updatePenyatuan'])->name('updatePenyatuan');
+            Route::put('/{id}/updatePenyatuan', [PerguruanTinggiController::class, 'updatePenyatuan'])->name('updatePenyatuan');
             Route::put('/{id}/validation-update', [PerguruanTinggiController::class, 'validationUpdate'])->name('validationUpdate');
             Route::put('/{id}/validation-updatePenyatuan', [PerguruanTinggiController::class, 'validationUpdatePenyatuan'])->name('validationUpdatePenyatuan');
         });
@@ -235,6 +236,22 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('/{id}', [SkPerguruanTinggiController::class, 'show'])->name('show')->middleware('role.access:Detail SK Perguruan Tinggi');
         Route::post('/view-pdf', [SkPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Perguruan Tinggi');
+    });
+
+    Route::prefix('sk-program-studi')->name('sk-program-studi.')->group(function () {
+        Route::get('/', [SkProgramStudiController::class, 'index'])->name('index')->middleware('role.access:View SK Program Studi');
+        Route::middleware('role.access:Create SK Program Studi')->group(function () {
+            Route::get('/{id}/create', [SkProgramStudiController::class, 'create'])->name('create');
+            Route::post('/', [SkProgramStudiController::class, 'store'])->name('store');
+            Route::post('/validation-store', [SkProgramStudiController::class, 'validationStore'])->name('validationStore');
+        });
+        Route::middleware('role.access:Edit SK Program Studi')->group(function () {
+            Route::get('/{id}/edit', [SkProgramStudiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [SkProgramStudiController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-update', [SkProgramStudiController::class, 'validationUpdate'])->name('validationUpdate');
+        });
+        Route::get('/{id}', [SkProgramStudiController::class, 'show'])->name('show')->middleware('role.access:Detail SK Program Studi');
+        Route::post('/view-pdf', [SkProgramStudiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Program Studi');
     });
 
     Route::prefix('pimpinan-badan-penyelenggara')->name('pimpinan-badan-penyelenggara.')->group(function () {

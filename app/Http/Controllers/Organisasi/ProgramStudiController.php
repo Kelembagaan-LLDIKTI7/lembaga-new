@@ -209,22 +209,25 @@ class ProgramStudiController extends Controller
      */
     public function show(string $id)
     {
-        $prodi = ProgramStudi::select(
+        $prodi = ProgramStudi::with([
+            'historiPerguruanTinggi:id,id_prodi,prodi_kode,prodi_nama,prodi_jenjang,prodi_periode,prodi_active_status,sk_nomor,sk_tanggal',
+            'suratKeputusan' => function ($query) {
+                $query->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
+                    ->latest('created_at')->limit(1);
+            },
+            'suratKeputusan.jenisSuratKeputusan:id,jsk_nama',
+            'perguruanTinggi:id'
+        ])->select(
             'id',
             'prodi_kode',
             'prodi_nama',
             'prodi_jenjang',
             'prodi_periode',
             'prodi_active_status',
-            'id_organization',
-        )->with([
-            'historiPerguruanTinggi' => function ($query) {
-                $query->select('id', 'id_prodi', 'prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_periode', 'prodi_active_status', 'sk_nomor', 'sk_tanggal')
-                    ->orderBy('created_at', 'asc');
-            }
-        ])->with(['perguruanTinggi' => function ($query) {
-            $query->select('id');
-        }])->findOrFail($id);
+            'id_organization'
+        )->findOrFail($id);
+
+        $prodi->suratKeputusan = $prodi->suratKeputusan->first();
 
         $akreditasis = Akreditasi::where('id_prodi', $id)
             ->select(
@@ -244,7 +247,10 @@ class ProgramStudiController extends Controller
             ->get();
 
         $sk = SuratKeputusan::where('id_prodi', $id)
-            ->first();
+            ->with('jenisSuratKeputusan:id,jsk_nama')
+            ->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
+            ->latest('created_at')
+            ->get();
 
         return view('Organisasi.ProgramStudi.Show', [
             'prodi' => $prodi,
@@ -252,9 +258,12 @@ class ProgramStudiController extends Controller
             'perkaras' => $perkaras,
             'sk' => $sk,
         ]);
+
         // return response()->json([
         //     'prodi' => $prodi,
-        //     'akreditasis' => $akreditasis
+        //     'akreditasis' => $akreditasis,
+        //     'perkaras' => $perkaras,
+        //     'sk' => $sk,
         // ]);
     }
 
