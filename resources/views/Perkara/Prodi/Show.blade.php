@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Detail Perkara')
+@section('title', 'Detail Evaluasi Prodi')
 
 @section('content')
     <div class="container-fluid my-4">
@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Detail Perkara Program Studi</h5>
+                        <h5 class="mb-0">Detail Evaluasi Program Studi</h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
@@ -27,7 +27,7 @@
                                 <h6><strong>Status Program Studi:</strong></h6>
                                 <p>{{ $perkaras->prodi->prodi_active_status }}</p>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <h6><strong>Tanggal Kejadian:</strong></h6>
                                 <p>{{ \Carbon\Carbon::parse($perkaras->tanggal_kejadian)->translatedFormat('d F Y') }}</p>

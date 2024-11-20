@@ -123,7 +123,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-2">
-                                <h5 class="mb-0">Perkara Yang Sedang Berjalan</h5>
+                                <h5 class="mb-0">Evaluasi</h5>
                             </div>
 
                             <div class="table-responsive mt-2">
