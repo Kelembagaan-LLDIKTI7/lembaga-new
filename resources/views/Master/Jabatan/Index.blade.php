@@ -72,7 +72,7 @@
                                     <tbody>
                                         @foreach ($jabatans as $jabatan)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $jabatan->jabatan_nama }}</td>
                                                 <td>{{ $organisasi_types[$jabatan->jabatan_organisasi] ?? 'Unknown' }}</td>
                                                 <td>{{ $bentuk_pts[$jabatan->bentuk_pt] ?? 'Unknown' }}</td>
@@ -182,6 +182,32 @@
             document.getElementById('edit_jabatan_nama').value = jabatanNama;
             document.getElementById('edit_bentuk_pt').value = bentukPt;
             document.getElementById('edit_jabatan_organisasi').value = jabatanOrganisasi; // Mengisi organisasi
+        });
+    </script>
+@endsection
+@section('js')
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
+                $('#dom_jq_event').DataTable().destroy();
+            }
+
+            $('#dom_jq_event').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
         });
     </script>
 @endsection

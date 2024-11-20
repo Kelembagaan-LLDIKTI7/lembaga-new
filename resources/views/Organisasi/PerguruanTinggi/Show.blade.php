@@ -129,7 +129,7 @@
                                         <tbody>
                                             @foreach ($berubahOrganisasi as $key => $org)
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td></td>
                                                     <td>{{ $org->organisasi_nama }}</td>
                                                     <td>{{ $org->organisasi_nama_singkat ?? '-' }}</td>
                                                     <td>{{ $org->organisasi_email }}</td>
@@ -188,7 +188,7 @@
                                                 )->isBefore(\Carbon\Carbon::today());
                                             @endphp
                                             <tr class="{{ $isExpired ? 'table-danger' : '' }}">
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $akre->akreditasi_sk }}</td>
                                                 <td>{{ $akre->akreditasi_tgl_akhir }}</td>
                                                 <td>{{ $akre->lembaga_nama_singkat }}</td>
@@ -251,7 +251,7 @@
                                     <tbody>
                                         @foreach ($sk as $sk)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $sk->sk_nomor }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}
@@ -323,7 +323,7 @@
                                                 )->isBefore(\Carbon\Carbon::today());
                                             @endphp
                                             <tr class="{{ $isExpired ? 'table-danger' : '' }}">
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $pimpinan->pimpinan_nama }}</td>
                                                 <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
                                                 <td>{{ $pimpinan->pimpinan_sk }}</td>
@@ -389,7 +389,7 @@
                                     <tbody>
                                         @foreach ($organisasi->prodis as $prodi)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $prodi->prodi_kode }}</td>
                                                 <td>{{ $prodi->prodi_nama }}</td>
                                                 <td>{{ $prodi->prodi_jenjang }}</td>
@@ -448,7 +448,7 @@
                                 <tbody>
                                     @foreach ($perkaras as $perkara)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
+                                            <td></td>
                                             <td>{{ $perkara->title }}</td>
                                             <td>
                                                 {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
@@ -603,5 +603,148 @@
             }
         });
     </script>
+<script>
+    $(document).ready(function() {
+        if ($.fn.DataTable.isDataTable('#organisasi_table')) {
+            $('#organisasi_table').DataTable().destroy();
+        }
 
+        $('#organisasi_table').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#akreditasi_table')) {
+            $('#akreditasi_table').DataTable().destroy();
+        }
+
+        $('#akreditasi_table').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#sk_table')) {
+            $('#sk_table').DataTable().destroy();
+        }
+
+        $('#sk_table').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#pemimpin_perguruan_tinggi')) {
+            $('#pemimpin_perguruan_tinggi').DataTable().destroy();
+        }
+
+        $('#pemimpin_perguruan_tinggi').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#program_studi')) {
+            $('#program_studi').DataTable().destroy();
+        }
+
+        $('#program_studi').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#akreditasi_program_studi')) {
+            $('#akreditasi_program_studi').DataTable().destroy();
+        }
+
+        $('#akreditasi_program_studi').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+        if ($.fn.DataTable.isDataTable('#perkara')) {
+            $('#perkara').DataTable().destroy();
+        }
+
+        $('#perkara').DataTable({
+            "columnDefs": [{
+                "targets": 0,
+                "orderable": false,
+                "searchable": false,
+            }],
+            "drawCallback": function(settings) {
+                var api = this.api();
+                api.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function(cell, i) {
+                    cell.innerHTML = i + 1;
+                });
+            }
+        });
+    });
+</script>
 @endsection

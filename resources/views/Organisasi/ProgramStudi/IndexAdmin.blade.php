@@ -34,7 +34,7 @@
                         <tbody>
                             @foreach ($prodis as $prodi)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td></td>
                                     <td>{{ $prodi->kode_pt }}</td>
                                     <td>{{ $prodi->nama_pt }}</td>
                                     <td>{{ $prodi->prodi_kode }}</td>
@@ -81,10 +81,36 @@
         </footer>
     </section>
 @endsection
-@section('js')
+{{-- @section('js')
     <script>
         $(document).ready(function() {
             $('#program_studi').DataTable();
+        });
+    </script>
+@endsection --}}
+@section('js')
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#program_studi')) {
+                $('#program_studi').DataTable().destroy();
+            }
+
+            $('#program_studi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
         });
     </script>
 @endsection
