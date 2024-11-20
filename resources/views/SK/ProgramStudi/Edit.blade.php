@@ -21,11 +21,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <form id="formSkPTedit" action="{{ route('sk-perguruan-tinggi.update', ['id' => $sk->id]) }}" method="POST"
+                <form id="formSkPTedit" action="{{ route('sk-program-studi.update', ['id' => $sk->id]) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
-                    @method('PUT') <!-- Menentukan method PUT untuk update -->
-                    <input type="hidden" name="id_organization" value="{{ $sk->id_organization }}" class="form-control"
+                    @method('PUT')
+                    <input type="hidden" name="id_prodi" value="{{ $sk->id_prodi }}" class="form-control"
                         required>
                     <div class="card">
                         <div class="card-body">
@@ -99,7 +99,7 @@
 
                                 <div class="btn-center mt-3">
                                     <div id="buttons">
-                                        <a href="{{ route('perguruan-tinggi.show', ['id' => $sk->id_organization]) }}"
+                                        <a href="{{ route('program-studi.show', $sk->id_prodi) }}"
                                             class="btn btn-primary btn-sm-custom">Keluar</a>
                                         <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                     </div>
@@ -135,7 +135,7 @@
 
                 // AJAX request ke server untuk validasi
                 $.ajax({
-                    url: '{{ route('sk-perguruan-tinggi.validationUpdate', ['id' => $sk->id]) }}',
+                    url: '{{ route('sk-program-studi.validationUpdate', ['id' => $sk->id]) }}',
                     type: 'POST',
                     data: formData,
                     contentType: false,
@@ -172,7 +172,7 @@
 
             function submitToStore(formData) {
                 $.ajax({
-                    url: '{{ route('sk-perguruan-tinggi.update', ['id' => $sk->id]) }}',
+                    url: '{{ route('sk-program-studi.update', ['id' => $sk->id]) }}',
                     type: 'POST',
                     data: formData,
                     contentType: false,
@@ -183,8 +183,8 @@
                         }
                     },
                     error: function(xhr) {
-                        $('#loading').hide(); // Sembunyikan loading
-                        $('#buttons').show(); // Tampilkan tombol
+                        $('#loading').hide();
+                        $('#buttons').show();
                         $('#error-messages').html(
                             'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
                     }

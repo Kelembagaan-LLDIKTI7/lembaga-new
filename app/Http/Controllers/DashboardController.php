@@ -19,8 +19,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $perkaras = Perkara::where('status', 'Berjalan')
-            ->select('id', 'title', 'tanggal_kejadian', 'status')
+        $perkaras = Perkara::select('id', 'title', 'tanggal_kejadian', 'status')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -65,8 +64,7 @@ class DashboardController extends Controller
                         ->where('parent_id', $user->id_organization);
                 }])->get();
 
-            $perkaras = Perkara::where('status', 'Berjalan')
-                ->where(function ($query) use ($user) {
+            $perkaras = Perkara::where(function ($query) use ($user) {
                     $query->whereRaw("CONVERT(`id_organization` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization])
                         ->orWhereIn('id_organization', function ($subQuery) use ($user) {
                             $subQuery->selectRaw("CONVERT(`id` USING utf8mb4) COLLATE utf8mb4_unicode_ci")
@@ -118,15 +116,14 @@ class DashboardController extends Controller
                         ->where('id', $user->id_organization);
                 }])->get();
 
-            $perkaras = Perkara::where('status', 'Berjalan')
-                ->where(function ($query) use ($user) {
-                    $query->whereRaw("CONVERT(`id_organization` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization])
-                        ->orWhereIn('id_prodi', function ($subQuery) use ($user) {
-                            $subQuery->selectRaw("CONVERT(`id` USING utf8mb4) COLLATE utf8mb4_unicode_ci")
-                                ->from('program_studis')
-                                ->whereRaw("CONVERT(`id_organization` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization]);
-                        });
-                })
+            $perkaras = Perkara::where(function ($query) use ($user) {
+                $query->whereRaw("CONVERT(`id_organization` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization])
+                    ->orWhereIn('id_prodi', function ($subQuery) use ($user) {
+                        $subQuery->selectRaw("CONVERT(`id` USING utf8mb4) COLLATE utf8mb4_unicode_ci")
+                            ->from('program_studis')
+                            ->whereRaw("CONVERT(`id_organization` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization]);
+                    });
+            })
                 ->select('id', 'title', 'tanggal_kejadian', 'status')
                 ->orderBy('created_at', 'desc')
                 ->get();
