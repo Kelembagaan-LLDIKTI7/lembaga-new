@@ -114,12 +114,12 @@
 @endsection
 
 @section('js')
-<script>
+{{-- <script>
     $(document).ready(function() {
         $('#dom_jq_event_org').DataTable();
         $('#dom_jq_event_prodi').DataTable();
     });
-</script>
+</script> --}}
 <script>
     $(document).ready(function() {
         if ($.fn.DataTable.isDataTable('#dom_jq_event_org')) {
