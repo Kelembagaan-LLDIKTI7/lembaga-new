@@ -293,9 +293,6 @@
             options: baseOptions
         });
     </script>
-@endsection
-
-@section('js')
     <script>
         $(document).ready(function() {
             if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
