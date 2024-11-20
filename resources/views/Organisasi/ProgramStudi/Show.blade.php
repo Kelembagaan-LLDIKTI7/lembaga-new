@@ -205,7 +205,7 @@
                                                         <div class="d-flex gap-2">
                                                             @can('Edit SK Program Studi')
                                                                 <div class="edit">
-                                                                    <a href="{{ route('sk-perguruan-tinggi.edit', $sk->id) }}"
+                                                                    <a href="{{ route('sk-program-studi.edit', $sk->id) }}"
                                                                         class="btn btn-sm btn-success">Edit</a>
                                                                 </div>
                                                             @endCan

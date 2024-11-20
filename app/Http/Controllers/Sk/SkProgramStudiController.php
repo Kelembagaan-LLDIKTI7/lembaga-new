@@ -129,6 +129,7 @@ class SkProgramStudiController extends Controller
      */
     public function edit(string $id)
     {
+        // dd($id);
         $jenis = DB::table('jenis_surat_keputusans')->get();
         $sk = DB::table('surat_keputusans')
             ->where('surat_keputusans.id', $id)
@@ -136,6 +137,10 @@ class SkProgramStudiController extends Controller
             ->select('surat_keputusans.*', 'jenis_surat_keputusans.id as jsk_id', 'jenis_surat_keputusans.jsk_nama')
             ->first();
 
+        // return response()->json([
+        //     'sk' => $sk,
+        //     'jenis' => $jenis
+        // ]);
         return view('SK.ProgramStudi.Edit', [
             'sk' => $sk,
             'jenis' => $jenis
@@ -203,14 +208,14 @@ class SkProgramStudiController extends Controller
                 'sk_tanggal' => $request->sk_tanggal,
                 'sk_dokumen' => $filePath,
                 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
-                'id_organization' => $request->id_organization,
+                'id_prodi' => $request->id_prodi,
             ]);
         } else {
             $sk->update([
                 'sk_nomor' => $request->sk_nomor,
                 'sk_tanggal' => $request->sk_tanggal,
                 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan,
-                'id_organization' => $request->id_organization,
+                'id_prodi' => $request->id_prodi,
             ]);
         }
 
@@ -218,7 +223,7 @@ class SkProgramStudiController extends Controller
 
         return response()->json([
             'success' => true,
-            'redirect_url' => route('program-studi.show', ['id' => $request->id_organization])
+            'redirect_url' => route('program-studi.show', ['id' => $request->id_prodi])
         ]);
     }
 
