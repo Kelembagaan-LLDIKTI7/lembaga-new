@@ -164,6 +164,31 @@
                                         <small class="text-danger error-message" id="error-organisasi_website"></small>
                                     </div>
 
+                                    @if ($changeStatus)
+                                        <div class="form-group mb-3">
+                                            <label for="status_pt" class="required-label">Bentuk PT</label>
+                                            <select name="organisasi_status" class="form-control select-search" required>
+                                                <option value="">-- Pilih Status PT --</option>
+                                                <option value="Aktif"
+                                                    {{ $perguruanTinggi->organisasi_status == 'Aktif' ? 'selected' : '' }}>
+                                                    Aktif
+                                                </option>
+                                                <option value="Tutup"
+                                                    {{ $perguruanTinggi->organisasi_status == 'Tutup' ? 'selected' : '' }}>
+                                                    Tutup
+                                                </option>
+                                                <option value="Alih Bentuk"
+                                                    {{ $perguruanTinggi->organisasi_status == 'Alih Bentuk' ? 'selected' : '' }}>
+                                                    Alih Bentuk
+                                                </option>
+                                            </select>
+                                            @if ($errors->has('organisasi_status'))
+                                                <span class="text-danger">{{ $errors->first('organisasi_status') }}</span>
+                                            @endif
+                                            <small class="text-danger error-message" id="error-organisasi_status"></small>
+                                        </div>
+                                    @endif
+
                                     <div class="form-group mb-3">
                                         <label for="organisasi_logo">Logo Perguruan
                                             Tinggi</label>

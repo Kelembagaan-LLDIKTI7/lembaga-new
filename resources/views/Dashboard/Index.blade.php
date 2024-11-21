@@ -144,7 +144,7 @@
                                     <tbody>
                                         @foreach ($perkaras as $perkara)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $perkara->title }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
@@ -291,6 +291,30 @@
                 }]
             },
             options: baseOptions
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
+                $('#dom_jq_event').DataTable().destroy();
+            }
+
+            $('#dom_jq_event').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
         });
     </script>
 @endsection

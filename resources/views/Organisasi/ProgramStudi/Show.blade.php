@@ -84,7 +84,7 @@
                                     <tbody>
                                         @foreach ($prodi->historiPerguruanTinggi as $histori)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $histori->prodi_kode }}</td>
                                                 <td>{{ $histori->prodi_nama }}</td>
                                                 <td>{{ $histori->prodi_jenjang }}</td>
@@ -146,7 +146,7 @@
                                             @endphp
                                             <tr class="{{ $isExpired ? 'table-danger' : '' }}"
                                                 data-id="{{ $akreditasi->id }}">
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $akreditasi->prodi->prodi_kode }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_nama }}</td>
                                                 <td>{{ $akreditasi->prodi->prodi_jenjang }}</td>
@@ -195,7 +195,7 @@
                                         <tbody>
                                             @foreach ($sk as $sk)
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td></td>
                                                     <td>{{ $sk->sk_nomor }}</td>
                                                     <td>
                                                         {{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}
@@ -255,7 +255,7 @@
                                     <tbody>
                                         @foreach ($perkaras as $perkara)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $perkara->title }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
@@ -389,6 +389,110 @@
                         }
                     })
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#organisasi_table')) {
+                $('#organisasi_table').DataTable().destroy();
+            }
+
+            $('#organisasi_table').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#akreditasi_table')) {
+                $('#akreditasi_table').DataTable().destroy();
+            }
+
+            $('#akreditasi_table').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#pemimpin_perguruan_tinggi')) {
+                $('#pemimpin_perguruan_tinggi').DataTable().destroy();
+            }
+
+            $('#pemimpin_perguruan_tinggi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#sk_table')) {
+                $('#sk_table').DataTable().destroy();
+            }
+
+            $('#sk_table').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#perkara')) {
+                $('#perkara').DataTable().destroy();
+            }
+
+            $('#perkara').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
         });
     </script>
 @endsection

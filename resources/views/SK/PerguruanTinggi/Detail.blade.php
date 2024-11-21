@@ -23,6 +23,10 @@
                             <td id="jsk_nama"></td>
                         </tr>
                         <tr>
+                            <th>Deskripsi SK</th>
+                            <td id="sk_deskripsi"></td>
+                        </tr>
+                        <tr>
                             <th>Dokumen SK Akreditasi</th>
                             <td>
                                 <form action="{{ route('sk-perguruan-tinggi.viewPdf') }}" method="post"

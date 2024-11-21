@@ -50,7 +50,7 @@ class JabatanController extends Controller
 
         $dd = $request->all();
         Jabatan::create($dd);
-        return redirect()->route('jabatan.index');
+        return redirect()->route('jabatan.index')->with('success', 'Jabatan berhasil ditambahkan!');
     }
 
     /**
@@ -85,7 +85,7 @@ class JabatanController extends Controller
 
         $jabatan = Jabatan::findOrFail($id);
         $jabatan->update($request->all());
-        return redirect()->route('jabatan.index');
+        return redirect()->route('jabatan.index')->with('success', 'Jabatan berhasil diperbarui.');
     }
 
     /**

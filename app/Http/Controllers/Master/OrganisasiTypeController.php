@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use App\Models\OrganisasiType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrganisasiTypeController extends Controller
 {
@@ -77,8 +78,7 @@ class OrganisasiTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        $organisasiType = OrganisasiType::findOrFail($id);
-        $organisasiType->delete();
+        DB::table('organisasi_types')->where('id', $id)->delete();
         return redirect()->route('organisasi-type.index')->with('success', 'Organisasi Type deleted successfully.');
     }
 }

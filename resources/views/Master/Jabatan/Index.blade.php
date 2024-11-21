@@ -72,7 +72,7 @@
                                     <tbody>
                                         @foreach ($jabatans as $jabatan)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $jabatan->jabatan_nama }}</td>
                                                 <td>{{ $organisasi_types[$jabatan->jabatan_organisasi] ?? 'Unknown' }}</td>
                                                 <td>{{ $bentuk_pts[$jabatan->bentuk_pt] ?? 'Unknown' }}</td>
@@ -88,13 +88,11 @@
                                                     @endCan
                                                     <!-- Delete Button -->
                                                      @can('Delete Jabatan')
-                                                    <form action="{{ route('jabatan.destroy', $jabatan->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Jabatan?');">
-                                                            Delete
-                                                        </button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteJabatanModal"
+                                                        data-id="{{ $jabatan->id }}"
+                                                        data-nama="{{ $jabatan->jabatan_nama }}">
+                                                        Hapus
+                                                    </button>
                                                     @endCan
                                                 </td>
                                             </tr>
@@ -142,6 +140,29 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Modal untuk Hapus Jabatan -->
+                            <div class="modal fade" id="deleteJabatanModal" tabindex="-1" aria-labelledby="deleteJabatanModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-white">
+                                            <h5 class="modal-title" id="deleteJabatanModalLabel">Konfirmasi Hapus</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Apakah Anda yakin ingin menghapus jabatan <strong id="jabatanNamaToDelete"></strong>? Tindakan ini tidak dapat dibatalkan.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <form id="deleteJabatanForm" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -184,4 +205,44 @@
             document.getElementById('edit_jabatan_organisasi').value = jabatanOrganisasi; // Mengisi organisasi
         });
     </script>
+        <script>
+            $(document).ready(function() {
+                if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
+                    $('#dom_jq_event').DataTable().destroy();
+                }
+
+                $('#dom_jq_event').DataTable({
+                    "columnDefs": [{
+                        "targets": 0,
+                        "orderable": false,
+                        "searchable": false,
+                    }],
+                    "drawCallback": function(settings) {
+                        var api = this.api();
+                        api.column(0, {
+                            search: 'applied',
+                            order: 'applied'
+                        }).nodes().each(function(cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const deleteModal = document.getElementById('deleteJabatanModal');
+                const jabatanNamaToDelete = document.getElementById('jabatanNamaToDelete');
+                const deleteForm = document.getElementById('deleteJabatanForm');
+
+                deleteModal.addEventListener('show.bs.modal', function(event) {
+                    const button = event.relatedTarget;
+                    const jabatanId = button.getAttribute('data-id');
+                    const jabatanNama = button.getAttribute('data-nama');
+
+                    jabatanNamaToDelete.textContent = jabatanNama;
+                    deleteForm.action = `{{ url('jabatan') }}/${jabatanId}`;
+                });
+            });
+        </script>
 @endsection

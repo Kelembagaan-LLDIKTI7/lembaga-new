@@ -155,7 +155,7 @@
                                     <tbody>
                                         @foreach ($peringkats as $peringkat)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td></td>
                                                 <td>{{ $peringkat->peringkat_nama }}</td>
                                                 <td>
                                                     @if ($peringkat->peringkat_logo)
@@ -429,4 +429,28 @@
             });
         });
     </script>
+        <script>
+            $(document).ready(function() {
+                if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
+                    $('#dom_jq_event').DataTable().destroy();
+                }
+
+                $('#dom_jq_event').DataTable({
+                    "columnDefs": [{
+                        "targets": 0,
+                        "orderable": false,
+                        "searchable": false,
+                    }],
+                    "drawCallback": function(settings) {
+                        var api = this.api();
+                        api.column(0, {
+                            search: 'applied',
+                            order: 'applied'
+                        }).nodes().each(function(cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }
+                });
+            });
+        </script>
 @endsection

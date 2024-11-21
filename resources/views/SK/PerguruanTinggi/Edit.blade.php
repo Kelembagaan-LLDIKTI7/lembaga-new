@@ -83,6 +83,19 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
+                                        <label for="sk_deskripsi">
+                                            Deskripsi SK
+                                        </label>
+                                        <textarea name="sk_deskripsi" class="form-control">{{ old('sk_deskripsi', $sk->sk_deskripsi) }}</textarea>
+                                        @error('sk_deskripsi')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-sk_deskripsi"></small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
                                         <label for="sk_dokumen" class="required-label">Dokumen SK</label>
                                         <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx" onchange="previewFile(event)">
