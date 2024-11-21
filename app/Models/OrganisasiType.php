@@ -10,7 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class OrganisasiType extends Model
 {
-    use HasFactory, Notifiable, HasUuids, HasRoles;
+    use HasFactory, Notifiable, HasRoles;
 
     protected $guarded = [
         'id',
