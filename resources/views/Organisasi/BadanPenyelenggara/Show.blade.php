@@ -348,7 +348,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-2">
-                            <h5 class="mb-0">Perkara</h5>
+                            <h5 class="mb-0">Evaluasi</h5>
                         </div>
                         <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                             <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
@@ -356,7 +356,7 @@
                                 @can('Create Perkara Badan Penyelenggara')
                                     <a href="{{ route('perkara-organisasi.create', $badanPenyelenggaras->id) }}"
                                         class="btn btn-primary btn-sm mb-2">
-                                        Tambah Perkara
+                                        Tambah Evaluasi
                                     </a>
                                 @endCan
                                 <thead>
