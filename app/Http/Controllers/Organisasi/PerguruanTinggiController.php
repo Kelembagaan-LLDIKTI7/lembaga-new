@@ -542,7 +542,6 @@ class PerguruanTinggiController extends Controller
 
     public function update(Request $request, string $id)
     {
-        // Validate the incoming request data
         $validated = $request->validate([
             'organisasi_kode' => 'required|string|max:6|unique:organisasis,organisasi_kode,' . $id,
             'organisasi_nama' => 'required|string|max:255',
@@ -574,10 +573,9 @@ class PerguruanTinggiController extends Controller
             'parent_id.exists' => 'Perguruan Tinggi induk tidak valid.',
         ]);
 
-        // Handle file upload for the logo if present
         if ($request->hasFile('organisasi_logo')) {
             $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
-            $validated['organisasi_logo'] = $logoPath; // Add the new logo path to the validated data
+            $validated['organisasi_logo'] = $logoPath;
             DB::table('organisasis')
                 ->where('id', $id)
                 ->update([
