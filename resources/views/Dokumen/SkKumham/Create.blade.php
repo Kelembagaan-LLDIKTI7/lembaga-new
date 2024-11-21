@@ -3,7 +3,6 @@
 @section('title', 'SK Kumham')
 
 @section('css')
-
 @endsection
 
 @section('content')
@@ -74,7 +73,7 @@
                                             class="btn btn-primary btn-sm-custom">Keluar</a>
                                         <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
                                     </div>
-                                    <div id="loading">
+                                    <div id="loading" style="display: none;">
                                         <div class="d-flex align-items-center">
                                             <strong>Loading...</strong>
                                             <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
@@ -94,13 +93,19 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            // Sembunyikan elemen loading saat halaman dimuat
+            $('#loading').hide();
+
+            // Fungsi submit form
             $('#formKumham').on('submit', function(event) {
                 event.preventDefault(); // Menghentikan submit default form
+                $('#buttons').hide(); // Sembunyikan tombol
+                $('#loading').show(); // Tampilkan elemen loading
 
-                // Mengambil data form
+                // Ambil data form
                 const formData = new FormData(this);
 
-                // AJAX request ke server untuk validasi
+                // Validasi input via AJAX
                 $.ajax({
                     url: '{{ route('sk-kumham.validationStore') }}',
                     type: 'POST',
@@ -112,27 +117,27 @@
                             submitToStore(formData);
                         } else {
                             displayErrors(response.errors);
+                            $('#loading').hide();
+                            $('#buttons').show();
                         }
                     },
                     error: function(xhr) {
                         $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                        $('#loading').hide();
+                        $('#buttons').show();
                     }
                 });
             });
 
+            // Fungsi untuk menampilkan error validasi
             function displayErrors(errors) {
-                // Bersihkan semua pesan error sebelumnya
-                $('.error-message').text('');
-
-                // Tampilkan pesan error baru
+                $('.error-message').text(''); // Bersihkan pesan error sebelumnya
                 for (let field in errors) {
-                    const errorMessages = errors[field].join(
-                        ', '); // Gabungkan pesan error jika ada lebih dari satu
-                    $(`#error-${field}`).text(
-                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                    $(`#error-${field}`).text(errors[field].join(', '));
                 }
             }
 
+            // Submit data ke server
             function submitToStore(formData) {
                 $.ajax({
                     url: '{{ route('sk-kumham.store') }}',
@@ -142,19 +147,20 @@
                     processData: false,
                     success: function(response) {
                         if (response.success) {
-                            window.location.href = response.redirect_url;
+                            window.location.href = response.redirect; // Redirect ke URL
                         }
                     },
                     error: function(xhr) {
                         $('#error-messages').html(
                             'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                        $('#loading').hide();
+                        $('#buttons').show();
                     }
                 });
             }
-
         });
-    </script>
-    <script>
+
+        // Fungsi preview file
         function previewFile(event) {
             const file = event.target.files[0];
             const previewContainer = document.getElementById('file-preview');
@@ -172,6 +178,10 @@
                     iframe.width = '100%';
                     iframe.height = '400px';
                     previewContainer.appendChild(iframe);
+                } else {
+                    const unsupportedMessage = document.createElement('p');
+                    unsupportedMessage.textContent = 'Preview hanya tersedia untuk file PDF.';
+                    previewContainer.appendChild(unsupportedMessage);
                 }
             }
         }
