@@ -65,11 +65,12 @@
                                                     </button>
                                                     @endCan
                                                     @can('Delete Jenis Organisasi')
-                                                    <form action="{{ route('organisasi-type.destroy', $organisasiType->id) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this Organisasi Type?');">Delete</button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteOrganisasiTypeModal"
+                                                        data-id="{{ $organisasiType->id }}"
+                                                        data-nama="{{ $organisasiType->organisasi_type_nama }}">
+                                                        Hapus
+                                                    </button>
                                                     @endCan
                                                 </td>
                                             </tr>
@@ -96,6 +97,29 @@
                                                     <input type="text" class="form-control" id="edit_organisasi_type_nama" name="organisasi_type_nama" required>
                                                 </div>
                                                 <button type="submit" class="btn btn-primary">Update</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal for Deleting Organisasi Type -->
+                            <div class="modal fade" id="deleteOrganisasiTypeModal" tabindex="-1" aria-labelledby="deleteOrganisasiTypeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header text-white">
+                                            <h5 class="modal-title" id="deleteOrganisasiTypeModalLabel">Konfirmasi Hapus</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Apakah Anda yakin ingin menghapus jenis organisasi <strong id="organisasiTypeNamaToDelete"></strong>? Tindakan ini tidak dapat dibatalkan.</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                            <form id="deleteOrganisasiTypeForm" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
                                             </form>
                                         </div>
                                     </div>
@@ -137,6 +161,20 @@
             form.action = `/organisasi-type/${organisasiTypeId}`; // Set form action to the update route
             document.getElementById('edit_organisasi_type_id').value = organisasiTypeId;
             document.getElementById('edit_organisasi_type_nama').value = organisasiTypeNama;
+        });
+
+        const deleteOrganisasiTypeModal = document.getElementById('deleteOrganisasiTypeModal');
+        const deleteOrganisasiTypeForm = document.getElementById('deleteOrganisasiTypeForm');
+        const organisasiTypeNamaToDelete = document.getElementById('organisasiTypeNamaToDelete');
+
+        deleteOrganisasiTypeModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Button that triggered the modal
+            const organisasiTypeId = button.getAttribute('data-id');
+            const organisasiTypeNama = button.getAttribute('data-nama');
+
+            // Fill the modal with the data
+            organisasiTypeNamaToDelete.textContent = organisasiTypeNama;
+            deleteOrganisasiTypeForm.action = `/organisasi-type/${organisasiTypeId}`; // Set form action to the delete route
         });
     </script>
         <script>
