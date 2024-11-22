@@ -19,7 +19,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $perkaras = Perkara::select('id', 'title', 'tanggal_kejadian', 'status')
+        $perkaras = Perkara::select('id', 'title', 'no_perkara', 'tanggal_kejadian', 'status')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -209,7 +209,7 @@ class DashboardController extends Controller
     public function show(string $id)
     {
         $perkaras = Perkara::where('id', $id)
-            ->select('id', 'title', 'tanggal_kejadian', 'status', 'deskripsi_kejadian', 'bukti_foto', 'id_organization', 'id_prodi')
+            ->select('id', 'title', 'no_perkara', 'tanggal_kejadian', 'status', 'deskripsi_kejadian', 'bukti_foto', 'id_organization', 'id_prodi')
             ->with([
                 'organisasi' => function ($query) {
                     $query->select('id', 'organisasi_nama', 'organisasi_status', 'organisasi_type_id');
