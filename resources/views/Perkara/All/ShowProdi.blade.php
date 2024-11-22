@@ -8,7 +8,8 @@
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-
+                    <h5 class="mb-0">Detail Perkara Program Studi
+                    </h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
@@ -26,6 +27,13 @@
                                 <p>{{ $perkaras->prodi_nama ?? 'N/A' }}</p>
                             </div>
                         </div>
+
+                        <div class="row mb-4">
+                        <div class="col-md-12">
+                            <h6><strong>Nomor Perkara:</strong></h6>
+                            <p>{{ $perkaras->no_perkara }}</p>
+                        </div>
+                    </div>
 
                         <div class="row mb-4">
                             <div class="col-md-6">

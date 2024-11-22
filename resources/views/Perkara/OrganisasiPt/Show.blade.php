@@ -26,6 +26,13 @@
                     </div>
 
                     <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h6><strong>Nomor Perkara:</strong></h6>
+                                <p>{{ $perkaras->no_perkara }}</p>
+                            </div>
+                    </div>
+
+                    <div class="row mb-4">
                         <div class="col-md-6">
                             <h6><strong>Judul Perkara:</strong></h6>
                             <p>{{ $perkaras->title }}</p>
@@ -75,6 +82,9 @@
             <a href="{{ route('perguruan-tinggi.show', $perkaras->id_organization) }}" class="btn btn-secondary">
                 Kembali
             </a>
+            <a href="{{ route('perkara-organisasipt.edit', $perkaras->id) }}"
+                    class="btn btn-secondary">Edit
+                </a>
         </div>
     </div>
 </div>

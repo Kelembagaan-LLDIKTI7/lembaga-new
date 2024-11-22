@@ -344,7 +344,7 @@ class PerguruanTinggiController extends Controller
             )->with(['prodi:id,prodi_kode,prodi_nama,prodi_periode,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
 
         $perkaras = Perkara::where('id_organization', $id)
-            ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->select('id', 'title', 'no_perkara', 'tanggal_kejadian', 'status')
             ->orderBy('created_at', 'desc')
             ->get();
 
