@@ -381,16 +381,20 @@
                         document.getElementById('sk_nomor').textContent = data.sk_nomor;
                         document.getElementById('sk_tanggal').textContent = data.sk_tanggal;
                         document.getElementById('jsk_nama').textContent = data.jsk_nama;
+
+                        const skDokumenElement = document.getElementById('sk_dokument');
                         if (data.sk_dokumen) {
-                            document.getElementById('btn_pdf_sk').hidden = false;
-                            document.getElementById('sk_dokumen').value = data.sk_dokumen;
+                            skDokumenElement.href = '{{ asset('storage') }}/' + data.sk_dokumen;
+                            skDokumenElement.textContent = 'Lihat Dokumen';
+                            skDokumenElement.style.display = 'inline';
                         } else {
-                            document.getElementById('btn_pdf_sk').hidden = true;
+                            skDokumenElement.style.display = 'none';
                         }
                     })
             }
         });
     </script>
+    
     <script>
         $(document).ready(function() {
             if ($.fn.DataTable.isDataTable('#organisasi_table')) {

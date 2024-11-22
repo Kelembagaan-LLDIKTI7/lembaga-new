@@ -25,13 +25,7 @@
                         <tr>
                             <th>Dokumen SK Akreditasi</th>
                             <td>
-                                <form action="{{ route('sk-program-studi.viewPdf') }}" method="post"
-                                    enctype="multipart/form-data" target="_blank">
-                                    @csrf
-                                    <input type="hidden" name="sk_dokumen" id="sk_dokumen" value="">
-                                    <button type="submit" class="btn btn-link waves-effect"
-                                        id="btn_pdf_sk">Dokumen</button>
-                                </form>
+                                <a href="#" id="sk_dokument" target="_blank">Lihat Dokumen</a>
                             </td>
                         </tr>
                     </tbody>
