@@ -56,6 +56,13 @@ class Organisasi extends Model
         return $this->hasMany(Akreditasi::class, 'id_organization', 'id');
     }
 
+    public function akreditasi_terakhir_pt()
+    {
+        return $this->hasOne(Akreditasi::class, 'id_organization', 'id')
+            ->where('id_prodi', null)
+            ->latest('akreditasi_tgl_akhir');
+    }
+
     public function akta()
     {
         return $this->hasMany(Akta::class, 'id_organization', 'id');
@@ -84,7 +91,7 @@ class Organisasi extends Model
     public function scopeWithDescendants($query)
     {
         return $query->with(['children' => function ($q) {
-            $q->with('children'); 
+            $q->with('children');
         }]);
     }
 }

@@ -24,7 +24,14 @@ class PtExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEven
         $pt = DB::table('organisasis')
             ->where('organisasis.organisasi_type_id', 3)
             ->leftJoin('organisasis as parent', 'organisasis.parent_id', '=', 'parent.id')
-            ->leftJoin('akreditasis', 'organisasis.id', '=', 'akreditasis.id_organization')
+            ->leftJoin('akreditasis', function ($join) {
+                $join->on('organisasis.id', '=', 'akreditasis.id_organization')
+                    ->whereRaw('akreditasis.akreditasi_tgl_akhir = (
+                                SELECT MAX(sub.akreditasi_tgl_akhir)
+                                FROM akreditasis as sub
+                                WHERE sub.id_organization = organisasis.id
+            )');
+            })
             ->leftJoin('lembaga_akreditasis', 'akreditasis.id_lembaga_akreditasi', '=', 'lembaga_akreditasis.id')
             ->leftJoin('peringkat_akreditasis', 'akreditasis.id_peringkat_akreditasi', '=', 'peringkat_akreditasis.id')
             ->orderBy('organisasis.organisasi_kode')
