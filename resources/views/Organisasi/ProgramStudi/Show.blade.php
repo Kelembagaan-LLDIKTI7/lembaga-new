@@ -21,27 +21,38 @@
                                     <td>{{ $prodi->prodi_jenjang ?? '-' }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Periode</th>
-                                    <td>{{ $prodi->prodi_periode }}</td>
-                                </tr>
+    <th>Periode Pelaporan Awal</th>
+    <td>
+        @php
+            $periode = $prodi->prodi_periode; // Get the full periode value
+            $lastDigit = substr($periode, -1); // Extract the last digit
+            $newPeriode = substr($periode, 0, -1); // Remove the last digit
+            if ($lastDigit == '1') {
+                $newPeriode .= ' Gasal'; // Append 'gasal'
+            } elseif ($lastDigit == '2') {
+                $newPeriode .= ' Genap'; // Append 'genap'
+            } else {
+                $newPeriode .= $lastDigit; // Keep the original digit for other cases
+            }
+        @endphp
+
+        {{ $newPeriode }}
+    </td>
+</tr>
+
                                 <tr>
                                     <th>Status</th>
                                     <td>{{ $prodi->prodi_active_status }}</td>
                                 </tr>
                                 <tr>
                                     <th>Nomor SK Ijin Prodi</th>
-                                    <td>{{ $prodi->suratKeputusan->sk_nomor ?? '-' }}</td>
+                                    <td>{{ $prodi->sk_nomor ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tanggal SK Prodi</th>
                                     <td>{{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th>Periode Awal Pelaporan Dikti</th>
-                                    <td>{{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
-                                    </td>
-                                </tr>
+                                </tr>>
                                 <tr>
                                     <th>Dokumen SK</th>
                                     @if ($prodi->suratKeputusan->sk_dokumen)
@@ -88,7 +99,22 @@
                                                 <td>{{ $histori->prodi_kode }}</td>
                                                 <td>{{ $histori->prodi_nama }}</td>
                                                 <td>{{ $histori->prodi_jenjang }}</td>
-                                                <td>{{ $histori->prodi_periode }}</td>
+                                                <td>
+                                                @php
+            $periode = $prodi->prodi_periode; // Get the full periode value
+            $lastDigit = substr($periode, -1); // Extract the last digit
+            $newPeriode = substr($periode, 0, -1); // Remove the last digit
+            if ($lastDigit == '1') {
+                $newPeriode .= ' Gasal'; // Append 'gasal'
+            } elseif ($lastDigit == '2') {
+                $newPeriode .= ' Genap'; // Append 'genap'
+            } else {
+                $newPeriode .= $lastDigit; // Keep the original digit for other cases
+            }
+        @endphp
+
+        {{ $newPeriode }}
+                                                </td>
                                                 <td>{{ $histori->prodi_active_status }}</td>
                                                 <td>{{ $histori->sk_nomor }}</td>
                                                 <td>
