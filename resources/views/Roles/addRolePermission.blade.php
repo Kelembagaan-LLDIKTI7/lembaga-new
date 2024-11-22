@@ -115,6 +115,14 @@
                                     'Detail SK Perguruan Tinggi',
                                     'View PDF SK Perguruan Tinggi',
                                 ],
+                                'Surat Keputusan Program Studi' => [
+                                    'Create SK Program Studi',
+                                    'Edit SK Program Studi',
+                                    'Delete SK Program Studi',
+                                    'View SK Program Studi',
+                                    'Detail SK Program Studi',
+                                    'View PDF SK Program Studi',
+                                ],
                                 'Jabatan' => ['Create Jabatan', 'Edit Jabatan', 'Delete Jabatan', 'View Jabatan'],
                                 'General Permissions' => [
                                     'Create Permission',
@@ -164,7 +172,7 @@
                                     'View Detail Perkara Program Studi',
                                     'Update Status Perkara Program Studi',
                                 ],
-                                'Dashboard' => [ 'View Detail Perkara'],
+                                'Dashboard' => ['View Detail Perkara'],
                             ];
                         @endphp
 

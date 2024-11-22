@@ -35,7 +35,7 @@ class SkKumhamController extends Controller
 
     public function create($id)
     {
-        $akta = Akta::select('id')->findOrFail($id);
+        $akta = Akta::select('id', 'id_organization')->findOrFail($id);
         $skKumham = SkKumham::where('id_akta', $id)->first();
 
         if ($skKumham) {
