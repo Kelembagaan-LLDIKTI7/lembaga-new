@@ -13,5 +13,6 @@ class Role extends SpatieRole
 {
     use HasFactory;
     use HasUuids;
+    use HasRoles;
     protected $primaryKey = 'id';
 }
