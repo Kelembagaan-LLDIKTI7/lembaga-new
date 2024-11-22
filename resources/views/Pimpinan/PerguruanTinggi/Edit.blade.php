@@ -67,6 +67,26 @@
                                         @enderror
                                         <small class="text-danger error-message" id="error-pimpinan_sk"></small>
                                     </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="pimpinan_status" class="required-label">Status Akreditasi</label>
+                                        <select name="pimpinan_status" class=" form-control select-search">
+                                            <option value="">-- Pilih Status --</option>
+                                            <option value="Berlaku"
+                                                {{ $pimpinan->pimpinan_status == 'Berlaku' ? 'selected' : '' }}>Berlaku
+                                            </option>
+                                            <option value="Berakhir"
+                                                {{ $pimpinan->pimpinan_status == 'Berakhir' ? 'selected' : '' }}>Berakhir
+                                            </option>
+                                            <option value="Dicabut"
+                                                {{ $pimpinan->pimpinan_status == 'Dicabut' ? 'selected' : '' }}>Dicabut
+                                            </option>
+                                        </select>
+                                        @error('pimpinan_status')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_status"></small>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-6">
