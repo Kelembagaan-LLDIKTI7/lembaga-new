@@ -262,7 +262,7 @@ class ProgramStudiController extends Controller
             )->with(['prodi:id,prodi_kode,prodi_nama,prodi_jenjang', 'peringkat_akreditasi:id,peringkat_nama'])->orderBy('created_at', 'asc')->get();
 
         $perkaras = Perkara::where('id_prodi', $id)
-            ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->select('id', 'title', 'no_perkara', 'tanggal_kejadian', 'status')
             ->orderBy('created_at', 'desc')
             ->get();
 

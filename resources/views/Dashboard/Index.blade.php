@@ -134,6 +134,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Title</th>
+                                            <th>No Perkara</th>
                                             <th>Tanggal Kejadian</th>
                                             <th>Status</th>
                                             @can('View Detail Perkara')
@@ -146,6 +147,7 @@
                                             <tr>
                                                 <td></td>
                                                 <td>{{ $perkara->title }}</td>
+                                                <td>{{ $perkara->no_perkara }}</td>
                                                 <td>
                                                     {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
                                                 </td>

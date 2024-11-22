@@ -335,6 +335,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/create', [PerkaraOrganisasiController::class, 'create'])->name('create');
             Route::post('/', [PerkaraOrganisasiController::class, 'store'])->name('store');
         });
+        Route::get('/{id}/edit', [PerkaraOrganisasiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PerkaraOrganisasiController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-perkara-update', [PerkaraOrganisasiController::class, 'validationUpdate'])->name('validationUpdatePerkara');
         Route::get('/{id}', [PerkaraOrganisasiController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Badan Penyelenggara');
         Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update')->middleware('role.access:Update Status Perkara Badan Penyelenggara');
     });
@@ -346,6 +349,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/validation-store', [PerkaraOrganisasiPTController::class, 'validationStore'])->name('validationStore');
         });
         Route::get('/{id}', [PerkaraOrganisasiPTController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Perguruan Tinggi');
+        Route::get('/{id}/edit', [PerkaraOrganisasiPTController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [PerkaraOrganisasiPTController::class, 'update'])->name('update');
+        Route::put('/{id}/validation-perkara-update', [PerkaraOrganisasiPTController::class, 'validationEdit'])->name('validationUpdatePerkara');
         Route::middleware('role.access:Update Status Perkara Perguruan Tinggi')->group(function () {
             Route::patch('/{id}/status-update', [PerkaraOrganisasiPTController::class, 'updateStatus'])->name('status-update');
             Route::put('/{id}/validation-update', [PerkaraOrganisasiPTController::class, 'validationUpdate'])->name('validationUpdate');
@@ -358,6 +364,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/', [PerkaraProdiController::class, 'store'])->name('store');
             Route::post('/validation-store', [PerkaraProdiController::class, 'validationStore'])->name('validationStore');
         });
+        Route::get('/{id}/edit', [PerkaraProdiController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [PerkaraProdiController::class, 'update'])->name('update');
+        Route::put('/{id}/validation-perkara-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdatePerkara');
         Route::get('/{id}', [PerkaraProdiController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Program Studi');
         Route::middleware('role.access:Update Status Perkara Program Studi')->group(function () {
             Route::patch('/{id}/status-update', [PerkaraProdiController::class, 'updateStatus'])->name('status-update');

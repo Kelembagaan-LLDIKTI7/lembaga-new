@@ -160,7 +160,7 @@
 
         // Step 1: Validate the data
         $.ajax({
-            url: '{{ route('perkara.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
+            url: '{{ route('perkara-prodi.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
             type: 'POST', // Use POST instead of PUT for AJAX requests
             data: formData,
             contentType: false,
@@ -200,7 +200,7 @@
 
     function submitToStore(formData) {
         $.ajax({
-            url: '{{ route('perkara.update', $perkaras->id) }}', // Update route
+            url: '{{ route('perkara-prodi.update', $perkaras->id) }}', // Update route
             type: 'POST', // Use POST and spoof method as PUT
             data: formData,
             contentType: false,

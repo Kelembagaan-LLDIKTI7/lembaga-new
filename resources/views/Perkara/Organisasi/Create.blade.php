@@ -63,7 +63,6 @@
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-
                             <div class="mb-3">
                                 <label for="tanggal_kejadian">Tanggal Kejadian</label>
                                 <input type="date" name="tanggal_kejadian" id="tanggal_kejadian" class="form-control"
@@ -83,6 +82,14 @@
                         </div>
 
                         <div class="form-right">
+                            <div class="mb-3">
+                                <label for="no_perkara">Nomor Perkara</label>
+                                <input type="text" name="no_perkara" id="no_perkara" class="form-control" required
+                                    value="{{ old('no_perkara') }}">
+                                @error('no_perkara')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <div class="mb-3">
                                 <label for="bukti_foto">Bukti Foto</label>
                                 <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control" multiple

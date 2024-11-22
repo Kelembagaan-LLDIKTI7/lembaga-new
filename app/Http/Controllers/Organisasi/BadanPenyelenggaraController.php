@@ -331,7 +331,7 @@ class BadanPenyelenggaraController extends Controller
             ->get();
 
         $perkaras = Perkara::where('id_organization', $id)
-            ->select('id', 'title', 'tanggal_kejadian', 'status')
+            ->select('id', 'title', 'no_perkara', 'tanggal_kejadian', 'status')
             ->orderBy('created_at', 'desc')
             ->get();
 
