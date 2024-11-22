@@ -314,6 +314,7 @@ class PerguruanTinggiController extends Controller
 
         $akreditasi = DB::table('akreditasis')
             ->where('akreditasis.id_organization', $id)
+            ->where('akreditasis.id_prodi', null)
             ->leftJoin('peringkat_akreditasis', 'peringkat_akreditasis.id', '=', 'akreditasis.id_peringkat_akreditasi')
             ->leftJoin('lembaga_akreditasis', 'lembaga_akreditasis.id', '=', 'akreditasis.id_lembaga_akreditasi')
             ->select('akreditasis.id', 'akreditasis.akreditasi_sk', 'akreditasis.akreditasi_tgl_akhir', 'akreditasis.akreditasi_status', 'lembaga_akreditasis.lembaga_nama_singkat', 'peringkat_akreditasis.peringkat_nama')
