@@ -46,8 +46,13 @@
                                     <th>Dokumen SK</th>
                                     @if ($prodi->suratKeputusan->sk_dokumen)
                                         <td>
-                                            <a href="{{ asset('storage/' . $prodi->suratKeputusan->sk_dokumen) }}"
-                                                target="_blank">Dokumen</a>
+                                        <form action="{{ route('sk-program-studi.viewPdf') }}" method="post"
+                                    enctype="multipart/form-data" target="_blank">
+                                    @csrf
+                                    <input type="hidden" name="sk_dokumen" id="sk_dokumen" value="">
+                                    <button type="submit" class="btn btn-link waves-effect"
+                                        id="btn_pdf_sk">Dokumen</button>
+                                </form>
                                         </td>
                                     @else
                                         <td>-</td>
