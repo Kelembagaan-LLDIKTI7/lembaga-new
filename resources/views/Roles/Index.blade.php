@@ -58,14 +58,11 @@
                                                     </a>
                                                     @endCan
                                                     @can('Edit Roles')
-                                                    @if (!$item->hasRole('Super Admin'))
                                                     <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#editRoleModal-{{ $item->id }}">
                                                         <i class="ri-edit-2-line"></i> Edit
                                                     </button>
-                                                    @endif
                                                     @endCan
                                                     @can('Delete Roles')
-                                                    @if (!$item->hasRole('Super Admin'))
                                                     <a href="#" class="btn btn-sm btn-danger" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $item->id }}').submit();">
                                                         <i class="ri-delete-bin-line"></i> Delete
                                                     </a>
@@ -73,7 +70,6 @@
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
-                                                    @endif
                                                     @endCan
                                                 </div>
                                             </td>
