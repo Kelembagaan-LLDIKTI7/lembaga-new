@@ -99,11 +99,33 @@
         </script>
     @endif
 
-    @if (session('error'))
+    @if ($errors->any())
         <script>
             $(document).ready(function() {
                 Toastify({
-                    text: '⚠️ {{ session('error') }}',
+                    text: '⚠️ {{ $errors->first() }}', // Ambil pesan error pertama
+                    duration: 5000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                        borderRadius: "10px",
+                        boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+                        padding: "10px 15px",
+                    },
+                    onClick: function() {}
+                }).showToast();
+            });
+        </script>
+    @endif
+
+    @if (session('errors') && is_string(session('errors')))
+        <script>
+            $(document).ready(function() {
+                Toastify({
+                    text: '⚠️ {{ session('errors') }}',
                     duration: 5000,
                     close: true,
                     gravity: "top",
@@ -158,15 +180,6 @@
                 allowClear: true,
                 width: '100%'
             });
-        });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            @if ($errors->any())
-                var myModal = new bootstrap.Modal(document.getElementById('changePasswordModal'), {});
-                myModal.show();
-            @endif
         });
     </script>
 
