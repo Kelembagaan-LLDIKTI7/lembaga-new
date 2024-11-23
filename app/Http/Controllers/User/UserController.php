@@ -102,7 +102,7 @@ class UserController extends Controller
         if ($user->hasRole('Super Admin')) {
             abort(403, 'Unauthorized action.');
         }
-    
+
         $roles = Role::pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
 
@@ -132,7 +132,7 @@ class UserController extends Controller
         if ($user->hasRole('Super Admin')) {
             abort(403, 'Unauthorized action.');
         }
-            
+
         $validateData = $request->validate([
             'name' => 'string|required',
             'email' => 'string|required|unique:users,email,' . $user->id,
@@ -189,10 +189,13 @@ class UserController extends Controller
             'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.'
         ]);
 
-        Auth::user()->update([
+        $user = Auth::user()->update([
             'password' => Hash::make($request->new_password),
         ]);
 
-        return redirect()->back()->with('success', 'Password berhasil diperbarui');
+        if ($user) {
+            return redirect()->back()->with('success', 'Password berhasil diperbarui');
+        }
+        return redirect()->back()->withErrors(['errors' => 'Terjadi Kesalahan Saat Input Password']);
     }
 }
