@@ -119,7 +119,7 @@
     <label for="prodi_periode" class="required-label">Periode Pelaporan</label>
     <input type="number" name="prodi_periode" class="form-control"
            value="{{ old('prodi_periode') }}" required
-           min="1900" max="{{ date('Y') }}" step="1" placeholder="Enter year">
+        step="1" placeholder="Enter year">
     @if ($errors->has('prodi_periode'))
         <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
     @endif

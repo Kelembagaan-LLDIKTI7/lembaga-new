@@ -167,7 +167,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/validation-store', [ProgramStudiController::class, 'validationStore'])->name('validationStore');
         });
         Route::middleware('role.access:Edit Program Studi')->group(function () {
-            Route::get('/{id}/edit', [ProgramStudiController::class, 'edit'])->name('edit');
+            Route::get('/{id}/editSK', [ProgramStudiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ProgramStudiController::class, 'update'])->name('update');
             Route::put('/{id}/validation-update', [ProgramStudiController::class, 'validationUpdate'])->name('validationUpdate');
         });

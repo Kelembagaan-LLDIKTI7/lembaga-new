@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('prodi_kode')->nullable();
             $table->string('prodi_nama', 100);
             $table->string('prodi_jenjang');
-            $table->integer('prodi_periode')->nullable();
+            $table->bigInteger('prodi_periode')->nullable();
             $table->string('prodi_active_status');
 
             $table->string('sk_nomor');

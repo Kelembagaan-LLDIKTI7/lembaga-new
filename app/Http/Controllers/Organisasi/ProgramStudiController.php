@@ -89,7 +89,7 @@ class ProgramStudiController extends Controller
             'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
-            'prodi_periode' => 'required',
+            'prodi_periode' => 'required|digits:5|integer|min:1900',
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
@@ -101,6 +101,9 @@ class ProgramStudiController extends Controller
             'prodi_kode.unique' => 'Kode Program Studi sudah digunakan.',
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
             'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
+            'prodi_periode.digit' => 'Periode Pelaporan harus 5 digit',
+            'prodi_periode.integer' => 'Periode harus berupa angka',
+            'prodi_periode.min' => 'Periode minimal 1900',
             'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
             'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
             'sk_nomor.required' => 'Nomor SK harus diisi.',
@@ -134,7 +137,7 @@ class ProgramStudiController extends Controller
             'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
-            'prodi_periode' => 'required|digits:4|integer|min:1900|max:' . date('Y'),
+            'prodi_periode' => 'required|digits:5|integer|min:1900',
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
@@ -147,8 +150,9 @@ class ProgramStudiController extends Controller
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
             'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
             'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
-            'prodi_periode.digits' => 'Periode Pelaporan Program Studi harus memilliki 4 digit',
-            'prodi_periode.min' => 'Periode Pelaporan Program Studi minimal tahun 1900',
+            'prodi_periode.digit' => 'Periode Pelaporan harus 5 digit',
+            'prodi_periode.integer' => 'Periode harus berupa angka',
+            'prodi_periode.min' => 'Periode minimal 1900',
             'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
             'sk_nomor.required' => 'Nomor SK harus diisi.',
             'sk_tanggal.required' => 'Tanggal SK harus diisi.',
@@ -233,7 +237,7 @@ class ProgramStudiController extends Controller
             'historiPerguruanTinggi:id,id_prodi,prodi_kode,prodi_nama,prodi_jenjang,prodi_periode,prodi_active_status,sk_nomor,sk_tanggal',
             'suratKeputusan' => function ($query) {
                 $query->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
-                    ->latest('created_at')->limit(1);
+                    ->oldest('sk_tanggal')->limit(1);
             },
             'suratKeputusan.jenisSuratKeputusan:id,jsk_nama',
             'perguruanTinggi:id'
@@ -269,7 +273,7 @@ class ProgramStudiController extends Controller
         $sk = SuratKeputusan::where('id_prodi', $id)
             ->with('jenisSuratKeputusan:id,jsk_nama')
             ->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
-            ->latest('created_at')
+            ->orderBy('sk_tanggal', 'asc')
             ->get();
 
         return view('Organisasi.ProgramStudi.Show', [
