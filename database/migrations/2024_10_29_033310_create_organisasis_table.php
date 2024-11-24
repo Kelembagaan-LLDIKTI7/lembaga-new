@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('organisasi_berubah_id')->nullable();
             $table->string('organisasi_berubah_status')->nullable();
             $table->string('parent_id')->nullable();
+            $table->boolean('tampil')->nullable();
             $table->string('users_id')->nullable();
 
             $table->timestamps();

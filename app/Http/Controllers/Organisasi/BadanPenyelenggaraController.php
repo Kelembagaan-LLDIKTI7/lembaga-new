@@ -290,6 +290,7 @@ class BadanPenyelenggaraController extends Controller
                         'organisasi_logo',
                         'organisasi_status',
                         'organisasi_type_id',
+                        'tampil',
                         'parent_id',
                     );
                 },
