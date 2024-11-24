@@ -136,7 +136,7 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="parent_id">Badan Penyelenggara</label>
+                                        <label for="parent_id" class="required-label">Badan Penyelenggara</label>
                                         <select name="parent_id" class="form-control select-search" required>
                                             <option value="">-- Pilih Parent Organisasi --</option>
                                             @foreach ($badanPenyelenggaras as $badanPenyelenggara)
@@ -151,7 +151,7 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_bentuk_pt">Bentuk Perguruan Tinggi</label>
+                                        <label for="organisasi_bentuk_pt" class="required-label">Bentuk Perguruan Tinggi</label>
                                         <select name="organisasi_bentuk_pt" class="form-control select-search" required>
                                             <option value="">-- Pilih Bentuk PT --</option>
                                             @foreach ($bentukPt as $pt)
