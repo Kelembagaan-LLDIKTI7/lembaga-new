@@ -60,16 +60,13 @@ class ProgramStudiController extends Controller
 
         if ($user->hasRole('Badan Penyelenggara')) {
             $prodisQuery->where('organisasis.parent_id', $user->id_organization);
-
-            $prodis = $prodisQuery->get();
         }
 
         if ($user->hasRole('Perguruan Tinggi')) {
             $prodisQuery->where('organisasis.id', $user->id_organization);
-
-            $prodis = $prodisQuery->get();
         }
 
+        $prodis = $prodisQuery->get();
         // return response()->json(['prodis' => $prodis]);
         return view('Organisasi.ProgramStudi.IndexAdmin', ['prodis' => $prodis]);
     }
