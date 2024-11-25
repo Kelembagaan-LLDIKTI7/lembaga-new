@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -21,7 +22,7 @@ class PtExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEven
      */
     public function collection()
     {
-        $pt = DB::table('organisasis')
+        $ptQuery = DB::table('organisasis')
             ->where('organisasis.organisasi_type_id', 3)
             ->leftJoin('organisasis as parent', 'organisasis.parent_id', '=', 'parent.id')
             ->leftJoin('akreditasis', function ($join) {
@@ -47,8 +48,17 @@ class PtExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEven
                 'akreditasis.akreditasi_sk as no_sk_akreditasi',
                 'akreditasis.akreditasi_tgl_awal as tgl_terbit_sk_akreditasi',
                 'akreditasis.akreditasi_tgl_akhir as tgl_akhir_sk_akreditasi',
-            )
-            ->get();
+            );
+
+        if (Auth::user()->hasRole('Badan Penyelenggara')) {
+            $ptQuery->where('organisasis.parent_id', Auth::user()->id_organization);
+        }
+
+        if (Auth::user()->hasRole('Perguruan Tinggi')) {
+            $ptQuery->where('organisasis.id', Auth::user()->id_organization);
+        }
+
+        $pt = $ptQuery->get();
 
         return $pt;
     }

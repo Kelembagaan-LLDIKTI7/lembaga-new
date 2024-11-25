@@ -24,8 +24,13 @@
                     </a>
                 </li>
 
-                @canany(['View Peringkat Akreditasi', 'View Jenis Organisasi', 'View Lembaga Akreditasi', 'View
-                    Jabatan'])
+                @canany([
+                    'View Peringkat Akreditasi',
+                    'View Jenis Organisasi',
+                    'View Lembaga Akreditasi',
+                    'View
+                    Jabatan',
+                    ])
                     <li class="sidebar-item">
                         <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
                             <span class="d-flex">
@@ -118,6 +123,7 @@
                                     </a>
                                 </li>
                             @endcan
+                            @if (!auth()->user()->hasRole('Badan Penyelenggara') && !auth()->user()->hasRole('Perguruan Tinggi'))
                                 <li class="sidebar-item">
                                     <a href="{{ route('perkara.index') }}" class="sidebar-link">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
@@ -126,6 +132,7 @@
                                         <span class="hide-menu">Evaluasi</span>
                                     </a>
                                 </li>
+                            @endif
                         </ul>
                     </li>
                 @endcanany
