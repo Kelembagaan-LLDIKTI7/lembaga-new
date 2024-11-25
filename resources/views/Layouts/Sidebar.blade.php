@@ -83,7 +83,7 @@
                     </li>
                 @endcanany
 
-                @canany(['View Badan Penyelenggara', 'View Perguruan Tinggi'])
+                @canany(['View Badan Penyelenggara', 'View Perguruan Tinggi', 'View Program Studi'])
                     <li class="sidebar-item">
                         <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
                             <span class="d-flex">
