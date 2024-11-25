@@ -46,7 +46,7 @@
                                 </tr>
                                 <tr>
                                     <th>Nomor SK Ijin Prodi</th>
-                                    <td>{{ $prodi->sk_nomor ?? '-' }}</td>
+                                    <td>{{ $prodi->suratKeputusan->sk_nomor }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tanggal SK Prodi</th>

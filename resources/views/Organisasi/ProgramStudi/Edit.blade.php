@@ -154,9 +154,93 @@
     <small class="text-danger error-message" id="error-prodi_periode"></small>
 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"
-                                class="btn btn-secondary">Keluar</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Data Surat Keputusan</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="sk_nomor" class="required-label">Nomor Surat Keputusan</label>
+                                        <input type="text" name="sk_nomor" class="form-control"
+                                            value="{{ old('sk_nomor', $prodi->suratKeputusan->first()->sk_nomor) }}" required>
+                                        @if ($errors->has('sk_nomor'))
+                                            <span class="text-danger">{{ $errors->first('sk_nomor') }}</span>
+                                        @endif
+                                        @error('sk_nomor')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-sk_nomor"></small>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="sk_tanggal" class="required-label">Tanggal SK</label>
+                                        <input type="date" name="sk_tanggal" class="form-control"
+                                            value="{{ old('sk_tanggal', $prodi->suratKeputusan->first()->sk_tanggal) }}" required>
+                                        @if ($errors->has('sk_tanggal'))
+                                            <span class="text-danger">{{ $errors->first('sk_tanggal') }}</span>
+                                        @endif
+                                        @error('sk_tanggal')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-sk_tanggal"></small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="id_jenis_surat_keputusan" class="required-label">Jenis Surat
+                                            Keputusan</label>
+                                        <select name="id_jenis_surat_keputusan" class="form-control select-search">
+                                            <option value="">-- Pilih Perguruan Tinggi --</option>
+                                            @foreach ($jenis as $jenis)
+                                                <option value="{{ $jenis->id }}"
+                                                    @if (old('id_jenis_surat_keputusan') == $jenis->id) selected @endif>
+                                                    {{ $jenis->jsk_nama }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('id_jenis_surat_keputusan'))
+                                            <span
+                                                class="text-danger">{{ $errors->first('id_jenis_surat_keputusan') }}</span>
+                                        @endif
+                                        @error('id_jenis_surat_keputusan')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message"
+                                            id="error-id_jenis_surat_keputusan"></small>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="sk_dokumen">Dokumen SK (Opsional)</label>
+                                        <input type="file" name="sk_dokumen" class="form-control"
+                                            accept=".pdf,.doc,.docx">
+                                        <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
+                                            DOCX.</small>
+                                        @if ($errors->has('sk_dokumen'))
+                                            <span class="text-danger">{{ $errors->first('sk_dokumen') }}</span>
+                                        @endif
+                                        @error('sk_dokumen')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-sk_dokumen"></small>
+                                    </div>
+                                </div>
+                                <div class="btn-center mt-6">
+                                    <div id="buttons">
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"
+                                            type="submit" class="btn btn-primary">Keluar</a>
+                                    </div>
+                                    <div id="loading">
+                                        <div class="d-flex align-items-center">
+                                            <strong>Loading...</strong>
+                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                                        </div>
+                                    </div>
+                                    <div id="error-messages"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

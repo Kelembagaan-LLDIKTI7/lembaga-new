@@ -50,7 +50,7 @@ class ProgramStudiController extends Controller
                 'program_studis.prodi_nama as prodi_nama',
                 'program_studis.prodi_jenjang as prodi_jenjang',
                 'akreditasis.akreditasi_sk as no_sk_akreditasi',
-                'program_studis.prodi_periode as periode',
+                'program_studis.prodi_periode as prodi_periode',
                 'program_studis.prodi_active_status as status',
                 'akreditasis.akreditasi_tgl_awal as tgl_terbit_sk_akreditasi',
                 'peringkat_akreditasis.peringkat_nama as akreditasi',
@@ -241,6 +241,9 @@ class ProgramStudiController extends Controller
             'historiPerguruanTinggi:id,id_prodi,prodi_kode,prodi_nama,prodi_jenjang,prodi_periode,prodi_active_status,sk_nomor,sk_tanggal',
             'suratKeputusan' => function ($query) {
                 $query->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
+                    ->whereHas('jenisSuratKeputusan', function ($subQuery) {
+                        $subQuery->where('jsk_nama', 'SK Pendirian');
+                    })
                     ->oldest('sk_tanggal')->limit(1);
             },
             'suratKeputusan.jenisSuratKeputusan:id,jsk_nama',
@@ -309,7 +312,11 @@ class ProgramStudiController extends Controller
             'prodi_periode',
             'prodi_active_status'
         )->with(['suratKeputusan' => function ($query) {
-            $query->orderBy('created_at', 'desc')->first();
+            $query->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
+                ->whereHas('jenisSuratKeputusan', function ($subQuery) {
+                    $subQuery->where('jsk_nama', 'SK Pendirian');
+                })
+                ->oldest('sk_tanggal')->limit(1);
         }])->findOrFail($id);
 
         $jenis = JenisSuratKeputusan::select(
@@ -329,22 +336,33 @@ class ProgramStudiController extends Controller
         // Validasi data input
         $prodi = ProgramStudi::findOrFail($id);
         $validator = \Validator::make($request->all(), [
-            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode,' . $prodi->id,
-            'prodi_nama' => 'required|string|max:255',
-            'prodi_active_status' => 'required|string',
-            'prodi_periode' => 'required|digits:4|integer|min:1900|max:' . date('Y'),
-            'prodi_jenjang' => 'required|string',
+            'id_organization' => 'required',
+            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
+            'prodi_nama' => 'required',
+            'prodi_jenjang' => 'required',
+            'prodi_periode' => 'required|digits:5|integer|min:1900',
+            'prodi_active_status' => 'required',
+            'sk_nomor' => 'required',
+            'sk_tanggal' => 'required',
+            'id_jenis_surat_keputusan' => 'required',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
-            'prodi_kode.max' => 'Kode Program Studi harus terdiri dari 6 karakter.',
-            'prodi_kode.unique' => 'Kode Program Studi sudah terdaftar.',
+            'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
+            'prodi_kode.unique' => 'Kode Program Studi sudah digunakan.',
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
-            'prodi_nama.max' => 'Nama Program Studi tidak boleh lebih dari 255 karakter.',
-            'prodi_active_status.required' => 'Status Program Studi harus diisi.',
             'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
             'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
-            'prodi_periode.digits' => 'Periode Pelaporan Program Studi harus memilliki 4 digit',
-            'prodi_periode.min' => 'Periode Pelaporan Program Studi minimal tahun 1900',
+            'prodi_periode.digit' => 'Periode Pelaporan harus 5 digit',
+            'prodi_periode.integer' => 'Periode harus berupa angka',
+            'prodi_periode.min' => 'Periode minimal 1900',
+            'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
+            'sk_nomor.required' => 'Nomor SK harus diisi.',
+            'sk_tanggal.required' => 'Tanggal SK harus diisi.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
+            'sk_dokumen.required' => 'Dokumen SK harus diisi.',
+            'sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
         ]);
 
         if ($validator->fails()) {
@@ -366,22 +384,33 @@ class ProgramStudiController extends Controller
         $prodi = ProgramStudi::findOrFail($id);
 
         $request->validate([
-            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode,' . $prodi->id,
-            'prodi_nama' => 'required|string|max:255',
-            'prodi_active_status' => 'required|string',
-            'prodi_jenjang' => 'required|string',
-            'prodi_periode' => 'required|digits:4|integer|min:1900|max:' . date('Y'),
+           'id_organization' => 'required',
+            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
+            'prodi_nama' => 'required',
+            'prodi_jenjang' => 'required',
+            'prodi_periode' => 'required|digits:5|integer|min:1900',
+            'prodi_active_status' => 'required',
+            'sk_nomor' => 'required',
+            'sk_tanggal' => 'required',
+            'id_jenis_surat_keputusan' => 'required',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
-            'prodi_kode.max' => 'Kode Program Studi harus terdiri dari 6 karakter.',
-            'prodi_kode.unique' => 'Kode Program Studi sudah terdaftar.',
+            'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
+            'prodi_kode.unique' => 'Kode Program Studi sudah digunakan.',
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
-            'prodi_nama.max' => 'Nama Program Studi tidak boleh lebih dari 255 karakter.',
-            'prodi_active_status.required' => 'Status Program Studi harus diisi.',
             'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
             'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
-            'prodi_periode.digits' => 'Periode Pelaporan Program Studi harus memilliki 4 digit',
-            'prodi_periode.min' => 'Periode Pelaporan Program Studi minimal tahun 1900',
+            'prodi_periode.digit' => 'Periode Pelaporan harus 5 digit',
+            'prodi_periode.integer' => 'Periode harus berupa angka',
+            'prodi_periode.min' => 'Periode minimal 1900',
+            'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
+            'sk_nomor.required' => 'Nomor SK harus diisi.',
+            'sk_tanggal.required' => 'Tanggal SK harus diisi.',
+            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
+            'sk_dokumen.required' => 'Dokumen SK harus diisi.',
+            'sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
         ]);
 
         $prodi->update([
@@ -391,6 +420,15 @@ class ProgramStudiController extends Controller
             'prodi_jenjang' => $request->prodi_jenjang,
             'prodi_periode' => $request->prodi_periode,
         ]);
+
+        $sk = SuratKeputusan::updateOrCreate(
+            ['id_prodi' => $prodi->id, 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan],
+            [
+                'sk_nomor' => $request->sk_nomor,
+                'sk_tanggal' => $request->sk_tanggal,
+                'sk_dokumen' => $request->file('sk_dokumen') ? $request->file('sk_dokumen')->store('sk_dokumen') : null,
+            ]
+        );
 
         HistoryProgramStudi::create([
             'id' => Str::uuid(),

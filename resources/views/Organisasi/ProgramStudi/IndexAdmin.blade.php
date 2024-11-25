@@ -40,7 +40,20 @@
                                     <td>{{ $prodi->prodi_kode }}</td>
                                     <td>{{ $prodi->prodi_nama }}</td>
                                     <td>{{ $prodi->prodi_jenjang }}</td>
-                                    <td>{{ $prodi->periode }}</td>
+                                    <td> @php
+            $periode = $prodi->prodi_periode; // Get the full periode value
+            $lastDigit = substr($periode, -1); // Extract the last digit
+            $newPeriode = substr($periode, 0, -1); // Remove the last digit
+            if ($lastDigit == '1') {
+                $newPeriode .= ' Gasal'; // Append 'gasal'
+            } elseif ($lastDigit == '2') {
+                $newPeriode .= ' Genap'; // Append 'genap'
+            } else {
+                $newPeriode .= $lastDigit; // Keep the original digit for other cases
+            }
+        @endphp
+
+        {{ $newPeriode }}</td>
                                     <td>{{ $prodi->status }}</td>
                                     <td>
                                         {{ $prodi->akreditasi ?? '' }}
