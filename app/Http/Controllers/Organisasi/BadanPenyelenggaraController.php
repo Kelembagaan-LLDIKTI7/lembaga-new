@@ -40,6 +40,18 @@ class BadanPenyelenggaraController extends Controller
 
         if ($user->hasRole('Badan Penyelenggara')) {
             $query->where('id', $user->id_organization);
+            $badanPenyelenggaras = $query->get();
+
+            return redirect()->route('badan-penyelenggara.show', ['id' => $badanPenyelenggaras[0]->id]);
+        }
+
+        if ($user->hasRole('Perguruan Tinggi')) {
+            $pt = Organisasi::where('id', $user->id_organization)->first();
+            $query->where('id', $pt->parent_id);
+
+            $badanPenyelenggaras = $query->get();
+
+            return redirect()->route('badan-penyelenggara.show', ['id' => $badanPenyelenggaras[0]->id]);
         }
 
         $badanPenyelenggaras = $query->get();

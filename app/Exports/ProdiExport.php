@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -19,7 +20,8 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
      */
     public function collection()
     {
-        $prodi = DB::table('program_studis')
+        $user = Auth::user();
+        $prodiQuery = DB::table('program_studis')
             ->leftJoin('organisasis', 'program_studis.id_organization', '=', 'organisasis.id')
             ->leftJoin('akreditasis', function ($join) {
                 $join->on('program_studis.id', '=', 'akreditasis.id_prodi')
@@ -44,8 +46,17 @@ class ProdiExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                 'akreditasis.akreditasi_tgl_awal as tgl_terbit_sk_akreditasi',
                 'peringkat_akreditasis.peringkat_nama as akreditasi',
                 'akreditasis.akreditasi_tgl_akhir as tgl_akhir_sk_akreditasi',
-            )
-            ->get();
+            );
+
+        if ($user->hasRole('Badan Penyelenggara')) {
+            $prodiQuery->where('organisasis.parent_id', $user->id_organization);
+        }
+
+        if ($user->hasRole('Perguruan Tinggi')) {
+            $prodiQuery->where('organisasis.id', $user->id_organization);
+        }
+
+        $prodi = $prodiQuery->get();
 
         $data = [];
         $no_pt = 1;

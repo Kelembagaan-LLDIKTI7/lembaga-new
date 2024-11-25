@@ -24,7 +24,8 @@ class ProgramStudiController extends Controller
      */
     public function index()
     {
-        $prodis = DB::table('program_studis')
+        $user = Auth::user();
+        $prodisQuery = DB::table('program_studis')
             ->leftJoin('organisasis', 'program_studis.id_organization', '=', 'organisasis.id')
             ->leftJoin('akreditasis', function ($join) {
                 $join->on('program_studis.id', '=', 'akreditasis.id_prodi')
@@ -55,8 +56,19 @@ class ProgramStudiController extends Controller
                 'akreditasis.akreditasi_tgl_awal as tgl_terbit_sk_akreditasi',
                 'peringkat_akreditasis.peringkat_nama as akreditasi',
                 'akreditasis.akreditasi_tgl_akhir as tgl_akhir_sk_akreditasi',
-            )
-            ->get();
+            );
+
+        if ($user->hasRole('Badan Penyelenggara')) {
+            $prodisQuery->where('organisasis.parent_id', $user->id_organization);
+
+            $prodis = $prodisQuery->get();
+        }
+
+        if ($user->hasRole('Perguruan Tinggi')) {
+            $prodisQuery->where('organisasis.id', $user->id_organization);
+
+            $prodis = $prodisQuery->get();
+        }
 
         // return response()->json(['prodis' => $prodis]);
         return view('Organisasi.ProgramStudi.IndexAdmin', ['prodis' => $prodis]);
