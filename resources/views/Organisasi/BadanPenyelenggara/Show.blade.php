@@ -252,12 +252,13 @@
                                                 <td>{{ $bp->organisasi_status }}</td>
                                                 <td>
                                                     @can('Detail Perguruan Tinggi')
-                                                        <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
-                                                            class="btn btn-sm btn-primary me-2">
-                                                            <i class="ti ti-info-circle"></i>
-                                                        </a>
+                                                        @if ($bp->tampil == 1)
+                                                            <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
+                                                                class="btn btn-sm btn-primary me-2">
+                                                                <i class="ti ti-info-circle"></i>
+                                                            </a>
+                                                        @endif
                                                     @endcan
-                                                </td>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -509,128 +510,128 @@
             }
         });
     </script>
-<script>
-    $(document).ready(function() {
-        if ($.fn.DataTable.isDataTable('#pimpinan_table')) {
-            $('#pimpinan_table').DataTable().destroy();
-        }
-
-        $('#pimpinan_table').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#pimpinan_table')) {
+                $('#pimpinan_table').DataTable().destroy();
             }
-        });
-        if ($.fn.DataTable.isDataTable('#perguruan_tinggi')) {
-            $('#perguruan_tinggi').DataTable().destroy();
-        }
 
-        $('#perguruan_tinggi').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+            $('#pimpinan_table').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#perguruan_tinggi')) {
+                $('#perguruan_tinggi').DataTable().destroy();
             }
-        });
-        if ($.fn.DataTable.isDataTable('#skbp')) {
-            $('#skbp').DataTable().destroy();
-        }
 
-        $('#skbp').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+            $('#perguruan_tinggi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#skbp')) {
+                $('#skbp').DataTable().destroy();
             }
-        });
-        if ($.fn.DataTable.isDataTable('#pemimpin_perguruan_tinggi')) {
-            $('#pemimpin_perguruan_tinggi').DataTable().destroy();
-        }
 
-        $('#pemimpin_perguruan_tinggi').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+            $('#skbp').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#pemimpin_perguruan_tinggi')) {
+                $('#pemimpin_perguruan_tinggi').DataTable().destroy();
             }
-        });
-        if ($.fn.DataTable.isDataTable('#program_studi')) {
-            $('#program_studi').DataTable().destroy();
-        }
 
-        $('#program_studi').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+            $('#pemimpin_perguruan_tinggi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#program_studi')) {
+                $('#program_studi').DataTable().destroy();
             }
-        });
-        if ($.fn.DataTable.isDataTable('#perkara')) {
-            $('#perkara').DataTable().destroy();
-        }
 
-        $('#perkara').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+            $('#program_studi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#perkara')) {
+                $('#perkara').DataTable().destroy();
             }
+
+            $('#perkara').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endsection

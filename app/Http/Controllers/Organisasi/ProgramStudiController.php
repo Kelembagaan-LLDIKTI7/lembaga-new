@@ -36,6 +36,10 @@ class ProgramStudiController extends Controller
             })
             ->leftJoin('lembaga_akreditasis', 'akreditasis.id_lembaga_akreditasi', '=', 'lembaga_akreditasis.id')
             ->leftJoin('peringkat_akreditasis', 'akreditasis.id_peringkat_akreditasi', '=', 'peringkat_akreditasis.id')
+            ->where(function ($query) {
+                $query->whereNull('organisasis.tampil')
+                    ->orWhereNot('organisasis.tampil', 0);
+            })
             ->orderBy('organisasis.organisasi_kode')
             ->orderBy('program_studis.prodi_kode')
             ->select(
