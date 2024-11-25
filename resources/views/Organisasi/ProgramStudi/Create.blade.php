@@ -166,28 +166,6 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="id_jenis_surat_keputusan" class="required-label">Jenis Surat
-                                            Keputusan</label>
-                                        <select name="id_jenis_surat_keputusan" class="form-control select-search">
-                                            <option value="">-- Pilih Perguruan Tinggi --</option>
-                                            @foreach ($jenis as $jenis)
-                                                <option value="{{ $jenis->id }}"
-                                                    @if (old('id_jenis_surat_keputusan') == $jenis->id) selected @endif>
-                                                    {{ $jenis->jsk_nama }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('id_jenis_surat_keputusan'))
-                                            <span
-                                                class="text-danger">{{ $errors->first('id_jenis_surat_keputusan') }}</span>
-                                        @endif
-                                        @error('id_jenis_surat_keputusan')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                        <small class="text-danger error-message"
-                                            id="error-id_jenis_surat_keputusan"></small>
-                                    </div>
-
-                                    <div class="form-group mb-3">
                                         <label for="sk_dokumen">Dokumen SK (Opsional)</label>
                                         <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx">

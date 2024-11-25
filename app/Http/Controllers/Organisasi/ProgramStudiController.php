@@ -82,10 +82,7 @@ class ProgramStudiController extends Controller
             'organisasi_nama'
         )->findOrFail($id);
 
-        $jenis = JenisSuratKeputusan::select(
-            'id',
-            'jsk_nama'
-        )->get();
+        $jenis = JenisSuratKeputusan::where('jsk_nama', 'SK Pendirian')->first();
 
         return view('Organisasi.ProgramStudi.Create', [
             'organisasi' => $organisasi,
@@ -106,7 +103,6 @@ class ProgramStudiController extends Controller
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
-            'id_jenis_surat_keputusan' => 'required',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
@@ -121,7 +117,6 @@ class ProgramStudiController extends Controller
             'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
             'sk_nomor.required' => 'Nomor SK harus diisi.',
             'sk_tanggal.required' => 'Tanggal SK harus diisi.',
-            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
             'sk_dokumen.required' => 'Dokumen SK harus diisi.',
             'sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX.',
             'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
@@ -154,7 +149,6 @@ class ProgramStudiController extends Controller
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
-            'id_jenis_surat_keputusan' => 'required',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
@@ -169,11 +163,14 @@ class ProgramStudiController extends Controller
             'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
             'sk_nomor.required' => 'Nomor SK harus diisi.',
             'sk_tanggal.required' => 'Tanggal SK harus diisi.',
-            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
             'sk_dokumen.required' => 'Dokumen SK harus diisi.',
             'sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX.',
             'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
         ]);
+
+        $jenisSK = JenisSuratKeputusan::where('jsk_nama', 'SK Pendirian')->firstOrFail();
+        $validated['id_jenis_surat_keputusan'] = $jenisSK->id;
+    
 
         $prodi = ProgramStudi::create([
             'id' => Str::uuid(),
@@ -328,14 +325,8 @@ class ProgramStudiController extends Controller
                 ->oldest('sk_tanggal')->limit(1);
         }])->findOrFail($id);
 
-        $jenis = JenisSuratKeputusan::select(
-            'id',
-            'jsk_nama'
-        )->get();
-
         return view('Organisasi.ProgramStudi.Edit', [
             'prodi' => $prodi,
-            'jenis' => $jenis,
         ]);
         // return response()->json(['prodi' => $prodi]);
     }
@@ -345,7 +336,6 @@ class ProgramStudiController extends Controller
         // Validasi data input
         $prodi = ProgramStudi::findOrFail($id);
         $validator = \Validator::make($request->all(), [
-            'id_organization' => 'required',
             'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
@@ -353,7 +343,6 @@ class ProgramStudiController extends Controller
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
-            'id_jenis_surat_keputusan' => 'required',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
@@ -368,7 +357,6 @@ class ProgramStudiController extends Controller
             'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
             'sk_nomor.required' => 'Nomor SK harus diisi.',
             'sk_tanggal.required' => 'Tanggal SK harus diisi.',
-            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
             'sk_dokumen.required' => 'Dokumen SK harus diisi.',
             'sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX.',
             'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
@@ -393,7 +381,6 @@ class ProgramStudiController extends Controller
         $prodi = ProgramStudi::findOrFail($id);
 
         $request->validate([
-           'id_organization' => 'required',
             'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
@@ -401,7 +388,6 @@ class ProgramStudiController extends Controller
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
-            'id_jenis_surat_keputusan' => 'required',
             'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
@@ -416,11 +402,12 @@ class ProgramStudiController extends Controller
             'prodi_active_status.required' => 'Status Aktif Program Studi harus diisi.',
             'sk_nomor.required' => 'Nomor SK harus diisi.',
             'sk_tanggal.required' => 'Tanggal SK harus diisi.',
-            'id_jenis_surat_keputusan.required' => 'Jenis Surat Keputusan harus diisi.',
             'sk_dokumen.required' => 'Dokumen SK harus diisi.',
             'sk_dokumen.mimes' => 'Dokumen SK harus berupa PDF, DOC, atau DOCX.',
             'sk_dokumen.max' => 'Dokumen SK tidak boleh lebih dari 2MB.',
         ]);
+
+        $jenisSK = JenisSuratKeputusan::where('jsk_nama', 'SK Pendirian')->firstOrFail();
 
         $prodi->update([
             'prodi_kode' => $request->prodi_kode,
@@ -431,7 +418,7 @@ class ProgramStudiController extends Controller
         ]);
 
         $sk = SuratKeputusan::updateOrCreate(
-            ['id_prodi' => $prodi->id, 'id_jenis_surat_keputusan' => $request->id_jenis_surat_keputusan],
+            ['id_prodi' => $prodi->id, 'id_jenis_surat_keputusan' => $jenisSK->id],
             [
                 'sk_nomor' => $request->sk_nomor,
                 'sk_tanggal' => $request->sk_tanggal,

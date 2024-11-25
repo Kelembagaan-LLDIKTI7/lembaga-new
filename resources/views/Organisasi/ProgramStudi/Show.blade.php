@@ -88,8 +88,6 @@
                                             <th>Program</th>
                                             <th>Periode</th>
                                             <th>Status</th>
-                                            <th>SK Nomor</th>
-                                            <th>SK Tanggal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -116,10 +114,6 @@
         {{ $newPeriode }}
                                                 </td>
                                                 <td>{{ $histori->prodi_active_status }}</td>
-                                                <td>{{ $histori->sk_nomor }}</td>
-                                                <td>
-                                                    {{ \Carbon\Carbon::parse($histori->sk_tanggal)->translatedFormat('d F Y') }}
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
