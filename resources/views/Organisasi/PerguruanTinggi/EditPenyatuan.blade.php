@@ -43,7 +43,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="organisasi_berubah_id" class="required-label">
-                                            PT Yang diubah
+                                            PT Tujuan
                                         </label>
                                         <select class="form-control select-search" name="organisasi_berubah_id[]"
                                             id="organisasi_berubah_id" required>

@@ -541,12 +541,14 @@ class PerguruanTinggiController extends Controller
         $organisasiBerubah = Organisasi::where('id', $request->organisasi_berubah_id)->first();
         $organisasi = Organisasi::where('id', $request->organisasi_pt)->first();
 
-        $organisasiBerubah->update([
+        $organisasi->update([
             'organisasi_status' => 'Alih Bentuk',
         ]);
 
-        $organisasi->update([
-            'organisasi_berubah_id' => !empty($request->organisasi_berubah_id) ? json_encode($request->organisasi_berubah_id) : null,
+        $organisasiId = [$organisasi->id];
+
+        $organisasiBerubah->update([
+            'organisasi_berubah_id' => !empty($request->organisasi_berubah_id) ? json_encode($organisasiId) : null,
         ]);
 
         if ($request->hasFile('sk_dokumen')) {
