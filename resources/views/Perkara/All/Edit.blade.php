@@ -54,6 +54,7 @@
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="id" value="{{ $perkaras->id }}">
+                    <input type="hidden" name="redirect_route" value="{{ route('perkara.show', ['id' => $perkaras->id]) }}">
                     <div class="form-container">
                         <div class="form-left">
                             <div class="mb-3">
