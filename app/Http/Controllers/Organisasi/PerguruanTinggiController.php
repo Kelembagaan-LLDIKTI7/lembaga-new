@@ -13,6 +13,7 @@ use App\Models\Organisasi;
 use App\Models\Perkara;
 use App\Models\PimpinanOrganisasi;
 use App\Models\SuratKeputusan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -275,6 +276,7 @@ class PerguruanTinggiController extends Controller
      */
     public function show(string $id)
     {
+        $user = User::where('id', Auth::user()->id)->first();
         $organisasi = Organisasi::select(
             'id',
             'organisasi_kode',
@@ -301,6 +303,17 @@ class PerguruanTinggiController extends Controller
                 $query->select('id', 'bentuk_nama')->first();
             }
         ])->with(['akreditasis'])->findOrFail($id);
+
+        if ($user->hasRole('Badan Penyelenggara')) {
+            $bp = Organisasi::where('id', $user->id_organization)->first();
+            if ($organisasi->parent_id != $bp->id) {
+                return abort(403);
+            }
+        }
+
+        if ($user->hasRole('Perguruan Tinggi') && $organisasi->id != $user->id_organization) {
+            return abort(403);
+        }
 
         $berubahIds = json_decode($organisasi->organisasi_berubah_id, true);
 
