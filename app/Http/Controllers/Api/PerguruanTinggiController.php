@@ -109,6 +109,7 @@ class PerguruanTinggiController extends Controller
                 $q->whereNull('tampil')
                     ->orWhereNot('tampil', 0);
             })
+            ->whereNotNull('organisasi_bentuk_pt')
             ->select('organisasi_bentuk_pt', DB::raw('count(*) as total'))
             ->groupBy('organisasi_bentuk_pt')
             ->with('bentukPT:id,bentuk_nama');
