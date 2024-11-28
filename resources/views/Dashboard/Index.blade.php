@@ -137,7 +137,7 @@
                                             <th>No Perkara</th>
                                             <th>Tanggal Kejadian</th>
                                             <th>Status</th>
-                                            @can('View Detail Perkara')
+                                            @can('View Detail Evaluasi (Dashboard)')
                                             <th>Aksi</th>
                                             @endCan
                                         </tr>
