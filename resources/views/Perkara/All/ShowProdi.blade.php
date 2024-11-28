@@ -8,8 +8,8 @@
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Detail Perkara Program Studi
-                    </h5>
+                        <h5 class="mb-0">Detail Perkara Program Studi
+                        </h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
@@ -29,11 +29,11 @@
                         </div>
 
                         <div class="row mb-4">
-                        <div class="col-md-12">
-                            <h6><strong>Nomor Perkara:</strong></h6>
-                            <p>{{ $perkaras->no_perkara }}</p>
+                            <div class="col-md-12">
+                                <h6><strong>Nomor Perkara:</strong></h6>
+                                <p>{{ $perkaras->no_perkara }}</p>
+                            </div>
                         </div>
-                    </div>
 
                         <div class="row mb-4">
                             <div class="col-md-6">
@@ -82,11 +82,9 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('perkara.index') }}"
-                    class="btn btn-secondary">Kembali
+                <a href="{{ route('perkara.index') }}" class="btn btn-secondary">Kembali
                 </a>
-                <a href="{{ route('perkara.edit', $perkaras->id) }}"
-                    class="btn btn-secondary">Edit
+                <a href="{{ route('perkara.edit', $perkaras->id) }}" class="btn btn-secondary">Edit
                 </a>
             </div>
         </div>

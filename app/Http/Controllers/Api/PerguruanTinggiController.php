@@ -15,6 +15,10 @@ class PerguruanTinggiController extends Controller
     {
         $query = Organisasi::query()
             ->where('organisasi_type_id', 3)
+            ->where(function ($q) {
+                $q->whereNull('tampil')
+                    ->orWhereNot('tampil', 0);
+            })
             ->select(
                 'id',
                 'organisasi_kode',
@@ -58,7 +62,22 @@ class PerguruanTinggiController extends Controller
         $prodiQuery = ProgramStudi::query()
             ->leftjoin('organisasis', 'program_studis.id_organization', '=', 'organisasis.id')
             ->leftjoin('bentuk_pts', 'organisasis.organisasi_bentuk_pt', '=', 'bentuk_pts.id')
-            ->select('program_studis.id', 'organisasis.organisasi_kode', 'organisasis.organisasi_nama as nama_pt', 'bentuk_pts.bentuk_nama as bentuk_pt', 'organisasis.organisasi_kota as wilayah', 'prodi_nama', 'prodi_kode', 'prodi_jenjang', 'id_organization');
+            ->where(function ($query) {
+                $query->whereNull('organisasis.tampil')
+                    ->orWhereNot('organisasis.tampil', 0);
+            })
+            ->whereNotNull('organisasis.organisasi_bentuk_pt')
+            ->select(
+                'program_studis.id',
+                'organisasis.organisasi_kode',
+                'organisasis.organisasi_nama as nama_pt',
+                'bentuk_pts.bentuk_nama as bentuk_pt',
+                'organisasis.organisasi_kota as wilayah',
+                'prodi_nama',
+                'prodi_kode',
+                'prodi_jenjang',
+                'id_organization'
+            );
 
         if ($request->has('kode_pt') || $request->has('nama_pt') || $request->has('bentuk_pt') || $request->has('kota') || $request->has('program_studi')) {
             $prodiQuery->whereHas('perguruanTinggi', function ($q) use ($request) {
@@ -86,6 +105,10 @@ class PerguruanTinggiController extends Controller
 
         $chartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
+            ->where(function ($q) {
+                $q->whereNull('tampil')
+                    ->orWhereNot('tampil', 0);
+            })
             ->select('organisasi_bentuk_pt', DB::raw('count(*) as total'))
             ->groupBy('organisasi_bentuk_pt')
             ->with('bentukPT:id,bentuk_nama');
@@ -124,6 +147,10 @@ class PerguruanTinggiController extends Controller
 
         $prodiChartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
+            ->where(function ($q) {
+                $q->whereNull('tampil')
+                    ->orWhereNot('tampil', 0);
+            })
             ->withCount('prodis')
             ->with('bentukPT:id,bentuk_nama');
 
@@ -166,6 +193,10 @@ class PerguruanTinggiController extends Controller
 
         $prodiJenjangChartQuery = ProgramStudi::query()
             ->select('prodi_jenjang', DB::raw('count(*) as total'))
+            ->whereHas('perguruanTinggi', function ($query) {
+                $query->whereNull('tampil')
+                    ->orWhereNot('tampil', 0);
+            })
             ->groupBy('prodi_jenjang');
 
         if ($request->has('kode_pt')) {
@@ -207,6 +238,10 @@ class PerguruanTinggiController extends Controller
         $cityChartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
             ->whereNotNull('organisasi_kota')
+            ->where(function ($q) {
+                $q->whereNull('tampil')
+                    ->orWhereNot('tampil', 0);
+            })
             ->select('organisasi_kota', DB::raw('count(*) as total'))
             ->groupBy('organisasi_kota');
 
@@ -243,10 +278,18 @@ class PerguruanTinggiController extends Controller
             });
 
         $totalInstitutions = Organisasi::where('organisasi_type_id', 3)
+            ->where(function ($q) {
+                $q->whereNull('tampil')
+                    ->orWhereNot('tampil', 0);
+            })
             ->whereNotNull('organisasi_kota')
             ->count();
 
         $cityChartQueryPersen = Organisasi::query()
+            ->where(function ($q) {
+                $q->whereNull('tampil')
+                    ->orWhereNot('tampil', 0);
+            })
             ->where('organisasi_type_id', 3)
             ->whereNotNull('organisasi_kota')
             ->select('organisasi_kota', DB::raw('count(*) as total'))

@@ -87,7 +87,7 @@
                         </div>
 
                         <div class="form-right">
-                        <div class="mb-3">
+                            <div class="mb-3">
                                 <label for="no_perkara">Nomor Perkara</label>
                                 <input type="text" name="no_perkara" id="no_perkara" class="form-control" required
                                     value="{{ old('no_perkara') }}">
