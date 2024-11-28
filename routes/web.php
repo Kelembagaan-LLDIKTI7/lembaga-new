@@ -374,13 +374,13 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::get('/generate', function () {
-        Artisan::call('storage:link');
-        return 'Storage complete!';
-    });
+    // Route::get('/generate', function () {
+    //     Artisan::call('storage:link');
+    //     return 'Storage complete!';
+    // });
 
-    Route::get('/optimize', function () {
-        Artisan::call('optimize');
-        return 'Optimization complete!';
-    });
+    // Route::get('/optimize', function () {
+    //     Artisan::call('optimize');
+    //     return 'Optimization complete!';
+    // });
 });
