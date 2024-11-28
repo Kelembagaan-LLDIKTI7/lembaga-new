@@ -132,9 +132,11 @@ class PerkaraController extends Controller
             'bukti_foto' => json_encode($fileNames),
         ]);
 
+        $redirectRoute = $request->input('redirect_route', route('perkara.show', ['id' => $id]));
+
         return response()->json([
             'success' => true,
-            'redirect_url' => route('perkara.index'),
+            'redirect_url' => $redirectRoute,
         ]);
     }
 
@@ -158,7 +160,80 @@ class PerkaraController extends Controller
         return view('Perkara.All.Show', ['perkaras' => $perkaras]);
     }
 
-    public function showProdi(string $id)
+    public function editprodi(string $id)
+    {
+        $perkaras = Perkara::findOrFail($id);
+        $existingImages = json_decode($perkaras->bukti_foto, true) ?? [];
+
+        $organisasi = Organisasi::select('id', 'organisasi_nama')->get();
+        $prodi = ProgramStudi::select('id', 'prodi_nama')->get();
+
+        return view('Perkara.All.EditProdi', [
+            'perkaras' => $perkaras,
+            'organisasi' => $organisasi,
+            'prodi' => $prodi,
+            'existingImages' => $existingImages,
+        ]);
+    }
+
+    public function updateprodi(Request $request, string $id)
+    {
+        $validator = \Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'no_perkara' => 'nullable|string|max:255',
+            'tanggal_kejadian' => 'required|date',
+            'deskripsi_kejadian' => 'required|string',
+            'bukti_foto.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()->toArray(),
+            ]);
+        }
+
+        $perkaras = Perkara::findOrFail($id);
+
+        $currentImages = json_decode($perkaras->bukti_foto, true) ?? [];
+
+        $existingImages = $request->input('existing_images', []);
+        $fileNames = array_values($existingImages); 
+
+        if ($request->hasFile('bukti_foto')) {
+            foreach ($request->file('bukti_foto') as $file) {
+                $fileName = $file->store('bukti_foto', 'public');
+                $fileNames[] = basename($fileName);
+            }
+        }
+
+        $imagesToDelete = array_diff($currentImages, $existingImages);
+
+        foreach ($imagesToDelete as $image) {
+            $filePath = storage_path('app/public/bukti_foto/' . $image);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        $perkaras->update([
+            'title' => $request->title,
+            'no_perkara' => $request->no_perkara,
+            'tanggal_kejadian' => $request->tanggal_kejadian,
+            'deskripsi_kejadian' => $request->deskripsi_kejadian,
+            'bukti_foto' => json_encode($fileNames),
+        ]);
+
+        $redirectRoute = $request->input('redirect_route', route('perkara.showprodi', ['id' => $id]));
+
+        return response()->json([
+            'success' => true,
+            'redirect_url' => $redirectRoute,
+        ]);
+    }
+
+
+    public function showprodi(string $id)
     {
         $perkaras = Perkara::select(
             'perkaras.id',
