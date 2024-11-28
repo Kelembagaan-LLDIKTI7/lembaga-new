@@ -11,6 +11,7 @@ use App\Models\Organisasi;
 use App\Models\Perkara;
 use App\Models\PimpinanOrganisasi;
 use App\Models\Skbp;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -277,6 +278,8 @@ class BadanPenyelenggaraController extends Controller
     public function show($id)
     {
         // dd($id);
+        $user = User::find(Auth::user()->id);
+
         $badanPenyelenggaras = Organisasi::where('organisasi_type_id', 2)
             ->select(
                 'id',
@@ -327,6 +330,17 @@ class BadanPenyelenggaraController extends Controller
             ])
             ->where('id', $id)
             ->first();
+
+        if ($user->hasRole('Badan Penyelenggara') && $user->id_organization != $badanPenyelenggaras->id) {
+            return abort(403);
+        }
+
+        if ($user->hasRole('Perguruan Tinggi')) {
+            $pt = Organisasi::where('id', $user->id_organization)->first();
+            if ($pt->parent_id != $badanPenyelenggaras->id) {
+                return abort(403);
+            }
+        }
 
         $pimpinan = PimpinanOrganisasi::where('id_organization', $id)
             ->with([

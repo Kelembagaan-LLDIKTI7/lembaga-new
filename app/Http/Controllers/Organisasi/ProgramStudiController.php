@@ -11,6 +11,7 @@ use App\Models\Organisasi;
 use App\Models\Perkara;
 use App\Models\ProgramStudi;
 use App\Models\SuratKeputusan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -170,7 +171,7 @@ class ProgramStudiController extends Controller
 
         $jenisSK = JenisSuratKeputusan::where('jsk_nama', 'SK Pendirian')->firstOrFail();
         $validated['id_jenis_surat_keputusan'] = $jenisSK->id;
-    
+
 
         $prodi = ProgramStudi::create([
             'id' => Str::uuid(),
@@ -243,6 +244,7 @@ class ProgramStudiController extends Controller
      */
     public function show(string $id)
     {
+        $user = User::findOrFail(Auth::user()->id);
         $prodi = ProgramStudi::with([
             'historiPerguruanTinggi:id,id_prodi,prodi_kode,prodi_nama,prodi_jenjang,prodi_periode,prodi_active_status,sk_nomor,sk_tanggal',
             'suratKeputusan' => function ($query) {
@@ -263,6 +265,20 @@ class ProgramStudiController extends Controller
             'prodi_active_status',
             'id_organization'
         )->findOrFail($id);
+
+        if ($user->hasRole('Badan Penyelenggara')) {
+            $pt = DB::table('organisasis')
+                ->where('id', $prodi->id_organization)
+                ->first();
+
+            if ($pt->parent_id != $user->id_organization) {
+                abort(403);
+            }
+        }
+
+        if ($user->hasRole('Perguruan Tinggi') && $prodi->id_organization != $user->id_organization) {
+            abort(403);
+        }
 
         $prodi->suratKeputusan = $prodi->suratKeputusan->first();
 
