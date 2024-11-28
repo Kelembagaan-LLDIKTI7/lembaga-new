@@ -16,6 +16,10 @@ class ListController extends Controller
         $pt = DB::table('organisasis')
             ->select('id', 'organisasi_nama')
             ->where('organisasi_type_id', 3)
+            ->where(function ($q) {
+                $q->whereNull('tampil')
+                    ->orWhereNot('tampil', 0);
+            })
             ->orderBy('organisasi_nama', 'asc')
             ->get();
 

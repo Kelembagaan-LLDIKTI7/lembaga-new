@@ -8,7 +8,9 @@
             <div class="col-12">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Detail Evaluasi {{ $perkaras->organisasi->organisasi_type_id == 2 ? 'Badan Penyelenggara' : 'Perguruan Tinggi' }}</h5>
+                        <h5 class="mb-0">Detail Evaluasi
+                            {{ $perkaras->organisasi->organisasi_type_id == 2 ? 'Badan Penyelenggara' : 'Perguruan Tinggi' }}
+                        </h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
@@ -80,8 +82,7 @@
                 <a href="{{ route('badan-penyelenggara.show', $perkaras->id_organization) }}"
                     class="btn btn-secondary">Kembali
                 </a>
-                <a href="{{ route('perkara-organisasi.edit', $perkaras->id) }}"
-                    class="btn btn-secondary">Edit
+                <a href="{{ route('perkara-organisasi.edit', $perkaras->id) }}" class="btn btn-secondary">Edit
                 </a>
             </div>
         </div>

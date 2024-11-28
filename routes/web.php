@@ -375,14 +375,4 @@ Route::middleware('auth')->group(function () {
             Route::put('/{id}/validation-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdate');
         });
     });
-
-    // Route::get('/generate', function () {
-    //     Artisan::call('storage:link');
-    //     return 'Storage complete!';
-    // });
-
-    // Route::get('/optimize', function () {
-    //     Artisan::call('optimize');
-    //     return 'Optimization complete!';
-    // });
 });
