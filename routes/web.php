@@ -75,9 +75,10 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
-        Route::get('/{id}', [DashboardController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara');
+        Route::get('/{id}', [DashboardController::class, 'show'])->name('show')->middleware('role.access:View Detail Evaluasi (Dashboard)');
     });
 
+    // Routes for Master Peringkat Akademik
     Route::prefix('peringkat-akademik')->name('peringkat-akademik.')->group(function () {
         Route::get('/', [PeringkatAkademiController::class, 'index'])->name('index')->middleware('role.access:View Peringkat Akreditasi');
         Route::post('/', [PeringkatAkademiController::class, 'store'])->name('store')->middleware('role.access:Create Peringkat Akreditasi');
@@ -88,6 +89,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [PeringkatAkademiController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Peringkat Akreditasi');
     });
 
+    // Routes for Master Lembaga Akademik (Akreditasi)
     Route::prefix('lembaga-akademik')->name('lembaga-akademik.')->group(function () {
         Route::get('/', [LembagaAkreditasiController::class, 'index'])->name('index')->middleware('role.access:View Lembaga Akreditasi');
         Route::post('/', [LembagaAkreditasiController::class, 'store'])->name('store')->middleware('role.access:Create Lembaga Akreditasi');
@@ -98,6 +100,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [LembagaAkreditasiController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Lembaga Akreditasi');
     });
 
+    // Routes for master jenis organisasi
     Route::prefix('organisasi-type')->name('organisasi-type.')->group(function () {
         Route::get('/', [OrganisasiTypeController::class, 'index'])->name('index')->middleware('role.access:View Jenis Organisasi');
         Route::post('/', [OrganisasiTypeController::class, 'store'])->name('store')->middleware('role.access:Create Jenis Organisasi');
@@ -108,6 +111,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [OrganisasiTypeController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Jenis Organisasi');
     });
 
+    // Routes for Master Jabatan
     Route::prefix('jabatan')->name('jabatan.')->group(function () {
         Route::get('/', [JabatanController::class, 'index'])->name('index')->middleware('role.access:View Jabatan');
         Route::middleware('role.access:Create Jabatan')->group(function () {
@@ -121,6 +125,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [JabatanController::class, 'destroy'])->name('destroy')->middleware('role.access:Delete Jabatan');
     });
 
+    // Routes for PT
     Route::prefix('perguruan-tinggi')->name('perguruan-tinggi.')->group(function () {
         Route::get('/', [PerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View Perguruan Tinggi');
         Route::middleware('role.access:Create Perguruan Tinggi')->group(function () {
@@ -141,14 +146,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/import', [PerguruanTinggiController::class, 'import'])->name('import')->middleware('role.access:Import Perguruan Tinggi');
     });
 
-    Route::get('/pt/export-excel', [PerguruanTinggiController::class, 'exportExcel'])->name('pt.export');
-    Route::get('/prodi/export-excel', [ProgramStudiController::class, 'export'])->name('prodi.export');
+    Route::get('/pt/export-excel', [PerguruanTinggiController::class, 'exportExcel'])->name('pt.export')->middleware('role.access:Export Perguruan Tinggi');
+    Route::get('/prodi/export-excel', [ProgramStudiController::class, 'export'])->name('prodi.export')->middleware('role.access:Export Program Studi');
 
+    // Routes for BP
     Route::prefix('badan-penyelenggara')->name('badan-penyelenggara.')->group(function () {
         Route::get('/', [BadanPenyelenggaraController::class, 'index'])->name('index')->middleware('role.access:View Badan Penyelenggara');
         Route::middleware('role.access:Create Badan Penyelenggara')->group(function () {
             Route::get('/create', [BadanPenyelenggaraController::class, 'create'])->name('create');
             Route::post('/', [BadanPenyelenggaraController::class, 'store'])->name('store');
+            Route::post('/validation-store-bp', [BadanPenyelenggaraController::class, 'validationStore'])->name('validationStore');
         });
         Route::middleware('role.access:Edit Badan Penyelenggara')->group(function () {
             Route::get('/{id}/edit', [BadanPenyelenggaraController::class, 'edit'])->name('edit');
@@ -156,9 +163,9 @@ Route::middleware('auth')->group(function () {
         });
         Route::get('/{id}', [BadanPenyelenggaraController::class, 'show'])->name('show')->middleware('role.access:Detail Badan Penyelenggara');
         Route::post('/import', [BadanPenyelenggaraController::class, 'import'])->name('import')->middleware('role.access:Import Badan Penyelenggara');
-        Route::post('/validation-store-bp', [BadanPenyelenggaraController::class, 'validationStore'])->name('validationStore');
     });
 
+    // Routes for Program Studi
     Route::prefix('program-studi')->name('program-studi.')->group(function () {
         Route::get('/', [ProgramStudiController::class, 'index'])->name('index')->middleware('role.access:View Program Studi');
         Route::middleware('role.access:Create Program Studi')->group(function () {
@@ -174,6 +181,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}', [ProgramStudiController::class, 'show'])->name('show')->middleware('role.access:Detail Program Studi');
     });
 
+    // Routes for Akreditasi Program Studi
     Route::prefix('akreditasi-program-studi')->name('akreditasi-program-studi.')->group(function () {
         Route::get('/', [AkreditasiProdiController::class, 'index'])->name('index')->middleware('role.access:View Akreditasi Program Studi');
         Route::middleware('role.access:Create Akreditasi Program Studi')->group(function () {
@@ -190,6 +198,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/view-pdf', [AkreditasiProdiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akreditasi Program Studi');
     });
 
+    // Routes for Akreditasi Perguruan Tinggi
     Route::prefix('akreditasi-perguruan-tinggi')->name('akreditasi-perguruan-tinggi.')->group(function () {
         Route::get('/', [AkreditasiPerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View Akreditasi Perguruan Tinggi');
         Route::middleware('role.access:Create Akreditasi Perguruan Tinggi')->group(function () {
@@ -206,6 +215,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/view-pdf', [AkreditasiPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akreditasi Perguruan Tinggi');
     });
 
+    // Routes for Pimpinan Perguruan Tinggi
     Route::prefix('pimpinan-perguruan-tinggi')->name('pimpinan-perguruan-tinggi.')->group(function () {
         Route::get('/', [PimpinanPerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View Pimpinan Perguruan Tinggi');
         Route::middleware('role.access:Create Pimpinan Perguruan Tinggi')->group(function () {
@@ -222,6 +232,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/view-pdf', [PimpinanPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Pimpinan Perguruan Tinggi');
     });
 
+    // Routes for SK Perguruan Tinggi
     Route::prefix('sk-perguruan-tinggi')->name('sk-perguruan-tinggi.')->group(function () {
         Route::get('/', [SkPerguruanTinggiController::class, 'index'])->name('index')->middleware('role.access:View SK Perguruan Tinggi');
         Route::middleware('role.access:Create SK Perguruan Tinggi')->group(function () {
@@ -238,6 +249,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/view-pdf', [SkPerguruanTinggiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Perguruan Tinggi');
     });
 
+    // Routes for SK Program Studi
     Route::prefix('sk-program-studi')->name('sk-program-studi.')->group(function () {
         Route::get('/', [SkProgramStudiController::class, 'index'])->name('index')->middleware('role.access:View SK Program Studi');
         Route::middleware('role.access:Create SK Program Studi')->group(function () {
@@ -254,6 +266,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/view-pdf', [SkProgramStudiController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Program Studi');
     });
 
+    // Routes for Pimpinan BP
     Route::prefix('pimpinan-badan-penyelenggara')->name('pimpinan-badan-penyelenggara.')->group(function () {
         Route::get('/', [PimpinanBadanPenyelenggaraController::class, 'index'])->name('index')->middleware('role.access:View Pimpinan Badan Penyelenggara');
         Route::middleware('role.access:Create Pimpinan Badan Penyelenggara')->group(function () {
@@ -270,6 +283,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/view-pdf', [PimpinanBadanPenyelenggaraController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Pimpinan Badan Penyelenggara');;
     });
 
+    // Routes for Akta BP
     Route::prefix('akta-badan-penyelenggara')->name('akta-badan-penyelenggara.')->group(function () {
         Route::get('/', [AktaBpController::class, 'index'])->name('index')->middleware('role.access:View Akta Badan Penyelenggara');
         Route::middleware('role.access:Create Akta Badan Penyelenggara')->group(function () {
@@ -288,6 +302,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/view-pdf', [AktaBpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Akta Badan Penyelenggara');
     });
 
+    // Routes for SK Kumham BP
     Route::prefix('sk-kumham')->name('sk-kumham.')->group(function () {
         Route::get('/', [SkKumhamController::class, 'index'])->name('index')->middleware('role.access:View SK Kumham Badan Penyelenggara');
         Route::middleware('role.access:Create SK Kumham Badan Penyelenggara')->group(function () {
@@ -304,6 +319,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/view-pdf', [SkKumhamController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF Badan Penyelenggara');
     });
 
+    // Routes for SK BP
     Route::prefix('skbp-badan-penyelenggara')->name('skbp-badan-penyelenggara.')->group(function () {
         Route::middleware('role.access:Create SK Badan Penyelenggara')->group(function () {
             Route::get('/{id}/create', [SkbpController::class, 'create'])->name('create');
@@ -318,71 +334,72 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/view-pdf', [SkbpController::class, 'viewPdf'])->name('viewPdf')->middleware('role.access:View PDF SK Badan Penyelenggara');
     });
 
-    Route::prefix('perkara')->name('perkara.')->group(function () {
-        Route::get('/', [PerkaraController::class, 'index'])->name('index');
-        //Route::middleware('role.access:Edit Perkara')->group(function () {
+    // Routes for Evalusasi ALL
+    Route::prefix('evaluasi')->name('evaluasi.')->group(function () {
+        Route::get('/', [PerkaraController::class, 'index'])->name('index')->middleware('role.access:View Evaluasi Master');
+        Route::middleware('role.access:Edit Evaluasi Master')->group(function () {
             Route::get('/{id}/edit', [PerkaraController::class, 'edit'])->name('edit');
             Route::put('/{id}', [PerkaraController::class, 'update'])->name('update');
             Route::get('/{id}/editprodi', [PerkaraController::class, 'editprodi'])->name('editprodi');
             Route::put('/{id}/prodi', [PerkaraController::class, 'updateprodi'])->name('updateprodi');
             Route::put('/{id}/validation-perkara-update', [PerkaraController::class, 'validationUpdate'])->name('validationUpdatePerkara');
-       // });
-        Route::get('/{id}', [PerkaraController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara');
-        Route::get('/{id}/showprodi', [PerkaraController::class, 'showprodi'])->name('showprodi')->middleware('role.access:View Detail Perkara');
-        //Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update')->middleware('role.access:Update Status Perkara Badan Penyelenggara');
+        });
+        Route::middleware('role.access:View Detail Evaluasi Master')->group(function () {
+            Route::get('/{id}', [PerkaraController::class, 'show'])->name('show');
+            Route::get('/{id}/showprodi', [PerkaraController::class, 'showprodi'])->name('showprodi');
+        });
     });
 
-    Route::prefix('perkara-organisasi')->name('perkara-organisasi.')->group(function () {
-        Route::middleware('role.access:Create Perkara Badan Penyelenggara')->group(function () {
+    // Routes for Evaluasi BP
+    Route::prefix('evaluasi-organisasi')->name('evaluasi-organisasi.')->group(function () {
+        Route::middleware('role.access:Create Evaluasi Badan Penyelenggara')->group(function () {
             Route::get('/{id}/create', [PerkaraOrganisasiController::class, 'create'])->name('create');
             Route::post('/', [PerkaraOrganisasiController::class, 'store'])->name('store');
         });
-        Route::get('/{id}/edit', [PerkaraOrganisasiController::class, 'edit'])->name('edit');
+        Route::middleware('role.access:Edit Evaluasi Badan Penyelenggara')->group(function () {
+            Route::get('/{id}/edit', [PerkaraOrganisasiController::class, 'edit'])->name('edit');
             Route::put('/{id}', [PerkaraOrganisasiController::class, 'update'])->name('update');
-            Route::put('/{id}/validation-perkara-update', [PerkaraOrganisasiController::class, 'validationUpdate'])->name('validationUpdatePerkara');
-        Route::get('/{id}', [PerkaraOrganisasiController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Badan Penyelenggara');
-        Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update')->middleware('role.access:Update Status Perkara Badan Penyelenggara');
+            Route::put('/{id}/validation-evaluasi-update', [PerkaraOrganisasiController::class, 'validationUpdate'])->name('validationUpdatePerkara');
+        });
+        Route::get('/{id}', [PerkaraOrganisasiController::class, 'show'])->name('show')->middleware('role.access:View Detail Evaluasi Badan Penyelenggara');
+        Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update')->middleware('role.access:Update Status Evaluasi Badan Penyelenggara');
     });
 
-    Route::prefix('perkara-organisasipt')->name('perkara-organisasipt.')->group(function () {
-        Route::middleware('role.access:Create Perkara Perguruan Tinggi')->group(function () {
+    // Routes for Evaluasi PT
+    Route::prefix('evaluasi-organisasipt')->name('evaluasi-organisasipt.')->group(function () {
+        Route::middleware('role.access:Create Evaluasi Perguruan Tinggi')->group(function () {
             Route::get('/{id}/create', [PerkaraOrganisasiPTController::class, 'create'])->name('create');
             Route::post('/', [PerkaraOrganisasiPTController::class, 'store'])->name('store');
             Route::post('/validation-store', [PerkaraOrganisasiPTController::class, 'validationStore'])->name('validationStore');
         });
-        Route::get('/{id}', [PerkaraOrganisasiPTController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Perguruan Tinggi');
-        Route::get('/{id}/edit', [PerkaraOrganisasiPTController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [PerkaraOrganisasiPTController::class, 'update'])->name('update');
-        Route::put('/{id}/validation-perkara-update', [PerkaraOrganisasiPTController::class, 'validationEdit'])->name('validationUpdatePerkara');
-        Route::middleware('role.access:Update Status Perkara Perguruan Tinggi')->group(function () {
+        Route::get('/{id}', [PerkaraOrganisasiPTController::class, 'show'])->name('show')->middleware('role.access:View Detail Evaluasi Perguruan Tinggi');
+        Route::middleware('role.access:Edit Evaluasi Perguruan Tinggi')->group(function () {
+            Route::get('/{id}/edit', [PerkaraOrganisasiPTController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PerkaraOrganisasiPTController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-evaluasi-update', [PerkaraOrganisasiPTController::class, 'validationEdit'])->name('validationUpdatePerkara');
+        });
+        Route::middleware('role.access:Update Status Evaluasi Perguruan Tinggi')->group(function () {
             Route::patch('/{id}/status-update', [PerkaraOrganisasiPTController::class, 'updateStatus'])->name('status-update');
             Route::put('/{id}/validation-update', [PerkaraOrganisasiPTController::class, 'validationUpdate'])->name('validationUpdate');
         });
     });
 
-    Route::prefix('perkara-prodi')->name('perkara-prodi.')->group(function () {
-        Route::middleware('role.access:Create Perkara Program Studi')->group(function () {
+    // Routes for Evaluasi Prodi
+    Route::prefix('evaluasi-prodi')->name('evaluasi-prodi.')->group(function () {
+        Route::middleware('role.access:Create Evaluasi Program Studi')->group(function () {
             Route::get('/{id}/create', [PerkaraProdiController::class, 'create'])->name('create');
             Route::post('/', [PerkaraProdiController::class, 'store'])->name('store');
             Route::post('/validation-store', [PerkaraProdiController::class, 'validationStore'])->name('validationStore');
         });
-        Route::get('/{id}/edit', [PerkaraProdiController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [PerkaraProdiController::class, 'update'])->name('update');
-        Route::put('/{id}/validation-perkara-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdatePerkara');
-        Route::get('/{id}', [PerkaraProdiController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara Program Studi');
-        Route::middleware('role.access:Update Status Perkara Program Studi')->group(function () {
+        Route::middleware('role.access:Create Evaluasi Program Studi')->group(function () {
+            Route::get('/{id}/edit', [PerkaraProdiController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [PerkaraProdiController::class, 'update'])->name('update');
+            Route::put('/{id}/validation-perkara-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdatePerkara');
+        });
+        Route::get('/{id}', [PerkaraProdiController::class, 'show'])->name('show')->middleware('role.access:View Detail Evaluasi Program Studi');
+        Route::middleware('role.access:Update Status Evaluasi Program Studi')->group(function () {
             Route::patch('/{id}/status-update', [PerkaraProdiController::class, 'updateStatus'])->name('status-update');
             Route::put('/{id}/validation-update', [PerkaraProdiController::class, 'validationUpdate'])->name('validationUpdate');
         });
     });
-
-    // Route::get('/generate', function () {
-    //     Artisan::call('storage:link');
-    //     return 'Storage complete!';
-    // });
-
-    // Route::get('/optimize', function () {
-    //     Artisan::call('optimize');
-    //     return 'Optimization complete!';
-    // });
 });

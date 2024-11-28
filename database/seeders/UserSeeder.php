@@ -36,7 +36,6 @@ class UserSeeder extends Seeder
 
             'View Role Permissions',
             'Add Role Permissions',
-            'View Detail Perkara',
 
             'Create User',
             'Edit User',
@@ -50,6 +49,7 @@ class UserSeeder extends Seeder
             'Import Perguruan Tinggi',
             'Detail Perguruan Tinggi',
             'View History Perguruan Tinggi',
+            'Export Perguruan Tinggi',
 
             'Create Badan Penyelenggara',
             'Edit Badan Penyelenggara',
@@ -62,6 +62,7 @@ class UserSeeder extends Seeder
             'Edit Program Studi',
             'View Program Studi',
             'Detail Program Studi',
+            'Export Program Studi',
 
             'Create Akreditasi Program Studi',
             'Edit Akreditasi Program Studi',
@@ -142,17 +143,26 @@ class UserSeeder extends Seeder
             'Edit Jenis Organisasi',
             'Delete Jenis Organisasi',
 
-            'Create Perkara Badan Penyelenggara',
-            'View Detail Perkara Badan Penyelenggara',
-            'Update Status Perkara Badan Penyelenggara',
+            'View Evaluasi Master',
+            'Edit Evaluasi Master',
+            'View Detail Evaluasi Master',
 
-            'Create Perkara Perguruan Tinggi',
-            'View Detail Perkara Perguruan Tinggi',
-            'Update Status Perkara Perguruan Tinggi',
+            'Create Evaluasi Badan Penyelenggara',
+            'Edit Evaluasi Badan Penyelenggara',
+            'View Detail Evaluasi Badan Penyelenggara',
+            'Update Status Evaluasi Badan Penyelenggara',
 
-            'Create Perkara Program Studi',
-            'View Detail Perkara Program Studi',
-            'Update Status Perkara Program Studi',
+            'Create Evaluasi Perguruan Tinggi',
+            'Edit Evaluasi Perguruan Tinggi',
+            'View Detail Evaluasi Perguruan Tinggi',
+            'Update Status Evaluasi Perguruan Tinggi',
+
+            'Create Evaluasi Program Studi',
+            'Edit Evaluasi Program Studi',
+            'View Detail Evaluasi Program Studi',
+            'Update Status Evaluasi Program Studi',
+
+            'View Detail Evaluasi (Dashboard)',
         ];
 
         foreach ($permissions as $permissionName) {

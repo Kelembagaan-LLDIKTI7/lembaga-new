@@ -85,9 +85,11 @@
             <a href="{{ route('program-studi.show', $perkaras->id_prodi) }}" class="btn btn-secondary">
                 Kembali
             </a>
-            <a href="{{ route('perkara-prodi.edit', $perkaras->id) }}"
+            @can('Edit Evaluasi Program Studi')
+            <a href="{{ route('evaluasi-prodi.edit', $perkaras->id) }}"
                     class="btn btn-secondary">Edit
                 </a>
+                @endCan
         </div>
     </div>
 </div>

@@ -66,7 +66,9 @@
                                 </tr>
                             </table>
                         </div>
+                        @csn('Edit Program Studi')
                         <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-warning">edit</a>
+                    @endCan
                     </div>
                 </div>
 
@@ -257,8 +259,8 @@
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
-                                    @can('Create Perkara Program Studi')
-                                        <a href="{{ route('perkara-prodi.create', $prodi->id) }}"
+                                    @can('Create Evaluasi Program Studi')
+                                        <a href="{{ route('evaluasi-prodi.create', $prodi->id) }}"
                                             class="btn btn-primary btn-sm mb-2">
                                             Tambah Evaluasi
                                         </a>
@@ -284,13 +286,13 @@
                                                 </td>
                                                 <td>{{ $perkara->status }}</td>
                                                 <td>
-                                                    @can('View Detail Perkara Program Studi')
-                                                        <a href="{{ route('perkara-prodi.show', $perkara->id) }}"
+                                                    @can('View Detail Evaluasi Program Studi')
+                                                        <a href="{{ route('evaluasi-prodi.show', $perkara->id) }}"
                                                             class="btn btn-sm btn-primary me-2">
                                                             <i class="ti ti-info-circle"></i>
                                                         </a>
                                                     @endCan
-                                                    @can('Update Status Perkara Program Studi')
+                                                    @can('Update Status Evaluasi Program Studi')
                                                         <button class="btn btn-sm btn-warning edit-status"
                                                             data-bs-toggle="modal" data-bs-target="#editStatusModal"
                                                             data-id="{{ $perkara->id }}"
@@ -388,7 +390,7 @@
                     option.selected = option.value === currentStatus;
                 });
 
-                document.getElementById('editStatusForm').action = `/perkara-organisasi/${perkaraId}/status-update`;
+                document.getElementById('editStatusForm').action = `/evaluasi-organisasi/${perkaraId}/status-update`;
             }
         });
     </script>

@@ -221,12 +221,12 @@ class DashboardController extends Controller
 
         if ($perkaras && $perkaras->id_organization) {
             return $perkaras->organisasi && $perkaras->organisasi->organisasi_type_id == 2
-                ? redirect()->route('perkara-organisasi.show', $perkaras->id)
-                : redirect()->route('perkara-organisasipt.show', $perkaras->id);
+                ? redirect()->route('evaluasi-organisasi.show', $perkaras->id)
+                : redirect()->route('evaluasi-organisasipt.show', $perkaras->id);
         }
 
         if ($perkaras && $perkaras->id_prodi) {
-            return redirect()->route('perkara-prodi.show', $perkaras->id);
+            return redirect()->route('evaluasi-prodi.show', $perkaras->id);
         }
 
         abort(404);

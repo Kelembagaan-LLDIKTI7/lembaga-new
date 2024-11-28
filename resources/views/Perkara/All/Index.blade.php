@@ -39,10 +39,12 @@
                                 </td>
                                 <td>{{ $perkara->status }}</td>
                                 <td>
-                                    <a href="{{ route('perkara.show', $perkara->id) }}"
+                                @can('View Detail Evaluasi Master')
+                                    <a href="{{ route('evaluasi.show', $perkara->id) }}"
                                         class="btn btn-sm btn-primary me-2">
                                         <i class="ti ti-info-circle"></i>
                                     </a>
+                                    @endCan
                                 </td>
                             </tr>
                             @endforeach
@@ -85,10 +87,12 @@
                                 <td>{{ $perkara->prodi_nama }}</td>
                                 <td>{{ $perkara->status }}</td>
                                 <td>
-                                    <a href="{{ route('perkara.showprodi', $perkara->id) }}"
+                                    @can('View Detail Evaluasi Master')
+                                    <a href="{{ route('evaluasi.showprodi', $perkara->id) }}"
                                         class="btn btn-sm btn-primary me-2">
                                         <i class="ti ti-info-circle"></i>
                                     </a>
+                                    @endCan
                                 </td>
                             </tr>
                             @endforeach

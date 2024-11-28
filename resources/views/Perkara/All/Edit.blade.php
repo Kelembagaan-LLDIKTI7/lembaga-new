@@ -48,12 +48,12 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <h3>Edit Perkara Organisasi</h3>
-                <form id="formPerkaraPT" action="{{ route('perkara.update', $perkaras->id) }}" method="POST" enctype="multipart/form-data">
+                <h3>Edit Evaluasi Organisasi</h3>
+                <form id="formPerkaraPT" action="{{ route('evaluasi.update', $perkaras->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
                     <input type="hidden" name="id" value="{{ $perkaras->id }}">
-                    <input type="hidden" name="redirect_route" value="{{ route('perkara.show', ['id' => $perkaras->id]) }}">
+                    <input type="hidden" name="redirect_route" value="{{ route('evaluasi.show', ['id' => $perkaras->id]) }}">
                     <div class="form-container">
                     <div class="form-left">
                             <div class="mb-3">
@@ -161,7 +161,7 @@
 
         // Step 1: Validate the data
         $.ajax({
-            url: '{{ route('perkara.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
+            url: '{{ route('evaluasi.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
             type: 'POST', // Use POST instead of PUT for AJAX requests
             data: formData,
             contentType: false,
@@ -201,7 +201,7 @@
 
     function submitToStore(formData) {
         $.ajax({
-            url: '{{ route('perkara.update', $perkaras->id) }}', // Update route
+            url: '{{ route('evaluasi.update', $perkaras->id) }}', // Update route
             type: 'POST', // Use POST and spoof method as PUT
             data: formData,
             contentType: false,
