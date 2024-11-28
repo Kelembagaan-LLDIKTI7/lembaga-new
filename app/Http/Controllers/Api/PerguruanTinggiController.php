@@ -140,13 +140,14 @@ class PerguruanTinggiController extends Controller
         $chartData = $chartQuery->get()
             ->map(function ($item) {
                 return [
-                    'label' => $item->bentukPT->bentuk_nama ?? 'Unknown',
+                    'label' => $item->bentukPT->bentuk_nama,
                     'count' => $item->total,
                 ];
             });
 
         $prodiChartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
+            ->whereNotNull('organisasi_bentuk_pt')
             ->where(function ($q) {
                 $q->whereNull('tampil')
                     ->orWhereNot('tampil', 0);
@@ -182,7 +183,7 @@ class PerguruanTinggiController extends Controller
             ->groupBy('organisasi_bentuk_pt')
             ->map(function ($group) {
                 $totalProdi = $group->sum('prodis_count');
-                $bentukNama = $group->first()->bentukPT->bentuk_nama ?? 'Unknown';
+                $bentukNama = $group->first()->bentukPT->bentuk_nama;
 
                 return [
                     'label' => $bentukNama,
