@@ -20,4 +20,4 @@ Route::get('/perguruan-tinggi', [PerguruanTinggiController::class, 'index']);
 // Route::get('/prodi', [ProdiController::class, 'index']);
 // Route::get('/prodi/{id}', [ProdiController::class, 'show']);
 
-// Route::get('/list', [ListController::class, 'getList']);
+Route::get('/list', [ListController::class, 'getList']);

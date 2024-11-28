@@ -3,13 +3,13 @@
 @section('title', 'Perkara')
 
 @section('content')
-<section class="datatables">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="mb-2">
-                    <h5 class="mb-0">Evaluasi Badan Penyelenggara dan Perguruan Tinggi</h5>
-                </div>
+    <section class="datatables">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-2">
+                        <h5 class="mb-0">Evaluasi Badan Penyelenggara dan Perguruan Tinggi</h5>
+                    </div>
 
                 <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                     <table id="dom_jq_event_org" class="table-striped table-bordered display text-nowrap table border"
@@ -122,54 +122,54 @@
 @endsection
 
 @section('js')
-{{-- <script>
+    {{-- <script>
     $(document).ready(function() {
         $('#dom_jq_event_org').DataTable();
         $('#dom_jq_event_prodi').DataTable();
     });
 </script> --}}
-<script>
-    $(document).ready(function() {
-        if ($.fn.DataTable.isDataTable('#dom_jq_event_org')) {
-            $('#dom_jq_event_org').DataTable().destroy();
-        }
-
-        $('#dom_jq_event_org').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#dom_jq_event_org')) {
+                $('#dom_jq_event_org').DataTable().destroy();
             }
-        });
-        if ($.fn.DataTable.isDataTable('#dom_jq_event_prodi')) {
-            $('#dom_jq_event_prodi').DataTable().destroy();
-        }
 
-        $('#dom_jq_event_prodi').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+            $('#dom_jq_event_org').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#dom_jq_event_prodi')) {
+                $('#dom_jq_event_prodi').DataTable().destroy();
             }
+
+            $('#dom_jq_event_prodi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endsection

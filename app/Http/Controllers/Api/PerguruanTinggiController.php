@@ -66,7 +66,18 @@ class PerguruanTinggiController extends Controller
                 $query->whereNull('organisasis.tampil')
                     ->orWhereNot('organisasis.tampil', 0);
             })
-            ->select('program_studis.id', 'organisasis.organisasi_kode', 'organisasis.organisasi_nama as nama_pt', 'bentuk_pts.bentuk_nama as bentuk_pt', 'organisasis.organisasi_kota as wilayah', 'prodi_nama', 'prodi_kode', 'prodi_jenjang', 'id_organization');
+            ->whereNotNull('organisasis.organisasi_bentuk_pt')
+            ->select(
+                'program_studis.id',
+                'organisasis.organisasi_kode',
+                'organisasis.organisasi_nama as nama_pt',
+                'bentuk_pts.bentuk_nama as bentuk_pt',
+                'organisasis.organisasi_kota as wilayah',
+                'prodi_nama',
+                'prodi_kode',
+                'prodi_jenjang',
+                'id_organization'
+            );
 
         if ($request->has('kode_pt') || $request->has('nama_pt') || $request->has('bentuk_pt') || $request->has('kota') || $request->has('program_studi')) {
             $prodiQuery->whereHas('perguruanTinggi', function ($q) use ($request) {
@@ -98,6 +109,7 @@ class PerguruanTinggiController extends Controller
                 $q->whereNull('tampil')
                     ->orWhereNot('tampil', 0);
             })
+            ->whereNotNull('organisasi_bentuk_pt')
             ->select('organisasi_bentuk_pt', DB::raw('count(*) as total'))
             ->groupBy('organisasi_bentuk_pt')
             ->with('bentukPT:id,bentuk_nama');
@@ -129,13 +141,14 @@ class PerguruanTinggiController extends Controller
         $chartData = $chartQuery->get()
             ->map(function ($item) {
                 return [
-                    'label' => $item->bentukPT->bentuk_nama ?? 'Unknown',
+                    'label' => $item->bentukPT->bentuk_nama,
                     'count' => $item->total,
                 ];
             });
 
         $prodiChartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
+            ->whereNotNull('organisasi_bentuk_pt')
             ->where(function ($q) {
                 $q->whereNull('tampil')
                     ->orWhereNot('tampil', 0);
@@ -171,7 +184,7 @@ class PerguruanTinggiController extends Controller
             ->groupBy('organisasi_bentuk_pt')
             ->map(function ($group) {
                 $totalProdi = $group->sum('prodis_count');
-                $bentukNama = $group->first()->bentukPT->bentuk_nama ?? 'Unknown';
+                $bentukNama = $group->first()->bentukPT->bentuk_nama;
 
                 return [
                     'label' => $bentukNama,
@@ -226,6 +239,7 @@ class PerguruanTinggiController extends Controller
 
         $cityChartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
+            ->whereNotNull('organisasi_bentuk_pt')
             ->whereNotNull('organisasi_kota')
             ->where(function ($q) {
                 $q->whereNull('tampil')

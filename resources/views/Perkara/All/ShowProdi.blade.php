@@ -29,11 +29,11 @@
                         </div>
 
                         <div class="row mb-4">
-                        <div class="col-md-12">
-                            <h6><strong>Nomor Perkara:</strong></h6>
-                            <p>{{ $perkaras->no_perkara }}</p>
+                            <div class="col-md-12">
+                                <h6><strong>Nomor Perkara:</strong></h6>
+                                <p>{{ $perkaras->no_perkara }}</p>
+                            </div>
                         </div>
-                    </div>
 
                         <div class="row mb-4">
                             <div class="col-md-6">
