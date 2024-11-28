@@ -147,7 +147,6 @@ class PerguruanTinggiController extends Controller
 
         $prodiChartQuery = Organisasi::query()
             ->where('organisasi_type_id', 3)
-            ->whereNotNull('organisasi_bentuk_pt')
             ->where(function ($q) {
                 $q->whereNull('tampil')
                     ->orWhereNot('tampil', 0);
