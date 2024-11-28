@@ -85,7 +85,7 @@
                 <a href="{{ route('perkara.index') }}"
                     class="btn btn-secondary">Kembali
                 </a>
-                <a href="{{ route('perkara.edit', $perkaras->id) }}"
+                <a href="{{ route('perkara.editprodi', $perkaras->id) }}"
                     class="btn btn-secondary">Edit
                 </a>
             </div>

@@ -323,10 +323,12 @@ Route::middleware('auth')->group(function () {
         //Route::middleware('role.access:Edit Perkara')->group(function () {
             Route::get('/{id}/edit', [PerkaraController::class, 'edit'])->name('edit');
             Route::put('/{id}', [PerkaraController::class, 'update'])->name('update');
+            Route::get('/{id}/editprodi', [PerkaraController::class, 'editprodi'])->name('editprodi');
+            Route::put('/{id}/prodi', [PerkaraController::class, 'updateprodi'])->name('updateprodi');
             Route::put('/{id}/validation-perkara-update', [PerkaraController::class, 'validationUpdate'])->name('validationUpdatePerkara');
        // });
         Route::get('/{id}', [PerkaraController::class, 'show'])->name('show')->middleware('role.access:View Detail Perkara');
-        Route::get('/{id}/showprodi', [PerkaraController::class, 'showProdi'])->name('showprodi')->middleware('role.access:View Detail Perkara');
+        Route::get('/{id}/showprodi', [PerkaraController::class, 'showprodi'])->name('showprodi')->middleware('role.access:View Detail Perkara');
         //Route::patch('/{id}/status-update', [PerkaraOrganisasiController::class, 'updateStatus'])->name('status-update')->middleware('role.access:Update Status Perkara Badan Penyelenggara');
     });
 

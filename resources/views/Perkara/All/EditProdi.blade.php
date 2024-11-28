@@ -53,7 +53,7 @@
     @csrf
     @method('PUT')
                     <input type="hidden" name="id" value="{{ $perkaras->id }}">
-                    <input type="hidden" name="redirect_route" value="{{ route('perkara.show', ['id' => $perkaras->id]) }}">
+                    <input type="hidden" name="redirect_route" value="{{ route('perkara.showprodi', ['id' => $perkaras->id]) }}">
                     <div class="form-container">
                     <div class="form-left">
                             <div class="mb-3">
@@ -201,7 +201,7 @@
 
     function submitToStore(formData) {
         $.ajax({
-            url: '{{ route('perkara.update', $perkaras->id) }}', // Update route
+            url: '{{ route('perkara.updateprodi', $perkaras->id) }}', // Update route
             type: 'POST', // Use POST and spoof method as PUT
             data: formData,
             contentType: false,
