@@ -49,8 +49,7 @@
         <div class="row">
             <div class="col-12">
                 <h3>Tambah Evaluasi Prodi</h3>
-                <form id="formPerkaraProdi" action="{{ route('perkara-prodi.store') }}" method="POST"
-                    enctype="multipart/form-data">
+                <form id="formPerkaraProdi" action="{{ route('evaluasi-prodi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
 
@@ -137,29 +136,29 @@
                 // Mengambil data form
                 const formData = new FormData(this);
 
-                // AJAX request ke server untuk validasi
-                $.ajax({
-                    url: '{{ route('perkara-prodi.validationStore') }}',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            submitToStore(formData);
-                        } else {
-                            $('#loading').hide();
-                            $('#buttons').show();
-                            displayErrors(response.errors);
-                        }
-                    },
-                    error: function(xhr) {
+            // AJAX request ke server untuk validasi
+            $.ajax({
+                url: '{{ route('evaluasi-prodi.validationStore') }}',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        submitToStore(formData);
+                    } else {
                         $('#loading').hide();
                         $('#buttons').show();
-                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                        displayErrors(response.errors);
                     }
-                });
+                },
+                error: function(xhr) {
+                    $('#loading').hide();
+                    $('#buttons').show();
+                    $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                }
             });
+        });
 
             function displayErrors(errors) {
                 // Bersihkan semua pesan error sebelumnya
@@ -174,26 +173,26 @@
                 }
             }
 
-            function submitToStore(formData) {
-                $.ajax({
-                    url: '{{ route('perkara-prodi.store') }}',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            window.location.href = response.redirect_url;
-                        }
-                    },
-                    error: function(xhr) {
-                        $('#loading').hide();
-                        $('#buttons').show();
-                        $('#error-messages').html(
-                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+        function submitToStore(formData) {
+            $.ajax({
+                url: '{{ route('evaluasi-prodi.store') }}',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = response.redirect_url;
                     }
-                });
-            }
+                },
+                error: function(xhr) {
+                    $('#loading').hide();
+                    $('#buttons').show();
+                    $('#error-messages').html(
+                        'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
+                }
+            });
+        }
 
         });
     </script>

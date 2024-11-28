@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah Perkara Organisasi')
+@section('title', 'Tambah Evaluasi Organisasi')
 
 @section('css')
     <style>
@@ -48,11 +48,10 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <h3>Edit Perkara Organisasi</h3>
-                <form id="formPerkaraPT" action="{{ route('perkara.update', $perkaras->id) }}" method="POST"
-                    enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+                <h3>Edit Evaluasi Organisasi</h3>
+                <form id="formPerkaraPT" action="{{ route('evaluasi.update', $perkaras->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PUT')
                     <input type="hidden" name="id" value="{{ $perkaras->id }}">
                     <div class="form-container">
                         <div class="form-left">
@@ -160,30 +159,30 @@
                 //     formData.append('existing_images[]', $(this).val());
                 // });
 
-                // Step 1: Validate the data
-                $.ajax({
-                    url: '{{ route('perkara-prodi.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
-                    type: 'POST', // Use POST instead of PUT for AJAX requests
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            // Step 2: Submit the form to store the data
-                            submitToStore(formData);
-                        } else {
-                            $('#loading').hide(); // Hide the loading spinner
-                            $('#buttons').show(); // Show the buttons
-                            displayErrors(response.errors);
-                        }
-                    },
-                    error: function(xhr) {
-                        $('#loading').hide(); // Hide the loading spinner
-                        $('#buttons').show(); // Show the buttons
-                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
-                    },
-                });
-            });
+        // Step 1: Validate the data
+        $.ajax({
+            url: '{{ route('evaluasi-prodi.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
+            type: 'POST', // Use POST instead of PUT for AJAX requests
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.success) {
+                    // Step 2: Submit the form to store the data
+                    submitToStore(formData);
+                } else {
+                    $('#loading').hide(); // Hide the loading spinner
+                    $('#buttons').show(); // Show the buttons
+                    displayErrors(response.errors);
+                }
+            },
+            error: function (xhr) {
+                $('#loading').hide(); // Hide the loading spinner
+                $('#buttons').show(); // Show the buttons
+                $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+            },
+        });
+    });
 
             function displayErrors(errors) {
                 // Bersihkan semua pesan error sebelumnya
@@ -201,28 +200,29 @@
                 }
             }
 
-            function submitToStore(formData) {
-                $.ajax({
-                    url: '{{ route('perkara-prodi.update', $perkaras->id) }}', // Update route
-                    type: 'POST', // Use POST and spoof method as PUT
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            window.location.href = response.redirect_url;
-                        }
-                    },
-                    error: function(xhr) {
-                        $('#loading').hide(); // Hide the loading spinner
-                        $('#buttons').show(); // Show the buttons
-                        $('#error-messages').html(
-                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.'
-                        );
-                    },
-                });
-            }
+    function submitToStore(formData) {
+        $.ajax({
+            url: '{{ route('evaluasi-prodi.update', $perkaras->id) }}', // Update route
+            type: 'POST', // Use POST and spoof method as PUT
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = response.redirect_url;
+                }
+            },
+            error: function (xhr) {
+                $('#loading').hide(); // Hide the loading spinner
+                $('#buttons').show(); // Show the buttons
+                $('#error-messages').html(
+                    'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.'
+                );
+            },
         });
+    }
+});
+
     </script>
     <script>
         let selectedFiles = [];

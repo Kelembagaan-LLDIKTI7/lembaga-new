@@ -82,8 +82,11 @@
                 <a href="{{ route('badan-penyelenggara.show', $perkaras->id_organization) }}"
                     class="btn btn-secondary">Kembali
                 </a>
-                <a href="{{ route('perkara-organisasi.edit', $perkaras->id) }}" class="btn btn-secondary">Edit
+                @can('Edit Evaluasi Badan Penyelenggara')
+                <a href="{{ route('evaluasi-organisasi.edit', $perkaras->id) }}"
+                    class="btn btn-secondary">Edit
                 </a>
+                @endCan
             </div>
         </div>
     </div>

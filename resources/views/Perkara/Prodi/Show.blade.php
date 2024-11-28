@@ -57,37 +57,40 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <h6><strong>Bukti Foto:</strong></h6>
-                                <div class="d-flex flex-wrap">
-                                    @if ($perkaras->bukti_foto && count(json_decode($perkaras->bukti_foto)) > 0)
-                                        @foreach (json_decode($perkaras->bukti_foto) as $foto)
-                                            <div class="image-preview m-2"
-                                                style="position: relative; width: 150px; height: 150px;">
-                                                <img src="{{ asset('storage/bukti_foto/' . $foto) }}" alt="Bukti Foto"
-                                                    class="img-thumbnail"
-                                                    style="width: 100%; height: 100%; object-fit: cover;">
-                                                <div class="overlay">
-                                                    <a href="{{ asset('storage/bukti_foto/' . $foto) }}" target="_blank"
-                                                        class="btn btn-sm btn-primary mt-2" style="width: 100%;">Lihat</a>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <p class="text-muted">Tidak ada bukti foto yang tersedia.</p>
-                                    @endif
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <h6><strong>Bukti Foto:</strong></h6>
+                            <div class="d-flex flex-wrap">
+                                @if ($perkaras->bukti_foto && count(json_decode($perkaras->bukti_foto)) > 0)
+                                @foreach (json_decode($perkaras->bukti_foto) as $foto)
+                                <div class="image-preview m-2"
+                                    style="position: relative; width: 150px; height: 150px;">
+                                    <img src="{{ asset('storage/bukti_foto/' . $foto) }}" alt="Bukti Foto"
+                                        class="img-thumbnail"
+                                        style="width: 100%; height: 100%; object-fit: cover;">
+                                    <div class="overlay">
+                                        <a href="{{ asset('storage/bukti_foto/' . $foto) }}" target="_blank"
+                                            class="btn btn-sm btn-primary mt-2" style="width: 100%;">Lihat</a>
+                                    </div>
                                 </div>
+                                @endforeach
+                                @else
+                                <p class="text-muted">Tidak ada bukti foto yang tersedia.</p>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('program-studi.show', $perkaras->id_prodi) }}" class="btn btn-secondary">
-                    Kembali
-                </a>
-                <a href="{{ route('perkara-prodi.edit', $perkaras->id) }}" class="btn btn-secondary">Edit
-                </a>
             </div>
+            <a href="{{ route('program-studi.show', $perkaras->id_prodi) }}" class="btn btn-secondary">
+                Kembali
+            </a>
+            @can('Edit Evaluasi Program Studi')
+            <a href="{{ route('evaluasi-prodi.edit', $perkaras->id) }}"
+                    class="btn btn-secondary">Edit
+                </a>
+                @endCan
         </div>
     </div>
+</div>
 @endsection

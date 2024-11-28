@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-12">
                 <h3>Tambah Evaluasi Badan Penyelenggara</h3>
-                <form action="{{ route('perkara-organisasi.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('evaluasi-organisasi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $organisasi->id }}" class="form-control" required>
 

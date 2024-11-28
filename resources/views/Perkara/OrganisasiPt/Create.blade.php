@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-12">
                 <h3>Tambah Evaluasi Perguruan Tinggi</h3>
-                <form id="formPerkaraPT" action="{{ route('perkara-organisasipt.store') }}" method="POST"
+                <form id="formPerkaraPT" action="{{ route('evaluasi-organisasipt.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $organisasi->id }}" class="form-control" required>
@@ -149,7 +149,7 @@
 
                 // AJAX request ke server untuk validasi
                 $.ajax({
-                    url: '{{ route('perkara-organisasipt.validationStore') }}',
+                    url: '{{ route('evaluasi-organisasipt.validationStore') }}',
                     type: 'POST',
                     data: formData,
                     contentType: false,
@@ -186,7 +186,7 @@
 
             function submitToStore(formData) {
                 $.ajax({
-                    url: '{{ route('perkara-organisasipt.store') }}',
+                    url: '{{ route('evaluasi-organisasipt.store') }}',
                     type: 'POST',
                     data: formData,
                     contentType: false,

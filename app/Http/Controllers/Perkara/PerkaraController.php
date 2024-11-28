@@ -132,7 +132,7 @@ class PerkaraController extends Controller
             'bukti_foto' => json_encode($fileNames),
         ]);
 
-        $redirectRoute = $request->input('redirect_route', route('perkara.show', ['id' => $id]));
+        $redirectRoute = $request->input('redirect_route', route('evaluasi.show', ['id' => $id]));
 
         return response()->json([
             'success' => true,
@@ -224,7 +224,7 @@ class PerkaraController extends Controller
             'bukti_foto' => json_encode($fileNames),
         ]);
 
-        $redirectRoute = $request->input('redirect_route', route('perkara.showprodi', ['id' => $id]));
+        $redirectRoute = $request->input('redirect_route', route('evaluasi.showprodi', ['id' => $id]));
 
         return response()->json([
             'success' => true,
