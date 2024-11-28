@@ -80,7 +80,7 @@ class DashboardController extends Controller
                                 ->where('pt.organisasi_type_id', 3);
                         });
                 })
-                ->select('id', 'title', 'tanggal_kejadian', 'status')
+                ->select('id', 'title', 'no_perkara', 'tanggal_kejadian', 'status')
                 ->orderBy('created_at', 'desc')
                 ->get();
 
@@ -124,7 +124,7 @@ class DashboardController extends Controller
                             ->whereRaw("CONVERT(`id_organization` USING utf8mb4) COLLATE utf8mb4_unicode_ci = ?", [$user->id_organization]);
                     });
             })
-                ->select('id', 'title', 'tanggal_kejadian', 'status')
+                ->select('id', 'title', 'no_perkara', 'tanggal_kejadian', 'status')
                 ->orderBy('created_at', 'desc')
                 ->get();
 
