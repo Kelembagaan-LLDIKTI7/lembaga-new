@@ -11,6 +11,10 @@
                         <h5 class="card-title">{{ $organisasi->organisasi_nama }}</h5>
                         <table class="table-borderless table">
                             <tr>
+                                <th>Kode PT</th>
+                                <td>{{ $organisasi->organisasi_kode ?? '-' }}</td>
+                            </tr>
+                            <tr>
                                 <th>Bentuk PT</th>
                                 <td>{{ $organisasi->bentukPt->bentuk_nama ?? '-' }}</td>
                             </tr>
