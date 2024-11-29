@@ -238,7 +238,7 @@ class PerkaraProdiController extends Controller
 
         return response()->json([
             'success' => true,
-            'redirect_url' => route('perkara-prodi.show', ['id' => $id]),
+            'redirect_url' => route('evaluasi-prodi.show', ['id' => $id]),
         ]);
     }
 

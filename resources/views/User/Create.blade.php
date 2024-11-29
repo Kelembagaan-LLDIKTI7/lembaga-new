@@ -46,6 +46,7 @@
                 <div class="col-md-6">
                     <label for="validationCustom01" class="required-label">Password</label>
                     <input type="password" class="form-control @error('password') is-invalid @enderror" id="validationCustom01" name="password" required>
+                    <small class="form-text text-muted">Minimal 10 Karakter pada password</small>
                     @error('password')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

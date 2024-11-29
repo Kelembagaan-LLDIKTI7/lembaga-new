@@ -137,7 +137,7 @@
                                             <th>No Perkara</th>
                                             <th>Tanggal Kejadian</th>
                                             <th>Status</th>
-                                            @can('View Detail Perkara')
+                                            @can('View Detail Evaluasi (Dashboard)')
                                             <th>Aksi</th>
                                             @endCan
                                         </tr>
@@ -152,7 +152,7 @@
                                                     {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
                                                 </td>
                                                 <td>{{ $perkara->status }}</td>
-                                                @can('View Detail Perkara')
+                                                @can('View Detail Evaluasi (Dashboard)')
                                                 <td>
                                                     <a href="{{ route('dashboard.show', $perkara->id) }}"
                                                         class="btn btn-sm btn-primary me-2">

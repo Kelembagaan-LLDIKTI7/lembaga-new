@@ -354,8 +354,8 @@
                         <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                             <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
-                                @can('Create Perkara Badan Penyelenggara')
-                                    <a href="{{ route('perkara-organisasi.create', $badanPenyelenggaras->id) }}"
+                                @can('Create Evaluasi Badan Penyelenggara')
+                                    <a href="{{ route('evaluasi-organisasi.create', $badanPenyelenggaras->id) }}"
                                         class="btn btn-primary btn-sm mb-2">
                                         Tambah Evaluasi
                                     </a>
@@ -381,13 +381,13 @@
                                             </td>
                                             <td>{{ $perkara->status }}</td>
                                             <td>
-                                                @can('View Detail Perkara Badan Penyelenggara')
-                                                    <a href="{{ route('perkara-organisasi.show', $perkara->id) }}"
+                                                @can('View Detail Evaluasi Badan Penyelenggara')
+                                                    <a href="{{ route('evaluasi-organisasi.show', $perkara->id) }}"
                                                         class="btn btn-sm btn-primary me-2">
                                                         <i class="ti ti-info-circle"></i>
                                                     </a>
                                                 @endCan
-                                                @can('Update Status Perkara Badan Penyelenggara')
+                                                @can('Update Status Evaluasi Badan Penyelenggara')
                                                     <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
                                                         data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
                                                         data-status="{{ $perkara->status }}">
@@ -444,7 +444,7 @@
                     option.selected = option.value === currentStatus;
                 });
 
-                document.getElementById('editStatusForm').action = `/perkara-organisasi/${perkaraId}/status-update`;
+                document.getElementById('editStatusForm').action = `/evaluasi-organisasi/${perkaraId}/status-update`;
             }
         });
     </script>

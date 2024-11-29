@@ -83,7 +83,7 @@
                     </li>
                 @endcanany
 
-                @canany(['View Badan Penyelenggara', 'View Perguruan Tinggi', 'View Program Studi'])
+                @canany(['View Badan Penyelenggara', 'View Perguruan Tinggi', 'View Program Studi', 'View Evaluasi Master'])
                     <li class="sidebar-item">
                         <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
                             <span class="d-flex">
@@ -124,14 +124,16 @@
                                 </li>
                             @endcan
                             @if (!auth()->user()->hasRole('Badan Penyelenggara') && !auth()->user()->hasRole('Perguruan Tinggi'))
+                            @can('View Evaluasi Master')
                                 <li class="sidebar-item">
-                                    <a href="{{ route('perkara.index') }}" class="sidebar-link">
+                                    <a href="{{ route('evaluasi.index') }}" class="sidebar-link">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <i class="ti ti-circle"></i>
                                         </div>
                                         <span class="hide-menu">Evaluasi</span>
                                     </a>
                                 </li>
+                                @endCan
                             @endif
                         </ul>
                     </li>

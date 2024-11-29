@@ -53,7 +53,7 @@
                         <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
                             name="password">
                         <small class="form-text text-muted">Jika tidak mengisi password maka akan menggunakan password
-                            lama.</small>
+                            lama. Minimal 10 Karakter pada password</small>
                         @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

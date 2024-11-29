@@ -3,13 +3,13 @@
 @section('title', 'Perkara')
 
 @section('content')
-<section class="datatables">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="mb-2">
-                    <h5 class="mb-0">Evaluasi Badan Penyelenggara dan Perguruan Tinggi</h5>
-                </div>
+    <section class="datatables">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-2">
+                        <h5 class="mb-0">Evaluasi Badan Penyelenggara dan Perguruan Tinggi</h5>
+                    </div>
 
                 <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                     <table id="dom_jq_event_org" class="table-striped table-bordered display text-nowrap table border"
@@ -39,10 +39,12 @@
                                 </td>
                                 <td>{{ $perkara->status }}</td>
                                 <td>
-                                    <a href="{{ route('perkara.show', $perkara->id) }}"
+                                @can('View Detail Evaluasi Master')
+                                    <a href="{{ route('evaluasi.show', $perkara->id) }}"
                                         class="btn btn-sm btn-primary me-2">
                                         <i class="ti ti-info-circle"></i>
                                     </a>
+                                    @endCan
                                 </td>
                             </tr>
                             @endforeach
@@ -85,10 +87,12 @@
                                 <td>{{ $perkara->prodi_nama }}</td>
                                 <td>{{ $perkara->status }}</td>
                                 <td>
-                                    <a href="{{ route('perkara.showprodi', $perkara->id) }}"
+                                    @can('View Detail Evaluasi Master')
+                                    <a href="{{ route('evaluasi.showprodi', $perkara->id) }}"
                                         class="btn btn-sm btn-primary me-2">
                                         <i class="ti ti-info-circle"></i>
                                     </a>
+                                    @endCan
                                 </td>
                             </tr>
                             @endforeach
@@ -118,54 +122,54 @@
 @endsection
 
 @section('js')
-{{-- <script>
+    {{-- <script>
     $(document).ready(function() {
         $('#dom_jq_event_org').DataTable();
         $('#dom_jq_event_prodi').DataTable();
     });
 </script> --}}
-<script>
-    $(document).ready(function() {
-        if ($.fn.DataTable.isDataTable('#dom_jq_event_org')) {
-            $('#dom_jq_event_org').DataTable().destroy();
-        }
-
-        $('#dom_jq_event_org').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#dom_jq_event_org')) {
+                $('#dom_jq_event_org').DataTable().destroy();
             }
-        });
-        if ($.fn.DataTable.isDataTable('#dom_jq_event_prodi')) {
-            $('#dom_jq_event_prodi').DataTable().destroy();
-        }
 
-        $('#dom_jq_event_prodi').DataTable({
-            "columnDefs": [{
-                "targets": 0,
-                "orderable": false,
-                "searchable": false,
-            }],
-            "drawCallback": function(settings) {
-                var api = this.api();
-                api.column(0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).nodes().each(function(cell, i) {
-                    cell.innerHTML = i + 1;
-                });
+            $('#dom_jq_event_org').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
+            if ($.fn.DataTable.isDataTable('#dom_jq_event_prodi')) {
+                $('#dom_jq_event_prodi').DataTable().destroy();
             }
+
+            $('#dom_jq_event_prodi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endsection

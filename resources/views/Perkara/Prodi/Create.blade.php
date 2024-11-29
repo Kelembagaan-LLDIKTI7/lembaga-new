@@ -49,7 +49,7 @@
         <div class="row">
             <div class="col-12">
                 <h3>Tambah Evaluasi Prodi</h3>
-                <form id="formPerkaraProdi" action="{{ route('perkara-prodi.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formPerkaraProdi" action="{{ route('evaluasi-prodi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
 
@@ -86,7 +86,7 @@
                         </div>
 
                         <div class="form-right">
-                        <div class="mb-3">
+                            <div class="mb-3">
                                 <label for="no_perkara">Nomor Perkara</label>
                                 <input type="text" name="no_perkara" id="no_perkara" class="form-control" required
                                     value="{{ old('no_perkara') }}">
@@ -124,21 +124,21 @@
 @endsection
 
 @section('js')
-<script>
-    $(document).ready(function() {
-        $('#loading').hide();
-        $('#formPerkaraProdi').on('submit', function(event) {
-            event.preventDefault(); // Menghentikan submit default form
+    <script>
+        $(document).ready(function() {
+            $('#loading').hide();
+            $('#formPerkaraProdi').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
 
-            $('#buttons').hide();
-            $('#loading').show();
+                $('#buttons').hide();
+                $('#loading').show();
 
-            // Mengambil data form
-            const formData = new FormData(this);
+                // Mengambil data form
+                const formData = new FormData(this);
 
             // AJAX request ke server untuk validasi
             $.ajax({
-                url: '{{ route('perkara-prodi.validationStore') }}',
+                url: '{{ route('evaluasi-prodi.validationStore') }}',
                 type: 'POST',
                 data: formData,
                 contentType: false,
@@ -160,22 +160,22 @@
             });
         });
 
-        function displayErrors(errors) {
-            // Bersihkan semua pesan error sebelumnya
-            $('.error-message').text('');
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
 
-            // Tampilkan pesan error baru
-            for (let field in errors) {
-                const errorMessages = errors[field].join(
-                    ', '); // Gabungkan pesan error jika ada lebih dari satu
-                $(`#error-${field}`).text(
-                    errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
             }
-        }
 
         function submitToStore(formData) {
             $.ajax({
-                url: '{{ route('perkara-prodi.store') }}',
+                url: '{{ route('evaluasi-prodi.store') }}',
                 type: 'POST',
                 data: formData,
                 contentType: false,
@@ -194,8 +194,8 @@
             });
         }
 
-    });
-</script>
+        });
+    </script>
     <script>
         let selectedFiles = [];
 

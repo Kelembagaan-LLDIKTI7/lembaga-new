@@ -21,9 +21,11 @@
                                         Import Excel
                                     </button>
                                 @endCan
+                                @can('Export Perguruan Tinggi')
                                 <a href="{{ route('pt.export') }}" class="btn btn-success btn-sm me-2">
                                     Export Excel
                                 </a>
+                                @endCan
                                 @can('Create Perguruan Tinggi')
                                     <a href="{{ route('perguruan-tinggi.create') }}" class="btn btn-primary btn-sm">
                                         Tambah Perguruan Tinggi
