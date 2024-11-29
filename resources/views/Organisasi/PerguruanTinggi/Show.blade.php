@@ -124,7 +124,7 @@
                                                 <th>Kode PT</th>
                                                 <th>Nama PT</th>
                                                 <th>Kota</th>
-                                                <th>Status Perubahan</th>
+                                                <th>Jenis Perubahan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
