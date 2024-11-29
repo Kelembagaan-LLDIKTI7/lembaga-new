@@ -235,9 +235,13 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                    <a href="{{ route('badan-penyelenggara.index') }}" class="btn btn-secondary">Keluar</a>
-                    <div id="error-messages" class="text-danger"></div>
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <a href="{{ route('badan-penyelenggara.index') }}" class="btn btn-secondary">Keluar</a>
+                        <div class="ml-auto" style="flex-grow: 1; text-align: right;">
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                        <div id="error-messages" class="text-danger"></div>
+                    </div>
                 </form>
             </div>
         </div>

@@ -3,29 +3,14 @@
 @section('content')
 <div class="main-content">
     <div class="page-content">
+        <section class="datatables">
         <div class="container-fluid">
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Permission Role User</h4>
-
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Permission Role User</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- end page title -->
-
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between mb-4">
+                            <div class="mb-2 d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Permission Role User</h5>
                                 @can('Create Permission')
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPermissionModal">
                                     Tambah Permission Role User
@@ -156,4 +141,5 @@
         </div>
     </footer>
 </div>
+</section>
 @endsection

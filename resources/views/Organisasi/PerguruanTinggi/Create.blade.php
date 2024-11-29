@@ -265,20 +265,20 @@
                                         @enderror
                                         <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                     </div>
-                                    <div id="buttons">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                        <a href="{{ route('perguruan-tinggi.index') }}" type="submit"
-                                            class="btn btn-primary">Keluar</a>
-                                    </div>
-                                    <div id="loading">
-                                        <button type="button" class="btn btn-primary" disabled>
-                                            <span class="spinner-border spinner-border-sm" role="status"
-                                                aria-hidden="true"></span>
-                                            Loading...
-                                        </button>
-                                    </div>
-                                    <div id="error-messages"></div>
                                 </div>
+                                <div id="buttons" class="mb-2 d-flex justify-content-between align-items-center">
+                                    <a href="{{ route('perguruan-tinggi.index') }}" type="submit"
+                                        class="btn btn-secondary">Keluar</a>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                                <div id="loading">
+                                    <button type="button" class="btn btn-primary" disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        Loading...
+                                    </button>
+                                </div>
+                                <div id="error-messages"></div>
                             </div>
                         </div>
                     </div>

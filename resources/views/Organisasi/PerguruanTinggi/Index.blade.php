@@ -14,18 +14,20 @@
                     <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                         <table id="dom_jq_event" class="table-striped table-bordered display text-nowrap table border"
                             style="width: 100%;">
-                            <div class="mb-3">
+                            <div class="mb-3 d-flex justify-content-between align-items-center">
                                 @can('Import Perguruan Tinggi')
                                     <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
                                         data-bs-target="#importExcel">
                                         Import Excel
                                     </button>
                                 @endCan
-                                @can('Export Perguruan Tinggi')
-                                <a href="{{ route('pt.export') }}" class="btn btn-success btn-sm me-2">
-                                    Export Excel
-                                </a>
+                                <div class="ml-auto" style="flex-grow: 1; text-align: left;">
+                                    @can('Export Perguruan Tinggi')
+                                    <a href="{{ route('pt.export') }}" class="btn btn-success btn-sm me-2">
+                                        Export Excel
+                                    </a>
                                 @endCan
+                                </div>
                                 @can('Create Perguruan Tinggi')
                                     <a href="{{ route('perguruan-tinggi.create') }}" class="btn btn-primary btn-sm">
                                         Tambah Perguruan Tinggi
