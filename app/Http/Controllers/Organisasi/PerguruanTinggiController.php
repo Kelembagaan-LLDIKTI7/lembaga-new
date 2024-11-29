@@ -59,7 +59,7 @@ class PerguruanTinggiController extends Controller
 
             $perguruanTinggis = $query->get();
 
-            return redirect()->route('perguruan-tinggi.show', ['id' => $perguruanTinggis->first()->id]);
+            return redirect()->route('perguruan-tinggi.show', ['id' => $perguruanTinggis[0]->id]);
         } elseif ($user->hasRole('Badan Penyelenggara')) {
             $query->where('parent_id', $user->id_organization);
         }
