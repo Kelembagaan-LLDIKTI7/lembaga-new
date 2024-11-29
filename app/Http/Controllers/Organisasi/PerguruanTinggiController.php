@@ -686,7 +686,7 @@ class PerguruanTinggiController extends Controller
             DB::table('organisasis')
                 ->where('id', $id)
                 ->update([
-                    'organisasi_status' => 'Alih Bentuk',
+                    'organisasi_status' => 'Alih Kelola',
                     'tampil' => 0,
                 ]);
             session()->flash('success', 'Perguruan Tinggi berhasil diperbarui.');
