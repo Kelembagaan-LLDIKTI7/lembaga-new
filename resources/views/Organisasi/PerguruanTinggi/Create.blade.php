@@ -151,7 +151,8 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_bentuk_pt" class="required-label">Bentuk Perguruan Tinggi</label>
+                                        <label for="organisasi_bentuk_pt" class="required-label">Bentuk Perguruan
+                                            Tinggi</label>
                                         <select name="organisasi_bentuk_pt" class="form-control select-search" required>
                                             <option value="">-- Pilih Bentuk PT --</option>
                                             @foreach ($bentukPt as $pt)
@@ -185,7 +186,7 @@
                                             required>
                                             <option value="Aktif">Pendirian</option>
                                             <option value="Alih Bentuk">Alih Bentuk</option>
-                                            <option value="penggabungan">Penggabungan</option>
+                                            <option value="Penggabungan">Penggabungan</option>
                                         </select>
                                         @error('berubah')
                                             <small class="text-danger">{{ $message }}</small>

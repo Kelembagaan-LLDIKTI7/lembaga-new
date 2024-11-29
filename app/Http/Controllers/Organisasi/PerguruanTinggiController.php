@@ -246,10 +246,18 @@ class PerguruanTinggiController extends Controller
             'parent_id' => $validated['parent_id'],
         ]);
 
+        $status = '';
+        if ($validated['berubah'] == 'Alih Bentuk') {
+            $status = 'Perubahan Bentuk';
+        } elseif ($validated['berubah'] == 'Penggabungan') {
+            $status = 'Penggabungan';
+        }
+
         if ($organisasiBerubahId) {
             foreach ($organisasiBerubahId as $id) {
                 Organisasi::where('id', $id)->update([
                     'organisasi_status' => 'Alih Bentuk',
+                    'organisasi_berubah_status' => $status
                 ]);
             }
         }
@@ -323,12 +331,8 @@ class PerguruanTinggiController extends Controller
                     'id',
                     'organisasi_kode',
                     'organisasi_nama',
-                    'organisasi_nama_singkat',
-                    'organisasi_email',
-                    'organisasi_telp',
                     'organisasi_kota',
-                    'organisasi_status',
-                    'organisasi_alamat',
+                    'organisasi_berubah_status'
                 )
                 ->orderBy('organisasi_nama', 'asc')
                 ->get();
@@ -556,6 +560,7 @@ class PerguruanTinggiController extends Controller
 
         $organisasi->update([
             'organisasi_status' => 'Alih Bentuk',
+            'organisasi_berubah_status' => 'Penyatuan'
         ]);
 
         $organisasiId = [$organisasi->id];
