@@ -12,7 +12,7 @@
                             <div class="mb-2">
                                 <h5 class="mb-0">Badan Penyelenggara</h5>
                             </div>
-                            <div class="mb-2">
+                            <div class="mb-2 d-flex justify-content-between align-items-center">
                                 @can('Import Badan Penyelenggara')
                                     <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
                                         data-bs-target="#importExcel">

@@ -7,18 +7,18 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="mb-2">
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">User</h5>
+                        @can('Create User')
+                                <a href="{{ route('user.create') }}" class="btn btn-primary btn-sm mb-2">
+                                    Tambah User
+                                </a>
+                        @endCan
                     </div>
 
                     <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                         <table id="dom_jq_event" class="table-striped table-bordered display text-nowrap table border"
                             style="width: 100%">
-                            @can('Create User')
-                                <a href="{{ route('user.create') }}" class="btn btn-primary btn-sm mb-2">
-                                    Tambah User
-                                </a>
-                            @endCan
                             <thead>
                                 <tr>
                                     <th>No</th>
