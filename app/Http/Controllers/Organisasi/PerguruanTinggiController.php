@@ -681,7 +681,7 @@ class PerguruanTinggiController extends Controller
                     'id_organization' => $organisasis->id,
                     'parent_id_lama' => $organisasis->parent_id,
                     'parent_id_baru' => $request->parent_id,
-                    'status' => 'Alih Bentuk'
+                    'status' => 'Alih Kelola'
                 ]);
             } else {
                 DB::table('organisasis')
@@ -704,7 +704,7 @@ class PerguruanTinggiController extends Controller
                     'id_organization' => $organisasis->id,
                     'parent_id_lama' => $organisasis->parent_id,
                     'parent_id_baru' => $request->parent_id,
-                    'status' => 'Alih Bentuk'
+                    'status' => 'Alih Kelola'
                 ]);
             }
             session()->flash('success', 'Perguruan Tinggi berhasil diperbarui.');
