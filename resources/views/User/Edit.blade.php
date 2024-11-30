@@ -62,7 +62,7 @@
                     <div class="col-md-6">
                         <label for="nip" class="required-label">Nomor Induk Pegawai</label>
                         <input type="text" class="form-control @error('nip') is-invalid @enderror" id="nip"
-                            name="nip" value="{{ old('nip', $user->nip) }}" required>
+                            name="nip" value="{{ old('nip', $user->nip) }}">
                         @error('nip')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
