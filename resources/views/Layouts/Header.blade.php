@@ -9,10 +9,7 @@
         </ul>
 
         <div class="d-block d-lg-none">
-            <img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/dark-logo.svg"
-                class="dark-logo" width="180" alt="" />
-            <img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/light-logo.svg"
-                class="light-logo" width="180" alt="" />
+            <img src="{{ asset('assets/images/logo_lldikti.png') }}" alt="LLDIKTI Logo" style="height: 100px;">
         </div>
         <button class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
