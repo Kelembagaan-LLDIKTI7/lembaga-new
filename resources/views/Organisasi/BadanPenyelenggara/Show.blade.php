@@ -252,13 +252,23 @@
                                                 <td>{{ $bp->organisasi_status }}</td>
                                                 <td>
                                                     @can('Detail Perguruan Tinggi')
-                                                        @if ($bp->tampil == 1)
-                                                            <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
-                                                                class="btn btn-sm btn-primary me-2">
-                                                                <i class="ti ti-info-circle"></i>
-                                                            </a>
-                                                        @endif
+                                                        <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
+                                                            class="btn btn-sm btn-primary me-2">
+                                                            <i class="ti ti-info-circle"></i>
+                                                        </a>
                                                     @endcan
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        @foreach ($badanPenyelenggaras->bpLama as $bp1)
+                                            <tr>
+                                                <td></td>
+                                                <td>{{ $bp1->perguruanTinggi->organisasi_nama }}</td>
+                                                <td>{{ $bp1->perguruanTinggi->organisasi_nama_singkat }}</td>
+                                                <td>{{ $bp1->perguruanTinggi->organisasi_kota}}</td>
+                                                <td>{{ $bp1->status }}</td>
+                                                <td>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -444,7 +454,8 @@
                     option.selected = option.value === currentStatus;
                 });
 
-                document.getElementById('editStatusForm').action = `/evaluasi-organisasi/${perkaraId}/status-update`;
+                document.getElementById('editStatusForm').action =
+                `/evaluasi-organisasi/${perkaraId}/status-update`;
             }
         });
     </script>

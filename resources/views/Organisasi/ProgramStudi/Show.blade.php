@@ -21,24 +21,24 @@
                                     <td>{{ $prodi->prodi_jenjang ?? '-' }}</td>
                                 </tr>
                                 <tr>
-    <th>Periode Pelaporan Awal</th>
-    <td>
-        @php
-            $periode = $prodi->prodi_periode; // Get the full periode value
-            $lastDigit = substr($periode, -1); // Extract the last digit
-            $newPeriode = substr($periode, 0, -1); // Remove the last digit
-            if ($lastDigit == '1') {
-                $newPeriode .= ' Gasal'; // Append 'gasal'
-            } elseif ($lastDigit == '2') {
-                $newPeriode .= ' Genap'; // Append 'genap'
-            } else {
-                $newPeriode .= $lastDigit; // Keep the original digit for other cases
-            }
-        @endphp
+                                    <th>Periode Pelaporan Awal</th>
+                                    <td>
+                                        @php
+                                            $periode = $prodi->prodi_periode;
+                                            $lastDigit = substr($periode, -1);
+                                            $newPeriode = substr($periode, 0, -1);
+                                            if ($lastDigit == '1') {
+                                                $newPeriode .= ' Gasal';
+                                            } elseif ($lastDigit == '2') {
+                                                $newPeriode .= ' Genap';
+                                            } else {
+                                                $newPeriode .= $lastDigit;
+                                            }
+                                        @endphp
 
-        {{ $newPeriode }}
-    </td>
-</tr>
+                                        {{ $newPeriode }}
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <th>Status</th>
@@ -66,9 +66,9 @@
                                 </tr>
                             </table>
                         </div>
-                        @csn('Edit Program Studi')
-                        <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-warning">edit</a>
-                    @endCan
+                        @can('Edit Program Studi')
+                            <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-warning">edit</a>
+                        @endCan
                     </div>
                 </div>
 
@@ -100,20 +100,20 @@
                                                 <td>{{ $histori->prodi_nama }}</td>
                                                 <td>{{ $histori->prodi_jenjang }}</td>
                                                 <td>
-                                                @php
-            $periode = $prodi->prodi_periode; // Get the full periode value
-            $lastDigit = substr($periode, -1); // Extract the last digit
-            $newPeriode = substr($periode, 0, -1); // Remove the last digit
-            if ($lastDigit == '1') {
-                $newPeriode .= ' Gasal'; // Append 'gasal'
-            } elseif ($lastDigit == '2') {
-                $newPeriode .= ' Genap'; // Append 'genap'
-            } else {
-                $newPeriode .= $lastDigit; // Keep the original digit for other cases
-            }
-        @endphp
+                                                    @php
+                                                        $periode = $prodi->prodi_periode; // Get the full periode value
+                                                        $lastDigit = substr($periode, -1); // Extract the last digit
+                                                        $newPeriode = substr($periode, 0, -1); // Remove the last digit
+                                                        if ($lastDigit == '1') {
+                                                            $newPeriode .= ' Gasal'; // Append 'gasal'
+                                                        } elseif ($lastDigit == '2') {
+                                                            $newPeriode .= ' Genap'; // Append 'genap'
+                                                        } else {
+                                                            $newPeriode .= $lastDigit; // Keep the original digit for other cases
+                                                        }
+                                                    @endphp
 
-        {{ $newPeriode }}
+                                                    {{ $newPeriode }}
                                                 </td>
                                                 <td>{{ $histori->prodi_active_status }}</td>
                                             </tr>
@@ -390,7 +390,8 @@
                     option.selected = option.value === currentStatus;
                 });
 
-                document.getElementById('editStatusForm').action = `/evaluasi-organisasi/${perkaraId}/status-update`;
+                document.getElementById('editStatusForm').action =
+                `/evaluasi-organisasi/${perkaraId}/status-update`;
             }
         });
     </script>
@@ -418,7 +419,7 @@
             }
         });
     </script>
-    
+
     <script>
         $(document).ready(function() {
             if ($.fn.DataTable.isDataTable('#organisasi_table')) {
