@@ -16,6 +16,21 @@ class Organisasi extends Model
         'id',
     ];
 
+    public function perguruanTinggi()
+    {
+        return $this->hasMany(HistoriPt::class, 'id_organization', 'id');
+    }
+
+    public function bpLama()
+    {
+        return $this->hasMany(HistoriPt::class, 'parent_id_lama', 'id');
+    }
+
+    public function bpBaru()
+    {
+        return $this->hasMany(HistoriPt::class, 'parent_id_baru', 'id');
+    }
+
     public function parent()
     {
         return $this->belongsTo(Organisasi::class, 'parent_id', 'id');
