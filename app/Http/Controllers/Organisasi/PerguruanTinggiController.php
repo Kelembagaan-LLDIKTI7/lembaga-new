@@ -474,27 +474,23 @@ class PerguruanTinggiController extends Controller
         ]);
     }
 
-    public function validationUpdatePenyatuan(Request $request, string $id)
-    {
-        $validator = \Validator::make($request->all(), [
-            'organisasi_berubah_id' => 'required|array',
-            'sk_nomor' => 'required|string|max:255',
-            'sk_tanggal' => 'required|date',
-            'id_jenis_surat_keputusan' => 'required',
-            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-        ]);
+    // public function validationUpdatePenyatuan(Request $request, string $id)
+    // {
+    //     $validator = \Validator::make($request->all(), [
+    //         'organisasi_berubah_id' => 'required|array',
+    //     ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()->toArray(),
-            ]);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'errors' => $validator->errors()->toArray(),
+    //         ]);
+    //     }
 
-        return response()->json([
-            'success' => true,
-        ]);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //     ]);
+    // }
 
     public function validationUpdate(Request $request, string $id)
     {
@@ -549,7 +545,21 @@ class PerguruanTinggiController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'organisasi_berubah_id' => 'array',
+            'organisasi_berubah_id' => 'required|array',
+            'sk_nomor' => 'required|string|max:255',
+            'sk_tanggal' => 'required|date',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'organisasi_berubah_id.required' => 'Perguruan Tinggi tujuan wajib dipilih.',
+            'organisasi_berubah_id.array' => 'Format Perguruan Tinggi tujuan tidak valid.',
+            'sk_nomor.required' => 'Nomor Surat Keputusan wajib diisi.',
+            'sk_nomor.string' => 'Nomor Surat Keputusan harus berupa teks.',
+            'sk_nomor.max' => 'Nomor Surat Keputusan tidak boleh lebih dari 255 karakter.',
+            'sk_tanggal.required' => 'Tanggal Surat Keputusan wajib diisi.',
+            'sk_tanggal.date' => 'Tanggal Surat Keputusan harus berupa format tanggal yang valid.',
+            'sk_dokumen.file' => 'Dokumen SK harus berupa file.',
+            'sk_dokumen.mimes' => 'Dokumen SK hanya boleh berupa file PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Ukuran Dokumen SK tidak boleh lebih dari 2MB.',
         ]);
 
         $organisasiBerubah = Organisasi::where('id', $request->organisasi_berubah_id)->first();
@@ -559,10 +569,11 @@ class PerguruanTinggiController extends Controller
             'organisasi_status' => 'Alih Bentuk',
         ]);
 
-        $organisasiId = [$organisasi->id];
+        $existingData = json_decode($organisasiBerubah->organisasi_berubah_id, true) ?? [];
+        $updatedData = array_unique(array_merge($existingData, [$organisasi->id]));
 
         $organisasiBerubah->update([
-            'organisasi_berubah_id' => !empty($request->organisasi_berubah_id) ? json_encode($organisasiId) : null,
+            'organisasi_berubah_id' => json_encode($updatedData),
         ]);
 
         if ($request->hasFile('sk_dokumen')) {
@@ -577,12 +588,7 @@ class PerguruanTinggiController extends Controller
             'id_organization' => $organisasi->id,
         ]);
 
-        session()->flash('success', 'Perguruan Tinggi berhasil diperbarui.');
-
-        return response()->json([
-            'success' => true,
-            'redirect_url' => route('perguruan-tinggi.show', ['id' => $id])
-        ]);
+        return redirect()->route('perguruan-tinggi.show', ['id' => $id])->with('success', 'Perubahan berhasil');
     }
 
     public function update(Request $request, string $id)

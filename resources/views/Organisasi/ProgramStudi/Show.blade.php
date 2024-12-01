@@ -39,7 +39,6 @@
                                         {{ $newPeriode }}
                                     </td>
                                 </tr>
-
                                 <tr>
                                     <th>Status</th>
                                     <td>{{ $prodi->prodi_active_status }}</td>
@@ -50,9 +49,10 @@
                                 </tr>
                                 <tr>
                                     <th>Tanggal SK Prodi</th>
-                                    <td>{{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
                                     </td>
-                                </tr>>
+                                </tr>
                                 <tr>
                                     <th>Dokumen SK</th>
                                     @if ($prodi->suratKeputusan->sk_dokumen)
@@ -391,7 +391,7 @@
                 });
 
                 document.getElementById('editStatusForm').action =
-                `/evaluasi-organisasi/${perkaraId}/status-update`;
+                    `/evaluasi-organisasi/${perkaraId}/status-update`;
             }
         });
     </script>
