@@ -54,7 +54,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="col-md-4">
-                                        <label for="validationCustom01" class="form-label">Kode Perguruan Tinggi</label>
+                                        <label for="validationCustom01" class="required-label">Kode Perguruan Tinggi</label>
                                         <div class="organisasi-kode-input-group" id="organisasi-kode-input-group">
                                             <input type="text" class="form-control" id="organisasi_kode"
                                                 name="organisasi_kode" required>
