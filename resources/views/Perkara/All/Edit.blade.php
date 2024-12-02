@@ -88,6 +88,8 @@
                                 <label for="bukti_foto">Bukti Foto</label>
                                 <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control" multiple
                                     accept="image/*">
+                                    <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
+                                    GIF.</small>
                                 <small class="text-danger error-message" id="error-bukti_foto"></small>
                             </div>
 
