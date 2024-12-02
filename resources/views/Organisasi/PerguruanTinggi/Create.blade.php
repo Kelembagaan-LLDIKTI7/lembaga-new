@@ -196,14 +196,12 @@
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_berubah_id">PT Yang diubah</label>
-                                        <select class="form-control select-search" name="organisasi_berubah_id[]"
-                                            id="organisasi_berubah_id" multiple>
-                                            <option value="">-- Pilih Perguruan Tinggi --</option>
-                                            @foreach ($perguruanTinggis as $perguruanTinggi)
-                                                <option value="{{ $perguruanTinggi->id }}">
-                                                    {{ $perguruanTinggi->organisasi_nama }}</option>
-                                            @endforeach
-                                        </select>
+                                        <select class="form-control select2" name="organisasi_berubah_id[]" id="organisasi_berubah_id" multiple>
+    <option value="">-- Pilih Perguruan Tinggi --</option>
+    @foreach ($perguruanTinggis as $perguruanTinggi)
+        <option value="{{ $perguruanTinggi->id }}">{{ $perguruanTinggi->organisasi_nama }}</option>
+    @endforeach
+</select>
                                         @error('organisasi_berubah_id')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -242,7 +240,6 @@
                                     <div class="form-group mb-3">
                                         <label for="id_jenis_surat_keputusan">Jenis Surat Keputusan</label>
                                         <select name="id_jenis_surat_keputusan" class="form-control select-search">
-                                            <option value="">-- Pilih Perguruan Tinggi --</option>
                                             @foreach ($jenis as $jenis)
                                                 <option value="{{ $jenis->id }}">
                                                     {{ $jenis->jsk_nama }}</option>
@@ -291,6 +288,13 @@
 
 @section('js')
     <script>
+        $(document).ready(function() {
+    $('#organisasi_berubah_id').select2({
+        placeholder: '-- Pilih Perguruan Tinggi --',
+        allowClear: true,
+        width: '100%'
+    });
+});
         $(document).ready(function() {
             $('#loading').hide();
             $('#formPT').on('submit', function(event) {

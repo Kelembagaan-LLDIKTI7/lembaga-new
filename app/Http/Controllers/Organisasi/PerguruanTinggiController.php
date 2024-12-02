@@ -95,10 +95,6 @@ class PerguruanTinggiController extends Controller
             ->get();
 
         $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)
-            ->where(function ($q) {
-                $q->whereNull('tampil')
-                    ->orWhereNot('tampil', 0);
-            })
             ->select(
                 'id',
                 'organisasi_nama'
