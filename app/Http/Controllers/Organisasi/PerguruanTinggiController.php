@@ -625,7 +625,7 @@ class PerguruanTinggiController extends Controller
         ]);
 
         $organisasis = Organisasi::findOrFail($id);
-        if ($request->parent_id == $organisasis->parent_id) {
+        if ($request->parent_id == $organisasis->parent_id || $organisasis->parent_id == null) {
             if ($request->hasFile('organisasi_logo')) {
                 $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
                 $validated['organisasi_logo'] = $logoPath;
