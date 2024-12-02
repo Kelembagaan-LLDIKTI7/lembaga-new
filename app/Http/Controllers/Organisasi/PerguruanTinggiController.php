@@ -523,7 +523,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_website.url' => 'Format website tidak valid.',
             'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
             'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
-            'parent_id.exists' => 'Perguruan Tinggi induk tidak valid.',
+            'parent_id.exists' => 'Badan Penyelenggara tidak valid.',
         ]);
 
         if ($validator->fails()) {
@@ -620,7 +620,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_website.url' => 'Format website tidak valid.',
             'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
             'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
-            'parent_id.exists' => 'Perguruan Tinggi induk tidak valid.',
+            'parent_id.exists' => 'Badan Penyelenggara tidak valid.',
         ]);
 
         $organisasis = Organisasi::findOrFail($id);

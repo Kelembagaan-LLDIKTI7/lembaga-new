@@ -112,7 +112,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="parent_id">Badan Penyelenggara</label>
-                                        <select name="parent_id" class="form-control select-search" required>
+                                        <select name="parent_id" class="form-control select-search">
                                             <option value="">-- Pilih Parent Organisasi --</option>
                                             @foreach ($badanPenyelenggaras as $badanPenyelenggara)
                                                 <option value="{{ $badanPenyelenggara->id }}"
