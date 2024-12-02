@@ -110,7 +110,8 @@
                             @foreach ($organization as $item)
                                 <option value="{{ $item->id }}"
                                     {{ old('id_organization', $user->id_organization) == $item->id ? 'selected' : '' }}>
-                                    {{ $item->organisasi_nama }}</option>
+                                    {{ $item->organisasi_nama }}
+                                </option>
                             @endforeach
                         </select>
                         @error('id_organization')
@@ -179,12 +180,13 @@
             new Choices(organizationsElement, {
                 removeItemButton: false,
                 placeholder: true,
-                placeholderValue: 'Organisasi',
-                searchResultLimit: -1,
+                placeholderValue: 'Pilih Organisasi...',
+                searchEnabled: true,
                 searchFields: ['label'],
+                searchResultLimit: 10,
                 fuseOptions: {
-                    threshold: 0.3,
-                    minMatchCharLength: 2,
+                    threshold: 0.5,
+                    minMatchCharLength: 1,
                 },
             });
         });
