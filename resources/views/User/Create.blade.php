@@ -97,15 +97,12 @@
                         @enderror
                     </div>
 
-
                     <div class="col-md-6">
                         <label for="OrganizationLabel" class="required-label">Organisasi User</label>
                         <select class="form-control @error('id_organization') is-invalid @enderror" id="id_organizations"
                             name="id_organization" required>
                             @foreach ($organization as $item)
-                                <option value="{{ $item->id }}"
-                                    {{ old('id_organization') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->organisasi_nama }}</option>
+                                <option value="{{ $item->id }}">{{ $item->organisasi_nama }}</option>
                             @endforeach
                         </select>
                         @error('id_organization')
@@ -157,9 +154,7 @@
                     '<i class="bi bi-eye"></i>';
             });
         });
-    </script>
-
-    <script>
+    
         document.addEventListener('DOMContentLoaded', function() {
             const rolesElement = document.getElementById('roles');
             new Choices(rolesElement, {
@@ -168,17 +163,19 @@
                 placeholderValue: 'Pilih Role...',
                 maxItemCount: -1,
             });
-
+        });
+        document.addEventListener('DOMContentLoaded', function() {
             const organizationsElement = document.getElementById('id_organizations');
+
             new Choices(organizationsElement, {
-                removeItemButton: false,
+                searchEnabled: true,
                 placeholder: true,
-                placeholderValue: 'Organisasi',
-                searchResultLimit: -1,
+                placeholderValue: 'Pilih Organisasi...',
                 searchFields: ['label'],
+                searchResultLimit: 10,
                 fuseOptions: {
-                    threshold: 0.3,
-                    minMatchCharLength: 2,
+                    threshold: 0.5,
+                    minMatchCharLength: 1,
                 },
             });
         });
