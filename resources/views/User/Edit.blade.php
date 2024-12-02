@@ -50,10 +50,15 @@
 
                     <div class="col-md-6">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password"
-                            name="password">
-                        <small class="form-text text-muted">Jika tidak mengisi password maka akan menggunakan password
-                            lama. Minimal 10 Karakter pada password</small>
+                        <div class="input-group">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                id="passwordInput" name="password">
+                            <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                                <i class="bi bi-eye"></i>
+                            </span>
+                        </div>
+                        <small class="form-text text-muted">Jika tidak mengisi password maka akan menggunakan password lama.
+                            Minimal 10 Karakter pada password</small>
                         @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -149,17 +154,29 @@
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const element = document.getElementById('roles');
-            const choices = new Choices(element, {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('passwordInput');
+            togglePassword.addEventListener('click', function() {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                this.innerHTML = isPassword ? '<i class="bi bi-eye-slash"></i>' :
+                    '<i class="bi bi-eye"></i>';
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rolesElement = document.getElementById('roles');
+            new Choices(rolesElement, {
                 removeItemButton: true,
                 placeholder: true,
                 placeholderValue: 'Pilih Role...',
                 maxItemCount: -1,
             });
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-            const element = document.getElementById('id_organizations');
-            const choices = new Choices(element, {
+
+            const organizationsElement = document.getElementById('id_organizations');
+            new Choices(organizationsElement, {
                 removeItemButton: false,
                 placeholder: true,
                 placeholderValue: 'Organisasi',
@@ -168,7 +185,7 @@
                 fuseOptions: {
                     threshold: 0.3,
                     minMatchCharLength: 2,
-                }
+                },
             });
         });
     </script>
