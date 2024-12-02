@@ -125,6 +125,7 @@
                                                 <th>Nama PT</th>
                                                 <th>Kota</th>
                                                 <th>Jenis Perubahan</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -135,6 +136,10 @@
                                                     <td>{{ $org->organisasi_nama }}</td>
                                                     <td>{{ $org->organisasi_kota }}</td>
                                                     <td>{{ $org->organisasi_berubah_status }}</td>
+                                                    <td>
+                                                        <a href="{{ route('perguruan-tinggi.show', $org->id) }}"
+                                                            class="btn btn-sm btn-info">Detail</a>
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
