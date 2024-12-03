@@ -138,7 +138,7 @@
                                             accept=".pdf,.doc,.docx" onchange="previewFile(event)">
 
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
+                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
                                         @error('pimpinan_sk_dokumen')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror

@@ -195,7 +195,7 @@
                                         <input type="file" name="organisasi_logo" class="form-control"
                                             accept="image/png, image/jpg, image/jpeg, image/gif">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
-                                            GIF.</small>
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         @if ($errors->has('organisasi_logo'))
                                             <span class="text-danger">{{ $errors->first('organisasi_logo') }}</span>
                                         @endif

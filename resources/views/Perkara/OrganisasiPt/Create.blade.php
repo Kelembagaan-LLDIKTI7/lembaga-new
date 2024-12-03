@@ -100,7 +100,7 @@
                                 <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control" multiple
                                     accept="image/*">
                                     <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
-                                    GIF.</small>
+                                    GIF. Maksimal Ukuran File : 2 MB.</small>
                                 @error('bukti_foto.*')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
