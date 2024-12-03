@@ -111,7 +111,7 @@
                                             class="form-control @error('sk_dokumen') is-invalid @enderror"
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
+                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
                                         @error('sk_dokumen')
                                             <small class="error-message">{{ $message }}</small>
                                         @enderror
