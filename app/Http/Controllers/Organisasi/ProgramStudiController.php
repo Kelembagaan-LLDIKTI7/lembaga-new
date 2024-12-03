@@ -352,7 +352,7 @@ class ProgramStudiController extends Controller
         // Validasi data input
         $prodi = ProgramStudi::findOrFail($id);
         $validator = \Validator::make($request->all(), [
-            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
+            'prodi_kode' => 'required|string|max:7',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
             'prodi_periode' => 'required|digits:5|integer|min:1900',
@@ -363,7 +363,6 @@ class ProgramStudiController extends Controller
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
             'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
-            'prodi_kode.unique' => 'Kode Program Studi sudah digunakan.',
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
             'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
             'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
@@ -397,7 +396,7 @@ class ProgramStudiController extends Controller
         $prodi = ProgramStudi::findOrFail($id);
 
         $request->validate([
-            'prodi_kode' => 'required|string|max:7|unique:program_studis,prodi_kode',
+            'prodi_kode' => 'required|string|max:7',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
             'prodi_periode' => 'required|digits:5|integer|min:1900',
@@ -408,7 +407,6 @@ class ProgramStudiController extends Controller
         ], [
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
             'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
-            'prodi_kode.unique' => 'Kode Program Studi sudah digunakan.',
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
             'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
             'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
