@@ -42,8 +42,8 @@ class ProgramStudiController extends Controller
                 $query->whereNull('organisasis.tampil')
                     ->orWhereNot('organisasis.tampil', 0);
             })
-            ->orderBy('organisasis.organisasi_kode')
-            ->orderBy('program_studis.prodi_kode')
+            // ->orderBy('organisasis.organisasi_kode')
+            ->orderBy('program_studis.prodi_nama', 'asc')
             ->select(
                 'program_studis.id as id',
                 'organisasis.organisasi_kode as kode_pt',
@@ -255,7 +255,7 @@ class ProgramStudiController extends Controller
                     ->oldest('sk_tanggal')->limit(1);
             },
             'suratKeputusan.jenisSuratKeputusan:id,jsk_nama',
-            'perguruanTinggi:id'
+            'perguruanTinggi:id,organisasi_nama'
         ])->select(
             'id',
             'prodi_kode',

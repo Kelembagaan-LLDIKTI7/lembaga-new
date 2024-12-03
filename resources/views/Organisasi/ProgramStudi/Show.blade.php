@@ -13,6 +13,10 @@
                             <h6>Informasi Program Studi</h6>
                             <table class="table-borderless table">
                                 <tr>
+                                    <th>Nama Perguruan Tinggi</th>
+                                    <td>{{ $prodi->perguruanTinggi->organisasi_nama ?? '-' }}</td>
+                                </tr>
+                                <tr>
                                     <th>Nama Program Studi</th>
                                     <td>{{ $prodi->prodi_nama }}</td>
                                 </tr>
@@ -45,24 +49,26 @@
                                 </tr>
                                 <tr>
                                     <th>Nomor SK Ijin Prodi</th>
-                                    <td>{{ $prodi->suratKeputusan->sk_nomor }}</td>
+                                    <td>{{ $prodi->suratKeputusan->sk_nomor ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tanggal SK Prodi</th>
                                     <td>
-                                        {{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
+                                        {{ $prodi->suratKeputusan && $prodi->suratKeputusan->sk_tanggal
+                                            ? \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y')
+                                            : '-' }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Dokumen SK</th>
-                                    @if ($prodi->suratKeputusan->sk_dokumen)
-                                        <td>
+                                    <td>
+                                        @if ($prodi->suratKeputusan && $prodi->suratKeputusan->sk_dokumen)
                                             <a href="{{ asset('storage/' . $prodi->suratKeputusan->sk_dokumen) }}"
                                                 target="_blank">Dokumen</a>
-                                        </td>
-                                    @else
-                                        <td>-</td>
-                                    @endif
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -311,8 +317,15 @@
                 </section>
             </div>
             <div class="btn-center mt-3">
-                <a href="{{ route('perguruan-tinggi.show', $prodi->perguruanTinggi->id) }}"
-                    class="btn btn-primary">Keluar</a>
+                @if ($prodi->perguruanTinggi && $prodi->perguruanTinggi->id)
+                    <a href="{{ route('perguruan-tinggi.show', $prodi->perguruanTinggi->id) }}" class="btn btn-primary">
+                        Keluar
+                    </a>
+                @else
+                    <a href="{{ route('program-studi.index') }}" class="btn btn-primary">
+                        Keluar
+                    </a>
+                @endif
             </div>
             @include('Modal.Bp.Edit')
             @include('Akreditasi.ProgramStudi.Detail')
