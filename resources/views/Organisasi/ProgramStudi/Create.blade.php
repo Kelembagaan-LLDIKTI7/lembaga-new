@@ -171,7 +171,7 @@
                                         <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
+                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
                                         @if ($errors->has('sk_dokumen'))
                                             <span class="text-danger">{{ $errors->first('sk_dokumen') }}</span>
                                         @endif

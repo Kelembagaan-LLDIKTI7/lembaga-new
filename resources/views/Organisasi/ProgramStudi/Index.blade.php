@@ -78,7 +78,7 @@
                                             accept="image/png, image/jpg, image/jpeg, image/gif"
                                             onchange="previewLogo(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
-                                            GIF.</small>
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         <img id="logo-preview" src="#" alt="Preview Logo" style="display: none;">
                                     </div>
 
@@ -156,7 +156,7 @@
                                     <label for="sk_dokumen" class="required-label">Dokumen SK</label>
                                     <input type="file" name="sk_dokumen" class="form-control" required
                                         accept=".pdf,.doc,.docx">
-                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
+                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX. Maksimal Ukuran File : 2 MB.</small>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Simpan</button>

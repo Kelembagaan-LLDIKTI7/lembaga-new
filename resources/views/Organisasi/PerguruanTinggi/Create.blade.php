@@ -172,7 +172,7 @@
                                             accept="image/png, image/jpg, image/jpeg, image/gif"
                                             onchange="previewLogo(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
-                                            GIF.</small>
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         <img id="logo-preview" src="#" alt="Preview Logo" style="display: none;">
                                         @error('organisasi_logo')
                                             <small class="text-danger">{{ $message }}</small>
@@ -257,7 +257,7 @@
                                         <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
+                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
                                         @error('sk_dokumen')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
