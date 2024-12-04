@@ -53,14 +53,14 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_tanggal">
-                                            Tanggal Terbit
+                                        <label for="pimpinan_jabatan">
+                                            Jabatan Pimpinan
                                         </label>
-                                        <input type="date" name="pimpinan_tanggal" class="form-control">
-                                        @error('pimpinan_tanggal')
+                                        <input type="text" name="pimpinan_jabatan" class="form-control">
+                                        @error('pimpinan_jabatan')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
-                                        <small class="text-danger error-message" id="error-pimpinan_tanggal"></small>
+                                        <small class="text-danger error-message" id="error-pimpinan_jabatan"></small>
                                     </div>
                                 </div>
 
@@ -75,18 +75,20 @@
                                         @enderror
                                         <small class="text-danger error-message" id="error-pimpinan_sk"></small>
                                     </div>
+
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_jabatan">
-                                            Jabatan Pimpinan
+                                        <label for="pimpinan_tanggal">
+                                            Tanggal Terbit
                                         </label>
-                                        <input type="text" name="pimpinan_jabatan" class="form-control">
-                                        @error('pimpinan_jabatan')
+                                        <input type="date" name="pimpinan_tanggal" class="form-control">
+                                        @error('pimpinan_tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
-                                        <small class="text-danger error-message" id="error-pimpinan_jabatan"></small>
+                                        <small class="text-danger error-message" id="error-pimpinan_tanggal"></small>
                                     </div>
+
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_sk_dokumen">Dokumen SK</label>
+                                        <label for="pimpinan_sk_dokumen">Dokumen Kumham dan Akta</label>
                                         <input type="file" name="pimpinan_sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx" onchange="previewFile(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.

@@ -102,7 +102,7 @@ class PimpinanBadanPenyelenggaraController extends Controller
             'pimpinan_email' => $request->pimpinan_email,
             'pimpinan_sk' => $request->pimpinan_sk,
             'pimpinan_tanggal' => $request->pimpinan_tanggal,
-            'pimpinan_jabatan' => $request->pimmpinan_jabatan,
+            'pimpinan_jabatan' => $request->pimpinan_jabatan,
             'pimpinan_sk_dokumen' => $filePath,
             'pimpinan_status' => 'Berlaku',
         ]);

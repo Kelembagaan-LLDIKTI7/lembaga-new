@@ -108,14 +108,15 @@
                                     <thead>
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>
-                                            <th colspan="3" class="text-center align-middle">Jabatan</th>
-                                            <th rowspan="2" class="text-center align-middle">SK Pimpinan</th>
+                                            <th colspan="2" class="text-center align-middle">Jabatan</th>
+                                            <th colspan="2" class="text-center align-middle">Kumham dan Akta</th>
                                             <th rowspan="2" class="text-center align-middle">Aksi</th>
                                         </tr>
                                         <tr>
                                             <th>Nama</th>
-                                            <th>Email</th>
                                             <th>Jabatan</th>
+                                            <th>No</th>
+                                            <th>Tanggal Terbit</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -128,9 +129,9 @@
                                             <tr class="{{ $isExpired ? 'table-danger' : '' }}">
                                                 <td></td>
                                                 <td>{{ $pimpinan->pimpinan_nama }}</td>
-                                                <td>{{ $pimpinan->pimpinan_email }}</td>
                                                 <td>{{ $pimpinan->pimpinan_jabatan }}</td>
                                                 <td>{{ $pimpinan->pimpinan_sk }}</td>
+                                                <td>{{ $pimpinan->pimpinan_tanggal }}</td>
                                                 <td>
                                                     <div class="d-flex align-items-center gap-2">
                                                         @can('Edit Pimpinan Badan Penyelenggara')

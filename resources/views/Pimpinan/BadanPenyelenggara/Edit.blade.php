@@ -57,33 +57,7 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_sk">
-                                            No SK Pimpinan
-                                        </label>
-                                        <input type="text" name="pimpinan_sk" class="form-control"
-                                            value="{{ $pimpinan->pimpinan_sk }}">
-                                        @error('pimpinan_sk')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                        <small class="text-danger error-message" id="error-pimpinan_sk"></small>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="pimpinan_tanggal">
-                                            Tanggal Terbit SK
-                                        </label>
-                                        <input type="date" name="pimpinan_tanggal" class="form-control"
-                                            value="{{ $pimpinan->pimpinan_tanggal }}">
-                                        @error('pimpinan_tanggal')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                        <small class="text-danger error-message" id="error-pimpinan_tanggal"></small>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label for="pimpinan_status">Status SK Pimpinan</label>
+                                        <label for="pimpinan_status">Status Kumham dan Akta</label>
                                         <select name="pimpinan_status" class=" form-control select-search">
                                             <option value="">-- Pilih Status --</option>
                                             <option value="Berlaku"
@@ -101,6 +75,9 @@
                                         @enderror
                                         <small class="text-danger error-message" id="error-pimpinan_status"></small>
                                     </div>
+                                </div>
+
+                                <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="pimpinan_jabatan">
                                             Jabatan Pimpinan
@@ -112,10 +89,34 @@
                                         @enderror
                                         <small class="text-danger error-message" id="error-pimpinan_jabatan"></small>
                                     </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="pimpinan_sk">
+                                            No Kumham dan Akta
+                                        </label>
+                                        <input type="text" name="pimpinan_sk" class="form-control"
+                                            value="{{ $pimpinan->pimpinan_sk }}">
+                                        @error('pimpinan_sk')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_sk"></small>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="pimpinan_tanggal">
+                                            Tanggal Terbit
+                                        </label>
+                                        <input type="date" name="pimpinan_tanggal" class="form-control"
+                                            value="{{ $pimpinan->pimpinan_tanggal }}">
+                                        @error('pimpinan_tanggal')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_tanggal"></small>
+                                    </div>
                                 </div>
 
                                 <div class="form-group mb-3">
-                                    <label for="pimpinan_sk_dokumen">Dokumen SK</label>
+                                    <label for="pimpinan_sk_dokumen">Dokumen Kumham dan Akta</label>
                                     <input type="file" name="pimpinan_sk_dokumen" class="form-control"
                                         accept=".pdf,.doc,.docx" onchange="previewFile(event)">
 
