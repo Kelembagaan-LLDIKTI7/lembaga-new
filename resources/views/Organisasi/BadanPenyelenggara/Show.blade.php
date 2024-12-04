@@ -108,16 +108,14 @@
                                     <thead>
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>
-                                            <th colspan="2" class="text-center align-middle">Jabatan</th>
-                                            <th colspan="3" class="text-center align-middle">SK Akreditasi</th>
+                                            <th colspan="3" class="text-center align-middle">Jabatan</th>
+                                            <th rowspan="2" class="text-center align-middle">SK Pimpinan</th>
                                             <th rowspan="2" class="text-center align-middle">Aksi</th>
                                         </tr>
                                         <tr>
                                             <th>Nama</th>
+                                            <th>Email</th>
                                             <th>Jabatan</th>
-                                            <th>No SK</th>
-                                            <th>Tanggal Terbit</th>
-                                            <th>Tanggal Berakhir</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -130,10 +128,9 @@
                                             <tr class="{{ $isExpired ? 'table-danger' : '' }}">
                                                 <td></td>
                                                 <td>{{ $pimpinan->pimpinan_nama }}</td>
-                                                <td>{{ $pimpinan->jabatan->jabatan_nama }}</td>
+                                                <td>{{ $pimpinan->pimpinan_email }}</td>
+                                                <td>{{ $pimpinan->pimpinan_jabatan }}</td>
                                                 <td>{{ $pimpinan->pimpinan_sk }}</td>
-                                                <td>{{ $pimpinan->pimpinan_tanggal }}</td>
-                                                <td>{{ $pimpinan->pimpinan_tanggal_berakhir }}</td>
                                                 <td>
                                                     <div class="d-flex align-items-center gap-2">
                                                         @can('Edit Pimpinan Badan Penyelenggara')
@@ -265,7 +262,7 @@
                                                 <td></td>
                                                 <td>{{ $bp1->perguruanTinggi->organisasi_nama }}</td>
                                                 <td>{{ $bp1->perguruanTinggi->organisasi_nama_singkat }}</td>
-                                                <td>{{ $bp1->perguruanTinggi->organisasi_kota}}</td>
+                                                <td>{{ $bp1->perguruanTinggi->organisasi_kota }}</td>
                                                 <td>{{ $bp1->status }}</td>
                                                 <td>
 
@@ -455,7 +452,7 @@
                 });
 
                 document.getElementById('editStatusForm').action =
-                `/evaluasi-organisasi/${perkaraId}/status-update`;
+                    `/evaluasi-organisasi/${perkaraId}/status-update`;
             }
         });
     </script>
@@ -467,13 +464,11 @@
                 fetch('{{ route('pimpinan-badan-penyelenggara.show', ':id') }}'.replace(":id", pimpinanId))
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('jabatan_nama').textContent = data.jabatan_nama;
+                        document.getElementById('jabatan_nama').textContent = data.pimpinan_jabatan;
                         document.getElementById('pimpinan_nama').textContent = data.pimpinan_nama;
                         document.getElementById('pimpinan_email').textContent = data.pimpinan_email;
-                        document.getElementById('pimpinan_tanggal').textContent = data.pimpinan_tanggal;
-                        document.getElementById('pimpinan_tanggal_berakhir').textContent = data
-                            .pimpinan_tanggal_berakhir;
                         document.getElementById('pimpinan_status').textContent = data.pimpinan_status;
+                        document.getElementById('pimpinan_tanggal').textContent = data.pimpinan_tanggal;
                         document.getElementById('pimpinan_sk').textContent = data.pimpinan_sk;
                         if (data.pimpinan_sk_dokumen) {
                             document.getElementById('pimpinan_sk_dokumen').value = data.pimpinan_sk_dokumen;
