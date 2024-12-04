@@ -33,11 +33,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_nama" class="required-label">
+                                        <label for="pimpinan_nama">
                                             Nama Pimpinan
                                         </label>
                                         <input type="text" name="pimpinan_nama" class="form-control"
-                                            value="{{ $pimpinan->pimpinan_nama }}" required>
+                                            value="{{ $pimpinan->pimpinan_nama }}">
                                         @error('pimpinan_nama')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -45,11 +45,11 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_email" class="required-label">
+                                        <label for="pimpinan_email">
                                             Email Pimpinan
                                         </label>
                                         <input type="email" name="pimpinan_email" class="form-control"
-                                            value="{{ $pimpinan->pimpinan_email }}" required>
+                                            value="{{ $pimpinan->pimpinan_email }}">
                                         @error('pimpinan_email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -57,19 +57,7 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_sk" class="required-label">
-                                            No SK Pimpinan
-                                        </label>
-                                        <input type="text" name="pimpinan_sk" class="form-control"
-                                            value="{{ $pimpinan->pimpinan_sk }}" required>
-                                        @error('pimpinan_sk')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                        <small class="text-danger error-message" id="error-pimpinan_sk"></small>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="pimpinan_status" class="required-label">Status SK Pimpinan</label>
+                                        <label for="pimpinan_status">Status Kumham dan Akta</label>
                                         <select name="pimpinan_status" class=" form-control select-search">
                                             <option value="">-- Pilih Status --</option>
                                             <option value="Berlaku"
@@ -91,62 +79,55 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="pimpinan_tanggal" class="required-label">
-                                            Tanggal Terbit SK
+                                        <label for="pimpinan_jabatan">
+                                            Jabatan Pimpinan
+                                        </label>
+                                        <input type="text" name="pimpinan_jabatan" class="form-control"
+                                            value="{{ $pimpinan->pimpinan_jabatan }}">
+                                        @error('pimpinan_jabatan')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_jabatan"></small>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="pimpinan_sk">
+                                            No Kumham dan Akta
+                                        </label>
+                                        <input type="text" name="pimpinan_sk" class="form-control"
+                                            value="{{ $pimpinan->pimpinan_sk }}">
+                                        @error('pimpinan_sk')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-pimpinan_sk"></small>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="pimpinan_tanggal">
+                                            Tanggal Terbit
                                         </label>
                                         <input type="date" name="pimpinan_tanggal" class="form-control"
-                                            value="{{ $pimpinan->pimpinan_tanggal }}" required>
+                                            value="{{ $pimpinan->pimpinan_tanggal }}">
                                         @error('pimpinan_tanggal')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                         <small class="text-danger error-message" id="error-pimpinan_tanggal"></small>
                                     </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="pimpinan_tanggal" class="required-label">
-                                            Tanggal Berakhir SK
-                                        </label>
-                                        <input type="date" name="pimpinan_tanggal_berakhir" class="form-control"
-                                            value="{{ $pimpinan->pimpinan_tanggal_berakhir }}" required>
-                                        @error('pimpinan_tanggal_berakhir')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                        <small class="text-danger error-message"
-                                            id="error-pimpinan_tanggal_berakhir"></small>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="id_jabatan" class="required-label">
-                                            Jabatan Pimpinan
-                                        </label>
-                                        <select name="id_jabatan" class=" form-control select-search">
-                                            <option value="">-- Pilih Peringkat --</option>
-                                            @foreach ($jabatan as $jabatan)
-                                                <option value="{{ $jabatan->id }}"
-                                                    {{ $pimpinan->id_jabatan == $jabatan->id ? 'selected' : '' }}>
-                                                    {{ $jabatan->jabatan_nama }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('id_jabatan')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                        <small class="text-danger error-message" id="error-id_jabatan"></small>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="pimpinan_sk_dokumen">Dokumen SK</label>
-                                        <input type="file" name="pimpinan_sk_dokumen" class="form-control"
-                                            accept=".pdf,.doc,.docx" onchange="previewFile(event)">
-
-                                        <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
-                                        @error('pimpinan_sk_dokumen')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                        <small class="text-danger error-message" id="error-pimpinan_sk_dokumen"></small>
-                                    </div>
                                 </div>
 
-                                <div id="file-preview" class="mt-3"></div>
+                                <div class="form-group mb-3">
+                                    <label for="pimpinan_sk_dokumen">Dokumen Kumham dan Akta</label>
+                                    <input type="file" name="pimpinan_sk_dokumen" class="form-control"
+                                        accept=".pdf,.doc,.docx" onchange="previewFile(event)">
+
+                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
+                                        DOCX. Maksimal Ukuran File : 2 MB.</small>
+                                    <div id="file-preview" class="mt-3"></div>
+                                    @error('pimpinan_sk_dokumen')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                    <small class="text-danger error-message" id="error-pimpinan_sk_dokumen"></small>
+                                </div>
 
                                 <div class="btn-center mt-3">
                                     <div id="buttons">

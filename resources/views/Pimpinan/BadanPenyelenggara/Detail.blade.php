@@ -23,16 +23,12 @@
                             <td id="pimpinan_email"></td>
                         </tr>
                         <tr>
-                            <th>Nomor SK Pimpinan</th>
+                            <th>Nomor Kumham dan Akta</th>
                             <td id="pimpinan_sk"></td>
                         </tr>
                         <tr>
-                            <th>Tanggal Terbit SK</th>
+                            <th>Tanggal Terbit</th>
                             <td id="pimpinan_tanggal"></td>
-                        </tr>
-                        <tr>
-                            <th>Tanggal Berakhir SK</th>
-                            <td id="pimpinan_tanggal_berakhir"></td>
                         </tr>
                         <tr>
                             <th>Status Pimpinan</th>
