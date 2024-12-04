@@ -2,32 +2,20 @@
 
 @section('title', 'Tambah Akreditasi Perguruan Tinggi')
 
-@section('css')
-    <style>
-        .btn-center {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-sm-custom {
-            font-size: 0.875rem;
-            padding: 0.375rem 0.75rem;
-        }
-    </style>
-@endsection
-
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('perguruan-tinggi.show', ['id' => $pt->id]) }}">
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formAkreditasiPT" action="{{ route('akreditasi-perguruan-tinggi.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $pt->id }}" class="form-control" required>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Form Tambah Akreditasi</h5>
+                            <h5 class="card-title mb-4">Form Tambah Akreditasi</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -98,7 +86,8 @@
                                         <select name="id_lembaga_akreditasi" class="form-control select-search">
                                             <option value="">-- Pilih Peringkat --</option>
                                             @foreach ($lembaga as $lembaga)
-                                                <option value="{{ $lembaga->id }}">{{ $lembaga->lembaga_nama }}</option>
+                                                <option value="{{ $lembaga->id }}">{{ $lembaga->lembaga_nama }}
+                                                </option>
                                             @endforeach
                                         </select>
                                         @error('id_lembaga_akreditasi')
@@ -112,7 +101,8 @@
                                     <label for="sk_dokumen">Dokumen SK</label>
                                     <input type="file" name="sk_dokumen" class="form-control" accept=".pdf,.doc,.docx"
                                         onchange="previewFile(event)">
-                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
+                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
+                                        DOCX.</small>
                                     <div id="file-preview" class="mt-3"></div> <!-- Tempat untuk preview -->
                                     @error('sk_dokumen')
                                         <small class="text-danger">{{ $message }}</small>
@@ -120,13 +110,11 @@
                                     <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                 </div>
 
-                                <div class="btn-center mt-3">
+                                <div>
                                     <div id="buttons">
                                         @can('View Perguruan Tinggi')
-                                            <a href="{{ route('perguruan-tinggi.show', ['id' => $pt->id]) }}"
-                                                class="btn btn-primary btn-sm-custom">Keluar</a>
                                         @endCan
-                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

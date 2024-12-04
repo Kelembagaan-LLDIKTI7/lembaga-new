@@ -2,19 +2,18 @@
 
 @section('title', 'Tambah Akta')
 
-@section('css')
-
-@endsection
-
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.show', ['id' => $bp->id]) }}"> <i class="fas fa-arrow-left mb-4 me-2"></i>
+            Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formAkta" action="{{ route('akta-badan-penyelenggara.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $bp->id }}" class="form-control" required>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
                             <h5 class="card-title">Form Tambah Akta</h5>
                             <div class="row">
@@ -113,15 +112,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
-
-                                </div>
-
-                                <div class="btn-center mt-3">
+                                <div class="mt-3">
                                     <div id="buttons">
-                                        <a href="{{ route('badan-penyelenggara.show', ['id' => $bp->id]) }}"
-                                            class="btn btn-primary btn-sm-custom">Keluar</a>
-                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

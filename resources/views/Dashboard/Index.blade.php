@@ -4,10 +4,6 @@
 
 @section('css')
     <style>
-        .card {
-            min-height: 180px;
-        }
-
         .card-body h5 {
             font-size: 1.1rem;
             font-weight: 600;
@@ -16,79 +12,87 @@
         .card-body h3 {
             font-size: 2rem;
             margin: 0;
+            margin-bottom: 0.2rem;
+        }
+
+        .border {
+            border: 1px solid rgba(128, 128, 128, 0.1);
+        }
+
+        .card-body p {
+            margin: 0;
+        }
+
+        canvas {
+            height: 16rem !important;
+        }
+
+        .title {
+            background: url('/dist/images/title_bg.svg') no-repeat bottom right;
+            background-size: 100%;
+            border-radius: 15px;
+            font-size: 28px;
+            padding: 30px;
+            font-weight: 600;
+            width: 100%;
+            height: 17vh;
+            display: flex;
+            align-items: center;
+            color: white;
         }
     </style>
 @endsection
 
 @section('content')
     <div class="container-fluid">
-        <h4 class="mb-4">Dashboard</h4>
-        <div class="row">
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-university fa-3x text-primary"></i>
-                        </div>
-                        <div>
-                            <h5>Perguruan Tinggi</h5>
-                            <h3>{{ $perguruanTinggi }}</h3>
-                            <p class="text-muted">Jumlah perguruan tinggi di wilayah 7</p>
-                        </div>
+        <h4 class="title mb-4">Dashboard</h4>
+        <div class="row g-2">
+
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-primary" style="--bs-border-opacity: .12; border-width: 3px;">
+                    <div class="card-body">
+                        <h5>Perguruan Tinggi</h5>
+                        <h3>{{ $perguruanTinggi }}</h3>
+                        <p class="text-muted">Jumlah PT di wilayah 7</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-graduation-cap fa-3x text-success"></i>
-                        </div>
-                        <div>
-                            <h5>Program Studi</h5>
-                            <h3>{{ $programStudi }}</h3>
-                            <p class="text-muted">Jumlah program studi di wilayah 7</p>
-                        </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-warning" style="--bs-border-opacity: .12; border-width: 3px;">
+                    <div class="card-body">
+                        <h5>Program Studi</h5>
+                        <h3>{{ $programStudi }}</h3>
+                        <p class="text-muted">Jumlah prodi di wilayah 7</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-building fa-3x text-warning"></i>
-                        </div>
-                        <div>
-                            <h5>Bentuk Perguruan Tinggi</h5>
-                            <h3>{{ $bentukPt }}</h3>
-                            <p class="text-muted">Jumlah bentuk perguruan tinggi di wilayah 7</p>
-                        </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-secondary" style="--bs-border-opacity: .12; border-width: 3px;">
+                    <div class="card-body">
+                        <h5>Bentuk Perguruan Tinggi</h5>
+                        <h3>{{ $bentukPt }}</h3>
+                        <p class="text-muted">Jumlah bentuk PT di wilayah 7</p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3 col-sm-6 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="fas fa-map-marker-alt fa-3x text-orange"></i>
-                        </div>
-                        <div>
-                            <h5>Wilayah</h5>
-                            <h3>{{ $kota }}</h3>
-                            <p class="text-muted">Jumlah kota/kabupaten di wilayah 7</p>
-                        </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-success" style="--bs-border-opacity: .12; border-width: 3px;">
+                    <div class="card-body">
+                        <h5>Wilayah</h5>
+                        <h3>{{ $kota }}</h3>
+                        <p class="text-muted">Jumlah kabupaten di wilayah 7</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-4">
+        <div class="row g-2">
 
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
+            <div class="col-md-4">
+                <div class="card shadow-sm border">
                     <div class="card-body">
                         <h5>Grafik Perguruan Tinggi</h5>
                         <p>Jumlah Berdasarkan Bentuk Lembaga</p>
@@ -97,8 +101,8 @@
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
+            <div class="col-md-4">
+                <div class="card shadow-sm border">
                     <div class="card-body">
                         <h5>Grafik Program Studi</h5>
                         <p>Jumlah Berdasarkan Bentuk Lembaga</p>
@@ -107,8 +111,8 @@
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
-                <div class="card shadow-sm">
+            <div class="col-md-4">
+                <div class="card shadow-sm border">
                     <div class="card-body">
                         <h5>Grafik Program Studi</h5>
                         <p>Jumlah Berdasarkan Program Pendidikan</p>
@@ -120,10 +124,10 @@
         <section class="datatables">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card border">
                         <div class="card-body">
                             <div class="mb-2">
-                                <h5 class="mb-0">Evaluasi</h5>
+                                <h5 class="mb-4 card-title">Evaluasi</h5>
                             </div>
 
                             <div class="table-responsive mt-2">
@@ -138,7 +142,7 @@
                                             <th>Tanggal Kejadian</th>
                                             <th>Status</th>
                                             @can('View Detail Perkara')
-                                            <th>Aksi</th>
+                                                <th>Aksi</th>
                                             @endCan
                                         </tr>
                                     </thead>
@@ -153,12 +157,12 @@
                                                 </td>
                                                 <td>{{ $perkara->status }}</td>
                                                 @can('View Detail Perkara')
-                                                <td>
-                                                    <a href="{{ route('dashboard.show', $perkara->id) }}"
-                                                        class="btn btn-sm btn-primary me-2">
-                                                        <i class="ti ti-info-circle"></i>
-                                                    </a>
-                                                </td>
+                                                    <td>
+                                                        <a href="{{ route('dashboard.show', $perkara->id) }}"
+                                                            class="btn btn-sm btn-primary me-2">
+                                                            Detail
+                                                        </a>
+                                                    </td>
                                                 @endCan
                                             </tr>
                                         @endforeach
@@ -193,6 +197,7 @@
     <script>
         const baseOptions = {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: true,

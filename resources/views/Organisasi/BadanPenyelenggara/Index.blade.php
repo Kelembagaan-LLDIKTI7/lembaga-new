@@ -4,27 +4,24 @@
 
 @section('content')
     <div class="container-fluid">
+        <h4 class="mb-4 title">Badan Penyelenggara</h4>
+        <div class="mb-3 d-flex justify-content-end">
+            @can('Import Badan Penyelenggara')
+                <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#importExcel">
+                    <i class="fas fa-file-import me-2"></i> Import Excel
+                </button>
+            @endCan
+            @can('Create Badan Penyelenggara')
+                <a href="{{ route('badan-penyelenggara.create') }}" class="btn btn-primary">
+                    Tambah Badan Penyelenggara
+                </a>
+            @endCan
+        </div>
         <section class="datatables">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
-                                <h5 class="mb-0">Badan Penyelenggara</h5>
-                            </div>
-                            <div class="mb-2">
-                                @can('Import Badan Penyelenggara')
-                                    <button class="btn btn-success btn-sm me-2" data-bs-toggle="modal"
-                                        data-bs-target="#importExcel">
-                                        Import Excel
-                                    </button>
-                                @endCan
-                                @can('Create Badan Penyelenggara')
-                                    <a href="{{ route('badan-penyelenggara.create') }}" class="btn btn-primary btn-sm">
-                                        Tambah Badan Penyelenggara
-                                    </a>
-                                @endCan
-                            </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="dom_jq_event"
                                     class="table-striped table-bordered display text-nowrap table border"
@@ -54,8 +51,7 @@
                                                 <td>
                                                     @can('Detail Badan Penyelenggara')
                                                         <a href="{{ route('badan-penyelenggara.show', $badanPenyelenggara->id) }}"
-                                                            class="btn btn-sm btn-primary me-2">
-                                                            <i class="ti ti-info-circle"></i>
+                                                            class="btn btn-sm btn-primary me-2"> Detail
                                                         </a>
                                                     @endcan
                                                 </td>

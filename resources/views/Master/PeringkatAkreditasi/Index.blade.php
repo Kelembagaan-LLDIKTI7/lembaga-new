@@ -69,26 +69,49 @@
             z-index: 10;
             transform: translate(50%, -50%);
         }
+
+        .title {
+            background: url('/dist/images/title_bg.svg') no-repeat bottom right;
+            background-size: 100%;
+            border-radius: 15px;
+            font-size: 28px;
+            padding: 30px;
+            font-weight: 600;
+            width: 100%;
+            height: 17vh;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .card {
+            border: 1px solid rgba(128, 128, 128, 0.1);
+        }
+
+        .modal-dialog {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
     </style>
 @endsection
 
 @section('content')
     <div class="container-fluid">
+        <h4 class="title mb-4">Peringkat Akreditasi</h4>
+        <div class="d-flex justify-content-end align-items-center mb-3">
+            @can('Create Peringkat Akreditasi')
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createPeringkatModal">
+                    Tambah Peringkat
+                </button>
+            @endCan
+        </div>
         <section class="datatables">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h5 class="mb-0">Peringkat Akreditasi</h5>
-                                @can('Create Peringkat Akreditasi')
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#createPeringkatModal">
-                                        Tambah Peringkat
-                                    </button>
-                                @endCan
-                            </div>
-
                             <div class="modal fade" id="createPeringkatModal" tabindex="-1"
                                 aria-labelledby="createPeringkatModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -122,16 +145,17 @@
                                                         style="position: relative; display: none;">
                                                         <img id="logo_preview" src="" alt="Preview Logo"
                                                             style="max-height: 150px; border: 1px solid #ddd;">
-                                                        <button type="button" id="remove_preview" onclick="removePreview()"
-                                                            style="position: absolute; top: 0; right: 0; background: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                                            &times;
-                                                        </button>
                                                     </div>
                                                 </div>
 
-                                                <button type="submit" id="submit_button" class="btn btn-primary">
-                                                    Simpan
-                                                </button>
+                                                <div class="button-container">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                                        Batal
+                                                    </button>
+                                                    <button type="submit" id="submit_button" class="btn btn-primary">
+                                                        Simpan
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -198,7 +222,8 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="editLembagaModalLabel">Edit Peringkat Akreditasi</h5>
+                                            <h5 class="modal-title" id="editLembagaModalLabel">Edit Peringkat Akreditasi
+                                            </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -215,7 +240,8 @@
                                                         name="peringkat_nama" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="edit_peringkat_status" class="required-label">Status</label>
+                                                    <label for="edit_peringkat_status"
+                                                        class="required-label">Status</label>
                                                     <select class="form-select" id="edit_peringkat_status"
                                                         name="peringkat_status" required>
                                                         <option value="Aktif">Aktif</option>
@@ -233,16 +259,18 @@
                                                         style="position: relative; display: none;">
                                                         <img id="edit_logo_preview" src="" alt="Preview Logo"
                                                             style="max-height: 150px; border: 1px solid #ddd;">
-                                                        <button type="button" id="remove_edit_preview"
-                                                            onclick="removeEditPreview()"
-                                                            style="position: absolute; top: 0; right: 0; background: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                                            &times;
-                                                        </button>
                                                     </div>
                                                     <span class="d-block mt-2" id="current_logo_info"></span>
                                                 </div>
-                                                <button type="submit" id="edit_submit_button"
-                                                    class="btn btn-warning">Simpan Perubahan</button>
+                                                <div class="button-container">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                                        Batal
+                                                    </button>
+                                                    <button type="submit" id="edit_submit_button"
+                                                        class="btn btn-primary">
+                                                        Simpan Perubahan
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -255,8 +283,8 @@
                                     <div class="modal-content">
                                         <div class="modal-header text-white">
                                             <h5 class="modal-title" id="deleteLembagaModalLabel">Konfirmasi Hapus</h5>
-                                            <button type="button" class="btn-close btn-close-white"
-                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <p>Apakah Anda yakin ingin menghapus peringkat <strong
@@ -264,13 +292,13 @@
                                                 dibatalkan.</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Batal</button>
                                             <form id="deleteLembagaForm" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">Hapus</button>
                                             </form>
+                                            <button type="button" class="btn btn-light"
+                                                data-bs-dismiss="modal">Batal</button>
                                         </div>
                                     </div>
                                 </div>
@@ -401,16 +429,6 @@
                 reader.readAsDataURL(file);
             }
         }
-
-        function removeEditPreview() {
-            const input = document.getElementById('edit_lembaga_logo');
-            const previewContainer = document.getElementById('edit_preview_container');
-            const preview = document.getElementById('edit_logo_preview');
-
-            input.value = '';
-            preview.src = '';
-            previewContainer.style.display = 'none';
-        }
     </script>
 
     <script>
@@ -429,28 +447,28 @@
             });
         });
     </script>
-        <script>
-            $(document).ready(function() {
-                if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
-                    $('#dom_jq_event').DataTable().destroy();
-                }
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
+                $('#dom_jq_event').DataTable().destroy();
+            }
 
-                $('#dom_jq_event').DataTable({
-                    "columnDefs": [{
-                        "targets": 0,
-                        "orderable": false,
-                        "searchable": false,
-                    }],
-                    "drawCallback": function(settings) {
-                        var api = this.api();
-                        api.column(0, {
-                            search: 'applied',
-                            order: 'applied'
-                        }).nodes().each(function(cell, i) {
-                            cell.innerHTML = i + 1;
-                        });
-                    }
-                });
+            $('#dom_jq_event').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
             });
-        </script>
+        });
+    </script>
 @endsection

@@ -42,19 +42,19 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('perguruan-tinggi.index') }}"><i class="fas fa-arrow-left mb-4 me-2"></i> Kembali</a>
         <div class="row">
             <div class="col-12">
                 <form id="formPT" action="{{ route('perguruan-tinggi.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Tambah Perguruan Tinggi</h5>
-
+                            <h5 class="card-title mb-4">Tambah Perguruan Tinggi</h5>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="col-md-4">
-                                        <label for="validationCustom01" class="form-label">Kode Perguruan Tinggi</label>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom01">Kode Perguruan Tinggi</label>
                                         <div class="organisasi-kode-input-group" id="organisasi-kode-input-group">
                                             <input type="text" class="form-control" id="organisasi_kode"
                                                 name="organisasi_kode" required>
@@ -82,7 +82,7 @@
                                         <small class="text-danger error-message" id="error-organisasi_nama_singkat"></small>
                                     </div>
 
-                                    <div class="form-group mb-3">
+                                    <div class="form-group" style="margin-bottom: 40px">
                                         <label for="organisasi_email" class="required-label">Email Perguruan Tinggi</label>
                                         <input type="email" name="organisasi_email" class="form-control" required>
                                         @error('organisasi_email')
@@ -151,7 +151,8 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_bentuk_pt" class="required-label">Bentuk Perguruan Tinggi</label>
+                                        <label for="organisasi_bentuk_pt" class="required-label">Bentuk Perguruan
+                                            Tinggi</label>
                                         <select name="organisasi_bentuk_pt" class="form-control select-search" required>
                                             <option value="">-- Pilih Bentuk PT --</option>
                                             @foreach ($bentukPt as $pt)
@@ -213,9 +214,9 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Data Surat Keputusan</h5>
+                            <h5 class="card-title mb-4">Data Surat Keputusan</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -266,9 +267,7 @@
                                         <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                     </div>
                                     <div id="buttons">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                        <a href="{{ route('perguruan-tinggi.index') }}" type="submit"
-                                            class="btn btn-primary">Keluar</a>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <button type="button" class="btn btn-primary" disabled>

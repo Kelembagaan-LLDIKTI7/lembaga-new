@@ -4,16 +4,6 @@
 
 @section('css')
     <style>
-        .form-container {
-            display: flex;
-        }
-
-        .form-left,
-        .form-right {
-            flex-basis: 50%;
-            padding: 0 10px;
-        }
-
         .image-preview {
             position: relative;
             display: inline-block;
@@ -46,77 +36,77 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"><i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
-                <h3>Tambah Evaluasi Prodi</h3>
-                <form id="formPerkaraProdi" action="{{ route('perkara-prodi.store') }}" method="POST" enctype="multipart/form-data">
+                <form id="formPerkaraProdi" action="{{ route('perkara-prodi.store') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
 
-                    <div class="form-container">
-                        <div class="form-left">
-                            <div class="mb-3">
-                                <label for="title">Judul Evaluasi</label>
-                                <input type="text" name="title" id="title" class="form-control" required
-                                    value="{{ old('title') }}">
-                                @error('title')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                                <small class="text-danger error-message" id="error-nomor"></small>
+                    <div class="card bordered">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Tambah Evaluasi Program Studi</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="title">Judul Evaluasi</label>
+                                        <input type="text" name="title" id="title" class="form-control" required
+                                            value="{{ old('title') }}">
+                                        @error('title')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-nomor"></small>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="tanggal_kejadian">Tanggal Kejadian</label>
+                                        <input type="date" name="tanggal_kejadian" id="tanggal_kejadian"
+                                            class="form-control" required value="{{ old('tanggal_kejadian') }}">
+                                        @error('tanggal_kejadian')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-tanggal_kejadian"></small>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="deskripsi_kejadian">Deskripsi Kejadian</label>
+                                        <textarea name="deskripsi_kejadian" id="deskripsi_kejadian" class="form-control" required>{{ old('deskripsi_kejadian') }}</textarea>
+                                        @error('deskripsi_kejadian')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-deskripsi_kejadian"></small>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="no_perkara">Nomor Perkara</label>
+                                        <input type="text" name="no_perkara" id="no_perkara" class="form-control"
+                                            required value="{{ old('no_perkara') }}">
+                                        @error('no_perkara')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="bukti_foto">Bukti Foto</label>
+                                        <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control"
+                                            multiple accept="image/*">
+                                        @error('bukti_foto.*')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-bukti_foto"></small>
+                                    </div>
+                                    <div id="preview" class="preview-container"></div>
+                                </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="tanggal_kejadian">Tanggal Kejadian</label>
-                                <input type="date" name="tanggal_kejadian" id="tanggal_kejadian" class="form-control"
-                                    required value="{{ old('tanggal_kejadian') }}">
-                                @error('tanggal_kejadian')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                                <small class="text-danger error-message" id="error-tanggal_kejadian"></small>
+                            <div>
+                                <button type="submit" class="btn btn-primary float-end">Simpan</button>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="deskripsi_kejadian">Deskripsi Kejadian</label>
-                                <textarea name="deskripsi_kejadian" id="deskripsi_kejadian" class="form-control" required>{{ old('deskripsi_kejadian') }}</textarea>
-                                @error('deskripsi_kejadian')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                                <small class="text-danger error-message" id="error-deskripsi_kejadian"></small>
-                            </div>
-                        </div>
-
-                        <div class="form-right">
-                        <div class="mb-3">
-                                <label for="no_perkara">Nomor Perkara</label>
-                                <input type="text" name="no_perkara" id="no_perkara" class="form-control" required
-                                    value="{{ old('no_perkara') }}">
-                                @error('no_perkara')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="bukti_foto">Bukti Foto</label>
-                                <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control" multiple
-                                    accept="image/*">
-                                @error('bukti_foto.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                                <small class="text-danger error-message" id="error-bukti_foto"></small>
-                            </div>
-                            <div id="preview" class="preview-container"></div>
+                            <div id="error-messages" class="text-danger"></div>
                         </div>
                     </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-secondary"
-                                onclick="window.history.back();">Keluar</button>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </div>
-                    <div id="error-messages" class="text-danger"></div>
                 </form>
             </div>
         </div>
@@ -124,78 +114,78 @@
 @endsection
 
 @section('js')
-<script>
-    $(document).ready(function() {
-        $('#loading').hide();
-        $('#formPerkaraProdi').on('submit', function(event) {
-            event.preventDefault(); // Menghentikan submit default form
+    <script>
+        $(document).ready(function() {
+            $('#loading').hide();
+            $('#formPerkaraProdi').on('submit', function(event) {
+                event.preventDefault(); // Menghentikan submit default form
 
-            $('#buttons').hide();
-            $('#loading').show();
+                $('#buttons').hide();
+                $('#loading').show();
 
-            // Mengambil data form
-            const formData = new FormData(this);
+                // Mengambil data form
+                const formData = new FormData(this);
 
-            // AJAX request ke server untuk validasi
-            $.ajax({
-                url: '{{ route('perkara-prodi.validationStore') }}',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    if (response.success) {
-                        submitToStore(formData);
-                    } else {
+                // AJAX request ke server untuk validasi
+                $.ajax({
+                    url: '{{ route('perkara-prodi.validationStore') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            submitToStore(formData);
+                        } else {
+                            $('#loading').hide();
+                            $('#buttons').show();
+                            displayErrors(response.errors);
+                        }
+                    },
+                    error: function(xhr) {
                         $('#loading').hide();
                         $('#buttons').show();
-                        displayErrors(response.errors);
+                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
                     }
-                },
-                error: function(xhr) {
-                    $('#loading').hide();
-                    $('#buttons').show();
-                    $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
-                }
+                });
             });
-        });
 
-        function displayErrors(errors) {
-            // Bersihkan semua pesan error sebelumnya
-            $('.error-message').text('');
+            function displayErrors(errors) {
+                // Bersihkan semua pesan error sebelumnya
+                $('.error-message').text('');
 
-            // Tampilkan pesan error baru
-            for (let field in errors) {
-                const errorMessages = errors[field].join(
-                    ', '); // Gabungkan pesan error jika ada lebih dari satu
-                $(`#error-${field}`).text(
-                    errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                // Tampilkan pesan error baru
+                for (let field in errors) {
+                    const errorMessages = errors[field].join(
+                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                    $(`#error-${field}`).text(
+                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                }
             }
-        }
 
-        function submitToStore(formData) {
-            $.ajax({
-                url: '{{ route('perkara-prodi.store') }}',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    if (response.success) {
-                        window.location.href = response.redirect_url;
+            function submitToStore(formData) {
+                $.ajax({
+                    url: '{{ route('perkara-prodi.store') }}',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.redirect_url;
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        $('#buttons').show();
+                        $('#error-messages').html(
+                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
                     }
-                },
-                error: function(xhr) {
-                    $('#loading').hide();
-                    $('#buttons').show();
-                    $('#error-messages').html(
-                        'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.');
-                }
-            });
-        }
+                });
+            }
 
-    });
-</script>
+        });
+    </script>
     <script>
         let selectedFiles = [];
 

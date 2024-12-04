@@ -2,13 +2,32 @@
 
 @section('title', 'Detail Badan Penyelenggara')
 
+@section('css')
+    <style>
+        #custom-padding th,
+        #custom-padding td {
+            padding: 10px 0 !important;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.index') }}">
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
-            <div class="card">
+            <div class="card bordered">
                 <div class="card-body">
-                    <h5 class="card-title"></h5>
-                    <table class="table-borderless table">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="card-title">Detail Badan Penyelenggara</h5>
+                        @can('Edit Badan Penyelenggara')
+                            <a href="{{ route('badan-penyelenggara.edit', $badanPenyelenggaras->id) }}" class="btn btn-primary">
+                                <i class="fas fa-edit me-2"></i> Edit
+                            </a>
+                        @endCan
+                    </div>
+                    <table id="custom-padding" class="table-borderless table">
                         <tr>
                             <th>Nama Badan Penyelenggara</th>
                             <td>{{ $badanPenyelenggaras->organisasi_nama ?? '-' }}</td>
@@ -30,20 +49,12 @@
                             <td>{{ $badanPenyelenggaras->organisasi_alamat }}</td>
                         </tr>
                     </table>
-
-                    <div class="d-flex justify-content-end">
-                        @can('Edit Badan Penyelenggara')
-                            <a href="{{ route('badan-penyelenggara.edit', $badanPenyelenggaras->id) }}" class="btn btn-warning">
-                                Edit
-                            </a>
-                        @endCan
-                    </div>
                 </div>
             </div>
 
             @if ($badanPenyelenggaras->referensi->isNotEmpty())
                 @foreach ($badanPenyelenggaras->referensi as $ref)
-                    <div class="card mt-4">
+                    <div class="card mt-4 bordered">
                         <div class="card-body">
                             <h5 class="card-title">Badan Penyelenggara Telah Dipindah Bentuk Ke</h5>
                             <table class="table-borderless table">
@@ -91,20 +102,20 @@
 
             @can('View Pimpinan Badan Penyelenggara')
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="d-flex justify-content-between mb-2">
                                 <h5 class="mb-0">Pimpinan Badan Penyelenggara Yang dimiliki</h5>
+                                @can('Create Pimpinan Badan Penyelenggara')
+                                    <a href="{{ route('pimpinan-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                        class="btn btn-primary">
+                                        Tambah Pimpinan BP
+                                    </a>
+                                @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="pimpinan_table" class="table-striped table-bordered display text-nowrap table border"
                                     style="overflow-x: auto; overflow-y: hidden;">
-                                    @can('Create Pimpinan Badan Penyelenggara')
-                                        <a href="{{ route('pimpinan-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah Pimpinan BP
-                                        </a>
-                                    @endCan
                                     <thead>
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>
@@ -138,12 +149,12 @@
                                                     <div class="d-flex align-items-center gap-2">
                                                         @can('Edit Pimpinan Badan Penyelenggara')
                                                             <a href="{{ route('pimpinan-badan-penyelenggara.edit', ['id' => $pimpinan->id]) }}"
-                                                                class="btn btn-sm btn-success">
+                                                                class="btn btn-sm btn-warning">
                                                                 <i class="ri-edit-2-line"></i> Edit
                                                             </a>
                                                         @endcan
                                                         @can('Detail Pimpinan Badan Penyelenggara')
-                                                            <button class="btn btn-info btn-sm pimpinan-detail"
+                                                            <button class="btn btn-primary btn-sm pimpinan-detail"
                                                                 data-bs-toggle="modal" data-bs-target="#detailRecordModalPimpinan"
                                                                 data-id="{{ $pimpinan->id }}">
                                                                 Detail
@@ -163,20 +174,20 @@
 
             @can('View SK Badan Penyelenggara')
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="d-flex justify-content-between mb-2">
                                 <h5 class="mb-0">SKBP</h5>
+                                @can('Create SK Badan Penyelenggara')
+                                    <a href="{{ route('skbp-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                        class="btn btn-primary">
+                                        Tambah SKBP
+                                    </a>
+                                @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="skbp" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
-                                    @can('Create SK Badan Penyelenggara')
-                                        <a href="{{ route('skbp-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah SKBP
-                                        </a>
-                                    @endCan
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -204,10 +215,10 @@
                                                         @endif
                                                     @endCan
                                                 </td>
-                                                <td>
+                                                <td style="width: 10%">
                                                     @can('Edit SK Badan Penyelenggara')
                                                         <a href="{{ route('skbp-badan-penyelenggara.edit', $sk->id) }}"
-                                                            class="btn btn-info btn-sm">
+                                                            class="btn btn-warning btn-sm">
                                                             Edit
                                                         </a>
                                                     @endCan
@@ -224,9 +235,9 @@
 
             @can('View Perguruan Tinggi')
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="mb-4">
                                 <h5 class="mb-0">Perguruan Tinggi Yang Dimiliki</h5>
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
@@ -255,7 +266,7 @@
                                                         @if ($bp->tampil == 1)
                                                             <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
                                                                 class="btn btn-sm btn-primary me-2">
-                                                                <i class="ti ti-info-circle"></i>
+                                                                Detail
                                                             </a>
                                                         @endif
                                                     @endcan
@@ -272,20 +283,20 @@
 
             @can('View Akta Badan Penyelenggara')
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="d-flex justify-content-between mb-2">
                                 <h5 class="mb-0">Akta Yang Dimiliki</h5>
+                                @can('Create Akta Badan Penyelenggara')
+                                    <a href="{{ route('akta-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
+                                        class="btn btn-primary">
+                                        Tambah Akta
+                                    </a>
+                                @endcan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
-                                    @can('Create Akta Badan Penyelenggara')
-                                        <a href="{{ route('akta-badan-penyelenggara.create', $badanPenyelenggaras->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah Akta
-                                        </a>
-                                    @endcan
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -308,29 +319,30 @@
                                                     @can('Edit Akta Badan Penyelenggara')
                                                         <div class="edit">
                                                             <a href="{{ route('akta-badan-penyelenggara.edit', $akta->id) }}"
-                                                                class="btn btn-sm btn-success mb-2">Edit</a>
+                                                                class="btn btn-sm btn-warning mb-2">Edit</a>
                                                         </div>
                                                     @endCan
                                                     @can('Create SK Kumham Badan Penyelenggara')
                                                         @if ($akta->skKumham)
                                                             <div class="kumham">
                                                                 <a href="{{ route('sk-kumham.edit', $akta->id) }}"
-                                                                    class="btn btn-sm btn-warning mb-2">
+                                                                    class="btn btn-sm btn-success mb-2">
                                                                     SK Kumham
                                                                 </a>
                                                             </div>
                                                         @else
                                                             <div class="kumham">
                                                                 <a href="{{ route('sk-kumham.create', $akta->id) }}"
-                                                                    class="btn btn-sm btn-warning mb-2">
+                                                                    class="btn btn-sm btn-success mb-2">
                                                                     SK Kumham
                                                                 </a>
                                                             </div>
                                                         @endif
                                                     @endCan
                                                     @can('Detail Akta Badan Penyelenggara')
-                                                        <button class="btn btn-info btn-sm akta-detail mb-2" data-bs-toggle="modal"
-                                                            data-bs-target="#detailRecordModalAkta" data-id="{{ $akta->id }}">
+                                                        <button class="btn btn-primary btn-sm akta-detail mb-2"
+                                                            data-bs-toggle="modal" data-bs-target="#detailRecordModalAkta"
+                                                            data-id="{{ $akta->id }}">
                                                             Detail
                                                         </button>
                                                     @endcan
@@ -346,20 +358,20 @@
             @endCan
 
             <section class="datatables">
-                <div class="card">
+                <div class="card bordered">
                     <div class="card-body">
-                        <div class="mb-2">
+                        <div class="d-flex justify-content-between mb-2">
                             <h5 class="mb-0">Evaluasi</h5>
+                            @can('Create Perkara Badan Penyelenggara')
+                                <a href="{{ route('perkara-organisasi.create', $badanPenyelenggaras->id) }}"
+                                    class="btn btn-primary">
+                                    Tambah Evaluasi
+                                </a>
+                            @endCan
                         </div>
                         <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                             <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
-                                @can('Create Perkara Badan Penyelenggara')
-                                    <a href="{{ route('perkara-organisasi.create', $badanPenyelenggaras->id) }}"
-                                        class="btn btn-primary btn-sm mb-2">
-                                        Tambah Evaluasi
-                                    </a>
-                                @endCan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -380,19 +392,19 @@
                                                 {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
                                             </td>
                                             <td>{{ $perkara->status }}</td>
-                                            <td>
-                                                @can('View Detail Perkara Badan Penyelenggara')
-                                                    <a href="{{ route('perkara-organisasi.show', $perkara->id) }}"
-                                                        class="btn btn-sm btn-primary me-2">
-                                                        <i class="ti ti-info-circle"></i>
-                                                    </a>
-                                                @endCan
+                                            <td style="width: 15%">
                                                 @can('Update Status Perkara Badan Penyelenggara')
                                                     <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
                                                         data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
                                                         data-status="{{ $perkara->status }}">
-                                                        Edit Status
+                                                        Edit
                                                     </button>
+                                                @endCan
+                                                @can('View Detail Perkara Badan Penyelenggara')
+                                                    <a href="{{ route('perkara-organisasi.show', $perkara->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        Detail
+                                                    </a>
                                                 @endCan
                                             </td>
                                         </tr>
@@ -402,9 +414,6 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('badan-penyelenggara.index') }}" class="btn btn-sm btn-primary float-end me-2 mt-3">
-                    Kembali
-                </a>
             </section>
         </div>
 

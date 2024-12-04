@@ -2,23 +2,10 @@
 
 @section('title', 'Tambah Akreditasi Program Studi')
 
-@section('css')
-    <style>
-        .btn-center {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-sm-custom {
-            font-size: 0.875rem;
-            padding: 0.375rem 0.75rem;
-        }
-    </style>
-@endsection
-
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"><i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formAkreditasiProdi" action="{{ route('akreditasi-program-studi.store') }}" method="POST"
@@ -27,9 +14,9 @@
                     <input type="hidden" name="id_prodi" value="{{ $prodi->id }}" class="form-control" required>
                     <input type="hidden" name="id_organization" value="{{ $prodi->perguruanTinggi->id }}"
                         class="form-control" required>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Form Tambah Akreditasi</h5>
+                            <h5 class="card-title mb-4">Form Tambah Akreditasi</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -122,10 +109,8 @@
                                     <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                 </div>
 
-                                <div class="btn-center mt-3">
-                                    <a href="{{ route('perguruan-tinggi.index') }}"
-                                        class="btn btn-primary btn-sm-custom">Keluar</a>
-                                    <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                <div>
+                                    <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                 </div>
                             </div>
                         </div>

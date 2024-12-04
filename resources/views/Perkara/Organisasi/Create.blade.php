@@ -4,16 +4,6 @@
 
 @section('css')
     <style>
-        .form-container {
-            display: flex;
-        }
-
-        .form-left,
-        .form-right {
-            flex-basis: 50%;
-            padding: 0 10px;
-        }
-
         .image-preview {
             position: relative;
             display: inline-block;
@@ -46,69 +36,68 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.show', ['id' => $organisasi->id]) }}"> <i
+                class="fas fa-arrow-left mb-4 me-2"></i>
+            Kembali
+        </a>
         <div class="row">
             <div class="col-12">
-                <h3>Tambah Evaluasi Badan Penyelenggara</h3>
                 <form action="{{ route('perkara-organisasi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $organisasi->id }}" class="form-control" required>
+                    <div class="card bordered">
+                        <div class="card-body">
+                            <h5 class="card-title">Tambah Evaluasi Badan Penyelenggara</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="title">Judul Evaluasi</label>
+                                        <input type="text" name="title" id="title" class="form-control" required
+                                            value="{{ old('title') }}">
+                                        @error('title')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="tanggal_kejadian">Tanggal Kejadian</label>
+                                        <input type="date" name="tanggal_kejadian" id="tanggal_kejadian"
+                                            class="form-control" required value="{{ old('tanggal_kejadian') }}">
+                                        @error('tanggal_kejadian')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
-                    <div class="form-container">
-                        <div class="form-left">
-                            <div class="mb-3">
-                                <label for="title">Judul Evaluasi</label>
-                                <input type="text" name="title" id="title" class="form-control" required
-                                    value="{{ old('title') }}">
-                                @error('title')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
-                                <label for="tanggal_kejadian">Tanggal Kejadian</label>
-                                <input type="date" name="tanggal_kejadian" id="tanggal_kejadian" class="form-control"
-                                    required value="{{ old('tanggal_kejadian') }}">
-                                @error('tanggal_kejadian')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                    <div class="form-group mb-3">
+                                        <label for="deskripsi_kejadian">Deskripsi Kejadian</label>
+                                        <textarea name="deskripsi_kejadian" id="deskripsi_kejadian" class="form-control" required>{{ old('deskripsi_kejadian') }}</textarea>
+                                        @error('deskripsi_kejadian')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="deskripsi_kejadian">Deskripsi Kejadian</label>
-                                <textarea name="deskripsi_kejadian" id="deskripsi_kejadian" class="form-control" required>{{ old('deskripsi_kejadian') }}</textarea>
-                                @error('deskripsi_kejadian')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="no_perkara">Nomor Perkara</label>
+                                        <input type="text" name="no_perkara" id="no_perkara" class="form-control"
+                                            required value="{{ old('no_perkara') }}">
+                                        @error('no_perkara')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="bukti_foto">Bukti Foto</label>
+                                        <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control"
+                                            multiple accept="image/*">
+                                        @error('bukti_foto.*')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div id="preview" class="preview-container"></div>
+                                </div>
 
-                        <div class="form-right">
-                            <div class="mb-3">
-                                <label for="no_perkara">Nomor Perkara</label>
-                                <input type="text" name="no_perkara" id="no_perkara" class="form-control" required
-                                    value="{{ old('no_perkara') }}">
-                                @error('no_perkara')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
                             </div>
-                            <div class="mb-3">
-                                <label for="bukti_foto">Bukti Foto</label>
-                                <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control" multiple
-                                    accept="image/*">
-                                @error('bukti_foto.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div id="preview" class="preview-container"></div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-secondary"
-                                onclick="window.history.back();">Keluar</button>
-                        </div>
-                        <div class="col-md-6 text-right">
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary mt-3 float-end w-0">Simpan</button>
                         </div>
                     </div>
                 </form>

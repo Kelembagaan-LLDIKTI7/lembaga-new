@@ -4,52 +4,62 @@
 
 @section('content')
     <div class="container-fluid">
+        <h4 class="mb-4 title">Jabatan</h4>
+        <div class="mb-3 d-flex justify-content-end align-items-center">
+            @can('Create Jabatan')
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJabatanModal">
+                    Tambah Jabatan
+                </button>
+            @endCan
+        </div>
         <section class="datatables">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2 d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0">Jabatan</h5>
-                                @can('Create Jabatan')
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createJabatanModal">
-                                    Tambah Jabatan
-                                </button>
-                                @endCan
-                            </div>
 
                             <!-- Modal -->
-                            <div class="modal fade" id="createJabatanModal" tabindex="-1" aria-labelledby="createJabatanModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-end">
+                            <div class="modal fade" id="createJabatanModal" tabindex="-1"
+                                aria-labelledby="createJabatanModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="createJabatanModalLabel">Tambah Jabatan</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <form action="{{ route('jabatan.store') }}" method="POST">
                                                 @csrf
                                                 <div class="mb-3">
                                                     <label for="jabatan_nama" class="form-label">Nama Jabatan</label>
-                                                    <input type="text" class="form-control" id="jabatan_nama" name="jabatan_nama" required>
+                                                    <input type="text" class="form-control" id="jabatan_nama"
+                                                        name="jabatan_nama" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="bentuk_pt" class="form-label">Bentuk PT</label>
                                                     <select class="form-select" id="bentuk_pt" name="bentuk_pt" required>
-                                                        @foreach($bentuk_pts as $id => $bentuk_nama)
+                                                        @foreach ($bentuk_pts as $id => $bentuk_nama)
                                                             <option value="{{ $id }}">{{ $bentuk_nama }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="jabatan_organisasi" class="form-label">Organisasi</label>
-                                                    <select class="form-select" id="jabatan_organisasi" name="jabatan_organisasi" required>
-                                                        @foreach($organisasi_types as $id => $organisasi_nama)
-                                                            <option value="{{ $id }}">{{ $organisasi_nama }}</option>
+                                                    <select class="form-select" id="jabatan_organisasi"
+                                                        name="jabatan_organisasi" required>
+                                                        @foreach ($organisasi_types as $id => $organisasi_nama)
+                                                            <option value="{{ $id }}">{{ $organisasi_nama }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                <div class="button-container">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                                        Batal
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -78,21 +88,23 @@
                                                 <td>{{ $bentuk_pts[$jabatan->bentuk_pt] ?? 'Unknown' }}</td>
                                                 <td>
                                                     @can('Edit Jabatan')
-                                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editJabatanModal"
-                                                        data-id="{{ $jabatan->id }}"
-                                                        data-nama="{{ $jabatan->jabatan_nama }}"
-                                                        data-bentuk="{{ $jabatan->bentuk_pt }}"
-                                                        data-organisasi="{{ $jabatan->jabatan_organisasi }}">
-                                                        Edit
-                                                    </button>
+                                                        <button type="button" class="btn btn-warning btn-sm"
+                                                            data-bs-toggle="modal" data-bs-target="#editJabatanModal"
+                                                            data-id="{{ $jabatan->id }}"
+                                                            data-nama="{{ $jabatan->jabatan_nama }}"
+                                                            data-bentuk="{{ $jabatan->bentuk_pt }}"
+                                                            data-organisasi="{{ $jabatan->jabatan_organisasi }}">
+                                                            Edit
+                                                        </button>
                                                     @endCan
                                                     <!-- Delete Button -->
-                                                     @can('Delete Jabatan')
-                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteJabatanModal"
-                                                        data-id="{{ $jabatan->id }}"
-                                                        data-nama="{{ $jabatan->jabatan_nama }}">
-                                                        Hapus
-                                                    </button>
+                                                    @can('Delete Jabatan')
+                                                        <button type="button" class="btn btn-danger btn-sm"
+                                                            data-bs-toggle="modal" data-bs-target="#deleteJabatanModal"
+                                                            data-id="{{ $jabatan->id }}"
+                                                            data-nama="{{ $jabatan->jabatan_nama }}">
+                                                            Hapus
+                                                        </button>
                                                     @endCan
                                                 </td>
                                             </tr>
@@ -102,12 +114,14 @@
                             </div>
 
                             <!-- Modal untuk Edit Jabatan -->
-                            <div class="modal fade" id="editJabatanModal" tabindex="-1" aria-labelledby="editJabatanModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                            <div class="modal fade" id="editJabatanModal" tabindex="-1"
+                                aria-labelledby="editJabatanModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="editJabatanModalLabel">Edit Jabatan</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <form id="editJabatanForm" action="" method="POST">
@@ -116,25 +130,36 @@
                                                 <input type="hidden" id="edit_jabatan_id" name="id">
                                                 <div class="mb-3">
                                                     <label for="edit_jabatan_nama" class="form-label">Nama Jabatan</label>
-                                                    <input type="text" class="form-control" id="edit_jabatan_nama" name="jabatan_nama" required>
+                                                    <input type="text" class="form-control" id="edit_jabatan_nama"
+                                                        name="jabatan_nama" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="edit_bentuk_pt" class="form-label">Bentuk PT</label>
-                                                    <select class="form-select" id="edit_bentuk_pt" name="bentuk_pt" required>
-                                                        @foreach($bentuk_pts as $id => $bentuk_nama)
-                                                            <option value="{{ $id }}">{{ $bentuk_nama }}</option>
+                                                    <select class="form-select" id="edit_bentuk_pt" name="bentuk_pt"
+                                                        required>
+                                                        @foreach ($bentuk_pts as $id => $bentuk_nama)
+                                                            <option value="{{ $id }}">{{ $bentuk_nama }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="edit_jabatan_organisasi" class="form-label">Organisasi</label>
-                                                    <select class="form-select" id="edit_jabatan_organisasi" name="jabatan_organisasi" required>
-                                                        @foreach($organisasi_types as $id => $organisasi_nama)
-                                                            <option value="{{ $id }}">{{ $organisasi_nama }}</option>
+                                                    <label for="edit_jabatan_organisasi"
+                                                        class="form-label">Organisasi</label>
+                                                    <select class="form-select" id="edit_jabatan_organisasi"
+                                                        name="jabatan_organisasi" required>
+                                                        @foreach ($organisasi_types as $id => $organisasi_nama)
+                                                            <option value="{{ $id }}">{{ $organisasi_nama }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary">Update</button>
+                                                <div class="button-container">
+                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                                                        Batal
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -142,23 +167,28 @@
                             </div>
 
                             <!-- Modal untuk Hapus Jabatan -->
-                            <div class="modal fade" id="deleteJabatanModal" tabindex="-1" aria-labelledby="deleteJabatanModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="deleteJabatanModal" tabindex="-1"
+                                aria-labelledby="deleteJabatanModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header text-white">
                                             <h5 class="modal-title" id="deleteJabatanModalLabel">Konfirmasi Hapus</h5>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p>Apakah Anda yakin ingin menghapus jabatan <strong id="jabatanNamaToDelete"></strong>? Tindakan ini tidak dapat dibatalkan.</p>
+                                            <p>Apakah Anda yakin ingin menghapus jabatan <strong
+                                                    id="jabatanNamaToDelete"></strong>? Tindakan ini tidak dapat
+                                                dibatalkan.</p>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                             <form id="deleteJabatanForm" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">Hapus</button>
                                             </form>
+                                            <button type="button" class="btn btn-light"
+                                                data-bs-dismiss="modal">Batal</button>
                                         </div>
                                     </div>
                                 </div>
@@ -189,7 +219,7 @@
     <!-- Tambahkan skrip JavaScript di sini -->
     <script>
         const editJabatanModal = document.getElementById('editJabatanModal');
-        editJabatanModal.addEventListener('show.bs.modal', function (event) {
+        editJabatanModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget; // Tombol yang memicu modal
             const jabatanId = button.getAttribute('data-id');
             const jabatanNama = button.getAttribute('data-nama');
@@ -205,44 +235,44 @@
             document.getElementById('edit_jabatan_organisasi').value = jabatanOrganisasi; // Mengisi organisasi
         });
     </script>
-        <script>
-            $(document).ready(function() {
-                if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
-                    $('#dom_jq_event').DataTable().destroy();
+    <script>
+        $(document).ready(function() {
+            if ($.fn.DataTable.isDataTable('#dom_jq_event')) {
+                $('#dom_jq_event').DataTable().destroy();
+            }
+
+            $('#dom_jq_event').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
                 }
-
-                $('#dom_jq_event').DataTable({
-                    "columnDefs": [{
-                        "targets": 0,
-                        "orderable": false,
-                        "searchable": false,
-                    }],
-                    "drawCallback": function(settings) {
-                        var api = this.api();
-                        api.column(0, {
-                            search: 'applied',
-                            order: 'applied'
-                        }).nodes().each(function(cell, i) {
-                            cell.innerHTML = i + 1;
-                        });
-                    }
-                });
             });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const deleteModal = document.getElementById('deleteJabatanModal');
-                const jabatanNamaToDelete = document.getElementById('jabatanNamaToDelete');
-                const deleteForm = document.getElementById('deleteJabatanForm');
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteModal = document.getElementById('deleteJabatanModal');
+            const jabatanNamaToDelete = document.getElementById('jabatanNamaToDelete');
+            const deleteForm = document.getElementById('deleteJabatanForm');
 
-                deleteModal.addEventListener('show.bs.modal', function(event) {
-                    const button = event.relatedTarget;
-                    const jabatanId = button.getAttribute('data-id');
-                    const jabatanNama = button.getAttribute('data-nama');
+            deleteModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const jabatanId = button.getAttribute('data-id');
+                const jabatanNama = button.getAttribute('data-nama');
 
-                    jabatanNamaToDelete.textContent = jabatanNama;
-                    deleteForm.action = `{{ url('jabatan') }}/${jabatanId}`;
-                });
+                jabatanNamaToDelete.textContent = jabatanNama;
+                deleteForm.action = `{{ url('jabatan') }}/${jabatanId}`;
             });
-        </script>
+        });
+    </script>
 @endsection

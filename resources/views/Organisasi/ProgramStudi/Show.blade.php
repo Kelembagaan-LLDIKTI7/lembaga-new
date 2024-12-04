@@ -2,16 +2,36 @@
 
 @section('title', 'Detail Program Studi')
 
+@section('css')
+    <style>
+        #custom-padding th,
+        #custom-padding td {
+            padding: 10px 0 !important;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('perguruan-tinggi.show', $prodi->perguruanTinggi->id) }}"> 
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
-                <div class="card">
+                <div class="card bordered">
                     <div class="card-body">
-                        <h5 class="card-title">Detail Program Studi</h5>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="card-title">Detail Program Studi</h5>
+                                <h6>Informasi Program Studi</h6>
+                            </div>
+                            <div>
+                                <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-primary"><i
+                                        class="fas fa-edit me-2"></i> Edit</a>
+                            </div>
+                        </div>
                         <div class="mb-4">
-                            <h6>Informasi Program Studi</h6>
-                            <table class="table-borderless table">
+                            <table id="custom-padding" class="table-borderless table">
                                 <tr>
                                     <th>Nama Program Studi</th>
                                     <td>{{ $prodi->prodi_nama }}</td>
@@ -21,24 +41,24 @@
                                     <td>{{ $prodi->prodi_jenjang ?? '-' }}</td>
                                 </tr>
                                 <tr>
-    <th>Periode Pelaporan Awal</th>
-    <td>
-        @php
-            $periode = $prodi->prodi_periode; // Get the full periode value
-            $lastDigit = substr($periode, -1); // Extract the last digit
-            $newPeriode = substr($periode, 0, -1); // Remove the last digit
-            if ($lastDigit == '1') {
-                $newPeriode .= ' Gasal'; // Append 'gasal'
-            } elseif ($lastDigit == '2') {
-                $newPeriode .= ' Genap'; // Append 'genap'
-            } else {
-                $newPeriode .= $lastDigit; // Keep the original digit for other cases
-            }
-        @endphp
+                                    <th>Periode Pelaporan Awal</th>
+                                    <td>
+                                        @php
+                                            $periode = $prodi->prodi_periode; // Get the full periode value
+                                            $lastDigit = substr($periode, -1); // Extract the last digit
+                                            $newPeriode = substr($periode, 0, -1); // Remove the last digit
+                                            if ($lastDigit == '1') {
+                                                $newPeriode .= ' Gasal'; // Append 'gasal'
+                                            } elseif ($lastDigit == '2') {
+                                                $newPeriode .= ' Genap'; // Append 'genap'
+                                            } else {
+                                                $newPeriode .= $lastDigit; // Keep the original digit for other cases
+                                            }
+                                        @endphp
 
-        {{ $newPeriode }}
-    </td>
-</tr>
+                                        {{ $newPeriode }}
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <th>Status</th>
@@ -52,7 +72,7 @@
                                     <th>Tanggal SK Prodi</th>
                                     <td>{{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
                                     </td>
-                                </tr>>
+                                </tr>
                                 <tr>
                                     <th>Dokumen SK</th>
                                     @if ($prodi->suratKeputusan->sk_dokumen)
@@ -66,16 +86,13 @@
                                 </tr>
                             </table>
                         </div>
-                        <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-warning">edit</a>
                     </div>
                 </div>
 
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
-                                <h5 class="mb-0">Histori Program Studi</h5>
-                            </div>
+                            <h5 class="card-title mb-4">Histori Program Studi</h5>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="pemimpin_perguruan_tinggi"
                                     class="table-striped table-bordered display text-nowrap table border"
@@ -98,20 +115,20 @@
                                                 <td>{{ $histori->prodi_nama }}</td>
                                                 <td>{{ $histori->prodi_jenjang }}</td>
                                                 <td>
-                                                @php
-            $periode = $prodi->prodi_periode; // Get the full periode value
-            $lastDigit = substr($periode, -1); // Extract the last digit
-            $newPeriode = substr($periode, 0, -1); // Remove the last digit
-            if ($lastDigit == '1') {
-                $newPeriode .= ' Gasal'; // Append 'gasal'
-            } elseif ($lastDigit == '2') {
-                $newPeriode .= ' Genap'; // Append 'genap'
-            } else {
-                $newPeriode .= $lastDigit; // Keep the original digit for other cases
-            }
-        @endphp
+                                                    @php
+                                                        $periode = $prodi->prodi_periode; // Get the full periode value
+                                                        $lastDigit = substr($periode, -1); // Extract the last digit
+                                                        $newPeriode = substr($periode, 0, -1); // Remove the last digit
+                                                        if ($lastDigit == '1') {
+                                                            $newPeriode .= ' Gasal'; // Append 'gasal'
+                                                        } elseif ($lastDigit == '2') {
+                                                            $newPeriode .= ' Genap'; // Append 'genap'
+                                                        } else {
+                                                            $newPeriode .= $lastDigit; // Keep the original digit for other cases
+                                                        }
+                                                    @endphp
 
-        {{ $newPeriode }}
+                                                    {{ $newPeriode }}
                                                 </td>
                                                 <td>{{ $histori->prodi_active_status }}</td>
                                             </tr>
@@ -124,22 +141,22 @@
                 </section>
 
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
-                                <h5 class="mb-05">
-                                    Akreditasi Program Studi
-                                </h5>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title mb-4">Akreditasi Program Studi</h5>
+                                <div>
+                                    <a href="{{ route('akreditasi-program-studi.create', $prodi->id) }}"
+                                        class="btn btn-primary">
+                                        Tambah Akreditasi
+                                    </a>
+                                </div>
                             </div>
 
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="complex_header"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
-                                    <a href="{{ route('akreditasi-program-studi.create', $prodi->id) }}"
-                                        class="btn btn-primary btn-sm mb-2">
-                                        Tambah Akreditasi
-                                    </a>
                                     <thead>
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>
@@ -189,20 +206,21 @@
 
                 @can('View SK Program Studi')
                     <section class="datatables">
-                        <div class="card">
+                        <div class="card bordered">
                             <div class="card-body">
-                                <div class="mb-2">
-                                    <h5 class="mb-0">Sk Program Studi</h5>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="card-title mb-4">Sk Program Studi</h5>
+                                    <div>
+                                        @can('Create SK Program Studi')
+                                            <a href="{{ route('sk-program-studi.create', $prodi->id) }}" class="btn btn-primary">
+                                                Tambah SK
+                                            </a>
+                                        @endCan
+                                    </div>
                                 </div>
                                 <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                     <table id="sk_table" class="table-striped table-bordered display text-nowrap table border"
                                         style="overflow-x: auto; overflow-y: hidden;">
-                                        @can('Create SK Program Studi')
-                                            <a href="{{ route('sk-program-studi.create', $prodi->id) }}"
-                                                class="btn btn-primary btn-sm mb-2">
-                                                Tambah SK
-                                            </a>
-                                        @endCan
                                         <thead>
                                             <tr>
                                                 <th>No</th>
@@ -226,12 +244,12 @@
                                                             @can('Edit SK Program Studi')
                                                                 <div class="edit">
                                                                     <a href="{{ route('sk-program-studi.edit', $sk->id) }}"
-                                                                        class="btn btn-sm btn-success">Edit</a>
+                                                                        class="btn btn-sm btn-warning">Edit</a>
                                                                 </div>
                                                             @endCan
                                                             @can('Detail SK Program Studi')
                                                                 <div class="detail">
-                                                                    <button class="btn btn-sm btn-info detail-item-btn sk-detail"
+                                                                    <button class="btn btn-sm btn-primary detail-item-btn sk-detail"
                                                                         data-bs-toggle="modal" data-bs-target="#detailRecordModalSK"
                                                                         data-id="{{ $sk->id }}">Detail</button>
                                                                 </div>
@@ -249,20 +267,21 @@
                 @endCan
 
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
-                                <h5 class="mb-0">Evaluasi</h5>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title mb-4">Evaluasi</h5>
+                                <div>
+                                    @can('Create Perkara Program Studi')
+                                        <a href="{{ route('perkara-prodi.create', $prodi->id) }}" class="btn btn-primary">
+                                            Tambah Evaluasi
+                                        </a>
+                                    @endCan
+                                </div>
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
-                                    @can('Create Perkara Program Studi')
-                                        <a href="{{ route('perkara-prodi.create', $prodi->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah Evaluasi
-                                        </a>
-                                    @endCan
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -284,19 +303,19 @@
                                                 </td>
                                                 <td>{{ $perkara->status }}</td>
                                                 <td>
-                                                    @can('View Detail Perkara Program Studi')
-                                                        <a href="{{ route('perkara-prodi.show', $perkara->id) }}"
-                                                            class="btn btn-sm btn-primary me-2">
-                                                            <i class="ti ti-info-circle"></i>
-                                                        </a>
-                                                    @endCan
                                                     @can('Update Status Perkara Program Studi')
-                                                        <button class="btn btn-sm btn-warning edit-status"
+                                                        <button class="btn btn-sm btn-warning edit-status me-2"
                                                             data-bs-toggle="modal" data-bs-target="#editStatusModal"
                                                             data-id="{{ $perkara->id }}"
                                                             data-status="{{ $perkara->status }}">
-                                                            Edit Status
+                                                            Edit
                                                         </button>
+                                                    @endCan
+                                                    @can('View Detail Perkara Program Studi')
+                                                        <a href="{{ route('perkara-prodi.show', $perkara->id) }}"
+                                                            class="btn btn-sm btn-primary">
+                                                            Detail
+                                                        </a>
                                                     @endCan
                                                 </td>
                                             </tr>
@@ -309,8 +328,6 @@
                 </section>
             </div>
             <div class="btn-center mt-3">
-                <a href="{{ route('perguruan-tinggi.show', $prodi->perguruanTinggi->id) }}"
-                    class="btn btn-primary">Keluar</a>
             </div>
             @include('Modal.Bp.Edit')
             @include('Akreditasi.ProgramStudi.Detail')
@@ -416,7 +433,7 @@
             }
         });
     </script>
-    
+
     <script>
         $(document).ready(function() {
             if ($.fn.DataTable.isDataTable('#organisasi_table')) {

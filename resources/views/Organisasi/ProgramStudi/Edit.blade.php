@@ -13,6 +13,8 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"><i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formProdiEdit" action="{{ route('program-studi.update', $prodi->id) }}" method="POST"
@@ -20,9 +22,9 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Edit Program Studi</h5>
+                            <h5 class="card-title mb-4">Edit Program Studi</h5>
 
                             @if ($errors->any())
                                 <div class="alert alert-danger" id="error-messages">
@@ -36,7 +38,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3 col-md-4">
-                                        <label for="validationCustom01" class="form-label">Kode Program Studi</label>
+                                        <label for="validationCustom01">Kode Program Studi</label>
                                         <input type="text" class="form-control" id="prodi_kode" name="prodi_kode"
                                             value="{{ old('prodi_kode', $prodi->prodi_kode) }}">
                                         @if ($errors->has('prodi_kode'))
@@ -139,32 +141,34 @@
                                         @enderror
                                         <small class="text-danger error-message" id="error-prodi_jenjang"></small>
                                     </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="prodi_periode" class="required-label">Periode Pelaporan</label>
+                                        <input type="number" name="prodi_periode" class="form-control"
+                                            value="{{ old('prodi_periode', $prodi->prodi_periode) }}" required
+                                            min="1900" step="1" placeholder="Enter year">
+                                        @if ($errors->has('prodi_periode'))
+                                            <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
+                                        @endif
+                                        @error('prodi_periode')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-prodi_periode"></small>
+                                    </div>
                                 </div>
-                                <div class="form-group mb-3">
-    <label for="prodi_periode" class="required-label">Periode Pelaporan</label>
-    <input type="number" name="prodi_periode" class="form-control"
-           value="{{ old('prodi_periode', $prodi->prodi_periode) }}" required
-           min="1900" step="1" placeholder="Enter year">
-    @if ($errors->has('prodi_periode'))
-        <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
-    @endif
-    @error('prodi_periode')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-    <small class="text-danger error-message" id="error-prodi_periode"></small>
-</div>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Data Surat Keputusan</h5>
+                            <h5 class="card-title mb-4">Data Surat Keputusan</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="sk_nomor" class="required-label">Nomor Surat Keputusan</label>
                                         <input type="text" name="sk_nomor" class="form-control"
-                                            value="{{ old('sk_nomor', $prodi->suratKeputusan->first()->sk_nomor) }}" required>
+                                            value="{{ old('sk_nomor', $prodi->suratKeputusan->first()->sk_nomor) }}"
+                                            required>
                                         @if ($errors->has('sk_nomor'))
                                             <span class="text-danger">{{ $errors->first('sk_nomor') }}</span>
                                         @endif
@@ -177,7 +181,8 @@
                                     <div class="form-group mb-3">
                                         <label for="sk_tanggal" class="required-label">Tanggal SK</label>
                                         <input type="date" name="sk_tanggal" class="form-control"
-                                            value="{{ old('sk_tanggal', $prodi->suratKeputusan->first()->sk_tanggal) }}" required>
+                                            value="{{ old('sk_tanggal', $prodi->suratKeputusan->first()->sk_tanggal) }}"
+                                            required>
                                         @if ($errors->has('sk_tanggal'))
                                             <span class="text-danger">{{ $errors->first('sk_tanggal') }}</span>
                                         @endif
@@ -204,11 +209,9 @@
                                         <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                     </div>
                                 </div>
-                                <div class="btn-center mt-6">
+                                <div>
                                     <div id="buttons">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                        <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"
-                                            type="submit" class="btn btn-primary">Keluar</a>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

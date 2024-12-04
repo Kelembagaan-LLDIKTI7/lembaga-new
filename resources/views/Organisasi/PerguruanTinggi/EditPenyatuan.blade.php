@@ -28,16 +28,18 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('perguruan-tinggi.show', ['id' => $perguruanTinggi->id]) }}">
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formPTedit" action="{{ route('perguruan-tinggi.updatePenyatuan', $perguruanTinggi->id) }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Penyatuan Perguruan Tinggi</h5>
+                            <h5 class="card-title mb-4">Penyatuan Perguruan Tinggi</h5>
                             <input type="hidden" name="organisasi_pt" value="{{ $perguruanTinggi->id }}">
                             <div class="row">
                                 <div class="col-md-6">
@@ -61,7 +63,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Data Surat Keputusan</h5>
+                            <h5 class="card-title mb-4">Data Surat Keputusan</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -79,7 +81,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="id_jenis_surat_keputusan" class="required-label">Jenis Surat Keputusan
+                                        <label for="id_jenis_surat_keputusan" class="required-label">Jenis Surat
+                                            Keputusan
                                         </label>
                                         <select name="id_jenis_surat_keputusan" id="id_jenis_surat_keputusan"
                                             class="form-control select-search" required>
@@ -101,15 +104,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="d-flex justify-content-end mt-3">
-                        <button type="submit" class="btn btn-primary" id="submitBtn">Simpan</button>
-                        <div id="loading" class="d-none">
-                            <button class="btn btn-primary" type="button" disabled>
-                                <span class="spinner-border spinner-border-sm"></span> Loading...
-                            </button>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="submit" class="btn btn-primary" id="submitBtn">Simpan</button>
+                                <div id="loading" class="d-none">
+                                    <button class="btn btn-primary" type="button" disabled>
+                                        <span class="spinner-border spinner-border-sm"></span> Loading...
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

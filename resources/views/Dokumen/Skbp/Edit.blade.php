@@ -19,6 +19,9 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.show', ['id' => $skbp->id_organization]) }}"><i
+                class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formSkbpEdit" action="{{ route('skbp-badan-penyelenggara.update', ['id' => $skbp->id]) }}"
@@ -27,7 +30,7 @@
                     @method('PUT')
                     <input type="hidden" name="id_organization" value="{{ $skbp->id_organization }}" class="form-control"
                         required>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
                             <h5 class="card-title">Form Tambah SKBP</h5>
                             <div class="row">
@@ -93,11 +96,9 @@
                                 </div>
                                 <div id="file-preview" class="mt-3"></div>
 
-                                <div class="btn-center mt-3">
+                                <div class="mt-3">
                                     <div id="buttons">
-                                        <a href="{{ route('badan-penyelenggara.show', ['id' => $skbp->id_organization]) }}"
-                                            class="btn btn-primary btn-sm-custom">Keluar</a>
-                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

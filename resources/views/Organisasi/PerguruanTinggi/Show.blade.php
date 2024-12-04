@@ -2,14 +2,39 @@
 
 @section('title', 'Detail Perguruan Tinggi')
 
+@section('css')
+    <style>
+        #custom-padding th,
+        #custom-padding td {
+            padding: 10px 0 !important;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('perguruan-tinggi.index') }}">
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-lg-8 col-md-12">
-                <div class="card">
+                <div class="card bordered">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $organisasi->organisasi_nama }}</h5>
-                        <table class="table-borderless table">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="card-title">{{ $organisasi->organisasi_nama }}</h5>
+                            <div class="d-flex gap-2">
+                                @can('Edit Perguruan Tinggi')
+                                    <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i></a>
+                                    </a>
+                                    <a href="{{ route('perguruan-tinggi.editPenyatuan', $organisasi->id) }}"
+                                        class="btn btn-warning">
+                                        <i class="fas fa-edit me-2"></i>Edit Penyatuan
+                                    </a>
+                                @endCan
+                            </div>
+                        </div>
+                        <table id="custom-padding" class="table-borderless table">
                             <tr>
                                 <th>Bentuk PT</th>
                                 <td>{{ $organisasi->bentukPt->bentuk_nama ?? '-' }}</td>
@@ -36,7 +61,8 @@
                             </tr>
                             <tr>
                                 <th>Website</th>
-                                <td><a href="{{ $organisasi->organisasi_website }}">{{ $organisasi->organisasi_website }}</a>
+                                <td><a
+                                        href="{{ $organisasi->organisasi_website }}">{{ $organisasi->organisasi_website }}</a>
                                 </td>
                             </tr>
                             <tr>
@@ -49,29 +75,16 @@
                                         width="50" /></td>
                             </tr>
                         </table>
-
-                        <div class="d-flex justify-content-end">
-                            @can('Edit Perguruan Tinggi')
-                                <a href="{{ route('perguruan-tinggi.edit', $organisasi->id) }}" class="btn btn-warning me-2">
-                                    Edit
-                                </a>
-                                <a href="{{ route('perguruan-tinggi.editPenyatuan', $organisasi->id) }}"
-                                    class="btn btn-warning">
-                                    Edit Penyatuan
-                                </a>
-                            @endCan
-                        </div>
-
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-12">
-                <div class="card">
+            <div class="col-lg-4 col-md-12 d-flex align-items-stretch">
+                <div class="card bordered">
                     <div class="card-body">
-                        <h5 class="card-title">Badan Penyelenggara</h5>
+                        <h5 class="card-title mb-4">Badan Penyelenggara</h5>
                         @if ($organisasi->parent)
-                            <table class="table-borderless table">
+                            <table id="custom-padding" class="table-borderless table">
                                 <tr>
                                     <th>Nama</th>
                                     <td>{{ $organisasi->parent->organisasi_nama }}</td>
@@ -105,43 +118,41 @@
             </div>
 
             <section class="datatables">
-                <div class="card">
+                <div class="card bordered">
                     <div class="card-body">
                         @if ($berubahOrganisasi->isNotEmpty())
-                            <div class="mt-5">
-                                <h6>Organisasi yang Terlibat dalam Penyatuan/Penggabungan</h6>
-                                <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
-                                    <table id="organisasi_table"
-                                        class="table-striped table-bordered display text-nowrap table border"
-                                        style="width: 100%">
-                                        <thead>
+                            <h5 class="card-title mb-4">Organisasi yang Terlibat dalam Penyatuan/Penggabungan</h5>
+                            <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
+                                <table id="organisasi_table"
+                                    class="table-striped table-bordered display text-nowrap table border"
+                                    style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Perguruan Tinggi</th>
+                                            <th>Nama Singkat</th>
+                                            <th>Email</th>
+                                            <th>No Telepon</th>
+                                            <th>Kota</th>
+                                            <th>Alamat</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($berubahOrganisasi as $key => $org)
                                             <tr>
-                                                <th>No</th>
-                                                <th>Nama Perguruan Tinggi</th>
-                                                <th>Nama Singkat</th>
-                                                <th>Email</th>
-                                                <th>No Telepon</th>
-                                                <th>Kota</th>
-                                                <th>Alamat</th>
-                                                <th>Status</th>
+                                                <td></td>
+                                                <td>{{ $org->organisasi_nama }}</td>
+                                                <td>{{ $org->organisasi_nama_singkat ?? '-' }}</td>
+                                                <td>{{ $org->organisasi_email }}</td>
+                                                <td>{{ $org->organisasi_telp }}</td>
+                                                <td>{{ $org->organisasi_kota }}</td>
+                                                <td>{{ $org->organisasi_alamat }}</td>
+                                                <td>{{ $org->organisasi_status }}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($berubahOrganisasi as $key => $org)
-                                                <tr>
-                                                    <td></td>
-                                                    <td>{{ $org->organisasi_nama }}</td>
-                                                    <td>{{ $org->organisasi_nama_singkat ?? '-' }}</td>
-                                                    <td>{{ $org->organisasi_email }}</td>
-                                                    <td>{{ $org->organisasi_telp }}</td>
-                                                    <td>{{ $org->organisasi_kota }}</td>
-                                                    <td>{{ $org->organisasi_alamat }}</td>
-                                                    <td>{{ $org->organisasi_status }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         @else
                             <div class="alert alert-info mt-5">
@@ -154,21 +165,21 @@
 
             @can('View Akreditasi Perguruan Tinggi')
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="d-flex justify-content-between mb-2">
                                 <h5 class="mb-0">Akreditasi Institusi</h5>
+                                @can('Create Akreditasi Perguruan Tinggi')
+                                    <a href="{{ route('akreditasi-perguruan-tinggi.create', $organisasi->id) }}"
+                                        class="btn btn-primary">
+                                        Tambah Areditasi PT
+                                    </a>
+                                @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="akreditasi_table"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="overflow-x: auto; overflow-y: hidden;">
-                                    @can('Create Akreditasi Perguruan Tinggi')
-                                        <a href="{{ route('akreditasi-perguruan-tinggi.create', $organisasi->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah Areditasi PT
-                                        </a>
-                                    @endCan
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -199,13 +210,13 @@
                                                         @can('Edit Akreditasi Perguruan Tinggi')
                                                             <div class="edit">
                                                                 <a href="{{ route('akreditasi-perguruan-tinggi.edit', $akre->id) }}"
-                                                                    class="btn btn-sm btn-success">Edit</a>
+                                                                    class="btn btn-sm btn-warning">Edit</a>
                                                             </div>
                                                         @endCan
                                                         @can('Detail Akreditasi Perguruan Tinggi')
                                                             <div class="detail">
                                                                 <button
-                                                                    class="btn btn-sm btn-info detail-item-btn akreditasi-detail"
+                                                                    class="btn btn-sm btn-primary detail-item-btn akreditasi-detail"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#detailRecordModalAkreditasi"
                                                                     data-id="{{ $akre->id }}">Detail</button>
@@ -225,20 +236,19 @@
 
             @can('View SK Perguruan Tinggi')
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="d-flex justify-content-between mb-2">
                                 <h5 class="mb-0">Sk Institusi</h5>
+                                @can('Create SK Perguruan Tinggi')
+                                    <a href="{{ route('sk-perguruan-tinggi.create', $organisasi->id) }}" class="btn btn-primary">
+                                        Tambah SK
+                                    </a>
+                                @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="sk_table" class="table-striped table-bordered display text-nowrap table border"
                                     style="overflow-x: auto; overflow-y: hidden;">
-                                    @can('Create SK Perguruan Tinggi')
-                                        <a href="{{ route('sk-perguruan-tinggi.create', $organisasi->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah SK
-                                        </a>
-                                    @endCan
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -257,17 +267,17 @@
                                                     {{ \Carbon\Carbon::parse($sk->sk_tanggal)->translatedFormat('d F Y') }}
                                                 </td>
                                                 <td>{{ $sk->jsk_nama }}</td>
-                                                <td>
+                                                <td style="width: 15%">
                                                     <div class="d-flex gap-2">
                                                         @can('Edit SK Perguruan Tinggi')
                                                             <div class="edit">
                                                                 <a href="{{ route('sk-perguruan-tinggi.edit', $sk->id) }}"
-                                                                    class="btn btn-sm btn-success">Edit</a>
+                                                                    class="btn btn-sm btn-warning">Edit</a>
                                                             </div>
                                                         @endCan
                                                         @can('Detail SK Perguruan Tinggi')
                                                             <div class="detail">
-                                                                <button class="btn btn-sm btn-info detail-item-btn sk-detail"
+                                                                <button class="btn btn-sm btn-primary detail-item-btn sk-detail"
                                                                     data-bs-toggle="modal" data-bs-target="#detailRecordModalSK"
                                                                     data-id="{{ $sk->id }}">Detail</button>
                                                             </div>
@@ -286,20 +296,20 @@
 
             @can('View Pimpinan Perguruan Tinggi')
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="d-flex justify-content-between mb-2">
                                 <h5 class="mb-0">Pemimpin Perguruan Tinggi</h5>
+                                @can('Create Pimpinan Perguruan Tinggi')
+                                    <a href="{{ route('pimpinan-perguruan-tinggi.create', $organisasi->id) }}"
+                                        class="btn btn-primary">
+                                        Tambah Pempinan
+                                    </a>
+                                @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="pemimpin_perguruan_tinggi"
                                     class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
-                                    @can('Create Pimpinan Perguruan Tinggi')
-                                        <a href="{{ route('pimpinan-perguruan-tinggi.create', $organisasi->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah Pempinan
-                                        </a>
-                                    @endCan
                                     <thead>
                                         <tr>
                                             <th rowspan="2" class="text-center align-middle">No</th>
@@ -333,12 +343,12 @@
                                                     <div class="d-flex align-items-center gap-2">
                                                         @can('Edit Pimpinan Perguruan Tinggi')
                                                             <a href="{{ route('pimpinan-perguruan-tinggi.edit', ['id' => $pimpinan->id]) }}"
-                                                                class="btn btn-sm btn-success">
+                                                                class="btn btn-sm btn-warning">
                                                                 <i class="ri-edit-2-line"></i> Edit
                                                             </a>
                                                         @endCan
                                                         @can('Detail Pimpinan Perguruan Tinggi')
-                                                            <button class="btn btn-info btn-sm pimpinan-detail"
+                                                            <button class="btn btn-primary btn-sm pimpinan-detail"
                                                                 data-bs-toggle="modal" data-bs-target="#detailRecordModalPimpinan"
                                                                 data-id="{{ $pimpinan->id }}">
                                                                 Detail
@@ -358,20 +368,19 @@
 
             @can('View Program Studi')
                 <section class="datatables">
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <div class="mb-2">
+                            <div class="d-flex justify-content-between mb-2">
                                 <h5 class="mb-0">Program Studi</h5>
+                                @can('Create Program Studi')
+                                    <a href="{{ route('program-studi.create', $organisasi->id) }}" class="btn btn-primary">
+                                        Tambah Program Studi
+                                    </a>
+                                @endCan
                             </div>
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                                 <table id="program_studi"
                                     class="table-striped table-bordered display text-nowrap table border" style="width: 100%">
-                                    @can('Create Program Studi')
-                                        <a href="{{ route('program-studi.create', $organisasi->id) }}"
-                                            class="btn btn-primary btn-sm mb-2">
-                                            Tambah Program Studi
-                                        </a>
-                                    @endCan
                                     <thead>
                                         <tr>
                                             <th>No</th>
@@ -394,19 +403,19 @@
                                                 <td>{{ $prodi->prodi_nama }}</td>
                                                 <td>{{ $prodi->prodi_jenjang }}</td>
                                                 <td> @php
-            $periode = $prodi->prodi_periode; // Get the full periode value
-            $lastDigit = substr($periode, -1); // Extract the last digit
-            $newPeriode = substr($periode, 0, -1); // Remove the last digit
-            if ($lastDigit == '1') {
-                $newPeriode .= ' Gasal'; // Append 'gasal'
-            } elseif ($lastDigit == '2') {
-                $newPeriode .= ' Genap'; // Append 'genap'
-            } else {
-                $newPeriode .= $lastDigit; // Keep the original digit for other cases
-            }
-        @endphp
+                                                    $periode = $prodi->prodi_periode; // Get the full periode value
+                                                    $lastDigit = substr($periode, -1); // Extract the last digit
+                                                    $newPeriode = substr($periode, 0, -1); // Remove the last digit
+                                                    if ($lastDigit == '1') {
+                                                        $newPeriode .= ' Gasal'; // Append 'gasal'
+                                                    } elseif ($lastDigit == '2') {
+                                                        $newPeriode .= ' Genap'; // Append 'genap'
+                                                    } else {
+                                                        $newPeriode .= $lastDigit; // Keep the original digit for other cases
+                                                    }
+                                                @endphp
 
-        {{ $newPeriode }}</td>
+                                                    {{ $newPeriode }}</td>
                                                 <td>{{ $prodi->prodi_active_status }}</td>
                                                 @php
                                                     $akreditasi = $prodi->akreditasis->last();
@@ -420,7 +429,7 @@
                                                     @can('Detail Program Studi')
                                                         <a href="{{ route('program-studi.show', $prodi->id) }}"
                                                             class="btn btn-sm btn-primary me-2">
-                                                            <i class="ti ti-info-circle"></i>
+                                                            Detail
                                                         </a>
                                                     @endCan
                                                 </td>
@@ -435,20 +444,20 @@
             @endCan
 
             <section class="datatables">
-                <div class="card">
+                <div class="card bordered">
                     <div class="card-body">
-                        <div class="mb-2">
+                        <div class="d-flex justify-content-between mb-2">
                             <h5 class="mb-0">Evaluasi</h5>
+                            @can('Create Perkara Perguruan Tinggi')
+                                <a href="{{ route('perkara-organisasipt.create', $organisasi->id) }}"
+                                    class="btn btn-primary">
+                                    Tambah Evaluasi
+                                </a>
+                            @endCan
                         </div>
                         <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                             <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
-                                @can('Create Perkara Perguruan Tinggi')
-                                    <a href="{{ route('perkara-organisasipt.create', $organisasi->id) }}"
-                                        class="btn btn-primary btn-sm mb-2">
-                                        Tambah Evaluasi
-                                    </a>
-                                @endCan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -469,19 +478,19 @@
                                                 {{ \Carbon\Carbon::parse($perkara->tanggal_kejadian)->translatedFormat('d F Y') }}
                                             </td>
                                             <td>{{ $perkara->status }}</td>
-                                            <td>
-                                                @can('View Detail Perkara Perguruan Tinggi')
-                                                    <a href="{{ route('perkara-organisasipt.show', $perkara->id) }}"
-                                                        class="btn btn-sm btn-primary me-2">
-                                                        <i class="ti ti-info-circle"></i>
-                                                    </a>
-                                                @endCan
+                                            <td style="width: 15%">
                                                 @can('Update Status Perkara Perguruan Tinggi')
-                                                    <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
+                                                    <button class="btn btn-sm btn-warning edit-status me-2" data-bs-toggle="modal"
                                                         data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
                                                         data-status="{{ $perkara->status }}">
-                                                        Edit Status
+                                                        Edit
                                                     </button>
+                                                @endCan
+                                                @can('View Detail Perkara Perguruan Tinggi')
+                                                    <a href="{{ route('perkara-organisasipt.show', $perkara->id) }}"
+                                                        class="btn btn-sm btn-primary">
+                                                        Detail
+                                                    </a>
                                                 @endCan
                                             </td>
                                         </tr>
@@ -491,9 +500,6 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('perguruan-tinggi.index') }}" class="btn btn-sm btn-primary float-end me-2 mt-3">
-                    Kembali
-                </a>
             </section>
         </div>
 

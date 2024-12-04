@@ -2,12 +2,10 @@
 
 @section('title', 'Edit Akta')
 
-@section('css')
-
-@endsection
-
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.show', ['id' => $akta->id_organization]) }}"><i
+                class="fas fa-arrow-left mb-4 me-2"></i> Kembali</a>
         <div class="row">
             <div class="col-12">
                 <form id="aktaEdit" action="{{ route('akta-badan-penyelenggara.update', ['id' => $akta->id]) }}"
@@ -16,9 +14,9 @@
                     @method('PUT')
                     <input type="hidden" name="id_organization" value="{{ $akta->id_organization }}" class="form-control"
                         required>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Form Edit Akta</h5>
+                            <h5 class="card-title mb-4">Form Edit Akta</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -45,16 +43,14 @@
                                         <small class="text-danger error-message" id="error-akta_tanggal"></small>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="validationCustom03" class="required-label">Nama Notaris</label>
-                                        <input type="text" class="form-control" id="validationCustom03"
-                                            name="akta_nama_notaris"
-                                            value="{{ old('akta_nama_notaris', $akta->akta_nama_notaris) }}" required>
-                                        @error('akta_nama_notaris')
+                                        <label for="akta_keterangan" class="required-label">Keterangan Akta</label>
+                                        <textarea class="form-control" id="akta_keterangan" name="akta_keterangan">{{ old('akta_keterangan', $akta->akta_keterangan) }}</textarea>
+                                        @error('akta_keterangan')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
                                         @enderror
-                                        <small class="text-danger error-message" id="error-akta_nama_notaris"></small>
+                                        <small class="text-danger error-message" id="error-akta_keterangan"></small>
                                     </div>
                                 </div>
 
@@ -79,6 +75,18 @@
                                         <small class="text-danger error-message" id="error-akta_jenis"></small>
                                     </div>
                                     <div class="form-group mb-3">
+                                        <label for="validationCustom03" class="required-label">Nama Notaris</label>
+                                        <input type="text" class="form-control" id="validationCustom03"
+                                            name="akta_nama_notaris"
+                                            value="{{ old('akta_nama_notaris', $akta->akta_nama_notaris) }}" required>
+                                        @error('akta_nama_notaris')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-akta_nama_notaris"></small>
+                                    </div>
+                                    <div class="form-group mb-3">
                                         <label for="kotaAkta" class="required-label">Kota Notaris</label>
                                         <select name="kotaAkta" class="form-control select-search" required>
                                             <option value="">-- Pilih Kota --</option>
@@ -94,16 +102,6 @@
                                             </div>
                                         @enderror
                                         <small class="text-danger error-message" id="error-kotaAkta"></small>
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="akta_keterangan" class="required-label">Keterangan Akta</label>
-                                        <textarea class="form-control" id="akta_keterangan" name="akta_keterangan">{{ old('akta_keterangan', $akta->akta_keterangan) }}</textarea>
-                                        @error('akta_keterangan')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                        <small class="text-danger error-message" id="error-akta_keterangan"></small>
                                     </div>
                                 </div>
 
@@ -121,11 +119,9 @@
                                     </div>
                                 </div>
 
-                                <div class="btn-center mt-3">
+                                <div>
                                     <div id="buttons">
-                                        <a href="{{ route('badan-penyelenggara.show', ['id' => $akta->id_organization]) }}"
-                                            class="btn btn-primary btn-sm-custom">Keluar</a>
-                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

@@ -8,12 +8,13 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.index') }}"><i class="fas fa-arrow-left mb-4 me-2"></i>Kembali</a>
         <div class="row">
             <div class="col-12">
                 <form id="formBP" action="{{ route('badan-penyelenggara.store') }}" method="POST"
                     enctype="multipart/form-data" onsubmit="return validateForm()">
                     @csrf
-                    <div class="card mb-4">
+                    <div class="card mb-4 bordered">
                         <div class="card-body">
                             <h5 class="card-title">Tambah Badan Penyelenggara</h5>
 
@@ -67,10 +68,10 @@
                                         <small class="text-danger error-message" id="error-organisasi_alamat"></small>
                                     </div>
 
-                                    <div class="form-group mb-3">
-                                        <label for="isChangeBP">Apakah perubahan dari BP lama?</label>
+                                    <div class="form-group mb-3 d-flex gap-1">
                                         <input type="checkbox" id="isChangeBP" name="isChangeBP" value="1"
                                             onchange="toggleSelect()">
+                                        <label for="isChangeBP">Apakah perubahan dari BP lama?</label>
                                     </div>
 
                                     <div class="form-group mb-3" id="selectBPContainer" style="display: none;">
@@ -134,7 +135,7 @@
                         </div>
                     </div>
 
-                    <div class="card mb-4">
+                    <div class="card bordered mb-4">
                         <div class="card-body">
                             <h5 class="card-title">Masukkan Data Akta</h5>
                             <div class="row">
@@ -232,11 +233,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <button type="submit" class="btn btn-primary float-end">Simpan</button>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                    <a href="{{ route('badan-penyelenggara.index') }}" class="btn btn-secondary">Keluar</a>
                     <div id="error-messages" class="text-danger"></div>
                 </form>
             </div>

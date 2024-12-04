@@ -8,16 +8,17 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.show', ['id' => $bp->id]) }}">
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali</a>
         <div class="row">
             <div class="col-12">
                 <form id="formBP" action="{{ route('badan-penyelenggara.update', ['id' => $bp->id]) }}" method="POST"
                     enctype="multipart/form-data" onsubmit="return validateForm()">
                     @csrf
                     @method('PUT')
-                    <div class="card mb-4">
+                    <div class="card mb-4 bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Edit Badan Penyelenggara</h5>
-
+                            <h5 class="card-title mb-4">Edit Badan Penyelenggara</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -66,12 +67,10 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <button type="submit" class="btn btn-primary float-end">Simpan</button>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                    <a href="{{ route('badan-penyelenggara.show', ['id' => $bp->id]) }}"
-                        class="btn btn-secondary">Keluar</a>
                 </form>
             </div>
         </div>
@@ -79,6 +78,5 @@
 @endsection
 
 @section('js')
-    <script>
-    </script>
+    <script></script>
 @endsection

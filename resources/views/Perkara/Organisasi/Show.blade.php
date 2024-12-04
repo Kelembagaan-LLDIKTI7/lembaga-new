@@ -4,13 +4,20 @@
 
 @section('content')
     <div class="container-fluid my-4">
+        <a href="{{ route('badan-penyelenggara.show', $perkaras->id_organization) }}">
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Detail Evaluasi {{ $perkaras->organisasi->organisasi_type_id == 2 ? 'Badan Penyelenggara' : 'Perguruan Tinggi' }}</h5>
-                    </div>
+                <div class="card bordered shadow-sm">
                     <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h5 class="card-title">Detail Evaluasi
+                                {{ $perkaras->organisasi->organisasi_type_id == 2 ? 'Badan Penyelenggara' : 'Perguruan Tinggi' }}
+                            </h5>
+                            <a href="{{ route('perkara-organisasi.edit', $perkaras->id) }}" class="btn btn-primary">
+                                <i class="fas fa-edit me-2"></i> Edit</a>
+                        </div>
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <h6><strong>Nama Badan Penyelenggara:</strong></h6>
@@ -24,16 +31,9 @@
                         </div>
 
                         <div class="row mb-4">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <h6><strong>Nomor Perkara:</strong></h6>
                                 <p>{{ $perkaras->no_perkara }}</p>
-                            </div>
-                        </div>
-
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <h6><strong>Judul Perkara:</strong></h6>
-                                <p>{{ $perkaras->title }}</p>
                             </div>
                             <div class="col-md-6">
                                 <h6><strong>Tanggal Kejadian:</strong></h6>
@@ -43,8 +43,8 @@
 
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <h6><strong>Status Perkara:</strong></h6>
-                                <p>{{ $perkaras->status }}</p>
+                                <h6><strong>Judul Perkara:</strong></h6>
+                                <p>{{ $perkaras->title }}</p>
                             </div>
                             <div class="col-md-6">
                                 <h6><strong>Deskripsi Kejadian:</strong></h6>
@@ -52,20 +52,20 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-12 mb-3">
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
                                 <h6><strong>Bukti Foto:</strong></h6>
-                                <div class="d-flex flex-wrap">
+                                <div class="d-flex flex-wrap gap-4">
                                     @if ($perkaras->bukti_foto && count(json_decode($perkaras->bukti_foto)) > 0)
                                         @foreach (json_decode($perkaras->bukti_foto) as $foto)
-                                            <div class="image-preview m-2"
+                                            <div class="image-preview d-flex gap-1"
                                                 style="position: relative; width: 150px; height: 150px;">
                                                 <img src="{{ asset('storage/bukti_foto/' . $foto) }}" alt="Bukti Foto"
                                                     class="img-thumbnail"
                                                     style="width: 100%; height: 100%; object-fit: cover;">
                                                 <div class="overlay">
                                                     <a href="{{ asset('storage/bukti_foto/' . $foto) }}" target="_blank"
-                                                        class="btn btn-sm btn-primary mt-2" style="width: 100%;">Lihat</a>
+                                                        class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -74,15 +74,13 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <h6><strong>Status Perkara:</strong></h6>
+                                <p>{{ $perkaras->status }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('badan-penyelenggara.show', $perkaras->id_organization) }}"
-                    class="btn btn-secondary">Kembali
-                </a>
-                <a href="{{ route('perkara-organisasi.edit', $perkaras->id) }}"
-                    class="btn btn-secondary">Edit
-                </a>
             </div>
         </div>
     </div>

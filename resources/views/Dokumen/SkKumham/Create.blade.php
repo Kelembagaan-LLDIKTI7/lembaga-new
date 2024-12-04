@@ -7,14 +7,16 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.show', ['id' => $akta->id_organization]) }}"><i
+                class="fas fa-arrow-left mb-4 me-2"></i> Kembali</a>
         <div class="row">
             <div class="col-12">
                 <form id="formKumham" action="{{ route('sk-kumham.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_akta" value="{{ $akta->id }}" class="form-control" required>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Form Tambah SK Kumham</h5>
+                            <h5 class="card-title mb-4">Form Tambah SK Kumham</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -55,7 +57,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="kumham_dokumen" class="required-label">Dokumen SK</label>
                                         <input type="file" name="kumham_dokumen" class="form-control" required
@@ -67,11 +69,9 @@
                                     <small class="text-danger error-message" id="error-kumham_dokumen"></small>
                                 </div>
 
-                                <div class="btn-center mt-3">
+                                <div>
                                     <div id="buttons">
-                                        <a href="{{ route('badan-penyelenggara.show', ['id' => $akta->id_organization]) }}"
-                                            class="btn btn-primary btn-sm-custom">Keluar</a>
-                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading" style="display: none;">
                                         <div class="d-flex align-items-center">

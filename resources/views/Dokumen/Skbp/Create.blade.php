@@ -2,30 +2,17 @@
 
 @section('title', 'Tambah SKBP Badan Penyelenggara')
 
-@section('css')
-    <style>
-        .btn-center {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-sm-custom {
-            font-size: 0.875rem;
-            padding: 0.375rem 0.75rem;
-        }
-    </style>
-@endsection
-
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('badan-penyelenggara.show', ['id' => $id]) }}"><i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formSkbp" action="{{ route('skbp-badan-penyelenggara.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $id }}" class="form-control" required>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
                             <h5 class="card-title">Form Tambah SKBP</h5>
                             <div class="row">
@@ -91,11 +78,9 @@
                                 </div>
                                 <div id="file-preview" class="mt-3"></div>
 
-                                <div class="btn-center mt-3">
+                                <div class="mt-3">
                                     <div id="buttons">
-                                        <a href="{{ route('badan-penyelenggara.show', ['id' => $id]) }}"
-                                            class="btn btn-primary btn-sm-custom">Keluar</a>
-                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

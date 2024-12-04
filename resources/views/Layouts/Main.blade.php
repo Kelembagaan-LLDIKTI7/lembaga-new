@@ -51,11 +51,18 @@
         .hidden {
             display: none;
         }
+
+        .custom-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
     </style>
     @yield('css')
 </head>
 
-<body>
+<body style="background-color: #F4F8FA">
     <div class="preloader">
         <img src="https://demos.adminmart.com/premium/bootstrap/modernize-bootstrap/package/dist/images/logos/favicon.ico"
             alt="loader" class="lds-ripple img-fluid" />
@@ -150,6 +157,17 @@
             $('#dom_jq_event tbody').on('click', 'tr', function() {
                 var data = table.row(this).data();
             });
+
+            if (!$.fn.DataTable.isDataTable('#dom_jq_event')) {
+                $('#dom_jq_event').DataTable({
+                    dom: '<"top"lf>rt<"bottom"ip><"clear">',
+                    initComplete: function() {
+                        // Add custom classes to the search bar and page length select
+                        $('.dataTables_length').addClass('custom-flex');
+                        $('.dataTables_filter').addClass('custom-flex');
+                    }
+                });
+            }
         });
     </script>
 

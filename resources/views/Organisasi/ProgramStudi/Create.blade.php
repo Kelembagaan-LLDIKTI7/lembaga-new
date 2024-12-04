@@ -13,13 +13,16 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('perguruan-tinggi.show', ['id' => $organisasi->id]) }}"><i class="fas fa-arrow-left mb-4 me-2"></i>
+            Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formProdi" action="{{ route('program-studi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Tambah Program Studi</h5>
+                            <h5 class="card-title mb-4">Tambah Program Studi</h5>
 
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -34,7 +37,7 @@
                                 <div class="col-md-6">
                                     <input type="hidden" name="id_organization" value="{{ $organisasi->id }}">
                                     <div class="form-group mb-3 col-md-4">
-                                        <label for="validationCustom01" class="form-label">Kode Program Studi</label>
+                                        <label for="validationCustom01">Kode Program Studi</label>
                                         <input type="text" class="form-control" id="prodi_kode" name="prodi_kode"
                                             value="{{ old('prodi_kode') }}">
                                         @if ($errors->has('prodi_kode'))
@@ -58,24 +61,6 @@
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                         <small class="text-danger error-message" id="error-prodi_nama"></small>
-                                    </div>
-
-                                    <div class="form-group mb-3">
-                                        <label for="prodi_active_status" class="required-label">Status</label>
-                                        <select name="prodi_active_status" class="form-control select-search" required>
-                                            <option value="">-- Pilih Status --</option>
-                                            <option value="Aktif" @if (old('prodi_active_status') == 'Aktif') selected @endif>Aktif
-                                            </option>
-                                            <option value="Tidak Aktif" @if (old('prodi_active_status') == 'Tidak Aktif') selected @endif>
-                                                Tidak Aktif</option>
-                                        </select>
-                                        @if ($errors->has('prodi_active_status'))
-                                            <span class="text-danger">{{ $errors->first('prodi_active_status') }}</span>
-                                        @endif
-                                        @error('prodi_active_status')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                        <small class="text-danger error-message" id="error-prodi_active_status"></small>
                                     </div>
                                 </div>
 
@@ -114,27 +99,47 @@
                                         @enderror
                                         <small class="text-danger error-message" id="error-prodi_jenjang"></small>
                                     </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="prodi_active_status" class="required-label">Status</label>
+                                        <select name="prodi_active_status" class="form-control select-search" required>
+                                            <option value="">-- Pilih Status --</option>
+                                            <option value="Aktif" @if (old('prodi_active_status') == 'Aktif') selected @endif>Aktif
+                                            </option>
+                                            <option value="Tidak Aktif" @if (old('prodi_active_status') == 'Tidak Aktif') selected @endif>
+                                                Tidak Aktif</option>
+                                        </select>
+                                        @if ($errors->has('prodi_active_status'))
+                                            <span class="text-danger">{{ $errors->first('prodi_active_status') }}</span>
+                                        @endif
+                                        @error('prodi_active_status')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-prodi_active_status"></small>
+                                    </div>
                                 </div>
-<div class="form-group mb-3">
-    <label for="prodi_periode" class="required-label">Periode Pelaporan</label>
-    <input type="number" name="prodi_periode" class="form-control"
-           value="{{ old('prodi_periode') }}" required
-        step="1" placeholder="Enter year">
-    @if ($errors->has('prodi_periode'))
-        <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
-    @endif
-    @error('prodi_periode')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-    <small class="text-danger error-message" id="error-prodi_periode"></small>
-</div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="prodi_periode" class="required-label">Periode Pelaporan</label>
+                                        <input type="number" name="prodi_periode" class="form-control"
+                                            value="{{ old('prodi_periode') }}" required step="1"
+                                            placeholder="Enter year">
+                                        @if ($errors->has('prodi_periode'))
+                                            <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
+                                        @endif
+                                        @error('prodi_periode')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                        <small class="text-danger error-message" id="error-prodi_periode"></small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Data Surat Keputusan</h5>
+                            <h5 class="card-title mb-4">Data Surat Keputusan</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -180,11 +185,9 @@
                                         <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                     </div>
                                 </div>
-                                <div class="btn-center mt-6">
+                                <div>
                                     <div id="buttons">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                        <a href="{{ route('perguruan-tinggi.show', ['id' => $organisasi->id]) }}"
-                                            type="submit" class="btn btn-primary">Keluar</a>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

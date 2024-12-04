@@ -2,34 +2,20 @@
 
 @section('title', 'Edit SK Perguruan Tinggi')
 
-@section('css')
-    <style>
-        .btn-center {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-sm-custom {
-            font-size: 0.875rem;
-            padding: 0.375rem 0.75rem;
-        }
-    </style>
-@endsection
-
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('program-studi.show', $sk->id_prodi) }}"><i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formSkPTedit" action="{{ route('sk-program-studi.update', ['id' => $sk->id]) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" name="id_prodi" value="{{ $sk->id_prodi }}" class="form-control"
-                        required>
-                    <div class="card">
+                    <input type="hidden" name="id_prodi" value="{{ $sk->id_prodi }}" class="form-control" required>
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Form Edit SK</h5>
+                            <h5 class="card-title mb-4">Form Edit SK</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -97,11 +83,9 @@
 
                                 <div id="file-preview" class="mt-3"></div>
 
-                                <div class="btn-center mt-3">
+                                <div>
                                     <div id="buttons">
-                                        <a href="{{ route('program-studi.show', $sk->id_prodi) }}"
-                                            class="btn btn-primary btn-sm-custom">Keluar</a>
-                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

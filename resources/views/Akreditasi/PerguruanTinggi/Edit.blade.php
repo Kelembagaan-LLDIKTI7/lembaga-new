@@ -2,23 +2,11 @@
 
 @section('title', 'Edit Akreditasi Perguruan Tinggi')
 
-@section('css')
-    <style>
-        .btn-center {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-sm-custom {
-            font-size: 0.875rem;
-            padding: 0.375rem 0.75rem;
-        }
-    </style>
-@endsection
-
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('perguruan-tinggi.show', ['id' => $akreditasi->id_organization]) }}">
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formAkreditasiPTedit" action="{{ route('akreditasi-perguruan-tinggi.update', $akreditasi->id) }}"
@@ -27,9 +15,9 @@
                     @method('PUT') <!-- Menggunakan metode PUT untuk update -->
                     <input type="hidden" name="id_organization" value="{{ $akreditasi->id_organization }}"
                         class="form-control" required>
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Form Edit Akreditasi</h5>
+                            <h5 class="card-title mb-4">Form Edit Akreditasi</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -80,10 +68,12 @@
                                         <select name="akreditasi_status" class="form-control select-search" required>
                                             <option value="">-- Pilih Status --</option>
                                             <option value="Berlaku"
-                                                {{ $akreditasi->akreditasi_status == 'Berlaku' ? 'selected' : '' }}>Berlaku
+                                                {{ $akreditasi->akreditasi_status == 'Berlaku' ? 'selected' : '' }}>
+                                                Berlaku
                                             </option>
                                             <option value="Dicabut"
-                                                {{ $akreditasi->akreditasi_status == 'Dicabut' ? 'selected' : '' }}>Dicabut
+                                                {{ $akreditasi->akreditasi_status == 'Dicabut' ? 'selected' : '' }}>
+                                                Dicabut
                                             </option>
                                             <option value="Tidak Berlaku"
                                                 {{ $akreditasi->akreditasi_status == 'Tidak Berlaku' ? 'selected' : '' }}>
@@ -108,7 +98,8 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="id_lembaga_akreditasi" class="required-label">Lembaga Akreditasi</label>
+                                        <label for="id_lembaga_akreditasi" class="required-label">Lembaga
+                                            Akreditasi</label>
                                         <select name="id_lembaga_akreditasi" class="form-control select-search" required>
                                             <option value="">-- Pilih Lembaga --</option>
                                             @foreach ($lembaga as $lembaga)
@@ -129,7 +120,8 @@
                                     <label for="sk_dokumen" class="required-label">Dokumen SK</label>
                                     <input type="file" name="sk_dokumen" class="form-control" accept=".pdf,.doc,.docx"
                                         onchange="previewFile(event)">
-                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX.</small>
+                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
+                                        DOCX.</small>
                                     <div id="file-preview" class="mt-3"></div> <!-- Tempat untuk preview -->
                                     @error('sk_dokumen')
                                         <small class="text-danger">{{ $message }}</small>
@@ -137,18 +129,17 @@
                                     <small class="text-danger error-message" id="error-sk_dokumen"></small>
                                 </div>
 
-                                <div class="btn-center mt-3">
+                                <div>
                                     <div id="buttons">
                                         @can('Detail Perguruan Tinggi')
-                                            <a href="{{ route('perguruan-tinggi.show', ['id' => $akreditasi->id_organization]) }}"
-                                                class="btn btn-primary btn-sm-custom">Keluar</a>
                                         @endCan
-                                        <button type="submit" class="btn btn-primary btn-sm-custom">Simpan</button>
+                                        <button type="submit" class="btn btn-primary float-end">Simpan</button>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">
                                             <strong>Loading...</strong>
-                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true">
+                                            </div>
                                         </div>
                                     </div>
                                     <div id="error-messages"></div>

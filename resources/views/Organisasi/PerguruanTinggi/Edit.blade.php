@@ -27,20 +27,22 @@
 
 @section('content')
     <div class="container-fluid">
+        <a href="{{ route('perguruan-tinggi.show', ['id' => $perguruanTinggi->id]) }}">
+            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+        </a>
         <div class="row">
             <div class="col-12">
                 <form id="formPTedit" action="{{ route('perguruan-tinggi.update', $perguruanTinggi->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <div class="card">
+                    <div class="card bordered">
                         <div class="card-body">
-                            <h5 class="card-title">Edit Perguruan Tinggi</h5>
-
+                            <h5 class="card-title mb-4">Edit Perguruan Tinggi</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_kode" class="form-label">Kode Perguruan Tinggi</label>
+                                        <label for="organisasi_kode">Kode Perguruan Tinggi</label>
                                         <div class="organisasi-kode-input-group">
                                             <input type="text" class="form-control" id="organisasi_kode"
                                                 name="organisasi_kode" value="{{ $perguruanTinggi->organisasi_kode }}"
@@ -52,7 +54,8 @@
                                         <small class="text-danger error-message" id="error-organisasi_kode"></small>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_nama" class="required-label">Nama Perguruan Tinggi</label>
+                                        <label for="organisasi_nama" class="required-label">Nama Perguruan
+                                            Tinggi</label>
                                         <input type="text" name="organisasi_nama" class="form-control"
                                             value="{{ $perguruanTinggi->organisasi_nama }}" required>
                                         @if ($errors->has('organisasi_nama'))
@@ -72,7 +75,8 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="organisasi_email" class="required-label">Email Perguruan Tinggi</label>
+                                        <label for="organisasi_email" class="required-label">Email Perguruan
+                                            Tinggi</label>
                                         <input type="text" name="organisasi_email" class="form-control"
                                             value="{{ $perguruanTinggi->organisasi_email }}" required>
                                         @if ($errors->has('organisasi_email'))
@@ -203,25 +207,21 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex justify-content-end">
-                                    <div id="buttons">
-                                        <button type="submit" class="btn btn-primary me-2">Simpan</button>
-                                        <a href="{{ route('perguruan-tinggi.show', ['id' => $perguruanTinggi->id]) }}"
-                                            class="btn btn-primary">Keluar</a>
-                                    </div>
-                                    <div id="loading">
-                                        <div class="d-flex align-items-center">
-                                            <strong>Loading...</strong>
-                                            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-end">
+                                        <div id="buttons">
+                                            <button type="submit" class="btn btn-primary">Simpan</button>
                                         </div>
+                                        <div id="loading">
+                                            <div class="d-flex align-items-center">
+                                                <strong>Loading...</strong>
+                                                <div class="spinner-border ms-auto" role="status" aria-hidden="true">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="error-messages"></div>
                                     </div>
-                                    <div id="error-messages"></div>
                                 </div>
                             </div>
                         </div>
