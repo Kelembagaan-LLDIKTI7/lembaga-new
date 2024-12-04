@@ -312,12 +312,24 @@ class PerguruanTinggiController extends Controller
         if ($user->hasRole('Badan Penyelenggara')) {
             $bp = Organisasi::where('id', $user->id_organization)->first();
             if ($organisasi->parent_id != $bp->id) {
-                return abort(403);
+                $pt = Organisasi::where('parent_id', $user->id_organization)->get();
+                $listPt = [];
+                foreach ($pt as $item) {
+                    $berubah = json_decode($item->organisasi_berubah_id, true);
+                    $listPt = array_merge($listPt, $berubah);
+                }
+                if (!in_array($organisasi->id, $listPt)) {
+                    return abort(403);
+                }
             }
         }
 
         if ($user->hasRole('Perguruan Tinggi') && $organisasi->id != $user->id_organization) {
-            return abort(403);
+            $pt = Organisasi::where('id', $user->id_organization)->first();
+            $listPt = json_decode($pt->organisasi_berubah_id, true);
+            if (!in_array($organisasi->id, $listPt)) {
+                return abort(403);
+            }
         }
 
         $berubahIds = json_decode($organisasi->organisasi_berubah_id, true);
