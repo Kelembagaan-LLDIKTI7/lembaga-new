@@ -381,7 +381,7 @@
                                             <th>Kode</th>
                                             <th>Nama Prodi</th>
                                             <th>Program</th>
-                                            <th>Periode</th>
+                                            <th>Periode Awal Pelaporan PDDIKTI</th>
                                             <th>Status</th>
                                             <th>Peringkat Akreditasi</th>
                                             {{-- <th>SK Akreditasi</th>
@@ -410,7 +410,7 @@
                                                 @endphp
 
                                                     {{ $newPeriode }}</td>
-                                                <td>{{ $prodi->prodi_active_status }}</td>
+                                                <td>{{ $prodi->prodiStatus ? $prodi->prodiStatus->prodi_status_nama : 'Status Tidak Tersedia' }}</td>
                                                 @php
                                                     $akreditasi = $prodi->akreditasis->last();
                                                 @endphp

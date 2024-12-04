@@ -25,7 +25,7 @@
                                     <td>{{ $prodi->prodi_jenjang ?? '-' }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Periode Pelaporan Awal</th>
+                                    <th>Periode Awal Pelaporan PDDIKTI</th>
                                     <td>
                                         @php
                                             $periode = $prodi->prodi_periode;
@@ -45,7 +45,7 @@
                                 </tr>
                                 <tr>
                                     <th>Status</th>
-                                    <td>{{ $prodi->prodi_active_status }}</td>
+                                    <td>{{ $prodi->prodistatus->prodi_status_nama }}</td>
                                 </tr>
                                 <tr>
                                     <th>Nomor SK Ijin Prodi</th>
@@ -94,7 +94,7 @@
                                             <th>Kode</th>
                                             <th>Nama Prodi</th>
                                             <th>Program</th>
-                                            <th>Periode</th>
+                                            <th>Periode Awal Pelaporan PDDIKTI</th>
                                             <th>Status</th>
                                         </tr>
                                     </thead>
@@ -121,7 +121,7 @@
 
                                                     {{ $newPeriode }}
                                                 </td>
-                                                <td>{{ $histori->prodi_active_status }}</td>
+                                                <td>{{ $histori->prodistatus->prodi_status_nama }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

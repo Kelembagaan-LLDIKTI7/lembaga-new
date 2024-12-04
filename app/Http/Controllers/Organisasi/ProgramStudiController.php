@@ -9,6 +9,7 @@ use App\Models\HistoryProgramStudi;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Organisasi;
 use App\Models\Perkara;
+use App\Models\ProdiStatus;
 use App\Models\ProgramStudi;
 use App\Models\SuratKeputusan;
 use App\Models\User;
@@ -38,6 +39,7 @@ class ProgramStudiController extends Controller
             })
             ->leftJoin('lembaga_akreditasis', 'akreditasis.id_lembaga_akreditasi', '=', 'lembaga_akreditasis.id')
             ->leftJoin('peringkat_akreditasis', 'akreditasis.id_peringkat_akreditasi', '=', 'peringkat_akreditasis.id')
+            ->leftJoin('prodi_statuses', 'program_studis.prodi_active_status', '=', 'prodi_statuses.id')
             ->where(function ($query) {
                 $query->whereNull('organisasis.tampil')
                     ->orWhereNot('organisasis.tampil', 0);
@@ -53,7 +55,7 @@ class ProgramStudiController extends Controller
                 'program_studis.prodi_jenjang as prodi_jenjang',
                 'akreditasis.akreditasi_sk as no_sk_akreditasi',
                 'program_studis.prodi_periode as prodi_periode',
-                'program_studis.prodi_active_status as status',
+                'prodi_statuses.prodi_status_nama as status',
                 'akreditasis.akreditasi_tgl_awal as tgl_terbit_sk_akreditasi',
                 'peringkat_akreditasis.peringkat_nama as akreditasi',
                 'akreditasis.akreditasi_tgl_akhir as tgl_akhir_sk_akreditasi',
@@ -85,9 +87,12 @@ class ProgramStudiController extends Controller
 
         $jenis = JenisSuratKeputusan::where('jsk_nama', 'SK Pendirian')->first();
 
+        $status = ProdiStatus::all();
+
         return view('Organisasi.ProgramStudi.Create', [
             'organisasi' => $organisasi,
-            'jenis' => $jenis
+            'jenis' => $jenis,
+            'status' => $status,
         ]);
         // return response()->json(['organisasi' => $organisasi]);
     }
@@ -253,7 +258,8 @@ class ProgramStudiController extends Controller
                     ->oldest('sk_tanggal')->limit(1);
             },
             'suratKeputusan.jenisSuratKeputusan:id,jsk_nama',
-            'perguruanTinggi:id,organisasi_nama'
+            'perguruanTinggi:id,organisasi_nama',
+            'prodistatus:id,prodi_status_nama' 
         ])->select(
             'id',
             'prodi_kode',
@@ -331,16 +337,22 @@ class ProgramStudiController extends Controller
             'prodi_jenjang',
             'prodi_periode',
             'prodi_active_status'
-        )->with(['suratKeputusan' => function ($query) {
-            $query->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
-                ->whereHas('jenisSuratKeputusan', function ($subQuery) {
-                    $subQuery->where('jsk_nama', 'SK Pendirian');
-                })
-                ->oldest('sk_tanggal')->limit(1);
-        }])->findOrFail($id);
+        )->with([
+            'suratKeputusan' => function ($query) {
+                $query->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
+                    ->whereHas('jenisSuratKeputusan', function ($subQuery) {
+                        $subQuery->where('jsk_nama', 'SK Pendirian');
+                    })
+                    ->oldest('sk_tanggal')->limit(1);
+            },
+            'prodistatus',
+        ])->findOrFail($id);
+
+        $status = ProdiStatus::select('id', 'prodi_status_nama')->get();
 
         return view('Organisasi.ProgramStudi.Edit', [
             'prodi' => $prodi,
+            'status' => $status,
         ]);
         // return response()->json(['prodi' => $prodi]);
     }
@@ -437,17 +449,6 @@ class ProgramStudiController extends Controller
                 'sk_dokumen' => $request->file('sk_dokumen') ? $request->file('sk_dokumen')->store('sk_dokumen') : null,
             ]
         );
-
-        HistoryProgramStudi::create([
-            'id' => Str::uuid(),
-            'id_prodi' => $prodi->id,
-            'prodi_kode' => $request->prodi_kode,
-            'prodi_nama' => $request->prodi_nama,
-            'prodi_active_status' => $request->prodi_active_status,
-            'prodi_jenjang' => $request->prodi_jenjang,
-            'prodi_periode' => $request->prodi_periode,
-            'id_user' => Auth::user()->id,
-        ]);
 
         session()->flash('success', 'Program Studi berhasil diubah.');
 

@@ -302,7 +302,8 @@ class PerguruanTinggiController extends Controller
         )->with([
             'prodis' => function ($query) {
                 $query->select('id', 'id_organization', 'prodi_kode', 'prodi_nama', 'prodi_jenjang', 'prodi_periode', 'prodi_active_status')
-                    ->orderBy('created_at', 'asc');
+                    ->orderBy('created_at', 'asc')
+                    ->with('prodiStatus');
             },
             'bentukPt' => function ($query) {
                 $query->select('id', 'bentuk_nama')->first();
