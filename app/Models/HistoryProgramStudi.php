@@ -25,4 +25,9 @@ class HistoryProgramStudi extends Model
     {
         return $this->belongsTo(ProgramStudi ::class, 'id_prodi', 'id');
     }
+    
+    public function prodistatus()
+    {
+        return $this->belongsTo(ProdiStatus::class, 'prodi_active_status', 'id');
+    }
 }

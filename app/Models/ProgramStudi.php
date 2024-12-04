@@ -39,4 +39,9 @@ class ProgramStudi extends Model
     {
         return $this->hasMany(Perkara::class, 'id_organization', 'id');
     }
+
+    public function prodistatus()
+    {
+        return $this->belongsTo(ProdiStatus::class, 'prodi_active_status', 'id');
+    }
 }

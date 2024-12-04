@@ -64,10 +64,10 @@
                                         <label for="prodi_active_status" class="required-label">Status</label>
                                         <select name="prodi_active_status" class="form-control select-search" required>
                                             <option value="">-- Pilih Status --</option>
-                                            <option value="Aktif" @if (old('prodi_active_status') == 'Aktif') selected @endif>Aktif
-                                            </option>
-                                            <option value="Tidak Aktif" @if (old('prodi_active_status') == 'Tidak Aktif') selected @endif>
-                                                Tidak Aktif</option>
+                                                @foreach ($status as $item)
+                                                <option value="{{ $item->id }}">
+                                                    {{ $item->prodi_status_nama }}</option>
+                                            @endforeach
                                         </select>
                                         @if ($errors->has('prodi_active_status'))
                                             <span class="text-danger">{{ $errors->first('prodi_active_status') }}</span>
@@ -116,11 +116,11 @@
                                     </div>
                                 </div>
 <div class="form-group mb-3">
-    <label for="prodi_periode" class="required-label">Periode Pelaporan</label>
+    <label for="prodi_periode" class="required-label">Periode Awal Pelaporan PDDIKTI</label>
     <input type="number" name="prodi_periode" class="form-control"
            value="{{ old('prodi_periode') }}" required
         step="1" placeholder="Enter year">
-        <small class="form-text text-muted">Silahkan Masukkan Periode Pelaporan dengan format Tahun. akhiri dengan angka 1 untuk Gasal dan angka 2 untuk Genap. Contoh : 20241 untuk '2024 Gasal'</small>
+        <small class="form-text text-muted">Silahkan Masukkan Periode Awal Pelaporan PDDIKTI dengan format Tahun. akhiri dengan angka 1 untuk Gasal dan angka 2 untuk Genap. Contoh : 20241 untuk '2024 Gasal'</small>
     @if ($errors->has('prodi_periode'))
         <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
     @endif

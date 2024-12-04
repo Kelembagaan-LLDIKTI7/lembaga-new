@@ -27,7 +27,7 @@
                                 <th>Kode Prodi</th>
                                 <th>Nama Prodi</th>
                                 <th>Program</th>
-                                <th>Periode</th>
+                                <th>Periode Awal Pelaporan PDDIKTI</th>
                                 <th>Status</th>
                                 <th>Peringkat Akreditasi</th>
                                 <th>SK Akreditasi</th>
