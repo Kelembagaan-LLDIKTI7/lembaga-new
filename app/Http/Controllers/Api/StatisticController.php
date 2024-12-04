@@ -39,7 +39,7 @@ class StatisticController extends Controller
 
         // Menghitung total sesuai dengan filter
         $totalPerguruanTinggi = $queryPT->count();
-        $totalProdi = $queryProdi->where('prodi_active_status', 'Aktif') ->count();
+        $totalProdi = $queryProdi->where('prodi_active_status', '1') ->count();
         $totalBentukPT = Organisasi::distinct('organisasi_bentuk_pt')->where('organisasi_type_id', 3)->count();
         $totalWilayah = Organisasi::distinct('organisasi_kota')->where('organisasi_type_id', 3)->count();
 

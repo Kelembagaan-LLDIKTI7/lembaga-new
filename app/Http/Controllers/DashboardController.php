@@ -24,7 +24,7 @@ class DashboardController extends Controller
             ->get();
 
         $perguruanTinggi = Organisasi::where('organisasi_type_id', 3)->count();
-        $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')->count();
+        $programStudi = ProgramStudi::where('prodi_active_status', '1')->count();
         $bentukPt = BentukPt::count();
         $kota = Kota::count();
 
@@ -38,7 +38,7 @@ class DashboardController extends Controller
                 $query->where('organisasi_type_id', 3)
                     ->select('id', 'organisasi_bentuk_pt')
                     ->withCount(['prodis as active_program_studi_count' => function ($subQuery) {
-                        $subQuery->where('prodi_active_status', 'Aktif');
+                        $subQuery->where('prodi_active_status', '1');
                     }]);
             }])
             ->get();
@@ -53,7 +53,7 @@ class DashboardController extends Controller
                 ->where('parent_id', $user->id_organization)
                 ->count();
 
-            $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')
+            $programStudi = ProgramStudi::where('prodi_active_status', '1')
                 ->whereHas('perguruanTinggi', function ($query) use ($user) {
                     $query->where('parent_id', $user->id_organization);
                 })->count();
@@ -90,14 +90,14 @@ class DashboardController extends Controller
                         ->where('organisasi_type_id', 3)
                         ->where('parent_id', $user->id_organization)
                         ->whereHas('prodis', function ($query) {
-                            $query->where('prodi_active_status', 'Aktif');
+                            $query->where('prodi_active_status', '1');
                         });
                 }])
                 ->withCount(['organisasi as program_studi_count' => function ($query) use ($user) {
                     $query->where('organisasi_type_id', 2)
                         ->where('parent_id', $user->id_organization)
                         ->whereHas('prodis', function ($query) {
-                            $query->where('prodi_active_status', 'Aktif');
+                            $query->where('prodi_active_status', '1');
                         });
                 }])->get();
         }
@@ -106,7 +106,7 @@ class DashboardController extends Controller
                 ->where('organisasi_type_id', 3)
                 ->count();
 
-            $programStudi = ProgramStudi::where('prodi_active_status', 'Aktif')
+            $programStudi = ProgramStudi::where('prodi_active_status', '1')
                 ->where('id_organization', $user->id_organization)
                 ->count();
 
@@ -134,14 +134,14 @@ class DashboardController extends Controller
                         ->where('organisasi_type_id', 3)
                         ->where('parent_id', $user->id_organization)
                         ->whereHas('prodis', function ($query) {
-                            $query->where('prodi_active_status', 'Aktif');
+                            $query->where('prodi_active_status', '1');
                         });
                 }])
                 ->withCount(['organisasi as program_studi_count' => function ($query) use ($user) {
                     $query->where('organisasi_type_id', 3)
                         ->where('parent_id', $user->id_organization)
                         ->whereHas('prodis', function ($query) {
-                            $query->where('prodi_active_status', 'Aktif');
+                            $query->where('prodi_active_status', '1');
                         });
                 }])->get();
         }
@@ -149,7 +149,7 @@ class DashboardController extends Controller
         $jenjangList = ['D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'];
 
         $programPendidikanCounts = ProgramStudi::select('prodi_jenjang')
-            ->where('prodi_active_status', 'Aktif')
+            ->where('prodi_active_status', '1')
             ->when($user->hasRole('Badan Penyelenggara'), function ($query) use ($user) {
                 $query->whereHas('perguruanTinggi', function ($query) use ($user) {
                     $query->where('parent_id', $user->id_organization);
