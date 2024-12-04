@@ -61,7 +61,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label for="validationCustom01" class="required-label">Nomor Induk Pegawai</label>
+                        <label for="validationCustom01" class="form-label">Nomor Induk Pegawai</label>
                         <input type="text" class="form-control @error('nip') is-invalid @enderror"
                             id="validationCustom01" name="nip" value="{{ old('nip') }}">
                         @error('nip')
