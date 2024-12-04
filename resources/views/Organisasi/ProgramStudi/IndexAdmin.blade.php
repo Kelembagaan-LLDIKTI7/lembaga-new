@@ -9,12 +9,12 @@
                 <div class="mb-2">
                     <h5 class="mb-0">Program Studi</h5>
                 </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center mb-2">
                     @can('Export Program Studi')
-                    <a href="{{ route('prodi.export') }}" class="btn btn-success btn-sm me-2">
-                        Export Excel
-                    </a>
-                @endCan
+                        <a href="{{ route('prodi.export') }}" class="btn btn-success btn-sm me-2">
+                            Export Excel
+                        </a>
+                    @endCan
                 </div>
                 <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                     <table id="program_studi" class="table-striped table-bordered display text-nowrap table border"
@@ -30,8 +30,8 @@
                                 <th>Periode Awal Pelaporan PDDIKTI</th>
                                 <th>Status</th>
                                 <th>Peringkat Akreditasi</th>
-                                <th>SK Akreditasi</th>
-                                <th>Tanggal Kadaluarsa</th>
+                                {{-- <th>SK Akreditasi</th>
+                                <th>Tanggal Kadaluarsa</th> --}}
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -45,25 +45,25 @@
                                     <td>{{ $prodi->prodi_nama }}</td>
                                     <td>{{ $prodi->prodi_jenjang }}</td>
                                     <td> @php
-            $periode = $prodi->prodi_periode; // Get the full periode value
-            $lastDigit = substr($periode, -1); // Extract the last digit
-            $newPeriode = substr($periode, 0, -1); // Remove the last digit
-            if ($lastDigit == '1') {
-                $newPeriode .= ' Gasal'; // Append 'gasal'
-            } elseif ($lastDigit == '2') {
-                $newPeriode .= ' Genap'; // Append 'genap'
-            } else {
-                $newPeriode .= $lastDigit; // Keep the original digit for other cases
-            }
-        @endphp
+                                        $periode = $prodi->prodi_periode;
+                                        $lastDigit = substr($periode, -1);
+                                        $newPeriode = substr($periode, 0, -1);
+                                        if ($lastDigit == '1') {
+                                            $newPeriode .= ' Gasal';
+                                        } elseif ($lastDigit == '2') {
+                                            $newPeriode .= ' Genap';
+                                        } else {
+                                            $newPeriode .= $lastDigit;
+                                        }
+                                    @endphp
 
-        {{ $newPeriode }}</td>
+                                        {{ $newPeriode }}</td>
                                     <td>{{ $prodi->status }}</td>
                                     <td>
                                         {{ $prodi->akreditasi ?? '' }}
                                     </td>
-                                    <td>{{ $prodi->no_sk_akreditasi ?? '' }}</td>
-                                    <td>{{ $prodi->tgl_akhir_sk_akreditasi ?? '' }}</td>
+                                    {{-- <td>{{ $prodi->no_sk_akreditasi ?? '' }}</td>
+                                    <td>{{ $prodi->tgl_akhir_sk_akreditasi ?? '' }}</td> --}}
                                     <td>
                                         @can('Detail Program Studi')
                                             <a href="{{ route('program-studi.show', $prodi->id) }}"

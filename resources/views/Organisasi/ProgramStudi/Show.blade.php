@@ -107,21 +107,21 @@
                                                 <td>{{ $histori->prodi_jenjang }}</td>
                                                 <td>
                                                     @php
-                                                        $periode = $prodi->prodi_periode; // Get the full periode value
-                                                        $lastDigit = substr($periode, -1); // Extract the last digit
-                                                        $newPeriode = substr($periode, 0, -1); // Remove the last digit
+                                                        $periode = $prodi->prodi_periode;
+                                                        $lastDigit = substr($periode, -1);
+                                                        $newPeriode = substr($periode, 0, -1);
                                                         if ($lastDigit == '1') {
-                                                            $newPeriode .= ' Gasal'; // Append 'gasal'
+                                                            $newPeriode .= ' Gasal';
                                                         } elseif ($lastDigit == '2') {
-                                                            $newPeriode .= ' Genap'; // Append 'genap'
+                                                            $newPeriode .= ' Genap';
                                                         } else {
-                                                            $newPeriode .= $lastDigit; // Keep the original digit for other cases
+                                                            $newPeriode .= $lastDigit;
                                                         }
                                                     @endphp
 
                                                     {{ $newPeriode }}
                                                 </td>
-                                                <td>{{ $histori->prodistatus->prodi_status_nama }}</td>
+                                                <td>{{ $histori->prodistatus->prodi_status_nama ?? '-' }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
