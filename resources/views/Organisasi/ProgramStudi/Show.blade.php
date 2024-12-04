@@ -13,9 +13,15 @@
 
 @section('content')
     <div class="container-fluid">
-        <a href="{{ route('perguruan-tinggi.show', $prodi->perguruanTinggi->id) }}"> 
-            <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
-        </a>
+        @if ($prodi->perguruanTinggi && $prodi->perguruanTinggi->id)
+            <a href="{{ route('perguruan-tinggi.show', $prodi->perguruanTinggi->id) }}">
+                <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+            </a>
+        @else
+            <a href="{{ route('program-studi.index') }}">
+                <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali
+            </a>
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card bordered">
@@ -26,12 +32,18 @@
                                 <h6>Informasi Program Studi</h6>
                             </div>
                             <div>
-                                <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-primary"><i
-                                        class="fas fa-edit me-2"></i> Edit</a>
+                                @can('Edit Program Studi')
+                                    <a href="{{ route('program-studi.edit', $prodi->id) }}" class="btn btn-primary"><i
+                                            class="fas fa-edit me-2"></i> Edit</a>
+                                @endCan
                             </div>
                         </div>
                         <div class="mb-4">
                             <table id="custom-padding" class="table-borderless table">
+                                <tr>
+                                    <th>Nama Perguruan Tinggi</th>
+                                    <td>{{ $prodi->perguruanTinggi->organisasi_nama ?? '-' }}</td>
+                                </tr>
                                 <tr>
                                     <th>Nama Program Studi</th>
                                     <td>{{ $prodi->prodi_nama }}</td>
@@ -44,15 +56,15 @@
                                     <th>Periode Pelaporan Awal</th>
                                     <td>
                                         @php
-                                            $periode = $prodi->prodi_periode; // Get the full periode value
-                                            $lastDigit = substr($periode, -1); // Extract the last digit
-                                            $newPeriode = substr($periode, 0, -1); // Remove the last digit
+                                            $periode = $prodi->prodi_periode;
+                                            $lastDigit = substr($periode, -1);
+                                            $newPeriode = substr($periode, 0, -1);
                                             if ($lastDigit == '1') {
-                                                $newPeriode .= ' Gasal'; // Append 'gasal'
+                                                $newPeriode .= ' Gasal';
                                             } elseif ($lastDigit == '2') {
-                                                $newPeriode .= ' Genap'; // Append 'genap'
+                                                $newPeriode .= ' Genap';
                                             } else {
-                                                $newPeriode .= $lastDigit; // Keep the original digit for other cases
+                                                $newPeriode .= $lastDigit;
                                             }
                                         @endphp
 
@@ -66,23 +78,26 @@
                                 </tr>
                                 <tr>
                                     <th>Nomor SK Ijin Prodi</th>
-                                    <td>{{ $prodi->suratKeputusan->sk_nomor }}</td>
+                                    <td>{{ $prodi->suratKeputusan->sk_nomor ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Tanggal SK Prodi</th>
-                                    <td>{{ \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y') ?? '-' }}
+                                    <td>
+                                        {{ $prodi->suratKeputusan && $prodi->suratKeputusan->sk_tanggal
+                                            ? \Carbon\Carbon::parse($prodi->suratKeputusan->sk_tanggal)->translatedFormat('d F Y')
+                                            : '-' }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Dokumen SK</th>
-                                    @if ($prodi->suratKeputusan->sk_dokumen)
-                                        <td>
+                                    <td>
+                                        @if ($prodi->suratKeputusan && $prodi->suratKeputusan->sk_dokumen)
                                             <a href="{{ asset('storage/' . $prodi->suratKeputusan->sk_dokumen) }}"
                                                 target="_blank">Dokumen</a>
-                                        </td>
-                                    @else
-                                        <td>-</td>
-                                    @endif
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -272,8 +287,8 @@
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title mb-4">Evaluasi</h5>
                                 <div>
-                                    @can('Create Perkara Program Studi')
-                                        <a href="{{ route('perkara-prodi.create', $prodi->id) }}" class="btn btn-primary">
+                                    @can('Create Evaluasi Program Studi')
+                                        <a href="{{ route('evaluasi-prodi.create', $prodi->id) }}" class="btn btn-primary">
                                             Tambah Evaluasi
                                         </a>
                                     @endCan
@@ -303,7 +318,13 @@
                                                 </td>
                                                 <td>{{ $perkara->status }}</td>
                                                 <td>
-                                                    @can('Update Status Perkara Program Studi')
+                                                    @can('View Detail Evaluasi Program Studi')
+                                                        <a href="{{ route('evaluasi-prodi.show', $perkara->id) }}"
+                                                            class="btn btn-sm btn-primary me-2">
+                                                            <i class="ti ti-info-circle"></i>
+                                                        </a>
+                                                    @endCan
+                                                    @can('Update Status Evaluasi Program Studi')
                                                         <button class="btn btn-sm btn-warning edit-status me-2"
                                                             data-bs-toggle="modal" data-bs-target="#editStatusModal"
                                                             data-id="{{ $perkara->id }}"
@@ -405,7 +426,8 @@
                     option.selected = option.value === currentStatus;
                 });
 
-                document.getElementById('editStatusForm').action = `/perkara-organisasi/${perkaraId}/status-update`;
+                document.getElementById('editStatusForm').action =
+                    `/evaluasi-organisasi/${perkaraId}/status-update`;
             }
         });
     </script>

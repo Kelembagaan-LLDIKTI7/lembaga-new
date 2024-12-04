@@ -11,9 +11,11 @@
                     <i class="fas fa-file-import me-2"></i> Import Excel
                 </button>
             @endCan
-            <a href="{{ route('pt.export') }}" class="btn btn-success">
-                <i class="fas fa-file-export me-2"></i> Export Excel
-            </a>
+            @can('Export Perguruan Tinggi')
+                <a href="{{ route('pt.export') }}" class="btn btn-success">
+                    <i class="fas fa-file-export me-2"></i> Export Excel
+                </a>
+            @endCan
             @can('Create Perguruan Tinggi')
                 <a href="{{ route('perguruan-tinggi.create') }}" class="btn btn-primary">
                     Tambah Perguruan Tinggi

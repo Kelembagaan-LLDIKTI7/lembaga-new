@@ -54,7 +54,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="col-md-4 mb-3">
-                                        <label for="validationCustom01">Kode Perguruan Tinggi</label>
+                                        <label for="validationCustom01" class="required-label">Kode Perguruan Tinggi</label>
                                         <div class="organisasi-kode-input-group" id="organisasi-kode-input-group">
                                             <input type="text" class="form-control" id="organisasi_kode"
                                                 name="organisasi_kode" required>
@@ -136,8 +136,8 @@
                                     </div>
 
                                     <div class="form-group mb-3">
-                                        <label for="parent_id" class="required-label">Badan Penyelenggara</label>
-                                        <select name="parent_id" class="form-control select-search" required>
+                                        <label for="parent_id">Badan Penyelenggara</label>
+                                        <select name="parent_id" class="form-control select-search">
                                             <option value="">-- Pilih Parent Organisasi --</option>
                                             @foreach ($badanPenyelenggaras as $badanPenyelenggara)
                                                 <option value="{{ $badanPenyelenggara->id }}">
@@ -172,7 +172,7 @@
                                             accept="image/png, image/jpg, image/jpeg, image/gif"
                                             onchange="previewLogo(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
-                                            GIF.</small>
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         <img id="logo-preview" src="#" alt="Preview Logo" style="display: none;">
                                         @error('organisasi_logo')
                                             <small class="text-danger">{{ $message }}</small>
@@ -186,7 +186,7 @@
                                             required>
                                             <option value="Aktif">Pendirian</option>
                                             <option value="Alih Bentuk">Alih Bentuk</option>
-                                            <option value="penggabungan">Penggabungan</option>
+                                            <option value="Penggabungan">Penggabungan</option>
                                         </select>
                                         @error('berubah')
                                             <small class="text-danger">{{ $message }}</small>
@@ -196,14 +196,12 @@
 
                                     <div class="form-group mb-3">
                                         <label for="organisasi_berubah_id">PT Yang diubah</label>
-                                        <select class="form-control select-search" name="organisasi_berubah_id[]"
-                                            id="organisasi_berubah_id" multiple>
-                                            <option value="">-- Pilih Perguruan Tinggi --</option>
-                                            @foreach ($perguruanTinggis as $perguruanTinggi)
-                                                <option value="{{ $perguruanTinggi->id }}">
-                                                    {{ $perguruanTinggi->organisasi_nama }}</option>
-                                            @endforeach
-                                        </select>
+                                        <select class="form-control select2" name="organisasi_berubah_id[]" id="organisasi_berubah_id" multiple>
+    <option value="">-- Pilih Perguruan Tinggi --</option>
+    @foreach ($perguruanTinggis as $perguruanTinggi)
+        <option value="{{ $perguruanTinggi->id }}">{{ $perguruanTinggi->organisasi_nama }}</option>
+    @endforeach
+</select>
                                         @error('organisasi_berubah_id')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -242,7 +240,6 @@
                                     <div class="form-group mb-3">
                                         <label for="id_jenis_surat_keputusan">Jenis Surat Keputusan</label>
                                         <select name="id_jenis_surat_keputusan" class="form-control select-search">
-                                            <option value="">-- Pilih Perguruan Tinggi --</option>
                                             @foreach ($jenis as $jenis)
                                                 <option value="{{ $jenis->id }}">
                                                     {{ $jenis->jsk_nama }}</option>
@@ -260,7 +257,7 @@
                                         <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
+                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
                                         @error('sk_dokumen')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -289,6 +286,13 @@
 
 @section('js')
     <script>
+        $(document).ready(function() {
+    $('#organisasi_berubah_id').select2({
+        placeholder: '-- Pilih Perguruan Tinggi --',
+        allowClear: true,
+        width: '100%'
+    });
+});
         $(document).ready(function() {
             $('#loading').hide();
             $('#formPT').on('submit', function(event) {

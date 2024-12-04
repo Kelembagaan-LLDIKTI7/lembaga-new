@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah Perkara Organisasi')
+@section('title', 'Tambah Evaluasi Organisasi')
 
 @section('css')
     <style>
@@ -40,14 +40,14 @@
             <i class="fas fa-arrow-left mb-4 me-2"></i> Kembali</a>
         <div class="row">
             <div class="col-12">
-                <form id="formPerkaraPT" action="{{ route('perkara-organisasi.update', $perkaras->id) }}" method="POST"
+                <form id="formPerkaraPT" action="{{ route('evaluasi-organisasi.update', $perkaras->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="id" value="{{ $perkaras->id }}">
                     <div class="card mb-4 bordered">
                         <div class="card-body">
-                            <h5 class="card-title mb-4">Edit Perkara Organisasi</h5>
+                            <h5 class="card-title mb-4">Edit Evaluasi Organisasi</h5>
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -83,6 +83,8 @@
                                         <label for="bukti_foto">Bukti Foto</label>
                                         <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control"
                                             multiple accept="image/*">
+                                        <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         <small class="text-danger error-message" id="error-bukti_foto"></small>
                                     </div>
 
@@ -152,7 +154,7 @@
 
                 // Step 1: Validate the data
                 $.ajax({
-                    url: '{{ route('perkara-organisasi.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
+                    url: '{{ route('evaluasi-organisasi.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
                     type: 'POST', // Use POST instead of PUT for AJAX requests
                     data: formData,
                     contentType: false,
@@ -194,7 +196,7 @@
 
             function submitToStore(formData) {
                 $.ajax({
-                    url: '{{ route('perkara-organisasi.update', $perkaras->id) }}', // Update route
+                    url: '{{ route('evaluasi-organisasi.update', $perkaras->id) }}', // Update route
                     type: 'POST', // Use POST and spoof method as PUT
                     data: formData,
                     contentType: false,

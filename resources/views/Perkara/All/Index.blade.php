@@ -41,10 +41,12 @@
                                             </td>
                                             <td>{{ $perkara->status }}</td>
                                             <td>
-                                                <a href="{{ route('perkara.show', $perkara->id) }}"
-                                                    class="btn btn-sm btn-primary me-2">
-                                                    Detail
-                                                </a>
+                                                @can('View Detail Evaluasi Master')
+                                                    <a href="{{ route('evaluasi.show', $perkara->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        Detail
+                                                    </a>
+                                                @endCan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -87,10 +89,12 @@
                                             <td>{{ $perkara->prodi_nama }}</td>
                                             <td>{{ $perkara->status }}</td>
                                             <td>
-                                                <a href="{{ route('perkara.showprodi', $perkara->id) }}"
-                                                    class="btn btn-sm btn-primary me-2">
-                                                    Detail
-                                                </a>
+                                                @can('View Detail Evaluasi Master')
+                                                    <a href="{{ route('evaluasi.showprodi', $perkara->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        Detail
+                                                    </a>
+                                                @endCan
                                             </td>
                                         </tr>
                                     @endforeach

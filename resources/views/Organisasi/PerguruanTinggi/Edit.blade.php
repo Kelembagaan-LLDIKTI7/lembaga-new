@@ -116,7 +116,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label for="parent_id">Badan Penyelenggara</label>
-                                        <select name="parent_id" class="form-control select-search" required>
+                                        <select name="parent_id" class="form-control select-search">
                                             <option value="">-- Pilih Parent Organisasi --</option>
                                             @foreach ($badanPenyelenggaras as $badanPenyelenggara)
                                                 <option value="{{ $badanPenyelenggara->id }}"
@@ -199,7 +199,7 @@
                                         <input type="file" name="organisasi_logo" class="form-control"
                                             accept="image/png, image/jpg, image/jpeg, image/gif">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
-                                            GIF.</small>
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         @if ($errors->has('organisasi_logo'))
                                             <span class="text-danger">{{ $errors->first('organisasi_logo') }}</span>
                                         @endif

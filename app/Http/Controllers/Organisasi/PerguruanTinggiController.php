@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\PtImport;
 use App\Models\Akreditasi;
 use App\Models\BentukPt;
+use App\Models\HistoriPt;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
@@ -94,10 +95,6 @@ class PerguruanTinggiController extends Controller
             ->get();
 
         $perguruanTinggis = Organisasi::where('organisasi_type_id', 3)
-            ->where(function ($q) {
-                $q->whereNull('tampil')
-                    ->orWhereNot('tampil', 0);
-            })
             ->select(
                 'id',
                 'organisasi_nama'
@@ -246,10 +243,18 @@ class PerguruanTinggiController extends Controller
             'parent_id' => $validated['parent_id'],
         ]);
 
+        $status = '';
+        if ($validated['berubah'] == 'Alih Bentuk') {
+            $status = 'Perubahan Bentuk';
+        } elseif ($validated['berubah'] == 'Penggabungan') {
+            $status = 'Penggabungan';
+        }
+
         if ($organisasiBerubahId) {
             foreach ($organisasiBerubahId as $id) {
                 Organisasi::where('id', $id)->update([
                     'organisasi_status' => 'Alih Bentuk',
+                    'organisasi_berubah_status' => $status,
                 ]);
             }
         }
@@ -307,12 +312,24 @@ class PerguruanTinggiController extends Controller
         if ($user->hasRole('Badan Penyelenggara')) {
             $bp = Organisasi::where('id', $user->id_organization)->first();
             if ($organisasi->parent_id != $bp->id) {
-                return abort(403);
+                $pt = Organisasi::where('parent_id', $user->id_organization)->get();
+                $listPt = [];
+                foreach ($pt as $item) {
+                    $berubah = json_decode($item->organisasi_berubah_id, true);
+                    $listPt = array_merge($listPt, $berubah);
+                }
+                if (!in_array($organisasi->id, $listPt)) {
+                    return abort(403);
+                }
             }
         }
 
         if ($user->hasRole('Perguruan Tinggi') && $organisasi->id != $user->id_organization) {
-            return abort(403);
+            $pt = Organisasi::where('id', $user->id_organization)->first();
+            $listPt = json_decode($pt->organisasi_berubah_id, true);
+            if (!in_array($organisasi->id, $listPt)) {
+                return abort(403);
+            }
         }
 
         $berubahIds = json_decode($organisasi->organisasi_berubah_id, true);
@@ -323,12 +340,8 @@ class PerguruanTinggiController extends Controller
                     'id',
                     'organisasi_kode',
                     'organisasi_nama',
-                    'organisasi_nama_singkat',
-                    'organisasi_email',
-                    'organisasi_telp',
                     'organisasi_kota',
-                    'organisasi_status',
-                    'organisasi_alamat',
+                    'organisasi_berubah_status'
                 )
                 ->orderBy('organisasi_nama', 'asc')
                 ->get();
@@ -473,27 +486,23 @@ class PerguruanTinggiController extends Controller
         ]);
     }
 
-    public function validationUpdatePenyatuan(Request $request, string $id)
-    {
-        $validator = \Validator::make($request->all(), [
-            'organisasi_berubah_id' => 'required|array',
-            'sk_nomor' => 'required|string|max:255',
-            'sk_tanggal' => 'required|date',
-            'id_jenis_surat_keputusan' => 'required',
-            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
-        ]);
+    // public function validationUpdatePenyatuan(Request $request, string $id)
+    // {
+    //     $validator = \Validator::make($request->all(), [
+    //         'organisasi_berubah_id' => 'required|array',
+    //     ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()->toArray(),
-            ]);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'errors' => $validator->errors()->toArray(),
+    //         ]);
+    //     }
 
-        return response()->json([
-            'success' => true,
-        ]);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //     ]);
+    // }
 
     public function validationUpdate(Request $request, string $id)
     {
@@ -526,7 +535,7 @@ class PerguruanTinggiController extends Controller
             'organisasi_website.url' => 'Format website tidak valid.',
             'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
             'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
-            'parent_id.exists' => 'Perguruan Tinggi induk tidak valid.',
+            'parent_id.exists' => 'Badan Penyelenggara tidak valid.',
         ]);
 
         if ($validator->fails()) {
@@ -548,7 +557,21 @@ class PerguruanTinggiController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'organisasi_berubah_id' => 'array',
+            'organisasi_berubah_id' => 'required|array',
+            'sk_nomor' => 'required|string|max:255',
+            'sk_tanggal' => 'required|date',
+            'sk_dokumen' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+        ], [
+            'organisasi_berubah_id.required' => 'Perguruan Tinggi tujuan wajib dipilih.',
+            'organisasi_berubah_id.array' => 'Format Perguruan Tinggi tujuan tidak valid.',
+            'sk_nomor.required' => 'Nomor Surat Keputusan wajib diisi.',
+            'sk_nomor.string' => 'Nomor Surat Keputusan harus berupa teks.',
+            'sk_nomor.max' => 'Nomor Surat Keputusan tidak boleh lebih dari 255 karakter.',
+            'sk_tanggal.required' => 'Tanggal Surat Keputusan wajib diisi.',
+            'sk_tanggal.date' => 'Tanggal Surat Keputusan harus berupa format tanggal yang valid.',
+            'sk_dokumen.file' => 'Dokumen SK harus berupa file.',
+            'sk_dokumen.mimes' => 'Dokumen SK hanya boleh berupa file PDF, DOC, atau DOCX.',
+            'sk_dokumen.max' => 'Ukuran Dokumen SK tidak boleh lebih dari 2MB.',
         ]);
 
         $organisasiBerubah = Organisasi::where('id', $request->organisasi_berubah_id)->first();
@@ -556,12 +579,14 @@ class PerguruanTinggiController extends Controller
 
         $organisasi->update([
             'organisasi_status' => 'Alih Bentuk',
+            'organisasi_berubah_status' => 'Penyatuan'
         ]);
 
-        $organisasiId = [$organisasi->id];
+        $existingData = json_decode($organisasiBerubah->organisasi_berubah_id, true) ?? [];
+        $updatedData = array_unique(array_merge($existingData, [$organisasi->id]));
 
         $organisasiBerubah->update([
-            'organisasi_berubah_id' => !empty($request->organisasi_berubah_id) ? json_encode($organisasiId) : null,
+            'organisasi_berubah_id' => json_encode($updatedData),
         ]);
 
         if ($request->hasFile('sk_dokumen')) {
@@ -576,12 +601,7 @@ class PerguruanTinggiController extends Controller
             'id_organization' => $organisasi->id,
         ]);
 
-        session()->flash('success', 'Perguruan Tinggi berhasil diperbarui.');
-
-        return response()->json([
-            'success' => true,
-            'redirect_url' => route('perguruan-tinggi.show', ['id' => $id])
-        ]);
+        return redirect()->route('perguruan-tinggi.show', ['id' => $id])->with('success', 'Perubahan berhasil');
     }
 
     public function update(Request $request, string $id)
@@ -613,11 +633,11 @@ class PerguruanTinggiController extends Controller
             'organisasi_website.url' => 'Format website tidak valid.',
             'organisasi_bentuk_pt.required' => 'Bentuk Perguruan Tinggi harus diisi.',
             'organisasi_bentuk_pt.exists' => 'Bentuk Perguruan Tinggi tidak valid.',
-            'parent_id.exists' => 'Perguruan Tinggi induk tidak valid.',
+            'parent_id.exists' => 'Badan Penyelenggara tidak valid.',
         ]);
 
         $organisasis = Organisasi::findOrFail($id);
-        if ($request->parent_id == $organisasis->parent_id) {
+        if ($request->parent_id == $organisasis->parent_id || $organisasis->parent_id == null) {
             if ($request->hasFile('organisasi_logo')) {
                 $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
                 $validated['organisasi_logo'] = $logoPath;
@@ -659,42 +679,54 @@ class PerguruanTinggiController extends Controller
         } else {
             if ($request->hasFile('organisasi_logo')) {
                 $logoPath = $request->file('organisasi_logo')->store('logos', 'public');
-            } else {
-                $logoPath = null;
-            }
-
-            $organisasibaru = Organisasi::create([
-                'id' => Str::uuid(),
-                'organisasi_kode' => $validated['organisasi_kode'],
-                'organisasi_nama' => $validated['organisasi_nama'],
-                'organisasi_nama_singkat' => $validated['organisasi_nama_singkat'],
-                'organisasi_email' => $validated['organisasi_email'],
-                'organisasi_telp' => $validated['organisasi_telp'],
-                'organisasi_kota' => $validated['organisasi_kota'],
-                'organisasi_alamat' => $validated['organisasi_alamat'],
-                'organisasi_website' => $validated['organisasi_website'],
-                'organisasi_logo' => $logoPath,
-                'organisasi_type_id' => 3,
-                'organisasi_bentuk_pt' => $validated['organisasi_bentuk_pt'],
-                'parent_id' => $validated['parent_id'],
-                'users_id' => Auth::user()->id,
-                'organisasi_status' => 'Aktif',
-                'tampil' => 1,
-                'updated_at' => now(),
-            ]);
-
-            DB::table('organisasis')
-                ->where('id', $id)
-                ->update([
-                    'organisasi_status' => 'Alih Bentuk',
-                    'tampil' => 0,
+                $validated['organisasi_logo'] = $logoPath;
+                DB::table('organisasis')
+                    ->where('id', $id)
+                    ->update([
+                        'organisasi_kode' => $validated['organisasi_kode'],
+                        'organisasi_nama' => $validated['organisasi_nama'],
+                        'organisasi_nama_singkat' => $validated['organisasi_nama_singkat'],
+                        'organisasi_email' => $validated['organisasi_email'],
+                        'organisasi_telp' => $validated['organisasi_telp'],
+                        'organisasi_kota' => $validated['organisasi_kota'],
+                        'organisasi_alamat' => $validated['organisasi_alamat'],
+                        'organisasi_website' => $validated['organisasi_website'],
+                        'organisasi_logo' => $validated['organisasi_logo'],
+                        'organisasi_bentuk_pt' => $validated['organisasi_bentuk_pt'],
+                        'parent_id' => $validated['parent_id'],
+                        'updated_at' => now(),
+                    ]);
+                HistoriPt::create([
+                    'id_organization' => $organisasis->id,
+                    'parent_id_lama' => $organisasis->parent_id,
+                    'parent_id_baru' => $request->parent_id,
+                    'status' => 'Alih Kelola'
                 ]);
-            session()->flash('success', 'Perguruan Tinggi berhasil diperbarui.');
+            } else {
+                DB::table('organisasis')
+                    ->where('id', $id)
+                    ->update([
+                        'organisasi_kode' => $validated['organisasi_kode'],
+                        'organisasi_nama' => $validated['organisasi_nama'],
+                        'organisasi_nama_singkat' => $validated['organisasi_nama_singkat'],
+                        'organisasi_email' => $validated['organisasi_email'],
+                        'organisasi_telp' => $validated['organisasi_telp'],
+                        'organisasi_kota' => $validated['organisasi_kota'],
+                        'organisasi_alamat' => $validated['organisasi_alamat'],
+                        'organisasi_website' => $validated['organisasi_website'],
+                        'organisasi_bentuk_pt' => $validated['organisasi_bentuk_pt'],
+                        'parent_id' => $validated['parent_id'],
+                        'updated_at' => now(),
+                    ]);
 
-            return response()->json([
-                'success' => true,
-                'redirect_url' => route('perguruan-tinggi.show', ['id' => $organisasibaru->id])
-            ]);
+                HistoriPt::create([
+                    'id_organization' => $organisasis->id,
+                    'parent_id_lama' => $organisasis->parent_id,
+                    'parent_id_baru' => $request->parent_id,
+                    'status' => 'Alih Kelola'
+                ]);
+            }
+            session()->flash('success', 'Perguruan Tinggi berhasil diperbarui.');
         }
 
         return response()->json([

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organisasi;
 use App\Http\Controllers\Controller;
 use App\Imports\BpImport;
 use App\Models\Akta;
+use App\Models\HistoriPt;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Kota;
 use App\Models\Organisasi;
@@ -41,18 +42,26 @@ class BadanPenyelenggaraController extends Controller
 
         if ($user->hasRole('Badan Penyelenggara')) {
             $query->where('id', $user->id_organization);
-            $badanPenyelenggaras = $query->get();
+            $badanPenyelenggaras = $query->first();
 
-            return redirect()->route('badan-penyelenggara.show', ['id' => $badanPenyelenggaras[0]->id]);
+            if ($badanPenyelenggaras) {
+                return redirect()->route('badan-penyelenggara.show', ['id' => $badanPenyelenggaras->id]);
+            } else {
+                return redirect()->back()->with('error', 'Organisasi tidak ditemukan.');
+            }
         }
 
         if ($user->hasRole('Perguruan Tinggi')) {
             $pt = Organisasi::where('id', $user->id_organization)->first();
-            $query->where('id', $pt->parent_id);
+            if ($pt) {
+                $query->where('id', $pt->parent_id);
+                $badanPenyelenggaras = $query->first();
 
-            $badanPenyelenggaras = $query->get();
-
-            return redirect()->route('badan-penyelenggara.show', ['id' => $badanPenyelenggaras[0]->id]);
+                if ($badanPenyelenggaras) {
+                    return redirect()->route('badan-penyelenggara.show', ['id' => $badanPenyelenggaras->id]);
+                }
+            }
+            return redirect()->back()->with('error', 'Organisasi tidak ditemukan.');
         }
 
         $badanPenyelenggaras = $query->get();
@@ -326,6 +335,36 @@ class BadanPenyelenggaraController extends Controller
                         'parent_id',
                         'organisasi_berubah_status'
                     );
+                },
+                'bpLama' => function ($query) {
+                    $query->select(
+                        'id',
+                        'id_organization',
+                        'parent_id_lama',
+                        'parent_id_baru',
+                        'status'
+                    )
+                        ->with([
+                            'perguruanTinggi' => function ($query) {
+                                $query->select(
+                                    'id',
+                                    'organisasi_nama',
+                                    'organisasi_nama_singkat',
+                                    'organisasi_kode',
+                                    'organisasi_email',
+                                    'organisasi_telp',
+                                    'organisasi_kota',
+                                    'organisasi_alamat',
+                                    'organisasi_website',
+                                    'organisasi_logo',
+                                    'organisasi_status',
+                                    'organisasi_type_id',
+                                    'tampil',
+                                    'parent_id',
+                                );
+                            }
+                        ])
+                        ->orderBy('created_at', 'desc');
                 }
             ])
             ->where('id', $id)
@@ -342,7 +381,7 @@ class BadanPenyelenggaraController extends Controller
             }
         }
 
-        $pimpinan = PimpinanOrganisasi::where('id_organization', $id)
+        $pimpinan = PimpinanOrganisasi::where('id_organization', $badanPenyelenggaras->id)
             ->with([
                 'jabatan' => function ($query) {
                     $query->select('id', 'jabatan_nama')->get();
@@ -366,7 +405,9 @@ class BadanPenyelenggaraController extends Controller
         //     'badanPenyelenggaras' => $badanPenyelenggaras,
         //     'pimpinan' => $pimpinan,
         //     'akta' => $akta,
-        //     'perkara' => $perkara,
+        //     'skbp' => $skbp,
+        //     'perkaras' => $perkaras,
+        //     'riwayatPerubahanLama' => $riwayatPerubahanLama,
         // ]);
 
         return view('Organisasi.BadanPenyelenggara.Show', [

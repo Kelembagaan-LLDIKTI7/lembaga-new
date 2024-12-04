@@ -42,7 +42,7 @@
         </a>
         <div class="row">
             <div class="col-12">
-                <form action="{{ route('perkara-organisasi.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('evaluasi-organisasi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $organisasi->id }}" class="form-control" required>
                     <div class="card bordered">
@@ -89,6 +89,8 @@
                                         <label for="bukti_foto">Bukti Foto</label>
                                         <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control"
                                             multiple accept="image/*">
+                                        <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         @error('bukti_foto.*')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror

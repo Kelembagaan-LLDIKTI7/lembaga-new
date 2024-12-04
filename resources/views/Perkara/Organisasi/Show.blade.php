@@ -15,8 +15,10 @@
                             <h5 class="card-title">Detail Evaluasi
                                 {{ $perkaras->organisasi->organisasi_type_id == 2 ? 'Badan Penyelenggara' : 'Perguruan Tinggi' }}
                             </h5>
-                            <a href="{{ route('perkara-organisasi.edit', $perkaras->id) }}" class="btn btn-primary">
-                                <i class="fas fa-edit me-2"></i> Edit</a>
+                            @can('Edit Evaluasi Badan Penyelenggara')
+                                <a href="{{ route('evaluasi-organisasi.edit', $perkaras->id) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit me-2"></i> Edit</a>
+                            @endcan
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-6">
@@ -81,6 +83,11 @@
                         </div>
                     </div>
                 </div>
+                <a href="{{ route('badan-penyelenggara.show', $perkaras->id_organization) }}"
+                    class="btn btn-secondary">Kembali
+                </a>
+                <a href="{{ route('perkara-organisasi.edit', $perkaras->id) }}" class="btn btn-secondary">Edit
+                </a>
             </div>
         </div>
     </div>

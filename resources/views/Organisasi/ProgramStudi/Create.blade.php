@@ -124,6 +124,7 @@
                                         <input type="number" name="prodi_periode" class="form-control"
                                             value="{{ old('prodi_periode') }}" required step="1"
                                             placeholder="Enter year">
+                                            <small class="form-text text-muted">Silahkan Masukkan Periode Pelaporan dengan format Tahun. akhiri dengan angka 1 untuk Gasal dan angka 2 untuk Genap. Contoh : 20241 untuk '2024 Gasal'</small>
                                         @if ($errors->has('prodi_periode'))
                                             <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
                                         @endif
@@ -175,7 +176,7 @@
                                         <input type="file" name="sk_dokumen" class="form-control"
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
+                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
                                         @if ($errors->has('sk_dokumen'))
                                             <span class="text-danger">{{ $errors->first('sk_dokumen') }}</span>
                                         @endif

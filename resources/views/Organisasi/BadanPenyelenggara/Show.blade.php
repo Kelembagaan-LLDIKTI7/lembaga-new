@@ -263,13 +263,23 @@
                                                 <td>{{ $bp->organisasi_status }}</td>
                                                 <td>
                                                     @can('Detail Perguruan Tinggi')
-                                                        @if ($bp->tampil == 1)
-                                                            <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
-                                                                class="btn btn-sm btn-primary me-2">
-                                                                Detail
-                                                            </a>
-                                                        @endif
+                                                        <a href="{{ route('perguruan-tinggi.show', $bp->id) }}"
+                                                            class="btn btn-sm btn-primary me-2">
+                                                            Detail
+                                                        </a>
                                                     @endcan
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        @foreach ($badanPenyelenggaras->bpLama as $bp1)
+                                            <tr>
+                                                <td></td>
+                                                <td>{{ $bp1->perguruanTinggi->organisasi_nama }}</td>
+                                                <td>{{ $bp1->perguruanTinggi->organisasi_nama_singkat }}</td>
+                                                <td>{{ $bp1->perguruanTinggi->organisasi_kota}}</td>
+                                                <td>{{ $bp1->status }}</td>
+                                                <td>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -362,8 +372,8 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <h5 class="mb-0">Evaluasi</h5>
-                            @can('Create Perkara Badan Penyelenggara')
-                                <a href="{{ route('perkara-organisasi.create', $badanPenyelenggaras->id) }}"
+                            @can('Create Evaluasi Badan Penyelenggara')
+                                <a href="{{ route('evaluasi-organisasi.create', $badanPenyelenggaras->id) }}"
                                     class="btn btn-primary">
                                     Tambah Evaluasi
                                 </a>
@@ -393,15 +403,15 @@
                                             </td>
                                             <td>{{ $perkara->status }}</td>
                                             <td style="width: 15%">
-                                                @can('Update Status Perkara Badan Penyelenggara')
+                                                @can('Update Status Evaluasi Badan Penyelenggara')
                                                     <button class="btn btn-sm btn-warning edit-status" data-bs-toggle="modal"
                                                         data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
                                                         data-status="{{ $perkara->status }}">
                                                         Edit
                                                     </button>
                                                 @endCan
-                                                @can('View Detail Perkara Badan Penyelenggara')
-                                                    <a href="{{ route('perkara-organisasi.show', $perkara->id) }}"
+                                                @can('View Detail Evaluasi Badan Penyelenggara')
+                                                    <a href="{{ route('evaluasi-organisasi.show', $perkara->id) }}"
                                                         class="btn btn-sm btn-primary me-2">
                                                         Detail
                                                     </a>
@@ -453,7 +463,8 @@
                     option.selected = option.value === currentStatus;
                 });
 
-                document.getElementById('editStatusForm').action = `/perkara-organisasi/${perkaraId}/status-update`;
+                document.getElementById('editStatusForm').action =
+                `/evaluasi-organisasi/${perkaraId}/status-update`;
             }
         });
     </script>

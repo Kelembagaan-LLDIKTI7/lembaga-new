@@ -63,7 +63,7 @@
                                         <input type="file" name="kumham_dokumen" class="form-control" required
                                             accept=".pdf,.doc,.docx" onchange="previewFile(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
+                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
                                         <div id="file-preview"></div>
                                     </div>
                                     <small class="text-danger error-message" id="error-kumham_dokumen"></small>

@@ -47,14 +47,22 @@
                                         <label for="organisasi_berubah_id" class="required-label">
                                             PT Tujuan
                                         </label>
-                                        <select class="form-control select-search" name="organisasi_berubah_id[]"
-                                            id="organisasi_berubah_id" required>
+                                        <select
+                                            class="form-control select-search @error('organisasi_berubah_id') is-invalid @enderror"
+                                            name="organisasi_berubah_id[]" id="organisasi_berubah_id" required>
                                             <option value="">-- Pilih Perguruan Tinggi --</option>
                                             @foreach ($perguruanTinggis as $pt)
-                                                <option value="{{ $pt->id }}">{{ $pt->organisasi_nama }}</option>
+                                                @if ($pt->id !== $perguruanTinggi->id)
+                                                    <option value="{{ $pt->id }}"
+                                                        {{ in_array($pt->id, old('organisasi_berubah_id', [])) ? 'selected' : '' }}>
+                                                        {{ $pt->organisasi_nama }}
+                                                    </option>
+                                                @endif
                                             @endforeach
                                         </select>
-                                        <small class="error-message" id="error-organisasi_berubah_id"></small>
+                                        @error('organisasi_berubah_id')
+                                            <small class="error-message">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -67,16 +75,23 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label for="sk_nomor" class="required-label">Nomor Surat Keputusan
-                                        </label>
-                                        <input type="text" name="sk_nomor" id="sk_nomor" class="form-control" required>
-                                        <small class="error-message" id="error-sk_nomor"></small>
+                                        <label for="sk_nomor" class="required-label">Nomor Surat Keputusan</label>
+                                        <input type="text" name="sk_nomor" id="sk_nomor"
+                                            class="form-control @error('sk_nomor') is-invalid @enderror"
+                                            value="{{ old('sk_nomor') }}" required>
+                                        @error('sk_nomor')
+                                            <small class="error-message">{{ $message }}</small>
+                                        @enderror
                                     </div>
+
                                     <div class="form-group mb-3">
                                         <label for="sk_tanggal" class="required-label">Tanggal SK</label>
-                                        <input type="date" name="sk_tanggal" id="sk_tanggal" class="form-control"
-                                            required>
-                                        <small class="error-message" id="error-sk_tanggal"></small>
+                                        <input type="date" name="sk_tanggal" id="sk_tanggal"
+                                            class="form-control @error('sk_tanggal') is-invalid @enderror"
+                                            value="{{ old('sk_tanggal') }}" required>
+                                        @error('sk_tanggal')
+                                            <small class="error-message">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -95,12 +110,14 @@
                                     </div>
                                     <div class="form-group mb-3">
                                         <label for="sk_dokumen" class="required-label">Dokumen SK</label>
-                                        <input type="file" name="sk_dokumen" id="sk_dokumen" class="form-control"
+                                        <input type="file" name="sk_dokumen" id="sk_dokumen"
+                                            class="form-control @error('sk_dokumen') is-invalid @enderror"
                                             accept=".pdf,.doc,.docx">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC,
-                                            DOCX.</small>
-                                        <small class="error-message" id="error-sk_dokumen"></small>
-                                        <div id="filePreview"></div>
+                                            DOCX. Maksimal Ukuran File : 2 MB.</small>
+                                        @error('sk_dokumen')
+                                            <small class="error-message">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -123,92 +140,62 @@
 
 @section('js')
     <script>
-        $(document).ready(function() {
-            $('.select-search').select2({
-                placeholder: "Pilih Opsi",
-                allowClear: true
-            });
+        $('#formPTedit').on('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const url = $(this).attr('action');
 
-            $('#loading').hide();
+            $('#loading').removeClass('d-none');
+            $('#submitBtn').prop('disabled', true);
 
-            $('#formPTedit').on('submit', function(event) {
-                event.preventDefault();
-                $('#submitBtn').hide();
-                $('#loading').show();
-
-                const formData = new FormData(this);
-                $('.error-message').text('');
-
-                $.ajax({
-                    url: '{{ route('perguruan-tinggi.validationUpdatePenyatuan', ['id' => $perguruanTinggi->id]) }}',
-                    method: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            submitToStore(formData);
-                        } else {
-                            $('#loading').hide();
-                            $('#submitBtn').show();
-                            displayErrors(response.errors);
-                        }
-                    },
-                    error: function() {
-                        $('#loading').hide();
-                        $('#submitBtn').show();
-                        alert('Terjadi kesalahan. Coba lagi.');
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    window.location.href = response.redirect_url;
+                },
+                error: function(xhr) {
+                    const errors = xhr.responseJSON.errors;
+                    if (errors) {
+                        displayErrors(errors);
                     }
-                });
-            });
-
-            function displayErrors(errors) {
-                let firstErrorField;
-                for (const field in errors) {
-                    $(`#error-${field}`).text(errors[field].join(', '));
-                    if (!firstErrorField) {
-                        firstErrorField = $(`#${field}`);
-                    }
+                },
+                complete: function() {
+                    $('#loading').addClass('d-none');
+                    $('#submitBtn').prop('disabled', false);
                 }
-
-                if (firstErrorField) {
-                    $('html, body').animate({
-                        scrollTop: firstErrorField.offset().top - 100
-                    }, 500);
+            });
+        });
+        function displayErrors(errors) {
+            let firstErrorField;
+            for (const field in errors) {
+                $(`#error-${field}`).text(errors[field].join(', '));
+                if (!firstErrorField) {
+                    firstErrorField = $(`#${field}`);
                 }
             }
 
-            function submitToStore(formData) {
-                $.ajax({
-                    url: '{{ route('perguruan-tinggi.updatePenyatuan', ['id' => $perguruanTinggi->id]) }}',
-                    method: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            window.location.href = response.redirect_url;
-                        }
-                    },
-                    error: function() {
-                        $('#loading').hide();
-                        $('#submitBtn').show();
-                        alert('Gagal menyimpan data. Coba lagi.');
-                    }
-                });
+            if (firstErrorField) {
+                $('html, body').animate({
+                    scrollTop: firstErrorField.offset().top - 100
+                }, 500);
             }
+        }
 
-            $('#sk_dokumen').on('change', function(event) {
-                const file = event.target.files[0];
-                if (file && file.type === 'application/pdf') {
-                    const fileURL = URL.createObjectURL(file);
-                    $('#filePreview').html(
-                        `<iframe src="${fileURL}" width="100%" height="300px"></iframe>`);
-                } else {
-                    $('#filePreview').html(
-                        '<small class="text-danger">Hanya file PDF yang dapat dipreview.</small>');
-                }
-            });
+        $('#sk_dokumen').on('change', function(event) {
+        const file = event.target.files[0];
+        if (file && file.type === 'application/pdf') {
+            const fileURL = URL.createObjectURL(file);
+            $('#filePreview').html(
+                `<iframe src="${fileURL}" width="100%" height="300px"></iframe>`);
+        } else {
+            $('#filePreview').html(
+                '<small class="text-danger">Hanya file PDF yang dapat dipreview.</small>');
+        }
+        });
         });
     </script>
 @endsection

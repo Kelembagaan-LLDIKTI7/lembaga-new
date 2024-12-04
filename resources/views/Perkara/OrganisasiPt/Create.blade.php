@@ -51,7 +51,7 @@
         </button>
         <div class="row">
             <div class="col-12">
-                <form id="formPerkaraPT" action="{{ route('perkara-organisasipt.store') }}" method="POST"
+                <form id="formPerkaraPT" action="{{ route('evaluasi-organisasipt.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id_organization" value="{{ $organisasi->id }}" class="form-control"
@@ -105,6 +105,8 @@
                                         <label for="bukti_foto">Bukti Foto</label>
                                         <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control"
                                             multiple accept="image/*">
+                                        <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         @error('bukti_foto.*')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -149,7 +151,7 @@
 
                 // AJAX request ke server untuk validasi
                 $.ajax({
-                    url: '{{ route('perkara-organisasipt.validationStore') }}',
+                    url: '{{ route('evaluasi-organisasipt.validationStore') }}',
                     type: 'POST',
                     data: formData,
                     contentType: false,
@@ -186,7 +188,7 @@
 
             function submitToStore(formData) {
                 $.ajax({
-                    url: '{{ route('perkara-organisasipt.store') }}',
+                    url: '{{ route('evaluasi-organisasipt.store') }}',
                     type: 'POST',
                     data: formData,
                     contentType: false,

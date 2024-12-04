@@ -52,8 +52,8 @@
             <div class="col-12">
                 <div class="card bordered">
                     <div class="card-body">
-                        <h5>Edit Perkara Organisasi</h5>
-                        <form id="formPerkaraPT" action="{{ route('perkara.update', $perkaras->id) }}" method="POST"
+                        <h5>Edit Evaluasi Organisasi</h5>
+                        <form id="formPerkaraPT" action="{{ route('evaluasi.update', $perkaras->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -93,6 +93,8 @@
                                         <label for="bukti_foto">Bukti Foto</label>
                                         <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control"
                                             multiple accept="image/*">
+                                        <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         <small class="text-danger error-message" id="error-bukti_foto"></small>
                                     </div>
 
@@ -138,91 +140,95 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            $('#loading').hide(); // Hide the loading spinner initially
+                    $('#loading').hide(); // Hide the loading spinner initially
 
-            // Set up CSRF token for all AJAX requests
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                },
-            });
+                    // Set up CSRF token for all AJAX requests
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                    });
 
-            $('#formPerkaraPT').on('submit', function(event) {
-                event.preventDefault(); // Prevent default form submission
+                    $('#formPerkaraPT').on('submit', function(event) {
+                        event.preventDefault(); // Prevent default form submission
 
-                $('#buttons').hide(); // Hide the buttons
-                $('#loading').show(); // Show the loading spinner
+                        $('#buttons').hide(); // Hide the buttons
+                        $('#loading').show(); // Show the loading spinner
 
-                // Gather form data
-                const formData = new FormData(this);
+                        // Gather form data
+                        const formData = new FormData(this);
 
-                // $('input[name="existing_images[]"]').each(function () {
-                //     formData.append('existing_images[]', $(this).val());
-                // });
+                        // $('input[name="existing_images[]"]').each(function () {
+                        //     formData.append('existing_images[]', $(this).val());
+                        // });
 
-                // Step 1: Validate the data
-                $.ajax({
-                    url: '{{ route('perkara-organisasipt.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
-                    type: 'POST', // Use POST instead of PUT for AJAX requests
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            // Step 2: Submit the form to store the data
-                            submitToStore(formData);
-                        } else {
-                            $('#loading').hide(); // Hide the loading spinner
-                            $('#buttons').show(); // Show the buttons
-                            displayErrors(response.errors);
+                        // Step 1: Validate the data
+                        $.ajax({
+                            url: '{{ route('perkara-organisasipt.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
+                            type: 'POST', // Use POST instead of PUT for AJAX requests
+                            data: formData,
+                            contentType: false,
+                            processData: false,
+                            success: function(response) {
+                                if (response.success) {
+                                    // Step 2: Submit the form to store the data
+                                    submitToStore(formData);
+                                } else {
+                                    $('#loading').hide(); // Hide the loading spinner
+                                    $('#buttons').show(); // Show the buttons
+                                    displayErrors(response.errors);
+                                }
+                            },
+                            error: function(xhr) {
+                                $('#loading').hide(); // Hide the loading spinner
+                                $('#buttons').show(); // Show the buttons
+                                $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
+                            },
+                        });
+                    });
+
+                    function displayErrors(errors) {
+                        // Bersihkan semua pesan error sebelumnya
+                        $('.error-message').text('');
+
+                        function displayErrors(errors) {
+                            // Bersihkan semua pesan error sebelumnya
+                            $('.error-message').text('');
+
+                            // Iterasi semua error
+                            for (let field in errors) {
+                                const errorElement = $(
+                                    `#error-${field.replace('.*', '')}`); // Tangani array seperti bukti_foto.*
+                                if (errorElement.length) {
+                                    errorElement.text(errors[field].join(', '));
+                                } else {
+                                    console.warn(`Element for field "${field}" not found.`);
+                                }
+                            }
                         }
-                    },
-                    error: function(xhr) {
-                        $('#loading').hide(); // Hide the loading spinner
-                        $('#buttons').show(); // Show the buttons
-                        $('#error-messages').html('Terjadi kesalahan pada server. Coba lagi.');
-                    },
-                });
-            });
 
-            function displayErrors(errors) {
-                // Bersihkan semua pesan error sebelumnya
-                $('.error-message').text('');
-
-                // Iterasi semua error
-                for (let field in errors) {
-                    const errorElement = $(
-                        `#error-${field.replace('.*', '')}`); // Tangani array seperti bukti_foto.*
-                    if (errorElement.length) {
-                        errorElement.text(errors[field].join(', '));
-                    } else {
-                        console.warn(`Element for field "${field}" not found.`);
-                    }
-                }
-            }
-
-            function submitToStore(formData) {
-                $.ajax({
-                    url: '{{ route('perkara-organisasipt.update', $perkaras->id) }}', // Update route
-                    type: 'POST', // Use POST and spoof method as PUT
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.success) {
-                            window.location.href = response.redirect_url;
+                        function submitToStore(formData) {
+                            $.ajax({
+                                url: '{{ route('perkara-organisasipt.update', $perkaras->id) }}', // Update route
+                                type: 'POST', // Use POST and spoof method as PUT
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    if (response.success) {
+                                        window.location.href = response.redirect_url;
+                                    }
+                                },
+                                error: function(xhr) {
+                                    $('#loading').hide(); // Hide the loading spinner
+                                    $('#buttons').show(); // Show the buttons
+                                    $('#error-messages').html(
+                                        'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.'
+                                    );
+                                },
+                            });
                         }
-                    },
-                    error: function(xhr) {
-                        $('#loading').hide(); // Hide the loading spinner
-                        $('#buttons').show(); // Show the buttons
-                        $('#error-messages').html(
-                            'Terjadi kesalahan pada server saat penyimpanan. Coba lagi.'
-                        );
-                    },
-                });
-            }
-        });
+                    });
     </script>
     <script>
         let selectedFiles = [];

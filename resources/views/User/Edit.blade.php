@@ -36,26 +36,30 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                            id="password" name="password">
-                                        <small class="form-text text-muted">Jika tidak mengisi password maka akan
-                                            menggunakan password
-                                            lama.</small>
-                                        @error('password')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                id="passwordInput" name="password">
+                            <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+                                <i class="bi bi-eye"></i>
+                            </span>
+                        </div>
+                        <small class="form-text text-muted">Jika tidak mengisi password maka akan menggunakan password lama.
+                            Minimal 10 Karakter pada password</small>
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                                    <div class="col-md-6">
-                                        <label for="nip" class="required-label">Nomor Induk Pegawai</label>
-                                        <input type="text" class="form-control @error('nip') is-invalid @enderror"
-                                            id="nip" name="nip" value="{{ old('nip', $user->nip) }}" required>
-                                        @error('nip')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                    <div class="col-md-6">
+                        <label for="nip" class="required-label">Nomor Induk Pegawai</label>
+                        <input type="text" class="form-control @error('nip') is-invalid @enderror" id="nip"
+                            name="nip" value="{{ old('nip', $user->nip) }}">
+                        @error('nip')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
                                     <div class="col-md-6">
                                         <label for="is_active" class="required-label">Status Aktif</label>
@@ -90,20 +94,21 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label for="id_organizations" class="required-label">Organisasi User</label>
-                                        <select class="form-control @error('id_organization') is-invalid @enderror"
-                                            id="id_organizations" name="id_organization" required>
-                                            @foreach ($organization as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ old('id_organization', $user->id_organization) == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->organisasi_nama }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('id_organization')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                    <div class="col-md-6">
+                        <label for="id_organizations" class="required-label">Organisasi User</label>
+                        <select class="form-control @error('id_organization') is-invalid @enderror" id="id_organizations"
+                            name="id_organization" required>
+                            @foreach ($organization as $item)
+                                <option value="{{ $item->id }}"
+                                    {{ old('id_organization', $user->id_organization) == $item->id ? 'selected' : '' }}>
+                                    {{ $item->organisasi_nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('id_organization')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
                                     <div class="col-12 d-flex justify-content-end">
                                         <button class="btn btn-primary mb-1 me-1" type="submit">Simpan</button>
@@ -140,26 +145,39 @@
 @section('js')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const element = document.getElementById('roles');
-            const choices = new Choices(element, {
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('passwordInput');
+            togglePassword.addEventListener('click', function() {
+                const isPassword = passwordInput.type === 'password';
+                passwordInput.type = isPassword ? 'text' : 'password';
+                this.innerHTML = isPassword ? '<i class="bi bi-eye-slash"></i>' :
+                    '<i class="bi bi-eye"></i>';
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const rolesElement = document.getElementById('roles');
+            new Choices(rolesElement, {
                 removeItemButton: true,
                 placeholder: true,
                 placeholderValue: 'Pilih Role...',
                 maxItemCount: -1,
             });
-        });
-        document.addEventListener('DOMContentLoaded', function() {
-            const element = document.getElementById('id_organizations');
-            const choices = new Choices(element, {
+
+            const organizationsElement = document.getElementById('id_organizations');
+            new Choices(organizationsElement, {
                 removeItemButton: false,
                 placeholder: true,
-                placeholderValue: 'Organisasi',
-                searchResultLimit: -1,
+                placeholderValue: 'Pilih Organisasi...',
+                searchEnabled: true,
                 searchFields: ['label'],
+                searchResultLimit: 10,
                 fuseOptions: {
-                    threshold: 0.3,
-                    minMatchCharLength: 2,
-                }
+                    threshold: 0.5,
+                    minMatchCharLength: 1,
+                },
             });
         });
     </script>

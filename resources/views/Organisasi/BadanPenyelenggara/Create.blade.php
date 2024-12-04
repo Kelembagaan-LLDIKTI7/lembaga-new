@@ -123,7 +123,7 @@
                                             class="form-control" accept="image/png, image/jpg, image/jpeg, image/gif"
                                             onchange="previewLogo(event)">
                                         <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
-                                            GIF.</small>
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         @error('organisasi_logo')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror

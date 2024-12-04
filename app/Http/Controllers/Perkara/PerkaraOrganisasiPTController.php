@@ -276,7 +276,7 @@ class PerkaraOrganisasiPTController extends Controller
 
         return response()->json([
             'success' => true,
-            'redirect_url' => route('perkara-organisasipt.show', ['id' => $id]),
+            'redirect_url' => route('evaluasi-organisasipt.show', ['id' => $id]),
         ]);
     }
 

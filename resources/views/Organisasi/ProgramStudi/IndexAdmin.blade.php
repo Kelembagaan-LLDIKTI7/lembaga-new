@@ -6,9 +6,11 @@
     <div class="container-fluid">
         <h4 class="mb-4 title">Program Studi</h4>
         <div class="mb-3 d-flex justify-content-end">
-            <a href="{{ route('prodi.export') }}" class="btn btn-success">
-                <i class="fas fa-file-export me-2"></i> Export Excel
-            </a>
+            @can('Export Program Studi')
+                <a href="{{ route('prodi.export') }}" class="btn btn-success">
+                    <i class="fas fa-file-export me-2"></i> Export Excel
+                </a>
+            @endCan
         </div>
         <section class="datatables">
             <div class="card bordered">

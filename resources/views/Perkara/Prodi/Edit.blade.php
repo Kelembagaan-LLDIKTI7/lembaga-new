@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Tambah Perkara Organisasi')
+@section('title', 'Tambah Evaluasi Organisasi')
 
 @section('css')
     <style>
@@ -52,8 +52,8 @@
             <div class="col-12">
                 <div class="card bordered">
                     <div class="card-body">
-                        <h5>Edit Perkara Organisasi</h5>
-                        <form id="formPerkaraPT" action="{{ route('perkara.update', $perkaras->id) }}" method="POST"
+                        <h5>Edit Evaluasi Organisasi</h5>
+                        <form id="formPerkaraPT" action="{{ route('evaluasi.update', $perkaras->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -93,6 +93,8 @@
                                         <label for="bukti_foto">Bukti Foto</label>
                                         <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control"
                                             multiple accept="image/*">
+                                        <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         <small class="text-danger error-message" id="error-bukti_foto"></small>
                                     </div>
 
@@ -171,7 +173,7 @@
 
                 // Step 1: Validate the data
                 $.ajax({
-                    url: '{{ route('perkara-prodi.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
+                    url: '{{ route('evaluasi-prodi.validationUpdatePerkara', ['id' => $perkaras->id]) }}',
                     type: 'POST', // Use POST instead of PUT for AJAX requests
                     data: formData,
                     contentType: false,
@@ -212,7 +214,7 @@
 
             function submitToStore(formData) {
                 $.ajax({
-                    url: '{{ route('perkara-prodi.update', $perkaras->id) }}', // Update route
+                    url: '{{ route('evaluasi-prodi.update', $perkaras->id) }}', // Update route
                     type: 'POST', // Use POST and spoof method as PUT
                     data: formData,
                     contentType: false,

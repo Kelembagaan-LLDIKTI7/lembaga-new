@@ -36,6 +36,10 @@
                         </div>
                         <table id="custom-padding" class="table-borderless table">
                             <tr>
+                                <th>Kode PT</th>
+                                <td>{{ $organisasi->organisasi_kode ?? '-' }}</td>
+                            </tr>
+                            <tr>
                                 <th>Bentuk PT</th>
                                 <td>{{ $organisasi->bentukPt->bentuk_nama ?? '-' }}</td>
                             </tr>
@@ -129,26 +133,32 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Nama Perguruan Tinggi</th>
+                                            <th>Kode PT</th>
+                                            <th>Nama PT</th>
                                             <th>Nama Singkat</th>
                                             <th>Email</th>
                                             <th>No Telepon</th>
                                             <th>Kota</th>
-                                            <th>Alamat</th>
-                                            <th>Status</th>
+                                            <th>Jenis Perubahan</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($berubahOrganisasi as $key => $org)
                                             <tr>
                                                 <td></td>
+                                                <td>{{ $org->organisasi_kode }}</td>
                                                 <td>{{ $org->organisasi_nama }}</td>
                                                 <td>{{ $org->organisasi_nama_singkat ?? '-' }}</td>
                                                 <td>{{ $org->organisasi_email }}</td>
                                                 <td>{{ $org->organisasi_telp }}</td>
                                                 <td>{{ $org->organisasi_kota }}</td>
                                                 <td>{{ $org->organisasi_alamat }}</td>
-                                                <td>{{ $org->organisasi_status }}</td>
+                                                <td>{{ $org->organisasi_berubah_status }}</td>
+                                                <td>
+                                                    <a href="{{ route('perguruan-tinggi.show', $org->id) }}"
+                                                        class="btn btn-sm btn-primary">Detail</a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -458,6 +468,12 @@
                         <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
                             <table id="perkara" class="table-striped table-bordered display text-nowrap table border"
                                 style="width: 100%">
+                                @can('Create Evaluasi Perguruan Tinggi')
+                                    <a href="{{ route('evaluasi-organisasipt.create', $organisasi->id) }}"
+                                        class="btn btn-primary btn-sm mb-2">
+                                        Tambah Evaluasi
+                                    </a>
+                                @endCan
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -479,7 +495,13 @@
                                             </td>
                                             <td>{{ $perkara->status }}</td>
                                             <td style="width: 15%">
-                                                @can('Update Status Perkara Perguruan Tinggi')
+                                                @can('View Detail Evaluasi Perguruan Tinggi')
+                                                    <a href="{{ route('evaluasi-organisasipt.show', $perkara->id) }}"
+                                                        class="btn btn-sm btn-primary me-2">
+                                                        <i class="ti ti-info-circle"></i>
+                                                    </a>
+                                                @endCan
+                                                @can('Update Status Evaluasi Perguruan Tinggi')
                                                     <button class="btn btn-sm btn-warning edit-status me-2" data-bs-toggle="modal"
                                                         data-bs-target="#editStatusModal" data-id="{{ $perkara->id }}"
                                                         data-status="{{ $perkara->status }}">
@@ -540,7 +562,7 @@
                 });
 
                 document.getElementById('editStatusForm').action =
-                    `/perkara-organisasipt/${perkaraId}/status-update`;
+                    `/evaluasi-organisasipt/${perkaraId}/status-update`;
             }
         });
     </script>

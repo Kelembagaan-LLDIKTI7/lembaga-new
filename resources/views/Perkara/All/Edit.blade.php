@@ -52,12 +52,14 @@
             <div class="col-12">
                 <div class="card bordered">
                     <div class="card-body">
-                        <h5>Edit Perkara Organisasi</h5>
-                        <form id="formPerkaraPT" action="{{ route('perkara.update', $perkaras->id) }}" method="POST"
+                        <h5>Edit Evaluasi Organisasi</h5>
+                        <form id="formPerkaraPT" action="{{ route('evaluasi.update', $perkaras->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="id" value="{{ $perkaras->id }}">
+                            <input type="hidden" name="redirect_route"
+                                value="{{ route('evaluasi.show', ['id' => $perkaras->id]) }}">
                             <div class="form-container">
                                 <div class="form-left me-3">
                                     <div class="mb-3">
@@ -93,6 +95,8 @@
                                         <label for="bukti_foto">Bukti Foto</label>
                                         <input type="file" name="bukti_foto[]" id="bukti_foto" class="form-control"
                                             multiple accept="image/*">
+                                        <small class="form-text text-muted">Format yang diperbolehkan: PNG, JPG, JPEG,
+                                            GIF. Maksimal Ukuran File : 2 MB.</small>
                                         <small class="text-danger error-message" id="error-bukti_foto"></small>
                                     </div>
 

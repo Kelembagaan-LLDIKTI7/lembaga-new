@@ -1,6 +1,6 @@
 @extends('Layouts.Main')
 
-@section('title', 'Detail Perkara')
+@section('title', 'Detail Evaluasi')
 
 @section('content')
     <div class="container-fluid my-4">
@@ -12,11 +12,13 @@
                 <div class="card bordered shadow-sm">
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
-                            <h5 class="mb-0">Detail Perkara
+                            <h5 class="mb-0">Detail Evaluasi
                                 {{ $perkaras->organisasi->organisasi_type_id == 2 ? 'Badan Penyelenggara' : 'Perguruan Tinggi' }}
                             </h5>
-                            <a href="{{ route('perkara-organisasipt.edit', $perkaras->id) }}" class="btn btn-primary">
-                                <i class="fas fa-edit me-2"></i> Edit</a>
+                            @can('Edit Evaluasi Perguruan Tinggi')
+                                <a href="{{ route('perkara-organisasipt.edit', $perkaras->id) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit me-2"></i> Edit</a>
+                            @endcan
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-6">

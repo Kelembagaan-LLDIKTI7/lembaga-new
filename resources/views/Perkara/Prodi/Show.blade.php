@@ -13,9 +13,11 @@
                         <div class="d-flex justify-content-between mb-2">
                             <h5 class="card-title">Detail Perkara Program Studi
                             </h5>
-                            <a href="{{ route('perkara-prodi.edit', $perkaras->id) }}" class="btn btn-primary">
-                                <i class="fas fa-edit me-2"></i> Edit</a>
-                            </a>
+                            @can('Edit Evaluasi Program Studi')
+                                <a href="{{ route('evaluasi-prodi.edit', $perkaras->id) }}" class="btn btn-primary">
+                                    <i class="fas fa-edit me-2"></i> Edit</a>
+                                </a>
+                            @endcan
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-6">

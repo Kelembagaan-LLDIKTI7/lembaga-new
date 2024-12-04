@@ -9,7 +9,7 @@
                         <div class="card bordered">
                             <div class="card-body">
                                 <div class="d-flex gap-2 align-items-end mb-4">
-                                    <h5 >Form Tambah Permission pada Role</h5>
+                                    <h5>Form Tambah Permission pada Role</h5>
                                     <h3 class="text-primary">{{ $role->name }}</h3>
                                 </div>
                                 <form method="POST" action="{{ route('addRolePermission.store', $role->id) }}">
@@ -63,12 +63,14 @@
                                                     'View Perguruan Tinggi',
                                                     'Import Perguruan Tinggi',
                                                     'Detail Perguruan Tinggi',
+                                                    'Export Perguruan Tinggi',
                                                 ],
                                                 'Program Studi' => [
                                                     'Create Program Studi',
                                                     'Edit Program Studi',
                                                     'View Program Studi',
                                                     'Detail Program Studi',
+                                                    'Export Program Studi',
                                                 ],
                                                 'Akreditasi Program Studi' => [
                                                     'Create Akreditasi Program Studi',
@@ -153,22 +155,30 @@
                                                     'Edit Jenis Organisasi',
                                                     'Delete Jenis Organisasi',
                                                 ],
-                                                'Perkara Badan Penyelenggara' => [
-                                                    'Create Perkara Badan Penyelenggara',
-                                                    'View Detail Perkara Badan Penyelenggara',
-                                                    'Update Status Perkara Badan Penyelenggara',
+                                                'Evaluasi Data Master' => [
+                                                    'View Evaluasi Master',
+                                                    'Edit Evaluasi Master',
+                                                    'View Detail Evaluasi Master',
                                                 ],
-                                                'Perkara Perguruan Tinggi' => [
-                                                    'Create Perkara Perguruan Tinggi',
-                                                    'View Detail Perkara Perguruan Tinggi',
-                                                    'Update Status Perkara Perguruan Tinggi',
+                                                'Evaluasi Badan Penyelenggara' => [
+                                                    'Create Evaluasi Badan Penyelenggara',
+                                                    'View Detail Evaluasi Badan Penyelenggara',
+                                                    'Update Status Evaluasi Badan Penyelenggara',
+                                                    'Edit Evaluasi Badan Penyelenggara',
                                                 ],
-                                                'Perkara Program Studi' => [
-                                                    'Create Perkara Program Studi',
-                                                    'View Detail Perkara Program Studi',
-                                                    'Update Status Perkara Program Studi',
+                                                'Evaluasi Perguruan Tinggi' => [
+                                                    'Create Evaluasi Perguruan Tinggi',
+                                                    'View Detail Evaluasi Perguruan Tinggi',
+                                                    'Update Status Evaluasi Perguruan Tinggi',
+                                                    'Edit Evaluasi Perguruan Tinggi',
                                                 ],
-                                                'Dashboard' => ['View Detail Perkara'],
+                                                'Evaluasi Program Studi' => [
+                                                    'Create Evaluasi Program Studi',
+                                                    'View Detail Evaluasi Program Studi',
+                                                    'Update Status Evaluasi Program Studi',
+                                                    'Edit Evaluasi Program Studi',
+                                                ],
+                                                'Dashboard' => ['View Detail Evaluasi (Dashboard)'],
                                             ];
                                         @endphp
 
