@@ -35,7 +35,7 @@
                             @endif
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group mb-3 col-md-4">
+                                    <div class="form-group col-md-4 mb-3">
                                         <label for="validationCustom01" class="form-label">Kode Program Studi</label>
                                         <input type="text" class="form-control" id="prodi_kode" name="prodi_kode"
                                             value="{{ old('prodi_kode', $prodi->prodi_kode) }}">
@@ -64,15 +64,15 @@
 
                                     <div class="form-group mb-3">
                                         <label for="prodi_active_status" class="required-label">Status Program</label>
-                                       <select name="prodi_active_status" class="form-control select-search" required>
-    <option value="">-- Pilih Status --</option>
-    @foreach ($status as $item)
-        <option value="{{ $item->id }}"
-            {{ old('prodi_active_status', $prodi->prodi_active_status) == $item->id ? 'selected' : '' }}>
-            {{ $item->prodi_status_nama }}
-        </option>
-    @endforeach
-</select>
+                                        <select name="prodi_active_status" class="form-control select-search" required>
+                                            <option value="">-- Pilih Status --</option>
+                                            @foreach ($status as $item)
+                                                <option value="{{ $item->id }}"
+                                                    {{ old('prodi_active_status', $prodi->prodi_active_status) == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->prodi_status_nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
 
                                         @if ($errors->has('prodi_active_status'))
                                             <span class="text-danger">{{ $errors->first('prodi_active_status') }}</span>
@@ -140,19 +140,21 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-    <label for="prodi_periode" class="required-label">Periode Awal Pelaporan PDDIKTI</label>
-    <input type="number" name="prodi_periode" class="form-control"
-           value="{{ old('prodi_periode', $prodi->prodi_periode) }}" required
-           min="1900" step="1" placeholder="Enter year">
-           <small class="form-text text-muted">Silahkan Masukkan Periode Awal Pelaporan PDDIKTI dengan format Tahun. akhiri dengan angka 1 untuk Gasal dan angka 2 untuk Genap. Contoh : 20241 untuk '2024 Gasal'</small>
-    @if ($errors->has('prodi_periode'))
-        <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
-    @endif
-    @error('prodi_periode')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-    <small class="text-danger error-message" id="error-prodi_periode"></small>
-</div>
+                                    <label for="prodi_periode" class="required-label">Periode Awal Pelaporan PDDIKTI</label>
+                                    <input type="number" name="prodi_periode" class="form-control"
+                                        value="{{ old('prodi_periode', $prodi->prodi_periode) }}" required min="1900"
+                                        step="1" placeholder="Enter year">
+                                    <small class="form-text text-muted">Silahkan Masukkan Periode Awal Pelaporan PDDIKTI
+                                        dengan format Tahun. akhiri dengan angka 1 untuk Gasal dan angka 2 untuk Genap.
+                                        Contoh : 20241 untuk '2024 Gasal'</small>
+                                    @if ($errors->has('prodi_periode'))
+                                        <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
+                                    @endif
+                                    @error('prodi_periode')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                    <small class="text-danger error-message" id="error-prodi_periode"></small>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -164,7 +166,8 @@
                                     <div class="form-group mb-3">
                                         <label for="sk_nomor" class="required-label">Nomor Surat Keputusan</label>
                                         <input type="text" name="sk_nomor" class="form-control"
-                                            value="{{ old('sk_nomor', $prodi->suratKeputusan->first()->sk_nomor) }}" required>
+                                            value="{{ old('sk_nomor', $prodi->suratKeputusan->first()->sk_nomor) }}"
+                                            required>
                                         @if ($errors->has('sk_nomor'))
                                             <span class="text-danger">{{ $errors->first('sk_nomor') }}</span>
                                         @endif
@@ -177,7 +180,8 @@
                                     <div class="form-group mb-3">
                                         <label for="sk_tanggal" class="required-label">Tanggal SK</label>
                                         <input type="date" name="sk_tanggal" class="form-control"
-                                            value="{{ old('sk_tanggal', $prodi->suratKeputusan->first()->sk_tanggal) }}" required>
+                                            value="{{ old('sk_tanggal', $prodi->suratKeputusan->first()->sk_tanggal) }}"
+                                            required>
                                         @if ($errors->has('sk_tanggal'))
                                             <span class="text-danger">{{ $errors->first('sk_tanggal') }}</span>
                                         @endif
@@ -207,8 +211,8 @@
                                 <div class="btn-center mt-6">
                                     <div id="buttons">
                                         <button type="submit" class="btn btn-primary">Simpan</button>
-                                        <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}"
-                                            type="submit" class="btn btn-primary">Keluar</a>
+                                        <a href="{{ route('program-studi.show', ['id' => $prodi->id]) }}" type="submit"
+                                            class="btn btn-primary">Keluar</a>
                                     </div>
                                     <div id="loading">
                                         <div class="d-flex align-items-center">

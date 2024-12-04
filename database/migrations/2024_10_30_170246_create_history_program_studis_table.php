@@ -20,11 +20,6 @@ return new class extends Migration
             $table->bigInteger('prodi_periode')->nullable();
             $table->string('prodi_active_status');
 
-            $table->string('sk_nomor');
-            $table->date('sk_tanggal');
-            $table->date('sk_berakhir')->nullable();
-            $table->string('sk_dokumen', 100);
-            $table->string('id_jenis_surat_keputusan')->nullable();
             $table->string('id_user')->nullable();
             $table->timestamps();
         });
