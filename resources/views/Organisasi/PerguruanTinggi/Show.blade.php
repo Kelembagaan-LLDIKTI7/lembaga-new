@@ -384,8 +384,8 @@
                                             <th>Periode</th>
                                             <th>Status</th>
                                             <th>Peringkat Akreditasi</th>
-                                            <th>SK Akreditasi</th>
-                                            <th>Tanggal Kadaluarsa</th>
+                                            {{-- <th>SK Akreditasi</th>
+                                            <th>Tanggal Kadaluarsa</th> --}}
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -417,8 +417,8 @@
                                                 <td>
                                                     {{ $akreditasi->peringkat_akreditasi->peringkat_nama ?? 'Tidak Tersedia' }}
                                                 </td>
-                                                <td>{{ $akreditasi->akreditasi_sk ?? 'Tidak Tersedia' }}</td>
-                                                <td>{{ $akreditasi->akreditasi_tgl_akhir ?? 'Tidak Tersedia' }}</td>
+                                                {{-- <td>{{ $akreditasi->akreditasi_sk ?? 'Tidak Tersedia' }}</td>
+                                                <td>{{ $akreditasi->akreditasi_tgl_akhir ?? 'Tidak Tersedia' }}</td> --}}
                                                 <td>
                                                     @can('Detail Program Studi')
                                                         <a href="{{ route('program-studi.show', $prodi->id) }}"
