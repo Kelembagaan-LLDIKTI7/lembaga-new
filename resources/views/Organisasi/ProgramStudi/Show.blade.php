@@ -141,7 +141,7 @@
                             </div>
 
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
-                                <table id="complex_header"
+                                <table id="akreditasi_prodi"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
                                     <a href="{{ route('akreditasi-program-studi.create', $prodi->id) }}"
@@ -518,6 +518,23 @@
             if ($.fn.DataTable.isDataTable('#perkara')) {
                 $('#perkara').DataTable().destroy();
             }
+
+            $('#akreditasi_prodi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
 
             $('#perkara').DataTable({
                 "columnDefs": [{
