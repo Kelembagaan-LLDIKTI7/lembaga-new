@@ -116,9 +116,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="prodi_periode" class="required-label">Periode Awal Pelaporan PDDIKTI</label>
+                                    <label for="prodi_periode" class="form-label">Periode Awal Pelaporan PDDIKTI</label>
                                     <input type="number" name="prodi_periode" class="form-control"
-                                        value="{{ old('prodi_periode') }}" required step="1"
+                                        value="{{ old('prodi_periode') }}" step="1"
                                         placeholder="Enter year">
                                     <small class="form-text text-muted">Silahkan Masukkan Periode Awal Pelaporan PDDIKTI
                                         dengan format Tahun. akhiri dengan angka 1 untuk Gasal dan angka 2 untuk Genap.
