@@ -390,42 +390,39 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($organisasi->prodis as $prodi)
+                                        @foreach ($prodis as $prodi)
                                             <tr>
                                                 <td></td>
                                                 <td>{{ $prodi->prodi_kode }}</td>
                                                 <td>{{ $prodi->prodi_nama }}</td>
                                                 <td>{{ $prodi->prodi_jenjang }}</td>
                                                 <td> @php
-                                                    $periode = $prodi->prodi_periode; // Get the full periode value
-                                                    $lastDigit = substr($periode, -1); // Extract the last digit
-                                                    $newPeriode = substr($periode, 0, -1); // Remove the last digit
+                                                    $periode = $prodi->prodi_periode;
+                                                    $lastDigit = substr($periode, -1);
+                                                    $newPeriode = substr($periode, 0, -1);
                                                     if ($lastDigit == '1') {
-                                                        $newPeriode .= ' Gasal'; // Append 'gasal'
+                                                        $newPeriode .= ' Gasal';
                                                     } elseif ($lastDigit == '2') {
-                                                        $newPeriode .= ' Genap'; // Append 'genap'
+                                                        $newPeriode .= ' Genap';
                                                     } else {
-                                                        $newPeriode .= $lastDigit; // Keep the original digit for other cases
+                                                        $newPeriode .= $lastDigit;
                                                     }
                                                 @endphp
 
                                                     {{ $newPeriode }}</td>
-                                                <td>{{ $prodi->prodiStatus ? $prodi->prodiStatus->prodi_status_nama : 'Status Tidak Tersedia' }}</td>
-                                                @php
-                                                    $akreditasi = $prodi->akreditasis->last();
-                                                @endphp
+                                                <td>{{ $prodi->status }}</td>
                                                 <td>
-                                                    {{ $akreditasi->peringkat_akreditasi->peringkat_nama ?? 'Tidak Tersedia' }}
+                                                    {{ $prodi->akreditasi ?? '' }}
                                                 </td>
-                                                {{-- <td>{{ $akreditasi->akreditasi_sk ?? 'Tidak Tersedia' }}</td>
-                                                <td>{{ $akreditasi->akreditasi_tgl_akhir ?? 'Tidak Tersedia' }}</td> --}}
+                                                {{-- <td>{{ $prodi->no_sk_akreditasi ?? '' }}</td>
+                                    <td>{{ $prodi->tgl_akhir_sk_akreditasi ?? '' }}</td> --}}
                                                 <td>
                                                     @can('Detail Program Studi')
                                                         <a href="{{ route('program-studi.show', $prodi->id) }}"
                                                             class="btn btn-sm btn-primary me-2">
                                                             <i class="ti ti-info-circle"></i>
                                                         </a>
-                                                    @endCan
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach
