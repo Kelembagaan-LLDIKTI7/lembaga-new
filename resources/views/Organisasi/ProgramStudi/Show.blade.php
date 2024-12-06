@@ -348,7 +348,7 @@
 
             var hasAkreditasiDokumenPermission = @json(auth()->user()->can('View PDF Akreditasi Perguruan Tinggi'));
 
-            $('#complex_header tbody').on('click', 'tr', function() {
+            $('#akreditasi_prodi tbody').on('click', 'tr', function() {
                 const akreditasiId = $(this).data('id'); // Pastikan setiap <tr> memiliki data-id
 
                 // Fetch data menggunakan jQuery AJAX
