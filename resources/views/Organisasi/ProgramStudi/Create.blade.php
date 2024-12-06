@@ -33,7 +33,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <input type="hidden" name="id_organization" value="{{ $organisasi->id }}">
-                                    <div class="form-group mb-3 col-md-4">
+                                    <div class="form-group col-md-4 mb-3">
                                         <label for="validationCustom01" class="form-label">Kode Program Studi</label>
                                         <input type="text" class="form-control" id="prodi_kode" name="prodi_kode"
                                             value="{{ old('prodi_kode') }}">
@@ -64,7 +64,7 @@
                                         <label for="prodi_active_status" class="required-label">Status</label>
                                         <select name="prodi_active_status" class="form-control select-search" required>
                                             <option value="">-- Pilih Status --</option>
-                                                @foreach ($status as $item)
+                                            @foreach ($status as $item)
                                                 <option value="{{ $item->id }}">
                                                     {{ $item->prodi_status_nama }}</option>
                                             @endforeach
@@ -115,20 +115,22 @@
                                         <small class="text-danger error-message" id="error-prodi_jenjang"></small>
                                     </div>
                                 </div>
-<div class="form-group mb-3">
-    <label for="prodi_periode" class="required-label">Periode Awal Pelaporan PDDIKTI</label>
-    <input type="number" name="prodi_periode" class="form-control"
-           value="{{ old('prodi_periode') }}" required
-        step="1" placeholder="Enter year">
-        <small class="form-text text-muted">Silahkan Masukkan Periode Awal Pelaporan PDDIKTI dengan format Tahun. akhiri dengan angka 1 untuk Gasal dan angka 2 untuk Genap. Contoh : 20241 untuk '2024 Gasal'</small>
-    @if ($errors->has('prodi_periode'))
-        <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
-    @endif
-    @error('prodi_periode')
-        <small class="text-danger">{{ $message }}</small>
-    @enderror
-    <small class="text-danger error-message" id="error-prodi_periode"></small>
-</div>
+                                <div class="form-group mb-3">
+                                    <label for="prodi_periode" class="form-label">Periode Awal Pelaporan PDDIKTI</label>
+                                    <input type="number" name="prodi_periode" class="form-control"
+                                        value="{{ old('prodi_periode') }}" step="1"
+                                        placeholder="Enter year">
+                                    <small class="form-text text-muted">Silahkan Masukkan Periode Awal Pelaporan PDDIKTI
+                                        dengan format Tahun. akhiri dengan angka 1 untuk Gasal dan angka 2 untuk Genap.
+                                        Contoh : 20241 untuk '2024 Gasal'</small>
+                                    @if ($errors->has('prodi_periode'))
+                                        <span class="text-danger">{{ $errors->first('prodi_periode') }}</span>
+                                    @endif
+                                    @error('prodi_periode')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                    <small class="text-danger error-message" id="error-prodi_periode"></small>
+                                </div>
                             </div>
                         </div>
                     </div>

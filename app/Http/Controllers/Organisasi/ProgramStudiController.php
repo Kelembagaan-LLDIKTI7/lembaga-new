@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Organisasi;
 use App\Exports\ProdiExport;
 use App\Http\Controllers\Controller;
 use App\Models\Akreditasi;
+use App\Models\HistoriPt;
 use App\Models\HistoryProgramStudi;
 use App\Models\JenisSuratKeputusan;
 use App\Models\Organisasi;
@@ -105,7 +106,7 @@ class ProgramStudiController extends Controller
             'prodi_kode' => 'required|string|max:7',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
-            'prodi_periode' => 'required|digits:5|integer|min:1900',
+            'prodi_periode' => 'digits:5|integer|min:1900',
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
@@ -114,7 +115,6 @@ class ProgramStudiController extends Controller
             'prodi_kode.required' => 'Kode Program Studi harus diisi.',
             'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
-            'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
             'prodi_periode.digit' => 'Periode Pelaporan harus 5 digit',
             'prodi_periode.integer' => 'Periode harus berupa angka',
             'prodi_periode.min' => 'Periode minimal 1900',
@@ -150,7 +150,7 @@ class ProgramStudiController extends Controller
             'prodi_kode' => 'required|string|max:7',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
-            'prodi_periode' => 'required|digits:5|integer|min:1900',
+            'prodi_periode' => 'digits:5|integer|min:1900',
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
@@ -160,7 +160,6 @@ class ProgramStudiController extends Controller
             'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
             'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
-            'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
             'prodi_periode.digit' => 'Periode Pelaporan harus 5 digit',
             'prodi_periode.integer' => 'Periode harus berupa angka',
             'prodi_periode.min' => 'Periode minimal 1900',
@@ -219,19 +218,19 @@ class ProgramStudiController extends Controller
                 'id_prodi' => $prodi->id,
             ]);
 
-            HistoryProgramStudi::create([
-                'id' => Str::uuid(),
-                'id_prodi' => $prodi->id,
-                'prodi_kode' => $request->prodi_kode,
-                'prodi_nama' => $validated['prodi_nama'],
-                'prodi_jenjang' => $validated['prodi_jenjang'],
-                'prodi_periode' => $validated['prodi_periode'],
-                'prodi_active_status' => $validated['prodi_active_status'],
-                'sk_nomor' => $validated['sk_nomor'],
-                'sk_tanggal' => $validated['sk_tanggal'],
-                'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
-                'id_user' => Auth::user()->id
-            ]);
+            // HistoryProgramStudi::create([
+            //     'id' => Str::uuid(),
+            //     'id_prodi' => $prodi->id,
+            //     'prodi_kode' => $request->prodi_kode,
+            //     'prodi_nama' => $validated['prodi_nama'],
+            //     'prodi_jenjang' => $validated['prodi_jenjang'],
+            //     'prodi_periode' => $validated['prodi_periode'],
+            //     'prodi_active_status' => $validated['prodi_active_status'],
+            //     'sk_nomor' => $validated['sk_nomor'],
+            //     'sk_tanggal' => $validated['sk_tanggal'],
+            //     'id_jenis_surat_keputusan' => $validated['id_jenis_surat_keputusan'],
+            //     'id_user' => Auth::user()->id
+            // ]);
         }
 
         session()->flash('success', 'Program Studi berhasil ditambah.');
@@ -249,7 +248,7 @@ class ProgramStudiController extends Controller
     {
         $user = User::findOrFail(Auth::user()->id);
         $prodi = ProgramStudi::with([
-            'historiPerguruanTinggi:id,id_prodi,prodi_kode,prodi_nama,prodi_jenjang,prodi_periode,prodi_active_status,sk_nomor,sk_tanggal',
+            'historiPerguruanTinggi:id,id_prodi,prodi_kode,prodi_nama,prodi_jenjang,prodi_periode,prodi_active_status',
             'suratKeputusan' => function ($query) {
                 $query->select('id', 'sk_nomor', 'id_prodi', 'sk_tanggal', 'id_jenis_surat_keputusan', 'sk_dokumen')
                     ->whereHas('jenisSuratKeputusan', function ($subQuery) {
@@ -259,7 +258,7 @@ class ProgramStudiController extends Controller
             },
             'suratKeputusan.jenisSuratKeputusan:id,jsk_nama',
             'perguruanTinggi:id,organisasi_nama',
-            'prodistatus:id,prodi_status_nama' 
+            'prodistatus:id,prodi_status_nama'
         ])->select(
             'id',
             'prodi_kode',
@@ -365,7 +364,7 @@ class ProgramStudiController extends Controller
             'prodi_kode' => 'required|string|max:7',
             'prodi_nama' => 'required',
             'prodi_jenjang' => 'required',
-            'prodi_periode' => 'required|digits:5|integer|min:1900',
+            'prodi_periode' => 'digits:5|integer|min:1900',
             'prodi_active_status' => 'required',
             'sk_nomor' => 'required',
             'sk_tanggal' => 'required',
@@ -375,7 +374,6 @@ class ProgramStudiController extends Controller
             'prodi_kode.max' => 'Kode Program Studi tidak boleh lebih dari 7 karakter.',
             'prodi_nama.required' => 'Nama Program Studi harus diisi.',
             'prodi_jenjang.required' => 'Jenjang Program Studi harus diisi.',
-            'prodi_periode.required' => 'Periode Pelaporan Program Studi harus diisi',
             'prodi_periode.digit' => 'Periode Pelaporan harus 5 digit',
             'prodi_periode.integer' => 'Periode harus berupa angka',
             'prodi_periode.min' => 'Periode minimal 1900',
@@ -403,6 +401,7 @@ class ProgramStudiController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request->all());
         $prodi = ProgramStudi::findOrFail($id);
 
         $request->validate([
@@ -433,13 +432,36 @@ class ProgramStudiController extends Controller
 
         $jenisSK = JenisSuratKeputusan::where('jsk_nama', 'SK Pendirian')->firstOrFail();
 
-        $prodi->update([
-            'prodi_kode' => $request->prodi_kode,
-            'prodi_nama' => $request->prodi_nama,
-            'prodi_active_status' => $request->prodi_active_status,
-            'prodi_jenjang' => $request->prodi_jenjang,
-            'prodi_periode' => $request->prodi_periode,
-        ]);
+        if ($request->prodi_active_status == 3) {
+            HistoryProgramStudi::create([
+                'id' => Str::uuid(),
+                'id_prodi' => $prodi->id,
+                'prodi_kode' => $prodi->prodi_kode,
+                'prodi_nama' => $prodi->prodi_nama,
+                'prodi_jenjang' => $prodi->prodi_jenjang,
+                'prodi_periode' => $prodi->prodi_periode,
+                'prodi_active_status' => 3,
+                'id_user' => Auth::user()->id
+            ]);
+
+            $prodi->update([
+                'prodi_kode' => $request->prodi_kode,
+                'prodi_nama' => $request->prodi_nama,
+                'prodi_active_status' => 1,
+                'prodi_jenjang' => $request->prodi_jenjang,
+                'prodi_periode' => $request->prodi_periode,
+                'id_user' => Auth::user()->id
+            ]);
+        } else {
+            $prodi->update([
+                'prodi_kode' => $request->prodi_kode,
+                'prodi_nama' => $request->prodi_nama,
+                'prodi_active_status' => $request->prodi_active_status,
+                'prodi_jenjang' => $request->prodi_jenjang,
+                'prodi_periode' => $request->prodi_periode,
+                'id_user' => Auth::user()->id
+            ]);
+        }
 
         $sk = SuratKeputusan::updateOrCreate(
             ['id_prodi' => $prodi->id, 'id_jenis_surat_keputusan' => $jenisSK->id],

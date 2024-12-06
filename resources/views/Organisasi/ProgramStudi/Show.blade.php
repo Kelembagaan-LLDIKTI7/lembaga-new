@@ -107,21 +107,21 @@
                                                 <td>{{ $histori->prodi_jenjang }}</td>
                                                 <td>
                                                     @php
-                                                        $periode = $prodi->prodi_periode; // Get the full periode value
-                                                        $lastDigit = substr($periode, -1); // Extract the last digit
-                                                        $newPeriode = substr($periode, 0, -1); // Remove the last digit
+                                                        $periode = $prodi->prodi_periode;
+                                                        $lastDigit = substr($periode, -1);
+                                                        $newPeriode = substr($periode, 0, -1);
                                                         if ($lastDigit == '1') {
-                                                            $newPeriode .= ' Gasal'; // Append 'gasal'
+                                                            $newPeriode .= ' Gasal';
                                                         } elseif ($lastDigit == '2') {
-                                                            $newPeriode .= ' Genap'; // Append 'genap'
+                                                            $newPeriode .= ' Genap';
                                                         } else {
-                                                            $newPeriode .= $lastDigit; // Keep the original digit for other cases
+                                                            $newPeriode .= $lastDigit;
                                                         }
                                                     @endphp
 
                                                     {{ $newPeriode }}
                                                 </td>
-                                                <td>{{ $histori->prodistatus->prodi_status_nama }}</td>
+                                                <td>{{ $histori->prodistatus->prodi_status_nama ?? '-' }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -141,7 +141,7 @@
                             </div>
 
                             <div class="table-responsive" style="overflow-x: auto; overflow-y: hidden;">
-                                <table id="complex_header"
+                                <table id="akreditasi_prodi"
                                     class="table-striped table-bordered display text-nowrap table border"
                                     style="width: 100%">
                                     <a href="{{ route('akreditasi-program-studi.create', $prodi->id) }}"
@@ -518,6 +518,23 @@
             if ($.fn.DataTable.isDataTable('#perkara')) {
                 $('#perkara').DataTable().destroy();
             }
+
+            $('#akreditasi_prodi').DataTable({
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false,
+                    "searchable": false,
+                }],
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    api.column(0, {
+                        search: 'applied',
+                        order: 'applied'
+                    }).nodes().each(function(cell, i) {
+                        cell.innerHTML = i + 1;
+                    });
+                }
+            });
 
             $('#perkara').DataTable({
                 "columnDefs": [{

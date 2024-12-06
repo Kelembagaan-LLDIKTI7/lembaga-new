@@ -9,7 +9,7 @@
                 <div class="mb-2">
                     <h5 class="mb-0">Program Studi</h5>
                 </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center mb-2">
                     @can('Export Program Studi')
                         <a href="{{ route('prodi.export') }}" class="btn btn-success btn-sm me-2">
                             Export Excel
@@ -30,8 +30,8 @@
                                 <th>Periode Awal Pelaporan PDDIKTI</th>
                                 <th>Status</th>
                                 <th>Peringkat Akreditasi</th>
-                                <th>SK Akreditasi</th>
-                                <th>Tanggal Kadaluarsa</th>
+                                {{-- <th>SK Akreditasi</th>
+                                <th>Tanggal Kadaluarsa</th> --}}
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -62,8 +62,8 @@
                                     <td>
                                         {{ $prodi->akreditasi ?? '' }}
                                     </td>
-                                    <td>{{ $prodi->no_sk_akreditasi ?? '' }}</td>
-                                    <td>{{ $prodi->tgl_akhir_sk_akreditasi ?? '' }}</td>
+                                    {{-- <td>{{ $prodi->no_sk_akreditasi ?? '' }}</td>
+                                    <td>{{ $prodi->tgl_akhir_sk_akreditasi ?? '' }}</td> --}}
                                     <td>
                                         @can('Detail Program Studi')
                                             <a href="{{ route('program-studi.show', $prodi->id) }}"

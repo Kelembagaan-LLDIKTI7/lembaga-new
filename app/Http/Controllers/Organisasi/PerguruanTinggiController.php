@@ -372,15 +372,40 @@ class PerguruanTinggiController extends Controller
                 }
             ])->get();
 
-        $akreditasisProdi = Akreditasi::where('id_organization', $id)
+        $prodis = DB::table('program_studis')
+            ->where('program_studis.id_organization', $id)
+            ->leftJoin('organisasis', 'program_studis.id_organization', '=', 'organisasis.id')
+            ->leftJoin('akreditasis', function ($join) {
+                $join->on('program_studis.id', '=', 'akreditasis.id_prodi')
+                    ->whereRaw('akreditasis.akreditasi_tgl_akhir = (
+                                SELECT MAX(sub.akreditasi_tgl_akhir)
+                                FROM akreditasis as sub
+                                WHERE sub.id_prodi = program_studis.id
+            )');
+            })
+            ->leftJoin('lembaga_akreditasis', 'akreditasis.id_lembaga_akreditasi', '=', 'lembaga_akreditasis.id')
+            ->leftJoin('peringkat_akreditasis', 'akreditasis.id_peringkat_akreditasi', '=', 'peringkat_akreditasis.id')
+            ->leftJoin('prodi_statuses', 'program_studis.prodi_active_status', '=', 'prodi_statuses.id')
+            ->where(function ($query) {
+                $query->whereNull('organisasis.tampil')
+                    ->orWhereNot('organisasis.tampil', 0);
+            })
+            // ->orderBy('organisasis.organisasi_kode')
+            ->orderBy('program_studis.prodi_nama', 'asc')
             ->select(
-                'id_prodi',
-                'akreditasi_sk',
-                'akreditasi_tgl_awal',
-                'akreditasi_tgl_akhir',
-                'akreditasi_status',
-                'aktif'
-            )->with(['prodi:id,prodi_kode,prodi_nama,prodi_periode,prodi_jenjang'])->orderBy('created_at', 'asc')->get();
+                'program_studis.id as id',
+                'organisasis.organisasi_kode as kode_pt',
+                'organisasis.organisasi_nama as nama_pt',
+                'program_studis.prodi_kode as prodi_kode',
+                'program_studis.prodi_nama as prodi_nama',
+                'program_studis.prodi_jenjang as prodi_jenjang',
+                'akreditasis.akreditasi_sk as no_sk_akreditasi',
+                'program_studis.prodi_periode as prodi_periode',
+                'prodi_statuses.prodi_status_nama as status',
+                'akreditasis.akreditasi_tgl_awal as tgl_terbit_sk_akreditasi',
+                'peringkat_akreditasis.peringkat_nama as akreditasi',
+                'akreditasis.akreditasi_tgl_akhir as tgl_akhir_sk_akreditasi',
+            )->get();
 
         $perkaras = Perkara::where('id_organization', $id)
             ->select('id', 'title', 'no_perkara', 'tanggal_kejadian', 'status')
@@ -393,7 +418,7 @@ class PerguruanTinggiController extends Controller
             'akreditasi' => $akreditasi,
             'sk' => $sk,
             'pimpinan' => $pimpinan,
-            'akreditasisProdi' => $akreditasisProdi,
+            'prodis' => $prodis,
             'perkaras' => $perkaras
         ]);
 
@@ -402,7 +427,9 @@ class PerguruanTinggiController extends Controller
         //     'berubahOrganisasi' => $berubahOrganisasi,
         //     'akreditasi' => $akreditasi,
         //     'sk' => $sk,
-        //     'pimpinan' => $pimpinan
+        //     'pimpinan' => $pimpinan,
+        //     'prodis' => $prodis,
+        //     'perkaras' => $perkaras
         // ]);
     }
 

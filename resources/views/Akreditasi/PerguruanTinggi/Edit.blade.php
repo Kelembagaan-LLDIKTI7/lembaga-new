@@ -129,8 +129,9 @@
                                     <label for="sk_dokumen" class="required-label">Dokumen SK</label>
                                     <input type="file" name="sk_dokumen" class="form-control" accept=".pdf,.doc,.docx"
                                         onchange="previewFile(event)">
-                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX. Maksimal Ukuran File : 2 MB.</small>
-                                    <div id="file-preview" class="mt-3"></div> <!-- Tempat untuk preview -->
+                                    <small class="form-text text-muted">Format yang diperbolehkan: PDF, DOC, DOCX. Maksimal
+                                        Ukuran File : 2 MB.</small>
+                                    <div id="file-preview" class="mt-3"></div>
                                     @error('sk_dokumen')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -165,17 +166,15 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            $('#loading').hide(); // Sembunyikan loading
+            $('#loading').hide();
             $('#formAkreditasiPTedit').on('submit', function(event) {
-                event.preventDefault(); // Menghentikan submit default form
+                event.preventDefault();
 
-                $('#buttons').hide(); // Sembunyikan tombol
-                $('#loading').show(); // Tampilkan loading
+                $('#buttons').hide();
+                $('#loading').show();
 
-                // Mengambil data form
                 const formData = new FormData(this);
 
-                // AJAX request ke server untuk validasi
                 $.ajax({
                     url: '{{ route('akreditasi-perguruan-tinggi.validationUpdate', ['id' => $akreditasi->id]) }}',
                     type: 'POST',
@@ -200,15 +199,13 @@
             });
 
             function displayErrors(errors) {
-                // Bersihkan semua pesan error sebelumnya
                 $('.error-message').text('');
 
-                // Tampilkan pesan error baru
                 for (let field in errors) {
                     const errorMessages = errors[field].join(
-                        ', '); // Gabungkan pesan error jika ada lebih dari satu
+                        ', ');
                     $(`#error-${field}`).text(
-                        errorMessages); // Tempatkan pesan error di elemen dengan id yang sesuai
+                        errorMessages);
                 }
             }
 
