@@ -468,7 +468,7 @@ class ProgramStudiController extends Controller
             [
                 'sk_nomor' => $request->sk_nomor,
                 'sk_tanggal' => $request->sk_tanggal,
-                'sk_dokumen' => $request->file('sk_dokumen') ? $request->file('sk_dokumen')->store('sk_dokumen') : null,
+                'sk_dokumen' => $request->file('sk_dokumen') ? $request->file('sk_dokumen')->store('surat_keputusan') : null,
             ]
         );
 
